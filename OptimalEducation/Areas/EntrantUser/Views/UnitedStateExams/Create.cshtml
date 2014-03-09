@@ -1,0 +1,44 @@
+﻿@model OptimalEducation.Models.UnitedStateExam
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>UnitedStateExam</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Result, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Result)
+                @Html.ValidationMessageFor(model => model.Result)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisciplineId, "Предмет", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DisciplineId", String.Empty)
+                @Html.ValidationMessageFor(model => model.DisciplineId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
