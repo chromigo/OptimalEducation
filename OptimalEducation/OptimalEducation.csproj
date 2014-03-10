@@ -186,6 +186,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\EntrantClusterizer.cs" />
     <Compile Include="Migrations\201403091416515_Init.cs" />
     <Compile Include="Migrations\201403091416515_Init.Designer.cs">
       <DependentUpon>201403091416515_Init.cs</DependentUpon>
@@ -660,10 +661,11 @@
     <Folder Include="Areas\FacultyUser\Controllers\" />
     <Folder Include="Areas\FacultyUser\Models\" />
     <Folder Include="Areas\FacultyUser\Views\Shared\" />
+    <Folder Include="Logic\AnalyticHierarchyProcess\" />
+    <Folder Include="Logic\MulticriterialAnalysis\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403091416515_Init.resx">

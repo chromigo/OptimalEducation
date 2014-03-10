@@ -11,6 +11,7 @@ using OptimalEducation.Models;
 using OptimalEducation.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.Logic.Clusterizer;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -39,6 +40,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
         private async Task<List<UnitedStateExam>> GetUserExamsAsync()
         {
             var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            //EntrantClusterizer cluser = new EntrantClusterizer(currentUser.Entrant);
             var unitedstateexams = db.UnitedStateExams
                 .Include(u => u.Discipline)
                 .Include(u => u.Entrant)
