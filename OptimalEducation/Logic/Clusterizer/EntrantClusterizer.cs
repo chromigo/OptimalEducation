@@ -21,7 +21,6 @@ namespace OptimalEducation.Logic.Clusterizer
         Dictionary<string, double> sectionCluster = new Dictionary<string, double>();
         Dictionary<string, double> hobbieCluster = new Dictionary<string, double>();
         Dictionary<string, double> schoolTypeCluster = new Dictionary<string, double>();
-        //Preferences?
 
         Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
         public Dictionary<string, double> Cluster { get { return _totalCluster; } }
@@ -137,19 +136,22 @@ namespace OptimalEducation.Logic.Clusterizer
         {
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
-            var lastSchool = _entrant.Schools.Last();
-            //Или еще учитывать кол-во лет обучения?(нет в модели)
-            var quality = lastSchool.EducationQuality;
-            var schoolType = lastSchool.SchoolType;
-            foreach (var weight in schoolType.Weights)
+            var lastSchool = _entrant.Schools.LastOrDefault();
+            if(lastSchool!=null)
             {
-                var coeff = weight.Coefficient;
-                var clusterName = weight.Cluster.Name;
+                //Или еще учитывать кол-во лет обучения?(нет в модели)
+                var quality = lastSchool.EducationQuality;
+                var schoolType = lastSchool.SchoolType;
+                foreach (var weight in schoolType.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var clusterName = weight.Cluster.Name;
 
-                //TODO: Реализовать особую логику учета данных?
-                double clusterResult = (int)quality * coeff;
+                    //TODO: Реализовать особую логику учета данных?
+                    double clusterResult = (int)quality * coeff;
 
-                FillPartialCluster(schoolTypeCluster, clusterName, clusterResult);
+                    FillPartialCluster(schoolTypeCluster, clusterName, clusterResult);
+                }
             }
         }
         /// <summary>
@@ -174,9 +176,11 @@ namespace OptimalEducation.Logic.Clusterizer
         {
             UnatedStateExamClustering();
             SchoolMarkClustering();
-            //TODO: Добавить остальные методы
             OlympiadClustering();
             SectionClustering();
+            HobbieClustering();
+            SchoolTypeClustering();
+
             foreach (var item in unatedStatedExamCluster)
             {
                 FillTotalCluster(item);
@@ -185,23 +189,22 @@ namespace OptimalEducation.Logic.Clusterizer
             {
                 FillTotalCluster(item);
             }
-            //TODO: Добавить остальные методы
-            //foreach (var item in olympiadCluster)
-            //{
-            //    FillTotalCluster(item);
-            //}
-            //foreach (var item in sectionCluster)
-            //{
-            //    FillTotalCluster(item);
-            //}
-            //foreach (var item in hobbieCluster)
-            //{
-            //    FillTotalCluster(item);
-            //}
-            //foreach (var item in schoolTypeCluster)
-            //{
-            //    FillTotalCluster(item);
-            //}
+            foreach (var item in olympiadCluster)
+            {
+                FillTotalCluster(item);
+            }
+            foreach (var item in sectionCluster)
+            {
+                FillTotalCluster(item);
+            }
+            foreach (var item in hobbieCluster)
+            {
+                FillTotalCluster(item);
+            }
+            foreach (var item in schoolTypeCluster)
+            {
+                FillTotalCluster(item);
+            }
         }
 
         private void FillTotalCluster(KeyValuePair<string, double> item)
