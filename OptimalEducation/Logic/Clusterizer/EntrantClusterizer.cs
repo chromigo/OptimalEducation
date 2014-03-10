@@ -18,15 +18,20 @@ namespace OptimalEducation.Logic.Clusterizer
         Dictionary<string, double> unatedStatedExamCluster = new Dictionary<string, double>();
         Dictionary<string, double> schoolMarkCluster = new Dictionary<string, double>();
         Dictionary<string, double> olympiadCluster = new Dictionary<string, double>();
+        Dictionary<string, double> sectionCluster = new Dictionary<string, double>();
+        Dictionary<string, double> hobbieCluster = new Dictionary<string, double>();
+        Dictionary<string, double> schoolTypeCluster = new Dictionary<string, double>();
+        //Preferences?
 
-        Dictionary<string, double> _totalCluster;
+        Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
         public Dictionary<string, double> Cluster { get { return _totalCluster; } }
         public EntrantClusterizer(Entrant entrant)
         {
             _entrant = entrant;
             CalculateSum();
         }
-        //По баллам егэ строит частичный кластер с результатами
+
+        #region По заданным характеристикам строит частичные кластеры с результатами
         private void UnatedStateExamClustering()
         {
             foreach (var exam in _entrant.UnitedStateExams)
@@ -36,17 +41,14 @@ namespace OptimalEducation.Logic.Clusterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var cluster = weight.Cluster;
+                    var clusterName = weight.Cluster.Name;
 
                     var clusterResult = result * coeff;
-                    if (!unatedStatedExamCluster.ContainsKey(cluster.Name))
-                        unatedStatedExamCluster.Add(cluster.Name, clusterResult);
-                    else
-                        unatedStatedExamCluster[cluster.Name] += clusterResult;
+                    FillPartialCluster(unatedStatedExamCluster, clusterName, clusterResult);
                 }
             }
         }
-        //По школьным оценкам строит частичный кластер с результатами
+
         private void SchoolMarkClustering()
         {
             foreach (var shoolMark in _entrant.SchoolMarks)
@@ -56,36 +58,115 @@ namespace OptimalEducation.Logic.Clusterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var cluster = weight.Cluster;
+                    var clusterName = weight.Cluster.Name;
 
                     var clusterResult = result * coeff;
-                    if (!schoolMarkCluster.ContainsKey(cluster.Name))
-                        schoolMarkCluster.Add(cluster.Name, clusterResult);
-                    else
-                        schoolMarkCluster[cluster.Name] += clusterResult;
+                    FillPartialCluster(schoolMarkCluster, clusterName, clusterResult);
                 }
             }
         }
-        //По олимпиадам строит частичный кластер с результатами
+
         private void OlympiadClustering()
         {
-            //foreach (var olympResult in _entrant.ParticipationInOlympiads)
-            //{
-            //    var result = olympResult.Result;
-            //    var olympiad = olympResult.Olympiad;
-            //    foreach (var weight in olympiad.Weights)
-            //    {
-            //        var coeff = weight.Coefficient;
-            //        var cluster = weight.Cluster;
+            foreach (var olympResult in _entrant.ParticipationInOlympiads)
+            {
+                var result = olympResult.Result;
+                var olympiad = olympResult.Olympiad;
+                foreach (var weight in olympiad.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var clusterName = weight.Cluster.Name;
 
-            //        var clusterResult = result * coeff;
-            //        if (!olympiadCluster.ContainsKey(cluster.Name))
-            //            olympiadCluster.Add(cluster.Name, clusterResult);
-            //        else
-            //            olympiadCluster[cluster.Name] += clusterResult;
-            //    }
-            //}
+                    double clusterResult = 0;
+                    //TODO: Реализовать особую логику учета данных?
+                    switch (result)
+                    {
+                        case OlypmpiadResult.FirstPlace: clusterResult = (int)result * coeff;
+                            break;
+                        case OlypmpiadResult.SecondPlace: clusterResult = (int)result * coeff;
+                            break;
+                        case OlypmpiadResult.ThirdPlace: clusterResult = (int)result * coeff;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    FillPartialCluster(olympiadCluster, clusterName, clusterResult);
+                }
+            }
         }
+
+        private void SectionClustering()
+        {
+            foreach (var sectionResult in _entrant.ParticipationInSections)
+            {
+                var result = sectionResult.YearPeriod;
+                var section = sectionResult.Section;
+                foreach (var weight in section.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var clusterName = weight.Cluster.Name;
+
+                    //TODO: Реализовать особую логику учета данных?
+                    double clusterResult = result * coeff;
+
+                    FillPartialCluster(sectionCluster, clusterName, clusterResult);
+                }
+            }
+        }
+
+        private void HobbieClustering()
+        {
+            foreach (var hobbieResult in _entrant.Hobbies)
+            {
+                foreach (var weight in hobbieResult.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var clusterName = weight.Cluster.Name;
+
+                    //TODO: Реализовать особую логику учета данных?
+                    double someValue = 1;
+                    double clusterResult = someValue * coeff;
+
+                    FillPartialCluster(hobbieCluster, clusterName, clusterResult);
+                }
+            }
+        }
+
+        private void SchoolTypeClustering()
+        {
+            //для простоты будем брать последнюю школу, где абитуриент учился
+            //(возможно стоит рассмотреть более сложный вариант в будущем)
+            var lastSchool = _entrant.Schools.Last();
+            //Или еще учитывать кол-во лет обучения?(нет в модели)
+            var quality = lastSchool.EducationQuality;
+            var schoolType = lastSchool.SchoolType;
+            foreach (var weight in schoolType.Weights)
+            {
+                var coeff = weight.Coefficient;
+                var clusterName = weight.Cluster.Name;
+
+                //TODO: Реализовать особую логику учета данных?
+                double clusterResult = (int)quality * coeff;
+
+                FillPartialCluster(schoolTypeCluster, clusterName, clusterResult);
+            }
+        }
+        /// <summary>
+        /// Заполняет выбранный кластер заданными значениями(добавляет или суммирует)
+        /// </summary>
+        /// <param name="clusterToFill">Кластер, который необходимо заполнить/обновить</param>
+        /// <param name="clusterName">Элемент кластера, который добавляют/обновляют</param>
+        /// <param name="clusterResult"></param>
+        private void FillPartialCluster(Dictionary<string,double> clusterToFill ,string clusterName, double clusterResult)
+        {
+            if (!clusterToFill.ContainsKey(clusterName))
+                clusterToFill.Add(clusterName, clusterResult);
+            else
+                clusterToFill[clusterName] += clusterResult;
+        }
+        #endregion
+
         /// <summary>
         /// Складывает результаты каждого частного кластера по определенному правилу
         /// </summary>
@@ -94,23 +175,41 @@ namespace OptimalEducation.Logic.Clusterizer
             UnatedStateExamClustering();
             SchoolMarkClustering();
             //TODO: Добавить остальные методы
-
-            _totalCluster = new Dictionary<string, double>();
-            foreach (var useCluster in unatedStatedExamCluster)
+            OlympiadClustering();
+            SectionClustering();
+            foreach (var item in unatedStatedExamCluster)
             {
-                if (!_totalCluster.ContainsKey(useCluster.Key))
-                    _totalCluster.Add(useCluster.Key, useCluster.Value);
-                else
-                    _totalCluster[useCluster.Key] += useCluster.Value;
+                FillTotalCluster(item);
             }
-            foreach (var shoolMarkCluster in schoolMarkCluster)
+            foreach (var item in schoolMarkCluster)
             {
-                if (!_totalCluster.ContainsKey(shoolMarkCluster.Key))
-                    _totalCluster.Add(shoolMarkCluster.Key, shoolMarkCluster.Value);
-                else
-                    _totalCluster[shoolMarkCluster.Key] += shoolMarkCluster.Value;
+                FillTotalCluster(item);
             }
             //TODO: Добавить остальные методы
+            //foreach (var item in olympiadCluster)
+            //{
+            //    FillTotalCluster(item);
+            //}
+            //foreach (var item in sectionCluster)
+            //{
+            //    FillTotalCluster(item);
+            //}
+            //foreach (var item in hobbieCluster)
+            //{
+            //    FillTotalCluster(item);
+            //}
+            //foreach (var item in schoolTypeCluster)
+            //{
+            //    FillTotalCluster(item);
+            //}
+        }
+
+        private void FillTotalCluster(KeyValuePair<string, double> item)
+        {
+            if (!_totalCluster.ContainsKey(item.Key))
+                _totalCluster.Add(item.Key, item.Value);
+            else
+                _totalCluster[item.Key] += item.Value;
         }
     }
 }

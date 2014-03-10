@@ -6,9 +6,9 @@ namespace OptimalEducation.Models
 
     public enum OlypmpiadResult
     {
-        FirstPlace,
-        SecondPlace,
-        ThirdPlace
+        FirstPlace=100,
+        SecondPlace=70,
+        ThirdPlace=50
     }
 
     public partial class ParticipationInOlympiad
