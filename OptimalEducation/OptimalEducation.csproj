@@ -186,10 +186,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logic\EntrantClusterizer.cs" />
+    <Compile Include="Logic\Clusterizer\EducationLineClusterizer.cs" />
+    <Compile Include="Logic\Clusterizer\EntrantClusterizer.cs" />
     <Compile Include="Migrations\201403091416515_Init.cs" />
     <Compile Include="Migrations\201403091416515_Init.Designer.cs">
       <DependentUpon>201403091416515_Init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403101311081_Change_OlympiadResult.cs" />
+    <Compile Include="Migrations\201403101311081_Change_OlympiadResult.Designer.cs">
+      <DependentUpon>201403101311081_Change_OlympiadResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -670,6 +675,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403091416515_Init.resx">
       <DependentUpon>201403091416515_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403101311081_Change_OlympiadResult.resx">
+      <DependentUpon>201403101311081_Change_OlympiadResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
