@@ -1,26 +1,33 @@
 namespace OptimalEducation.Models
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class ParticipationInOlympiad
-{
 
-    public int Id { get; set; }
+    public enum OlypmpiadResult
+    {
+        FirstPlace,
+        SecondPlace,
+        ThirdPlace
+    }
 
-    public string Result { get; set; }
+    public partial class ParticipationInOlympiad
+    {
 
-    public int EntrantId { get; set; }
+        public int Id { get; set; }
 
-    public int OlympiadId { get; set; }
+        public OlypmpiadResult Result { get; set; }
+
+        public int EntrantId { get; set; }
+
+        public int OlympiadId { get; set; }
 
 
 
-    public virtual Entrant Entrant { get; set; }
+        public virtual Entrant Entrant { get; set; }
 
-    public virtual Olympiad Olympiad { get; set; }
+        public virtual Olympiad Olympiad { get; set; }
 
-}
+    }
 
 }
