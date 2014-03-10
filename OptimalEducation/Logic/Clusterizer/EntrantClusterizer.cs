@@ -26,9 +26,7 @@ namespace OptimalEducation.Logic.Clusterizer
             _entrant = entrant;
             CalculateSum();
         }
-        /// <summary>
-        /// По баллам егэ строит частичный кластер с результатами
-        /// </summary>
+        //По баллам егэ строит частичный кластер с результатами
         private void UnatedStateExamClustering()
         {
             foreach (var exam in _entrant.UnitedStateExams)
@@ -48,6 +46,7 @@ namespace OptimalEducation.Logic.Clusterizer
                 }
             }
         }
+        //По школьным оценкам строит частичный кластер с результатами
         private void SchoolMarkClustering()
         {
             foreach (var shoolMark in _entrant.SchoolMarks)
@@ -66,6 +65,26 @@ namespace OptimalEducation.Logic.Clusterizer
                         schoolMarkCluster[cluster.Name] += clusterResult;
                 }
             }
+        }
+        //По олимпиадам строит частичный кластер с результатами
+        private void OlympiadClustering()
+        {
+            //foreach (var olympResult in _entrant.ParticipationInOlympiads)
+            //{
+            //    var result = olympResult.Result;
+            //    var olympiad = olympResult.Olympiad;
+            //    foreach (var weight in olympiad.Weights)
+            //    {
+            //        var coeff = weight.Coefficient;
+            //        var cluster = weight.Cluster;
+
+            //        var clusterResult = result * coeff;
+            //        if (!olympiadCluster.ContainsKey(cluster.Name))
+            //            olympiadCluster.Add(cluster.Name, clusterResult);
+            //        else
+            //            olympiadCluster[cluster.Name] += clusterResult;
+            //    }
+            //}
         }
         /// <summary>
         /// Складывает результаты каждого частного кластера по определенному правилу
