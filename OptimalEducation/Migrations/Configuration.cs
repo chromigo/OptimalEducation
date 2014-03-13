@@ -147,33 +147,44 @@ namespace OptimalEducation.Migrations
                 new Weight {Id=9, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
                 new Weight {Id=10, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=11, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.Olympiads.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=12, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=13, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=14, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=15, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=11, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=12, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=13, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=14, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=15, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=16, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.Sections.Single(p=>p.Name=="Бег").Id},
-                new Weight {Id=17, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Sections.Single(p=>p.Name=="Матанир").Id},
-                new Weight {Id=18, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Sections.Single(p=>p.Name=="Матанир").Id},
-                new Weight {Id=19, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Sections.Single(p=>p.Name=="Программир").Id},
-                new Weight {Id=20, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Sections.Single(p=>p.Name=="Программир").Id},
+                new Weight {Id=16, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SectionId=context.Sections.Single(p=>p.Name=="Бег").Id},
+                new Weight {Id=17, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
+                new Weight {Id=18, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
+                new Weight {Id=19, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
+                new Weight {Id=20, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
 
-                new Weight {Id=21, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.SchoolTypes.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=22, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=23, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=24, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=21, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=22, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=23, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=24, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=26, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.Hobbies.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=27, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=28, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=29, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=26, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=27, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=28, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=29, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
             };
             weights.ForEach(s => context.Weights.AddOrUpdate(s));
             context.SaveChanges();
 
+            var schools = new List<School>
+            {
+                new School { Id=1, Name = "Москва",EducationQuality=3, SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id },
+                new School { Id=2, Name = "Санкт-Петербург", EducationQuality= 2 , SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id },
+                new School { Id=3, Name = "Екатеринбург", EducationQuality=1 , SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Русский язык").Id }
+            };
+            schools.ForEach(s => context.Schools.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
+            //Participation in olymp and section and ect don't need
+            //TODO: добавить заполнение инфы о вузе(направления обучения и пр)+ остальное на артема
             CreateRoles(context);
 
             UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
