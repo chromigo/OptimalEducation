@@ -28,39 +28,39 @@ namespace OptimalEducation.Migrations
             //  This method will be called after migrating to the latest version.
             var cities = new List<City>
             {
-                new City { Name = "Москва", Prestige = 90 },
-                new City { Name = "Санкт-Петербург", Prestige = 80 },
-                new City { Name = "Екатеринбург", Prestige = 60 }
+                new City { Id=1, Name = "Москва", Prestige = 90 },
+                new City { Id=2, Name = "Санкт-Петербург", Prestige = 80 },
+                new City { Id=3, Name = "Екатеринбург", Prestige = 60 }
             };
             cities.ForEach(s => context.Cities.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var higherEducationInstitutions = new List<HigherEducationInstitution>
             {
-                new HigherEducationInstitution { Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
-                new HigherEducationInstitution { Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
-                new HigherEducationInstitution { Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
+                new HigherEducationInstitution { Id=1, Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
+                new HigherEducationInstitution { Id=2, Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
+                new HigherEducationInstitution { Id=3, Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
             };
             higherEducationInstitutions.ForEach(s => context.HigherEducationInstitutions.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var faculties = new List<Faculty>
             {
-                new Faculty { Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
-                new Faculty { Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
-                new Faculty { Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
+                new Faculty {Id=1, Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
+                new Faculty {Id=2, Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
+                new Faculty {Id=3, Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
             };
             faculties.ForEach(s => context.Faculties.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var clusters = new List<Cluster>
             {
-                new Cluster { Name = "Русский язык"},
-                new Cluster { Name = "Математика"},
-                new Cluster { Name = "Информатика"},
-                new Cluster { Name = "Физика"},
-                new Cluster { Name = "Химия"},
-                new Cluster { Name = "Английский язык"},
+                new Cluster { Id=1, Name = "Русский язык"},
+                new Cluster { Id=2, Name = "Математика"},
+                new Cluster { Id=3, Name = "Информатика"},
+                new Cluster { Id=4, Name = "Физика"},
+                new Cluster { Id=5, Name = "Химия"},
+                new Cluster { Id=6, Name = "Английский язык"},
             };
             clusters.ForEach(s => context.Clusters.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
@@ -70,53 +70,47 @@ namespace OptimalEducation.Migrations
 
             var disciplines = new List<ExamDiscipline>
             {
-                new ExamDiscipline { Name = "Русский язык"},
-                new ExamDiscipline { Name = "Математика"},
-                new ExamDiscipline { Name = "Информатика"},
-                new ExamDiscipline { Name = "Физика"},
-                new ExamDiscipline { Name = "Химия"},
-                new ExamDiscipline { Name = "Английский язык"},
+                new ExamDiscipline { Id=1, Name = "Русский язык"},
+                new ExamDiscipline { Id=2, Name = "Математика"},
+                new ExamDiscipline { Id=3, Name = "Информатика"},
+                new ExamDiscipline { Id=4, Name = "Физика"},
+                new ExamDiscipline { Id=5, Name = "Химия"},
+                new ExamDiscipline { Id=6, Name = "Английский язык"},
             };
             disciplines.ForEach(s => context.ExamDisciplines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
-            //var weights = new List<Weight>
-            //{
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Русский язык"),ExamDiscipline=context.ExamDisciplines.Single(p=>p.Name=="Русский язык")},
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Математика"),ExamDiscipline=context.ExamDisciplines.Single(p=>p.Name=="Математика")},
-            //    new Weight { Coefficient = 0.7, Cluster = context.Clusters.Single(p=>p.Name=="Информатика"),ExamDiscipline=context.ExamDisciplines.Single(p=>p.Name=="Математика")},
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Информатика"),ExamDiscipline=context.ExamDisciplines.Single(p=>p.Name=="Информатика")},
-            //    new Weight { Coefficient = 0.7, Cluster = context.Clusters.Single(p=>p.Name=="Математика"),ExamDiscipline=context.ExamDisciplines.Single(p=>p.Name=="Информатика")},
-            //};
-            //weights.ForEach(s => context.Weights.AddOrUpdate(s));
-            //context.SaveChanges();
-
             var schoolDiscipline = new List<SchoolDiscipline>
             {
-                new SchoolDiscipline { Name = "Русский язык"},
-                new SchoolDiscipline { Name = "Математика"},
-                new SchoolDiscipline { Name = "Информатика"},
-                new SchoolDiscipline { Name = "Физика"},
-                new SchoolDiscipline { Name = "Химия"},
-                new SchoolDiscipline { Name = "Английский язык"},
+                new SchoolDiscipline {Id=1, Name = "Русский язык"},
+                new SchoolDiscipline {Id=2, Name = "Математика"},
+                new SchoolDiscipline {Id=3, Name = "Информатика"},
+                new SchoolDiscipline {Id=4, Name = "Физика"},
+                new SchoolDiscipline {Id=5, Name = "Химия"},
+                new SchoolDiscipline {Id=6, Name = "Английский язык"},
             };
             schoolDiscipline.ForEach(s => context.SchoolDisciplines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
-            //var weights = new List<Weight>
-            //{
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Русский язык"),SchoolDiscipline=context.SchoolDisciplines.Single(p=>p.Name=="Русский язык")},
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Математика"),SchoolDiscipline=context.SchoolDisciplines.Single(p=>p.Name=="Математика")},
-            //    new Weight { Coefficient = 0.7, Cluster = context.Clusters.Single(p=>p.Name=="Информатика"),SchoolDiscipline=context.SchoolDisciplines.Single(p=>p.Name=="Математика")},
-            //    new Weight { Coefficient = 1, Cluster = context.Clusters.Single(p=>p.Name=="Информатика"),SchoolDiscipline=context.SchoolDisciplines.Single(p=>p.Name=="Информатика")},
-            //    new Weight { Coefficient = 0.7, Cluster = context.Clusters.Single(p=>p.Name=="Математика"),SchoolDiscipline=context.SchoolDisciplines.Single(p=>p.Name=="Информатика")},
-            //};
-            //weights.ForEach(s => context.Weights.AddOrUpdate(s));
-            //context.SaveChanges();
 
+            var weights = new List<Weight>
+            {
+                new Weight {Id=1, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=2, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=3, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=4, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=5, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
+
+                new Weight {Id=6, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=7, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=8, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=9, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=10, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
+            };
+            weights.ForEach(s => context.Weights.AddOrUpdate(s));
+            context.SaveChanges();
 
             CreateRoles(context);
 
-            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new
-    UserStore<ApplicationUser>(context));
+            UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
             CreateAdminUser(UserManager);
             
