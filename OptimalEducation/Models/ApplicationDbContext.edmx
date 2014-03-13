@@ -2067,7 +2067,7 @@
       </DesignerInfoPropertySet>
     </Options>
     <Diagrams >
-      <Diagram DiagramId="70776930c8554d5e943a72364c411a97" Name="TotalDiagram" ZoomLevel="74" ShowGrid="false" DisplayType="true">
+      <Diagram DiagramId="70776930c8554d5e943a72364c411a97" Name="TotalDiagram" ZoomLevel="93" ShowGrid="false" DisplayType="true">
         <EntityTypeShape EntityType="OptimalEducation.Models.City" Width="1.5" PointX="7.125" PointY="7.625" IsExpanded="false" FillColor="Sienna" />
         <EntityTypeShape EntityType="OptimalEducation.Models.Preference" Width="1.5" PointX="6" PointY="5.875" IsExpanded="false" FillColor="SandyBrown" />
         <EntityTypeShape EntityType="OptimalEducation.Models.Entrant" Width="2.125" PointX="12.75" PointY="1.625" IsExpanded="false" FillColor="255, 128, 128" />
