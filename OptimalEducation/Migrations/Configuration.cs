@@ -53,6 +53,15 @@ namespace OptimalEducation.Migrations
             faculties.ForEach(s => context.Faculties.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
+            var educationLines = new List<EducationLine>
+            {
+                new EducationLine {Id=1, Name = "Математика и информатика", Actual=true,RequiredSum=250, Code="1122",FacultyId=context.Faculties.First().Id},
+                new EducationLine {Id=2, Name = "Информатика", Actual=true,RequiredSum=260, Code="1122",FacultyId=context.Faculties.First().Id },
+                new EducationLine {Id=3, Name = "Физика", Actual=true,RequiredSum=220, Code="1122",FacultyId=context.Faculties.First().Id}
+            };
+            educationLines.ForEach(s => context.EducationLines.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
             var clusters = new List<Cluster>
             {
                 new Cluster { Id=1, Name = "Русский язык"},
@@ -131,6 +140,33 @@ namespace OptimalEducation.Migrations
                 new Hobbie {Id=6, Name = "Английский язык"},
             };
             hobbies.ForEach(s => context.Hobbies.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
+            var educationLineRequirement = new List<EducationLineRequirement>
+            {
+                new EducationLineRequirement 
+                {
+                    Id=1, 
+                    Requirement=50, 
+                    EducationLineId=context.EducationLines.Single(p=>p.Name=="Математика и информатика").Id, 
+                    ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                },
+                new EducationLineRequirement 
+                {
+                    Id=2, 
+                    Requirement=70, 
+                    EducationLineId=context.EducationLines.Single(p=>p.Name=="Математика и информатика").Id, 
+                    ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                },
+                new EducationLineRequirement 
+                {
+                    Id=3, 
+                    Requirement=70, 
+                    EducationLineId=context.EducationLines.Single(p=>p.Name=="Математика и информатика").Id, 
+                    ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                },
+            };
+            educationLineRequirement.ForEach(s => context.EducationLineRequirements.AddOrUpdate(s));
             context.SaveChanges();
 
             var weights = new List<Weight>
