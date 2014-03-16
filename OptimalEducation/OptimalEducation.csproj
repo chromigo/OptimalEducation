@@ -178,6 +178,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\InfoController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\SchoolMarkController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\UnitedStateExamsController.cs" />
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
     <Compile Include="Areas\FacultyUser\FacultyUserAreaRegistration.cs" />
@@ -255,14 +256,12 @@
     <Content Include="Areas\EntrantUser\Views\_ViewStart.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Info\Index.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Create.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Details.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Edit.cshtml" />
     <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Index.cshtml" />
     <EntityDeploy Include="Models\ApplicationDbContext.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ApplicationDbContext.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="Areas\EntrantUser\Views\SchoolMark\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
