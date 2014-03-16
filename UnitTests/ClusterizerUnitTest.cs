@@ -186,7 +186,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void EntrantCluster_GetResultSum_ReturnCorrectValue()
+        public void EntrantCluster_GetCalculatedCluster_ReturnCorrectValue()
         {
             var entrant = new Entrant()
             {
@@ -278,6 +278,32 @@ namespace UnitTests
             Assert.AreEqual(rus, 100);
             Assert.AreEqual(math, 190+105+(1.5*100+0.5*50)+(100+50)+(50*2));
             Assert.AreEqual(inf, 200 + 105 + (0.5 * 100 + 1.5 * 50)+(100+50)+(100*2));
+        }
+
+        [TestMethod]
+        public void EducationLineCluster_GetCalculatedCluster_ReturnCorrectValue()
+        {
+            var educationLine = new EducationLine
+            {
+                EducationLinesRequirements = new List<EducationLineRequirement>
+                {
+                    new EducationLineRequirement{Requirement=60, ExamDiscipline=examDisciplines[0]},
+                    new EducationLineRequirement{Requirement=70, ExamDiscipline=examDisciplines[1]},
+                    new EducationLineRequirement{Requirement=80, ExamDiscipline=examDisciplines[2]},
+                }
+            };
+
+            var clusterizer = new EducationLineClusterizer(educationLine);
+
+            var rus = clusterizer.Cluster["Русский язык"];
+            var math = clusterizer.Cluster["Математика"];
+            var inf = clusterizer.Cluster["Информатика"];
+
+            //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
+            Assert.AreEqual(rus, 60);
+            Assert.AreEqual(math, 70*1+80*0.5);
+            Assert.AreEqual(inf, 80*1+70*0.5);
+
         }
     }
 }
