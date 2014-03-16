@@ -49,8 +49,8 @@ namespace OptimalEducation.Models
         /// <summary>
         /// Стоимость обучения
         /// </summary>
-        [Display(Name = "Стоимость обучения")]
-        public bool Price { get; set; }
+        [Display(Name = "Стоимость обучения"),DataType(DataType.Currency)]
+        public int Price { get; set; }
         /// <summary>
         /// Количество платных мест
         /// </summary>

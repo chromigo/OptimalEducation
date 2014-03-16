@@ -132,14 +132,14 @@ namespace OptimalEducation.Migrations
 
             var hobbies = new List<Hobbie>
             {
-                new Hobbie {Id=1, Name = "Русский язык"},
-                new Hobbie {Id=2, Name = "Математика"},
-                new Hobbie {Id=3, Name = "Информатика"},
-                new Hobbie {Id=4, Name = "Физика"},
-                new Hobbie {Id=5, Name = "Химия"},
-                new Hobbie {Id=6, Name = "Английский язык"},
+                new Hobbie {Id=1, Name = "Хобби Русский язык"},
+                new Hobbie {Id=2, Name = "Хобби Математика"},
+                new Hobbie {Id=3, Name = "Хобби Информатика"},
+                new Hobbie {Id=4, Name = "Хобби Физика"},
+                new Hobbie {Id=5, Name = "Хобби Химия"},
+                new Hobbie {Id=6, Name = "Хобби Английский язык"},
             };
-            hobbies.ForEach(s => context.Hobbies.AddOrUpdate(p => p.Name, s));
+            hobbies.ForEach(s => context.Hobbies.AddOrUpdate(s));
             context.SaveChanges();
 
             var educationLineRequirement = new List<EducationLineRequirement>
@@ -201,11 +201,11 @@ namespace OptimalEducation.Migrations
                 new Weight {Id=24, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
                 new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=26, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=27, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=28, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=29, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=26, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Русский язык").Id},
+                new Weight {Id=27, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
+                new Weight {Id=28, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
+                new Weight {Id=29, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
+                new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
             };
             weights.ForEach(s => context.Weights.AddOrUpdate(s));
             context.SaveChanges();
