@@ -59,41 +59,41 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			var currentEntrant = (await UserManager.FindByIdAsync(User.Identity.GetUserId())).Entrant;
 			var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
-            if (selectedHobbies == null)
+			if (selectedHobbies == null)
 			{
-                foreach (var hobbie in allHobbies)
-                {
-                    currentEntrant.Hobbies.Remove(hobbie);
-                }
+				foreach (var hobbie in allHobbies)
+				{
+					currentEntrant.Hobbies.Remove(hobbie);
+				}
 			}
 			else
 			{
-                var selectedHobbiesList = new List<int>();
-                foreach (var hobbie in selectedHobbies)
-                {
-                    selectedHobbiesList.Add(int.Parse(hobbie));
-                }
+				var selectedHobbiesList = new List<int>();
+				foreach (var hobbie in selectedHobbies)
+				{
+					selectedHobbiesList.Add(int.Parse(hobbie));
+				}
 
 				var lastUserHobbieIds = currentEntrant.Hobbies.Select(h=>h.Id);
 				foreach (var hobbie in allHobbies)
 				{
-                    if (selectedHobbiesList.Contains(hobbie.Id))
-                    {
-                        //Если не было - добавляем
-                        if (!lastUserHobbieIds.Contains(hobbie.Id))
-                            currentEntrant.Hobbies.Add(hobbie);
-                    }
-                    else//не выбранное хобби
-                    {
-                        //Если было - удаляем
-                        if (lastUserHobbieIds.Contains(hobbie.Id))
-                            currentEntrant.Hobbies.Remove(hobbie);
-                    }
+					if (selectedHobbiesList.Contains(hobbie.Id))
+					{
+						//Если не было - добавляем
+						if (!lastUserHobbieIds.Contains(hobbie.Id))
+							currentEntrant.Hobbies.Add(hobbie);
+					}
+					else//не выбранное хобби
+					{
+						//Если было - удаляем
+						if (lastUserHobbieIds.Contains(hobbie.Id))
+							currentEntrant.Hobbies.Remove(hobbie);
+					}
 				}
 			}
-            db.Entry(currentEntrant).State = EntityState.Modified;
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
+			db.Entry(currentEntrant).State = EntityState.Modified;
+			await db.SaveChangesAsync();
+			return RedirectToAction("Index");
 		}
 
 		protected override void Dispose(bool disposing)

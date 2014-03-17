@@ -177,7 +177,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
-    <Compile Include="Areas\EntrantUser\Controllers\Default1Controller.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\InfoController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SchoolMarkController.cs" />
@@ -270,11 +269,6 @@
     </EntityDeploy>
     <Content Include="Areas\EntrantUser\Views\SchoolMark\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Hobbie\Index.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Default1\Create.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Default1\Delete.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Default1\Details.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Default1\Edit.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Default1\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
