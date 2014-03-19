@@ -1,0 +1,7 @@
+SET IDENTITY_INSERT [dbo].[EducationLines] ON
+INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (4, NULL, 1, N'010400', N'ОчнБак', N'Информационные технологии', 245, 1, 1, 10, 30)
+INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (5, NULL, 1, N'010500', N'ОчнБак', N'Прикладная математика и информатика', 216, 1, 1, 15, 45)
+INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (6, NULL, 1, N'010501', N'ОчнСпец', N'Прикладная математика и информатика', 231, 0, 1, 45, 50)
+INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (7, NULL, 1, N'010600', N'ОчнБак', N'Прикладные математика и физика', 213, 1, 1, 8, 16)
+INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (8, NULL, 1, N'015000', N'ОчнБак', N'Прикладной Английский', 189, 1, 0, 0, 23)
+SET IDENTITY_INSERT [dbo].[EducationLines] OFF
