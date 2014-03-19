@@ -189,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\AnalyticHierarchyProcess\AHPUser.cs" />
     <Compile Include="Logic\Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Logic\Clusterizer\EntrantClusterizer.cs" />
     <Compile Include="Migrations\201403091416515_Init.cs" />
@@ -671,7 +672,6 @@
     <Folder Include="Areas\FacultyUser\Controllers\" />
     <Folder Include="Areas\FacultyUser\Models\" />
     <Folder Include="Areas\FacultyUser\Views\Shared\" />
-    <Folder Include="Logic\AnalyticHierarchyProcess\" />
     <Folder Include="Logic\MulticriterialAnalysis\" />
   </ItemGroup>
   <ItemGroup>
