@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.Logic.Clusterizer;
-using OptimalEducation.Models;
 using System.Collections.Generic;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.Logic.Clusterizer;
 
 namespace UnitTests
 {

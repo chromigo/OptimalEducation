@@ -10,17 +10,21 @@ using System.Web.Mvc;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
+    [Authorize(Roles = Role.Entrant)]
 	public class SchoolMarkController : Controller
 	{
-		private ApplicationDbContext db = new ApplicationDbContext();
+        private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
 		public SchoolMarkController()
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
 		}
 		public SchoolMarkController(UserManager<ApplicationUser> userManager)
 		{
@@ -34,12 +38,11 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		}
         private async Task<List<SchoolMark>> GetUserSchoolMarkAsync()
         {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            //EntrantClusterizer cluser = new EntrantClusterizer(currentUser.Entrant);
+            var entrantId = await GetEntrantId();
             var schoolMarks = db.SchoolMarks
                 .Include(u => u.SchoolDiscipline)
                 .Include(u => u.Entrant)
-                .Where(p => p.EntrantId == currentUser.EntrantId);
+                .Where(p => p.EntrantId == entrantId);
 
             return await schoolMarks.ToListAsync();
         }
@@ -72,11 +75,19 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
         }
 
 
+        private async Task<int> GetEntrantId()
+        {
+            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantId = int.Parse(entrantClaim.ClaimValue);
+            return entrantId;
+        }
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
 			{
 				db.Dispose();
+                dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}
