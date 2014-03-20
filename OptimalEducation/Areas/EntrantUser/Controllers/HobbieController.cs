@@ -11,19 +11,21 @@ using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Areas.EntrantUser.Models.ViewModels;
-using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
+    [Authorize(Roles = Role.Entrant)]
 	public class HobbieController : Controller
 	{
         private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
 		public HobbieController()
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
 		}
 		public HobbieController(UserManager<ApplicationUser> userManager)
 		{
@@ -125,6 +127,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
+                dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}

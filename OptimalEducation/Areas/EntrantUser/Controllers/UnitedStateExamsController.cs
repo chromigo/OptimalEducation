@@ -19,11 +19,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	public class UnitedStateExamsController : Controller
 	{
         private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
 		public UnitedStateExamsController()
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
 		}
 
 		public UnitedStateExamsController(UserManager<ApplicationUser> userManager)
@@ -86,6 +87,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
+                dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}

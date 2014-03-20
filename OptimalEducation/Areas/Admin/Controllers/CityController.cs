@@ -12,6 +12,7 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Areas.Admin.Controllers
 {
+    [Authorize(Roles = Role.Admin)]
     public class CityController : Controller
     {
         private OptimalEducationDbContext db = new OptimalEducationDbContext();
