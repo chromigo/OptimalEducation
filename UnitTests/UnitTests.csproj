@@ -54,10 +54,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
+      <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
+      <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation\OptimalEducation.csproj">
       <Project>{0299d429-301e-4beb-998b-bbd59b9640d7}</Project>
       <Name>OptimalEducation</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
