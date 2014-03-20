@@ -7,7 +7,7 @@ namespace OptimalEducation.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducation.DAL.Models.OptimalEducationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
     {
         OptimalEducationDbContext db = new OptimalEducationDbContext();
         public Configuration()
@@ -15,7 +15,7 @@ namespace OptimalEducation.DAL.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        protected override void Seed(OptimalEducationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
