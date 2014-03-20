@@ -1,0 +1,17 @@
+SET IDENTITY_INSERT [dbo].[EducationLineRequirements] ON
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (4, 0, 5, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (5, 0, 5, 2)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (7, 0, 5, 3)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (9, 0, 6, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (10, 0, 6, 2)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (11, 0, 6, 3)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (12, 0, 7, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (13, 0, 7, 2)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (14, 0, 7, 4)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (15, 0, 8, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (16, 0, 8, 2)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (17, 0, 8, 6)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (18, 0, 4, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (19, 0, 4, 2)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (20, 0, 4, 3)
+SET IDENTITY_INSERT [dbo].[EducationLineRequirements] OFF
