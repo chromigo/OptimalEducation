@@ -8,17 +8,17 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Models;
-using OptimalEducation.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]
 	public class UnitedStateExamsController : Controller
 	{
-		private ApplicationDbContext db = new ApplicationDbContext();
+        private OptimalEducationDbContext db = new OptimalEducationDbContext();
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
 		public UnitedStateExamsController()
@@ -39,12 +39,11 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 		private async Task<List<UnitedStateExam>> GetUserExamsAsync()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			//EntrantClusterizer cluser = new EntrantClusterizer(currentUser.Entrant);
+            var entrantId = await GetEntrantId();
 			var unitedstateexams = db.UnitedStateExams
 				.Include(u => u.Discipline)
 				.Include(u => u.Entrant)
-				.Where(p => p.EntrantId == currentUser.EntrantId);
+                .Where(p => p.EntrantId == entrantId);
 			var examList = await unitedstateexams.ToListAsync();
 			return examList;
 		}
@@ -75,7 +74,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			return View(unitedStateExams);
 		}
-
+        private async Task<int> GetEntrantId()
+        {
+            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantId = int.Parse(entrantClaim.ClaimValue);
+            return entrantId;
+        }
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)

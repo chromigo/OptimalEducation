@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using OptimalEducation.Models;
-using OptimalEducation.Migrations;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Controllers
 {
@@ -88,6 +88,8 @@ namespace OptimalEducation.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    CreateUserEntrant(user);
+
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -99,6 +101,21 @@ namespace OptimalEducation.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+        /// <summary>
+        /// Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
+        /// </summary>
+        /// <param name="user"></param>
+        private void CreateUserEntrant(ApplicationUser user)
+        {
+            using (var context = new OptimalEducationDbContext())
+            {
+                var entrant = new Entrant();
+                context.Entrants.Add(entrant);
+                context.SaveChanges();
+
+                UserManager.AddClaim(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
+            }
         }
 
         //

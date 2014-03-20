@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Models;
+using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Areas.EntrantUser.Models.ViewModels;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	public class HobbieController : Controller
 	{
-		private ApplicationDbContext db = new ApplicationDbContext();
+        private OptimalEducationDbContext db = new OptimalEducationDbContext();
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
 		public HobbieController()
@@ -35,29 +37,51 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		}
 		private async Task<List<AssignedHobbie>> GetUserHobbieAsync()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
-			var userHobbiesId = new HashSet<int>(currentUser.Entrant.Hobbies.Select(c => c.Id));
+            try 
+	        {
+                var entrantId = await GetEntrantId();
 
-			var viewModel = new List<AssignedHobbie>();
-			foreach (var hobbie in allHobbies)
-			{
-				viewModel.Add(new AssignedHobbie
-				{
-					Id = hobbie.Id,
-					Name = hobbie.Name,
-					IsAssigned = userHobbiesId.Contains(hobbie.Id)
-				});
-			}
-			return viewModel;
+                var userHobbieIdsQuery = (from entrant in db.Entrants.Include(p=>p.Hobbies)
+                        where entrant.Id==entrantId
+                        from hobbie in entrant.Hobbies
+                        select hobbie.Id);
+
+                var userHobbieIds = new HashSet<int>(userHobbieIdsQuery);
+			    var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
+
+                var viewModel = new List<AssignedHobbie>();
+                foreach (var hobbie in allHobbies)
+                {
+                    viewModel.Add(new AssignedHobbie
+                    {
+                        Id = hobbie.Id,
+                        Name = hobbie.Name,
+                        IsAssigned = userHobbieIds.Contains(hobbie.Id)
+                    });
+                }
+                return viewModel;
+	        }
+	        catch (Exception)
+	        {
+		        throw;
+	        }
 		}
+
+        private async Task<int> GetEntrantId()
+        {
+            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantId = int.Parse(entrantClaim.ClaimValue);
+            return entrantId;
+        }
 
 		//POST: /EntrantUser/UnitedStateExams/Index
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Index(string[] selectedHobbies)
 		{
-			var currentEntrant = (await UserManager.FindByIdAsync(User.Identity.GetUserId())).Entrant;
+            var entrantId = await GetEntrantId();
+            var currentEntrant =  await db.Entrants.SingleAsync(p => p.Id == entrantId);
 			var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
 			if (selectedHobbies == null)
 			{

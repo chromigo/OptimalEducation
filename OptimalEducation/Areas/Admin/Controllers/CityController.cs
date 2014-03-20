@@ -8,12 +8,13 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Models;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Areas.Admin.Controllers
 {
     public class CityController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private OptimalEducationDbContext db = new OptimalEducationDbContext();
 
         // GET: /Admin/City/
         public async Task<ActionResult> Index()

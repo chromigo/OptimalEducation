@@ -1,4 +1,4 @@
-﻿using OptimalEducation.Models;
+﻿using OptimalEducation.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

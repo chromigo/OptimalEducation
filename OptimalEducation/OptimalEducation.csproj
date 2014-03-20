@@ -48,11 +48,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -191,47 +191,13 @@
     </Compile>
     <Compile Include="Logic\Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Logic\Clusterizer\EntrantClusterizer.cs" />
-    <Compile Include="Migrations\201403091416515_Init.cs" />
-    <Compile Include="Migrations\201403091416515_Init.Designer.cs">
-      <DependentUpon>201403091416515_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403101311081_Change_OlympiadResult.cs" />
-    <Compile Include="Migrations\201403101311081_Change_OlympiadResult.Designer.cs">
-      <DependentUpon>201403101311081_Change_OlympiadResult.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403161633589_fix_type.cs" />
-    <Compile Include="Migrations\201403161633589_fix_type.Designer.cs">
-      <DependentUpon>201403161633589_fix_type.cs</DependentUpon>
+    <Compile Include="Migrations\201403201347303_InitIdentity.cs" />
+    <Compile Include="Migrations\201403201347303_InitIdentity.Designer.cs">
+      <DependentUpon>201403201347303_InitIdentity.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\ApplicationDbContext.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ApplicationDbContext.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Main\City.cs" />
-    <Compile Include="Models\Main\Cluster.cs" />
-    <Compile Include="Models\Main\Competition.cs" />
-    <Compile Include="Models\Main\EducationLine.cs" />
-    <Compile Include="Models\Main\EducationLinesRequirement.cs" />
-    <Compile Include="Models\Main\ExamDiscipline.cs" />
-    <Compile Include="Models\Main\Entrant.cs" />
-    <Compile Include="Models\Main\GeneralEducationLine.cs" />
-    <Compile Include="Models\Main\HigherEducationInstitution.cs" />
-    <Compile Include="Models\Main\Faculty.cs" />
-    <Compile Include="Models\Main\Hobbie.cs" />
-    <Compile Include="Models\Main\ParticipationInOlympiad.cs" />
-    <Compile Include="Models\Main\Preference.cs" />
-    <Compile Include="Models\Main\School.cs" />
-    <Compile Include="Models\Main\SchoolDiscipline.cs" />
-    <Compile Include="Models\Main\SchoolMark.cs" />
-    <Compile Include="Models\Main\SchoolType.cs" />
-    <Compile Include="Models\Main\ParticipationInSection.cs" />
-    <Compile Include="Models\Main\Section.cs" />
-    <Compile Include="Models\Main\UnitedStateExam.cs" />
-    <Compile Include="Models\Main\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -263,10 +229,6 @@
     <Content Include="Areas\EntrantUser\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Info\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Index.cshtml" />
-    <EntityDeploy Include="Models\ApplicationDbContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ApplicationDbContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Content Include="Areas\EntrantUser\Views\SchoolMark\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Hobbie\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -678,14 +640,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403091416515_Init.resx">
-      <DependentUpon>201403091416515_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403101311081_Change_OlympiadResult.resx">
-      <DependentUpon>201403101311081_Change_OlympiadResult.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403161633589_fix_type.resx">
-      <DependentUpon>201403161633589_fix_type.cs</DependentUpon>
+    <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
+      <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
+      <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201403201347303_InitIdentity.resx">
+      <DependentUpon>201403201347303_InitIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
