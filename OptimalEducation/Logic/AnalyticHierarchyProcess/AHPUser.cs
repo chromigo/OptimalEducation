@@ -1,4 +1,4 @@
-﻿using OptimalEducation.Models;
+﻿using OptimalEducation.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     public class AHPUser
     {
         Entrant _entrant;
-        ApplicationDbContext context = new ApplicationDbContext();
+        OptimalEducationDbContext context = new OptimalEducationDbContext();
         int totalEducationLines = 0;
 
         #region Переменные для первого критерия - сложности на основе ЕГЭ
