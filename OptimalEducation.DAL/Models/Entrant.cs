@@ -15,8 +15,6 @@ namespace OptimalEducation.DAL.Models
 
 		    this.ParticipationInSchools = new HashSet<ParticipationInSchool>();
 
-		    this.Preferences = new HashSet<Preference>();
-
 		    this.ParticipationInOlympiads = new HashSet<ParticipationInOlympiad>();
 
 		    this.UnitedStateExams = new HashSet<UnitedStateExam>();
@@ -48,8 +46,6 @@ namespace OptimalEducation.DAL.Models
 	    public virtual ICollection<Hobbie> Hobbies { get; set; }
 
 	    public virtual ICollection<ParticipationInSchool> ParticipationInSchools { get; set; }
-
-	    public virtual ICollection<Preference> Preferences { get; set; }
 
 	    public virtual ICollection<ParticipationInOlympiad> ParticipationInOlympiads { get; set; }
 

@@ -15,8 +15,6 @@ namespace OptimalEducation.DAL.Models
 
         public virtual DbSet<School> Schools { get; set; }
 
-        public virtual DbSet<Preference> Preferences { get; set; }
-
         public virtual DbSet<Hobbie> Hobbies { get; set; }
 
         public virtual DbSet<ParticipationInOlympiad> ParticipationInOlympiads { get; set; }
