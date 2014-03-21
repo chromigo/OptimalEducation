@@ -7,13 +7,13 @@ namespace OptimalEducation.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class InitIdentity : IMigrationMetadata
+    public sealed partial class Init_Identity : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitIdentity));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init_Identity));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403201347303_InitIdentity"; }
+            get { return "201403210957306_Init_Identity"; }
         }
         
         string IMigrationMetadata.Source
