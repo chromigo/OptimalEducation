@@ -1,4 +1,4 @@
-﻿@model OptimalEducation.DAL.Models.ParticipationInOlympiad
+﻿@model OptimalEducation.DAL.Models.ParticipationInSection
 
 @{
     ViewBag.Title = "Edit";
@@ -11,23 +11,23 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Участие в олимпиаде</h4>
+        <h4>Секция</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OlympiadId, "Олимпиада", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SectionId, "Секция", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <p>@Model.Olympiad.Name</p>
+                <p>@Model.Section.Name</p>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Result, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.YearPeriod, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EnumDropDownListFor(p => p.Result)
-                @Html.ValidationMessageFor(model => model.Result)
+                @Html.EditorFor(model => model.YearPeriod)
+                @Html.ValidationMessageFor(model => model.YearPeriod)
             </div>
         </div>
 

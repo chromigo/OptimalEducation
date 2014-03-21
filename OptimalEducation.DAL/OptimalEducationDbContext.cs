@@ -13,8 +13,6 @@ namespace OptimalEducation.DAL.Models
 
         public virtual DbSet<Entrant> Entrants { get; set; }
 
-        public virtual DbSet<SchoolType> SchoolTypes { get; set; }
-
         public virtual DbSet<School> Schools { get; set; }
 
         public virtual DbSet<Preference> Preferences { get; set; }
@@ -22,7 +20,8 @@ namespace OptimalEducation.DAL.Models
         public virtual DbSet<Hobbie> Hobbies { get; set; }
 
         public virtual DbSet<ParticipationInOlympiad> ParticipationInOlympiads { get; set; }
-
+        public virtual DbSet<ParticipationInSection> ParticipationInSections { get; set; }
+        public virtual DbSet<ParticipationInSchool> ParticipationInSchools { get; set; }
         public virtual DbSet<Olympiad> Olympiads { get; set; }
 
         public virtual DbSet<UnitedStateExam> UnitedStateExams { get; set; }

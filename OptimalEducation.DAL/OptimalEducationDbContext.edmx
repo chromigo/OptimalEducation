@@ -2069,7 +2069,7 @@
     <Diagrams >
       <Diagram DiagramId="70776930c8554d5e943a72364c411a97" Name="TotalDiagram" ZoomLevel="93" ShowGrid="false" DisplayType="true">
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.City" Width="1.5" PointX="6" PointY="6.625" IsExpanded="false" FillColor="Sienna" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Preference" Width="1.5" PointX="6.125" PointY="3.25" IsExpanded="false" FillColor="SandyBrown" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Preference" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="false" FillColor="SandyBrown" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Entrant" Width="2.125" PointX="12.75" PointY="1.625" IsExpanded="false" FillColor="255, 128, 128" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Hobbie" Width="1.5" PointX="12.375" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Weight" Width="1.5" PointX="13.125" PointY="5.375" IsExpanded="false" FillColor="128, 64, 64" />
@@ -2085,8 +2085,8 @@
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ParticipationInOlympiad" Width="2" PointX="16.75" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolDiscipline" Width="1.625" PointX="14.25" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolMark" Width="1.625" PointX="14.25" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolType" Width="1.5" PointX="8.375" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.School" Width="1.5" PointX="8.375" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolType" Width="1.5" PointX="8.375" PointY="5.375" IsExpanded="true" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.School" Width="1.5" PointX="7" PointY="4.125" IsExpanded="false" FillColor="PeachPuff" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Section" Width="1.5" PointX="10.25" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityRole" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="false" FillColor="Teal" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ApplicationUser" Width="1.5" PointX="8.875" PointY="0.5" IsExpanded="false" FillColor="0, 64, 64" />

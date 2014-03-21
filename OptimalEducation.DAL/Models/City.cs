@@ -3,6 +3,7 @@ namespace OptimalEducation.DAL.Models
 
 using System;
     using System.Collections.Generic;
+using System.Data.Entity.Spatial;
     
 public partial class City
 {
@@ -25,7 +26,7 @@ public partial class City
     
     public int Prestige { get; set; }
 
-
+    public DbGeography Location { get; set; }
 
     public virtual ICollection<Preference> Preferences { get; set; }
 
