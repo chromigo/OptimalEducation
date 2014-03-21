@@ -50,9 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201403201338268_InitEntities.cs" />
-    <Compile Include="Migrations\201403201338268_InitEntities.Designer.cs">
-      <DependentUpon>201403201338268_InitEntities.cs</DependentUpon>
+    <Compile Include="Migrations\201403210958366_Init_Entities.cs" />
+    <Compile Include="Migrations\201403210958366_Init_Entities.Designer.cs">
+      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -63,7 +63,7 @@
     </Compile>
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Cluster.cs" />
-    <Compile Include="Models\Competition.cs" />
+    <Compile Include="Models\Olympiad.cs" />
     <Compile Include="Models\EducationLine.cs" />
     <Compile Include="Models\EducationLinesRequirement.cs" />
     <Compile Include="Models\Entrant.cs" />
@@ -95,15 +95,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403201338268_InitEntities.resx">
-      <DependentUpon>201403201338268_InitEntities.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
     <Content Include="SQLScripts\dbo.Entrants.data.sql" />
     <Content Include="SQLScripts\dbo.UnitedStateExams.data.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201403210958366_Init_Entities.resx">
+      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -3,6 +3,7 @@ namespace OptimalEducation.DAL.Models
 
 using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
 public partial class Section
 {
@@ -18,9 +19,9 @@ public partial class Section
 
 
     public int Id { get; set; }
-
+    [Display(Name = "Секция")]
     public string Name { get; set; }
-
+    [Display(Name = "Тип активности")]
     public string ActivityType { get; set; }
 
 

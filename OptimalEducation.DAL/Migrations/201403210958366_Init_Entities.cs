@@ -3,7 +3,7 @@ namespace OptimalEducation.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitEntities : DbMigration
+    public partial class Init_Entities : DbMigration
     {
         public override void Up()
         {

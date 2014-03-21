@@ -7,13 +7,13 @@ namespace OptimalEducation.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class InitEntities : IMigrationMetadata
+    public sealed partial class Init_Entities : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitEntities));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init_Entities));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403201338268_InitEntities"; }
+            get { return "201403210958366_Init_Entities"; }
         }
         
         string IMigrationMetadata.Source
