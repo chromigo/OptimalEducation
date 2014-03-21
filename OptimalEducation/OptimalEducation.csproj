@@ -193,9 +193,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Logic\AnalyticHierarchyProcess\AHPUser.cs" />
-    <Compile Include="Logic\Clusterizer\EducationLineClusterizer.cs" />
-    <Compile Include="Logic\Clusterizer\EntrantClusterizer.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.Designer.cs">
       <DependentUpon>201403210957306_Init_Identity.cs</DependentUpon>
@@ -646,7 +643,6 @@
     <Folder Include="Areas\FacultyUser\Controllers\" />
     <Folder Include="Areas\FacultyUser\Models\" />
     <Folder Include="Areas\FacultyUser\Views\Shared\" />
-    <Folder Include="Logic\MulticriterialAnalysis\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -655,6 +651,10 @@
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic\OptimalEducation.Logic.csproj">
+      <Project>{8e374da9-e7d9-4453-8493-4f5010c71ad7}</Project>
+      <Name>OptimalEducation.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

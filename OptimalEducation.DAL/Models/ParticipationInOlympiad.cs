@@ -9,11 +9,11 @@ namespace OptimalEducation.DAL.Models
     public enum OlypmpiadResult
     {
         [Display(Name = "Первое место")]
-        FirstPlace,
+        FirstPlace=100,
         [Display(Name = "Второе место")]
-        SecondPlace,
+        SecondPlace=70,
         [Display(Name = "Третье место")]
-        ThirdPlace
+        ThirdPlace=50
     }
 
     public partial class ParticipationInOlympiad

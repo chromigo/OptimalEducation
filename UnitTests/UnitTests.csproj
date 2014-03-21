@@ -60,6 +60,10 @@
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic\OptimalEducation.Logic.csproj">
+      <Project>{8e374da9-e7d9-4453-8493-4f5010c71ad7}</Project>
+      <Name>OptimalEducation.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation\OptimalEducation.csproj">
       <Project>{0299d429-301e-4beb-998b-bbd59b9640d7}</Project>
       <Name>OptimalEducation</Name>
