@@ -1,0 +1,2154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="OptimalEducation.DAL.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prestige" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Preferences" Relationship="Self.Preference_Cities" FromRole="Preference_Cities_Target" ToRole="Preference_Cities_Source" />
+          <NavigationProperty Name="Schools" Relationship="Self.School_City" FromRole="School_City_Target" ToRole="School_City_Source" />
+          <NavigationProperty Name="HigherEducationInstitution" Relationship="Self.HighSchool_City" FromRole="HighSchool_City_Target" ToRole="HighSchool_City_Source" />
+        </EntityType>
+        <EntityType Name="Preference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Presige" Type="Int32" Nullable="false" />
+          <Property Name="EducationFrom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EntrantId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cities" Relationship="Self.Preference_Cities" FromRole="Preference_Cities_Source" ToRole="Preference_Cities_Target" />
+          <NavigationProperty Name="Entrant" Relationship="Self.Entrant_Preferences" FromRole="Entrant_Preferences_Target" ToRole="Entrant_Preferences_Source" />
+        </EntityType>
+        <EntityType Name="Entrant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SchoolEducation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Medal" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Citizenship" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AverageMark" Type="Double" />
+          <NavigationProperty Name="Hobbies" Relationship="Self.Hobbie_Entrants" FromRole="Hobbie_Entrants_Target" ToRole="Hobbie_Entrants_Source" />
+          <NavigationProperty Name="ParticipationInOlympiads" Relationship="Self.ParticipationInOlympiad_Entrant" FromRole="ParticipationInOlympiad_Entrant_Target" ToRole="ParticipationInOlympiad_Entrant_Source" />
+          <NavigationProperty Name="Preferences" Relationship="Self.Entrant_Preferences" FromRole="Entrant_Preferences_Source" ToRole="Entrant_Preferences_Target" />
+          <NavigationProperty Name="SchoolMarks" Relationship="Self.SchoolMark_Entrant" FromRole="SchoolMark_Entrant_Target" ToRole="SchoolMark_Entrant_Source" />
+          <NavigationProperty Name="Schools" Relationship="Self.School_Entrants" FromRole="School_Entrants_Target" ToRole="School_Entrants_Source" />
+          <NavigationProperty Name="UnitedStateExams" Relationship="Self.UnitedStateExam_Entrant" FromRole="UnitedStateExam_Entrant_Target" ToRole="UnitedStateExam_Entrant_Source" />
+          <NavigationProperty Name="ParticipationInSections" Relationship="OptimalEducation.DAL.Models.EntrantParticipationInSection" FromRole="Entrant" ToRole="ParticipationInSection" />
+        </EntityType>
+        <EntityType Name="Hobbie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Entrants" Relationship="Self.Hobbie_Entrants" FromRole="Hobbie_Entrants_Source" ToRole="Hobbie_Entrants_Target" />
+          <NavigationProperty Name="Weights" Relationship="Self.Weight_Hobbie" FromRole="Weight_Hobbie_Target" ToRole="Weight_Hobbie_Source" />
+        </EntityType>
+        <EntityType Name="Weight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Coefficient" Type="Double" Nullable="false" />
+          <Property Name="ClusterId" Type="Int32" Nullable="false" />
+          <Property Name="SchoolTypeId" Type="Int32" />
+          <Property Name="SchoolDisciplineId" Type="Int32" />
+          <Property Name="SectionId" Type="Int32" />
+          <Property Name="HobbieId" Type="Int32" />
+          <Property Name="OlympiadId" Type="Int32" />
+          <Property Name="ExamDisciplineId" Type="Int32" />
+          <NavigationProperty Name="Cluster" Relationship="Self.Cluster_Weights" FromRole="Cluster_Weights_Target" ToRole="Cluster_Weights_Source" />
+          <NavigationProperty Name="ExamDiscipline" Relationship="Self.ExamDiscipline_Weights" FromRole="ExamDiscipline_Weights_Target" ToRole="ExamDiscipline_Weights_Source" />
+          <NavigationProperty Name="Hobbie" Relationship="Self.Weight_Hobbie" FromRole="Weight_Hobbie_Source" ToRole="Weight_Hobbie_Target" />
+          <NavigationProperty Name="Olympiad" Relationship="Self.Olympiad_Weights" FromRole="Olympiad_Weights_Target" ToRole="Olympiad_Weights_Source" />
+          <NavigationProperty Name="SchoolDiscipline" Relationship="Self.SchoolDiscipline_Weights" FromRole="SchoolDiscipline_Weights_Target" ToRole="SchoolDiscipline_Weights_Source" />
+          <NavigationProperty Name="SchoolType" Relationship="Self.SchoolType_Weights" FromRole="SchoolType_Weights_Target" ToRole="SchoolType_Weights_Source" />
+          <NavigationProperty Name="Section" Relationship="Self.Section_Weights" FromRole="Section_Weights_Target" ToRole="Section_Weights_Source" />
+        </EntityType>
+        <EntityType Name="Cluster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Weights" Relationship="Self.Cluster_Weights" FromRole="Cluster_Weights_Source" ToRole="Cluster_Weights_Target" />
+        </EntityType>
+        <EntityType Name="ExamDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EducationLineRequirements" Relationship="Self.EducationLineRequirement_ExamDiscipline" FromRole="EducationLineRequirement_ExamDiscipline_Target" ToRole="EducationLineRequirement_ExamDiscipline_Source" />
+          <NavigationProperty Name="UnitedStateExams" Relationship="Self.UnitedStateExam_ExamDiscipline" FromRole="UnitedStateExam_ExamDiscipline_Target" ToRole="UnitedStateExam_ExamDiscipline_Source" />
+          <NavigationProperty Name="Weights" Relationship="Self.ExamDiscipline_Weights" FromRole="ExamDiscipline_Weights_Source" ToRole="ExamDiscipline_Weights_Target" />
+        </EntityType>
+        <EntityType Name="EducationLineRequirement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Requirement" Type="Int32" Nullable="false" />
+          <Property Name="EducationLineId" Type="Int32" Nullable="false" />
+          <Property Name="ExamDisciplineId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EducationLine" Relationship="Self.EducationLine_EducationLinesRequirements" FromRole="EducationLine_EducationLinesRequirements_Target" ToRole="EducationLine_EducationLinesRequirements_Source" />
+          <NavigationProperty Name="ExamDiscipline" Relationship="Self.EducationLineRequirement_ExamDiscipline" FromRole="EducationLineRequirement_ExamDiscipline_Source" ToRole="EducationLineRequirement_ExamDiscipline_Target" />
+        </EntityType>
+        <EntityType Name="EducationLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GeneralEducationLineId" Type="Int32" />
+          <Property Name="FacultyId" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EducationForm" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RequiredSum" Type="Int32" />
+          <Property Name="Actual" Type="Boolean" Nullable="false" />
+          <Property Name="Price" Type="Boolean" Nullable="false" />
+          <Property Name="PaidPlacesNumber" Type="Int32" Nullable="false" />
+          <Property Name="FreePlacesNumber" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="EducationLinesRequirements" Relationship="Self.EducationLine_EducationLinesRequirements" FromRole="EducationLine_EducationLinesRequirements_Source" ToRole="EducationLine_EducationLinesRequirements_Target" />
+          <NavigationProperty Name="Faculty" Relationship="Self.Faculty_FacultyEducationLines" FromRole="Faculty_FacultyEducationLines_Target" ToRole="Faculty_FacultyEducationLines_Source" />
+          <NavigationProperty Name="GeneralEducationLine" Relationship="Self.GeneralEducationLine_EducationLines" FromRole="GeneralEducationLine_EducationLines_Target" ToRole="GeneralEducationLine_EducationLines_Source" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prestige" Type="Int32" Nullable="false" />
+          <Property Name="HigherEducationInstitutionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FacultyEducationLines" Relationship="Self.Faculty_FacultyEducationLines" FromRole="Faculty_FacultyEducationLines_Source" ToRole="Faculty_FacultyEducationLines_Target" />
+          <NavigationProperty Name="HigherEducationInstitution" Relationship="Self.HighSchool_Faculties" FromRole="HighSchool_Faculties_Target" ToRole="HighSchool_Faculties_Source" />
+        </EntityType>
+        <EntityType Name="HigherEducationInstitution">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Prestige" Type="Int32" Nullable="false" />
+          <Property Name="CityId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Self.HighSchoolType" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.HighSchool_City" FromRole="HighSchool_City_Source" ToRole="HighSchool_City_Target" />
+          <NavigationProperty Name="Faculties" Relationship="Self.HighSchool_Faculties" FromRole="HighSchool_Faculties_Source" ToRole="HighSchool_Faculties_Target" />
+        </EntityType>
+        <EntityType Name="GeneralEducationLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EducationLines" Relationship="Self.GeneralEducationLine_EducationLines" FromRole="GeneralEducationLine_EducationLines_Source" ToRole="GeneralEducationLine_EducationLines_Target" />
+        </EntityType>
+        <EntityType Name="UnitedStateExam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Result" Type="Int32" Nullable="false" />
+          <Property Name="ExamDisciplineId" Type="Int32" Nullable="false" />
+          <Property Name="EntrantId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrant" Relationship="Self.UnitedStateExam_Entrant" FromRole="UnitedStateExam_Entrant_Source" ToRole="UnitedStateExam_Entrant_Target" />
+          <NavigationProperty Name="ExamDiscipline" Relationship="Self.UnitedStateExam_ExamDiscipline" FromRole="UnitedStateExam_ExamDiscipline_Source" ToRole="UnitedStateExam_ExamDiscipline_Target" />
+        </EntityType>
+        <EntityType Name="Olympiad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ParticipationInOlympiads" Relationship="Self.ParticipationInOlympiad_Olympiad" FromRole="ParticipationInOlympiad_Olympiad_Target" ToRole="ParticipationInOlympiad_Olympiad_Source" />
+          <NavigationProperty Name="Weights" Relationship="Self.Olympiad_Weights" FromRole="Olympiad_Weights_Source" ToRole="Olympiad_Weights_Target" />
+        </EntityType>
+        <EntityType Name="ParticipationInOlympiad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Result" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EntrantId" Type="Int32" Nullable="false" />
+          <Property Name="OlympiadId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrant" Relationship="Self.ParticipationInOlympiad_Entrant" FromRole="ParticipationInOlympiad_Entrant_Source" ToRole="ParticipationInOlympiad_Entrant_Target" />
+          <NavigationProperty Name="Olympiad" Relationship="Self.ParticipationInOlympiad_Olympiad" FromRole="ParticipationInOlympiad_Olympiad_Source" ToRole="ParticipationInOlympiad_Olympiad_Target" />
+        </EntityType>
+        <EntityType Name="SchoolDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SchoolMarks" Relationship="Self.SchoolMark_SchoolDiscipline" FromRole="SchoolMark_SchoolDiscipline_Target" ToRole="SchoolMark_SchoolDiscipline_Source" />
+          <NavigationProperty Name="Weights" Relationship="Self.SchoolDiscipline_Weights" FromRole="SchoolDiscipline_Weights_Source" ToRole="SchoolDiscipline_Weights_Target" />
+        </EntityType>
+        <EntityType Name="SchoolMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Result" Type="Int16" Nullable="false" />
+          <Property Name="Respect" Type="Int32" />
+          <Property Name="EntrantId" Type="Int32" Nullable="false" />
+          <Property Name="SchoolDisciplineId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrant" Relationship="Self.SchoolMark_Entrant" FromRole="SchoolMark_Entrant_Source" ToRole="SchoolMark_Entrant_Target" />
+          <NavigationProperty Name="SchoolDiscipline" Relationship="Self.SchoolMark_SchoolDiscipline" FromRole="SchoolMark_SchoolDiscipline_Source" ToRole="SchoolMark_SchoolDiscipline_Target" />
+        </EntityType>
+        <EntityType Name="SchoolType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Schools" Relationship="Self.School_SchoolType" FromRole="School_SchoolType_Target" ToRole="School_SchoolType_Source" />
+          <NavigationProperty Name="Weights" Relationship="Self.SchoolType_Weights" FromRole="SchoolType_Weights_Source" ToRole="SchoolType_Weights_Target" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EducationQuality" Type="Int32" Nullable="false" />
+          <Property Name="SchoolTypeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="City" Relationship="Self.School_City" FromRole="School_City_Source" ToRole="School_City_Target" />
+          <NavigationProperty Name="Entrants" Relationship="Self.School_Entrants" FromRole="School_Entrants_Source" ToRole="School_Entrants_Target" />
+          <NavigationProperty Name="SchoolType" Relationship="Self.School_SchoolType" FromRole="School_SchoolType_Source" ToRole="School_SchoolType_Target" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ActivityType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Weights" Relationship="Self.Section_Weights" FromRole="Section_Weights_Source" ToRole="Section_Weights_Target" />
+          <NavigationProperty Name="ParticipationInSections" Relationship="OptimalEducation.DAL.Models.SectionParticipationInSection" FromRole="Section" ToRole="ParticipationInSection" />
+        </EntityType>
+        <EntityType Name="IdentityRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ApplicationUser" BaseType="Self.IdentityUser">
+          <Property Name="EntrantId" Type="Int32" />
+          <Property Name="FacultyId" Type="Int32" />
+          <NavigationProperty Name="Entrant" Relationship="Self.ApplicationUser_Entrant" FromRole="ApplicationUser_Entrant_Source" ToRole="ApplicationUser_Entrant_Target" />
+          <NavigationProperty Name="Faculty" Relationship="Self.ApplicationUser_Faculty" FromRole="ApplicationUser_Faculty_Source" ToRole="ApplicationUser_Faculty_Target" />
+        </EntityType>
+        <EntityType Name="IdentityUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.IdentityUserClaim_User" FromRole="IdentityUserClaim_User_Source" ToRole="IdentityUserClaim_User_Target" />
+        </EntityType>
+        <EntityType Name="IdentityUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Claims" Relationship="Self.IdentityUserClaim_User" FromRole="IdentityUserClaim_User_Target" ToRole="IdentityUserClaim_User_Source" />
+          <NavigationProperty Name="Logins" Relationship="Self.IdentityUserLogin_User" FromRole="IdentityUserLogin_User_Target" ToRole="IdentityUserLogin_User_Source" />
+          <NavigationProperty Name="Roles" Relationship="Self.IdentityUserRole_User" FromRole="IdentityUserRole_User_Target" ToRole="IdentityUserRole_User_Source" />
+        </EntityType>
+        <EntityType Name="IdentityUserLogin">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="Self.IdentityUserLogin_User" FromRole="IdentityUserLogin_User_Source" ToRole="IdentityUserLogin_User_Target" />
+        </EntityType>
+        <EntityType Name="IdentityUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.IdentityUserRole_Role" FromRole="IdentityUserRole_Role_Source" ToRole="IdentityUserRole_Role_Target" />
+          <NavigationProperty Name="User" Relationship="Self.IdentityUserRole_User" FromRole="IdentityUserRole_User_Source" ToRole="IdentityUserRole_User_Target" />
+        </EntityType>
+        <EnumType Name="HighSchoolType" IsFlags="false" UnderlyingType="Int32">
+          <Member Name="University" Value="0" />
+          <Member Name="Institute" Value="1" />
+          <Member Name="Academy" Value="2" />
+        </EnumType>
+        <Association Name="Preference_Cities">
+          <End Role="Preference_Cities_Source" Type="Self.Preference" Multiplicity="*" />
+          <End Role="Preference_Cities_Target" Type="Self.City" Multiplicity="*" />
+        </Association>
+        <Association Name="Hobbie_Entrants">
+          <End Role="Hobbie_Entrants_Source" Type="Self.Hobbie" Multiplicity="*" />
+          <End Role="Hobbie_Entrants_Target" Type="Self.Entrant" Multiplicity="*" />
+        </Association>
+        <Association Name="Cluster_Weights">
+          <End Role="Cluster_Weights_Source" Type="Self.Cluster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Cluster_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cluster_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cluster_Weights_Target">
+              <PropertyRef Name="ClusterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EducationLine_EducationLinesRequirements">
+          <End Role="EducationLine_EducationLinesRequirements_Source" Type="Self.EducationLine" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EducationLine_EducationLinesRequirements_Target" Type="Self.EducationLineRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationLine_EducationLinesRequirements_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLine_EducationLinesRequirements_Target">
+              <PropertyRef Name="EducationLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Faculty_FacultyEducationLines">
+          <End Role="Faculty_FacultyEducationLines_Source" Type="Self.Faculty" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Faculty_FacultyEducationLines_Target" Type="Self.EducationLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty_FacultyEducationLines_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Faculty_FacultyEducationLines_Target">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HighSchool_City">
+          <End Role="HighSchool_City_Source" Type="OptimalEducation.DAL.Models.HigherEducationInstitution" Multiplicity="*" />
+          <End Role="HighSchool_City_Target" Type="Self.City" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="HighSchool_City_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HighSchool_City_Source">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HighSchool_Faculties">
+          <End Role="HighSchool_Faculties_Source" Type="OptimalEducation.DAL.Models.HigherEducationInstitution" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HighSchool_Faculties_Target" Type="Self.Faculty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HighSchool_Faculties_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HighSchool_Faculties_Target">
+              <PropertyRef Name="HigherEducationInstitutionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GeneralEducationLine_EducationLines">
+          <End Role="GeneralEducationLine_EducationLines_Source" Type="Self.GeneralEducationLine" Multiplicity="0..1" />
+          <End Role="GeneralEducationLine_EducationLines_Target" Type="Self.EducationLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralEducationLine_EducationLines_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GeneralEducationLine_EducationLines_Target">
+              <PropertyRef Name="GeneralEducationLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EducationLineRequirement_ExamDiscipline">
+          <End Role="EducationLineRequirement_ExamDiscipline_Source" Type="Self.EducationLineRequirement" Multiplicity="*" />
+          <End Role="EducationLineRequirement_ExamDiscipline_Target" Type="Self.ExamDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="EducationLineRequirement_ExamDiscipline_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLineRequirement_ExamDiscipline_Source">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UnitedStateExam_Entrant">
+          <End Role="UnitedStateExam_Entrant_Source" Type="Self.UnitedStateExam" Multiplicity="*" />
+          <End Role="UnitedStateExam_Entrant_Target" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="UnitedStateExam_Entrant_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitedStateExam_Entrant_Source">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UnitedStateExam_ExamDiscipline">
+          <End Role="UnitedStateExam_ExamDiscipline_Source" Type="Self.UnitedStateExam" Multiplicity="*" />
+          <End Role="UnitedStateExam_ExamDiscipline_Target" Type="Self.ExamDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="UnitedStateExam_ExamDiscipline_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitedStateExam_ExamDiscipline_Source">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ExamDiscipline_Weights">
+          <End Role="ExamDiscipline_Weights_Source" Type="Self.ExamDiscipline" Multiplicity="0..1" />
+          <End Role="ExamDiscipline_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDiscipline_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExamDiscipline_Weights_Target">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Weight_Hobbie">
+          <End Role="Weight_Hobbie_Source" Type="Self.Weight" Multiplicity="*" />
+          <End Role="Weight_Hobbie_Target" Type="Self.Hobbie" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Weight_Hobbie_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight_Hobbie_Source">
+              <PropertyRef Name="HobbieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParticipationInOlympiad_Entrant">
+          <End Role="ParticipationInOlympiad_Entrant_Source" Type="Self.ParticipationInOlympiad" Multiplicity="*" />
+          <End Role="ParticipationInOlympiad_Entrant_Target" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="ParticipationInOlympiad_Entrant_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInOlympiad_Entrant_Source">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParticipationInOlympiad_Olympiad">
+          <End Role="ParticipationInOlympiad_Olympiad_Source" Type="Self.ParticipationInOlympiad" Multiplicity="*" />
+          <End Role="ParticipationInOlympiad_Olympiad_Target" Type="Self.Olympiad" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="ParticipationInOlympiad_Olympiad_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInOlympiad_Olympiad_Source">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Olympiad_Weights">
+          <End Role="Olympiad_Weights_Source" Type="Self.Olympiad" Multiplicity="0..1" />
+          <End Role="Olympiad_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Olympiad_Weights_Target">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolMark_Entrant">
+          <End Role="SchoolMark_Entrant_Source" Type="Self.SchoolMark" Multiplicity="*" />
+          <End Role="SchoolMark_Entrant_Target" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="SchoolMark_Entrant_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolMark_Entrant_Source">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolMark_SchoolDiscipline">
+          <End Role="SchoolMark_SchoolDiscipline_Source" Type="Self.SchoolMark" Multiplicity="*" />
+          <End Role="SchoolMark_SchoolDiscipline_Target" Type="Self.SchoolDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="SchoolMark_SchoolDiscipline_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolMark_SchoolDiscipline_Source">
+              <PropertyRef Name="SchoolDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolDiscipline_Weights">
+          <End Role="SchoolDiscipline_Weights_Source" Type="Self.SchoolDiscipline" Multiplicity="0..1" />
+          <End Role="SchoolDiscipline_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolDiscipline_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolDiscipline_Weights_Target">
+              <PropertyRef Name="SchoolDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_City">
+          <End Role="School_City_Source" Type="Self.School" Multiplicity="*" />
+          <End Role="School_City_Target" Type="Self.City" Multiplicity="0..1" />
+        </Association>
+        <Association Name="School_Entrants">
+          <End Role="School_Entrants_Source" Type="Self.School" Multiplicity="*" />
+          <End Role="School_Entrants_Target" Type="Self.Entrant" Multiplicity="*" />
+        </Association>
+        <Association Name="School_SchoolType">
+          <End Role="School_SchoolType_Source" Type="Self.School" Multiplicity="*" />
+          <End Role="School_SchoolType_Target" Type="Self.SchoolType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="School_SchoolType_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="School_SchoolType_Source">
+              <PropertyRef Name="SchoolTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolType_Weights">
+          <End Role="SchoolType_Weights_Source" Type="Self.SchoolType" Multiplicity="0..1" />
+          <End Role="SchoolType_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolType_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolType_Weights_Target">
+              <PropertyRef Name="SchoolTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Section_Weights">
+          <End Role="Section_Weights_Source" Type="Self.Section" Multiplicity="0..1" />
+          <End Role="Section_Weights_Target" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section_Weights_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Section_Weights_Target">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Entrant_Preferences">
+          <End Role="Entrant_Preferences_Source" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Entrant_Preferences_Target" Type="Self.Preference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant_Preferences_Source">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Entrant_Preferences_Target">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserLogin_User">
+          <End Role="IdentityUserLogin_User_Source" Type="Self.IdentityUserLogin" Multiplicity="*" />
+          <End Role="IdentityUserLogin_User_Target" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="IdentityUserLogin_User_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserLogin_User_Source">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserRole_Role">
+          <End Role="IdentityUserRole_Role_Source" Type="Self.IdentityUserRole" Multiplicity="*" />
+          <End Role="IdentityUserRole_Role_Target" Type="Self.IdentityRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="IdentityUserRole_Role_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserRole_Role_Source">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserRole_User">
+          <End Role="IdentityUserRole_User_Source" Type="Self.IdentityUserRole" Multiplicity="*" />
+          <End Role="IdentityUserRole_User_Target" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <ReferentialConstraint>
+            <Principal Role="IdentityUserRole_User_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserRole_User_Source">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserClaim_User">
+          <End Role="IdentityUserClaim_User_Source" Type="Self.IdentityUserClaim" Multiplicity="*" />
+          <End Role="IdentityUserClaim_User_Target" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+        </Association>
+        <Association Name="ApplicationUser_Entrant">
+          <End Role="ApplicationUser_Entrant_Source" Type="Self.ApplicationUser" Multiplicity="*" />
+          <End Role="ApplicationUser_Entrant_Target" Type="Self.Entrant" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser_Entrant_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationUser_Entrant_Source">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Faculty">
+          <End Role="ApplicationUser_Faculty_Source" Type="Self.ApplicationUser" Multiplicity="*" />
+          <End Role="ApplicationUser_Faculty_Target" Type="Self.Faculty" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ApplicationUser_Faculty_Target">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ApplicationUser_Faculty_Source">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ApplicationDbContext">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Preferences" EntityType="Self.Preference" />
+          <EntitySet Name="Entrants" EntityType="Self.Entrant" />
+          <EntitySet Name="Hobbies" EntityType="Self.Hobbie" />
+          <EntitySet Name="Weights" EntityType="Self.Weight" />
+          <EntitySet Name="Clusters" EntityType="Self.Cluster" />
+          <EntitySet Name="Disciplines" EntityType="Self.ExamDiscipline" />
+          <EntitySet Name="EducationLineRequirements" EntityType="Self.EducationLineRequirement" />
+          <EntitySet Name="EducationLines" EntityType="Self.EducationLine" />
+          <EntitySet Name="Faculties" EntityType="Self.Faculty" />
+          <EntitySet Name="HigherEducationInstitutions" EntityType="OptimalEducation.DAL.Models.HigherEducationInstitution" />
+          <EntitySet Name="GeneralEducationLines" EntityType="Self.GeneralEducationLine" />
+          <EntitySet Name="UnitedStateExams" EntityType="Self.UnitedStateExam" />
+          <EntitySet Name="Olympiads" EntityType="Self.Olympiad" />
+          <EntitySet Name="ParticipationInOlympiads" EntityType="Self.ParticipationInOlympiad" />
+          <EntitySet Name="SchoolDisciplines" EntityType="Self.SchoolDiscipline" />
+          <EntitySet Name="SchoolMarks" EntityType="Self.SchoolMark" />
+          <EntitySet Name="SchoolTypes" EntityType="Self.SchoolType" />
+          <EntitySet Name="Schools" EntityType="Self.School" />
+          <EntitySet Name="Sections" EntityType="Self.Section" />
+          <EntitySet Name="Roles" EntityType="Self.IdentityRole" />
+          <EntitySet Name="IdentityUserClaims" EntityType="Self.IdentityUserClaim" />
+          <EntitySet Name="IdentityUsers" EntityType="Self.IdentityUser" />
+          <EntitySet Name="IdentityUserLogins" EntityType="Self.IdentityUserLogin" />
+          <EntitySet Name="IdentityUserRoles" EntityType="Self.IdentityUserRole" />
+          <AssociationSet Name="Preference_Cities" Association="Self.Preference_Cities">
+            <End Role="Preference_Cities_Source" EntitySet="Preferences" />
+            <End Role="Preference_Cities_Target" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="Hobbie_Entrants" Association="Self.Hobbie_Entrants">
+            <End Role="Hobbie_Entrants_Source" EntitySet="Hobbies" />
+            <End Role="Hobbie_Entrants_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="Cluster_Weights" Association="Self.Cluster_Weights">
+            <End Role="Cluster_Weights_Source" EntitySet="Clusters" />
+            <End Role="Cluster_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="EducationLine_EducationLinesRequirements" Association="Self.EducationLine_EducationLinesRequirements">
+            <End Role="EducationLine_EducationLinesRequirements_Source" EntitySet="EducationLines" />
+            <End Role="EducationLine_EducationLinesRequirements_Target" EntitySet="EducationLineRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="Faculty_FacultyEducationLines" Association="Self.Faculty_FacultyEducationLines">
+            <End Role="Faculty_FacultyEducationLines_Source" EntitySet="Faculties" />
+            <End Role="Faculty_FacultyEducationLines_Target" EntitySet="EducationLines" />
+          </AssociationSet>
+          <AssociationSet Name="HighSchool_City" Association="Self.HighSchool_City">
+            <End Role="HighSchool_City_Source" EntitySet="HigherEducationInstitutions" />
+            <End Role="HighSchool_City_Target" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="HighSchool_Faculties" Association="Self.HighSchool_Faculties">
+            <End Role="HighSchool_Faculties_Source" EntitySet="HigherEducationInstitutions" />
+            <End Role="HighSchool_Faculties_Target" EntitySet="Faculties" />
+          </AssociationSet>
+          <AssociationSet Name="GeneralEducationLine_EducationLines" Association="Self.GeneralEducationLine_EducationLines">
+            <End Role="GeneralEducationLine_EducationLines_Source" EntitySet="GeneralEducationLines" />
+            <End Role="GeneralEducationLine_EducationLines_Target" EntitySet="EducationLines" />
+          </AssociationSet>
+          <AssociationSet Name="EducationLineRequirement_ExamDiscipline" Association="Self.EducationLineRequirement_ExamDiscipline">
+            <End Role="EducationLineRequirement_ExamDiscipline_Source" EntitySet="EducationLineRequirements" />
+            <End Role="EducationLineRequirement_ExamDiscipline_Target" EntitySet="Disciplines" />
+          </AssociationSet>
+          <AssociationSet Name="UnitedStateExam_Entrant" Association="Self.UnitedStateExam_Entrant">
+            <End Role="UnitedStateExam_Entrant_Source" EntitySet="UnitedStateExams" />
+            <End Role="UnitedStateExam_Entrant_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="UnitedStateExam_ExamDiscipline" Association="Self.UnitedStateExam_ExamDiscipline">
+            <End Role="UnitedStateExam_ExamDiscipline_Source" EntitySet="UnitedStateExams" />
+            <End Role="UnitedStateExam_ExamDiscipline_Target" EntitySet="Disciplines" />
+          </AssociationSet>
+          <AssociationSet Name="ExamDiscipline_Weights" Association="Self.ExamDiscipline_Weights">
+            <End Role="ExamDiscipline_Weights_Source" EntitySet="Disciplines" />
+            <End Role="ExamDiscipline_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="Weight_Hobbie" Association="Self.Weight_Hobbie">
+            <End Role="Weight_Hobbie_Source" EntitySet="Weights" />
+            <End Role="Weight_Hobbie_Target" EntitySet="Hobbies" />
+          </AssociationSet>
+          <AssociationSet Name="ParticipationInOlympiad_Entrant" Association="Self.ParticipationInOlympiad_Entrant">
+            <End Role="ParticipationInOlympiad_Entrant_Source" EntitySet="ParticipationInOlympiads" />
+            <End Role="ParticipationInOlympiad_Entrant_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="ParticipationInOlympiad_Olympiad" Association="Self.ParticipationInOlympiad_Olympiad">
+            <End Role="ParticipationInOlympiad_Olympiad_Source" EntitySet="ParticipationInOlympiads" />
+            <End Role="ParticipationInOlympiad_Olympiad_Target" EntitySet="Olympiads" />
+          </AssociationSet>
+          <AssociationSet Name="Olympiad_Weights" Association="Self.Olympiad_Weights">
+            <End Role="Olympiad_Weights_Source" EntitySet="Olympiads" />
+            <End Role="Olympiad_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolMark_Entrant" Association="Self.SchoolMark_Entrant">
+            <End Role="SchoolMark_Entrant_Source" EntitySet="SchoolMarks" />
+            <End Role="SchoolMark_Entrant_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolMark_SchoolDiscipline" Association="Self.SchoolMark_SchoolDiscipline">
+            <End Role="SchoolMark_SchoolDiscipline_Source" EntitySet="SchoolMarks" />
+            <End Role="SchoolMark_SchoolDiscipline_Target" EntitySet="SchoolDisciplines" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolDiscipline_Weights" Association="Self.SchoolDiscipline_Weights">
+            <End Role="SchoolDiscipline_Weights_Source" EntitySet="SchoolDisciplines" />
+            <End Role="SchoolDiscipline_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="School_City" Association="Self.School_City">
+            <End Role="School_City_Source" EntitySet="Schools" />
+            <End Role="School_City_Target" EntitySet="Cities" />
+          </AssociationSet>
+          <AssociationSet Name="School_Entrants" Association="Self.School_Entrants">
+            <End Role="School_Entrants_Source" EntitySet="Schools" />
+            <End Role="School_Entrants_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="School_SchoolType" Association="Self.School_SchoolType">
+            <End Role="School_SchoolType_Source" EntitySet="Schools" />
+            <End Role="School_SchoolType_Target" EntitySet="SchoolTypes" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolType_Weights" Association="Self.SchoolType_Weights">
+            <End Role="SchoolType_Weights_Source" EntitySet="SchoolTypes" />
+            <End Role="SchoolType_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="Section_Weights" Association="Self.Section_Weights">
+            <End Role="Section_Weights_Source" EntitySet="Sections" />
+            <End Role="Section_Weights_Target" EntitySet="Weights" />
+          </AssociationSet>
+          <AssociationSet Name="Entrant_Preferences" Association="Self.Entrant_Preferences">
+            <End Role="Entrant_Preferences_Source" EntitySet="Entrants" />
+            <End Role="Entrant_Preferences_Target" EntitySet="Preferences" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserLogin_User" Association="Self.IdentityUserLogin_User">
+            <End Role="IdentityUserLogin_User_Source" EntitySet="IdentityUserLogins" />
+            <End Role="IdentityUserLogin_User_Target" EntitySet="IdentityUsers" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserRole_Role" Association="Self.IdentityUserRole_Role">
+            <End Role="IdentityUserRole_Role_Source" EntitySet="IdentityUserRoles" />
+            <End Role="IdentityUserRole_Role_Target" EntitySet="Roles" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserRole_User" Association="Self.IdentityUserRole_User">
+            <End Role="IdentityUserRole_User_Source" EntitySet="IdentityUserRoles" />
+            <End Role="IdentityUserRole_User_Target" EntitySet="IdentityUsers" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserClaim_User" Association="Self.IdentityUserClaim_User">
+            <End Role="IdentityUserClaim_User_Source" EntitySet="IdentityUserClaims" />
+            <End Role="IdentityUserClaim_User_Target" EntitySet="IdentityUsers" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Entrant" Association="Self.ApplicationUser_Entrant">
+            <End Role="ApplicationUser_Entrant_Source" EntitySet="IdentityUsers" />
+            <End Role="ApplicationUser_Entrant_Target" EntitySet="Entrants" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Faculty" Association="Self.ApplicationUser_Faculty">
+            <End Role="ApplicationUser_Faculty_Source" EntitySet="IdentityUsers" />
+            <End Role="ApplicationUser_Faculty_Target" EntitySet="Faculties" />
+          </AssociationSet>
+          <EntitySet Name="ParticipationInSections" EntityType="OptimalEducation.DAL.Models.ParticipationInSection" />
+          <AssociationSet Name="SectionParticipationInSection" Association="OptimalEducation.DAL.Models.SectionParticipationInSection">
+            <End Role="Section" EntitySet="Sections" />
+            <End Role="ParticipationInSection" EntitySet="ParticipationInSections" />
+          </AssociationSet>
+          <AssociationSet Name="EntrantParticipationInSection" Association="OptimalEducation.DAL.Models.EntrantParticipationInSection">
+            <End Role="Entrant" EntitySet="Entrants" />
+            <End Role="ParticipationInSection" EntitySet="ParticipationInSections" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ParticipationInSection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="YearPeriod" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Section" Relationship="OptimalEducation.DAL.Models.SectionParticipationInSection" FromRole="ParticipationInSection" ToRole="Section" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Entrant" Relationship="OptimalEducation.DAL.Models.EntrantParticipationInSection" FromRole="ParticipationInSection" ToRole="Entrant" />
+          <Property Name="EntrantId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="SectionParticipationInSection">
+          <End Type="OptimalEducation.DAL.Models.Section" Role="Section" Multiplicity="1" />
+          <End Type="OptimalEducation.DAL.Models.ParticipationInSection" Role="ParticipationInSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInSection">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EntrantParticipationInSection">
+          <End Type="OptimalEducation.DAL.Models.Entrant" Role="Entrant" Multiplicity="1" />
+          <End Type="OptimalEducation.DAL.Models.ParticipationInSection" Role="ParticipationInSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInSection">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="ApplicationDbContext">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Prestige" ColumnName="Prestige" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Preferences">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Preference">
+              <MappingFragment StoreEntitySet="Preference">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Presige" ColumnName="Presige" />
+                <ScalarProperty Name="EducationFrom" ColumnName="EducationFrom" />
+                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Entrants">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Entrant">
+              <MappingFragment StoreEntitySet="Entrant">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="SchoolEducation" ColumnName="SchoolEducation" />
+                <ScalarProperty Name="Medal" ColumnName="Medal" />
+                <ScalarProperty Name="Citizenship" ColumnName="Citizenship" />
+                <ScalarProperty Name="AverageMark" ColumnName="AverageMark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hobbies">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Hobbie">
+              <MappingFragment StoreEntitySet="Hobbie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Weights">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Weight">
+              <MappingFragment StoreEntitySet="Weight">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Coefficient" ColumnName="Coefficient" />
+                <ScalarProperty Name="ClusterId" ColumnName="ClusterId" />
+                <ScalarProperty Name="SchoolTypeId" ColumnName="SchoolTypeId" />
+                <ScalarProperty Name="SchoolDisciplineId" ColumnName="SchoolDisciplineId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="HobbieId" ColumnName="HobbieId" />
+                <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
+                <ScalarProperty Name="ExamDisciplineId" ColumnName="ExamDisciplineId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clusters">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Cluster">
+              <MappingFragment StoreEntitySet="Cluster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Disciplines">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.ExamDiscipline">
+              <MappingFragment StoreEntitySet="ExamDiscipline">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationLineRequirements">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.EducationLineRequirement">
+              <MappingFragment StoreEntitySet="EducationLineRequirement">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Requirement" ColumnName="Requirement" />
+                <ScalarProperty Name="EducationLineId" ColumnName="EducationLineId" />
+                <ScalarProperty Name="ExamDisciplineId" ColumnName="ExamDisciplineId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EducationLines">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.EducationLine">
+              <MappingFragment StoreEntitySet="EducationLine">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GeneralEducationLineId" ColumnName="GeneralEducationLineId" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="EducationForm" ColumnName="EducationForm" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RequiredSum" ColumnName="RequiredSum" />
+                <ScalarProperty Name="Actual" ColumnName="Actual" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PaidPlacesNumber" ColumnName="PaidPlacesNumber" />
+                <ScalarProperty Name="FreePlacesNumber" ColumnName="FreePlacesNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Faculties">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Faculty">
+              <MappingFragment StoreEntitySet="Faculty">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Prestige" ColumnName="Prestige" />
+                <ScalarProperty Name="HigherEducationInstitutionId" ColumnName="HighSchoolId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HigherEducationInstitutions">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.HigherEducationInstitution">
+              <MappingFragment StoreEntitySet="HighSchool">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Prestige" ColumnName="Prestige" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GeneralEducationLines">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.GeneralEducationLine">
+              <MappingFragment StoreEntitySet="GeneralEducationLine">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnitedStateExams">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.UnitedStateExam">
+              <MappingFragment StoreEntitySet="UnitedStateExam">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="ExamDisciplineId" ColumnName="ExamDisciplineId" />
+                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Olympiads">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Olympiad">
+              <MappingFragment StoreEntitySet="Olympiad">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParticipationInOlympiads">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.ParticipationInOlympiad">
+              <MappingFragment StoreEntitySet="ParticipationInOlympiad">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
+                <ScalarProperty Name="OlympiadId" ColumnName="OlympiadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolDisciplines">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.SchoolDiscipline">
+              <MappingFragment StoreEntitySet="SchoolDiscipline">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolMarks">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.SchoolMark">
+              <MappingFragment StoreEntitySet="SchoolMark">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="Respect" ColumnName="Respect" />
+                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
+                <ScalarProperty Name="SchoolDisciplineId" ColumnName="SchoolDisciplineId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SchoolTypes">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.SchoolType">
+              <MappingFragment StoreEntitySet="SchoolType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EducationQuality" ColumnName="EducationQuality" />
+                <ScalarProperty Name="SchoolTypeId" ColumnName="SchoolTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Section">
+              <MappingFragment StoreEntitySet="Section">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ActivityType" ColumnName="ActivityType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.IdentityRole">
+              <MappingFragment StoreEntitySet="IdentityRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IdentityUsers">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.ApplicationUser">
+              <MappingFragment StoreEntitySet="IdentityUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
+                <ScalarProperty Name="FacultyId" ColumnName="FacultyId" />
+                <Condition Value="ApplicationUser" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(OptimalEducation.DAL.Models.IdentityUser)">
+              <MappingFragment StoreEntitySet="IdentityUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.IdentityUser">
+              <MappingFragment StoreEntitySet="IdentityUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <Condition Value="IdentityUser" ColumnName="Discriminator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IdentityUserClaims">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.IdentityUserClaim">
+              <MappingFragment StoreEntitySet="IdentityUserClaim">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IdentityUserLogins">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.IdentityUserLogin">
+              <MappingFragment StoreEntitySet="IdentityUserLogin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IdentityUserRoles">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.IdentityUserRole">
+              <MappingFragment StoreEntitySet="IdentityUserRole">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Preference_Cities" TypeName="OptimalEducation.DAL.Models.Preference_Cities" StoreEntitySet="PreferenceCity">
+            <EndProperty Name="Preference_Cities_Source">
+              <ScalarProperty Name="Id" ColumnName="Preference_Id" />
+            </EndProperty>
+            <EndProperty Name="Preference_Cities_Target">
+              <ScalarProperty Name="Id" ColumnName="City_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="Hobbie_Entrants" TypeName="OptimalEducation.DAL.Models.Hobbie_Entrants" StoreEntitySet="HobbieEntrant">
+            <EndProperty Name="Hobbie_Entrants_Source">
+              <ScalarProperty Name="Id" ColumnName="Hobbie_Id" />
+            </EndProperty>
+            <EndProperty Name="Hobbie_Entrants_Target">
+              <ScalarProperty Name="Id" ColumnName="Entrant_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="School_City" TypeName="OptimalEducation.DAL.Models.School_City" StoreEntitySet="School">
+            <EndProperty Name="School_City_Target">
+              <ScalarProperty Name="Id" ColumnName="City_Id" />
+            </EndProperty>
+            <EndProperty Name="School_City_Source">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="City_Id" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="School_Entrants" TypeName="OptimalEducation.DAL.Models.School_Entrants" StoreEntitySet="SchoolEntrant">
+            <EndProperty Name="School_Entrants_Source">
+              <ScalarProperty Name="Id" ColumnName="School_Id" />
+            </EndProperty>
+            <EndProperty Name="School_Entrants_Target">
+              <ScalarProperty Name="Id" ColumnName="Entrant_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="IdentityUserClaim_User" TypeName="OptimalEducation.DAL.Models.IdentityUserClaim_User" StoreEntitySet="IdentityUserClaim">
+            <EndProperty Name="IdentityUserClaim_User_Target">
+              <ScalarProperty Name="Id" ColumnName="User_Id" />
+            </EndProperty>
+            <EndProperty Name="IdentityUserClaim_User_Source">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Prestige" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Preference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Presige" Type="int" Nullable="false" />
+          <Property Name="EducationFrom" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="EntrantId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Entrant">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Gender" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="SchoolEducation" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Medal" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Citizenship" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="AverageMark" Type="float" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Hobbie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Weight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Coefficient" Type="float" Nullable="false" />
+          <Property Name="ClusterId" Type="int" Nullable="false" />
+          <Property Name="SchoolTypeId" Type="int" Nullable="true" />
+          <Property Name="SchoolDisciplineId" Type="int" Nullable="true" />
+          <Property Name="SectionId" Type="int" Nullable="true" />
+          <Property Name="HobbieId" Type="int" Nullable="true" />
+          <Property Name="OlympiadId" Type="int" Nullable="true" />
+          <Property Name="ExamDisciplineId" Type="int" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Cluster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ExamDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="EducationLineRequirement">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Requirement" Type="int" Nullable="false" />
+          <Property Name="EducationLineId" Type="int" Nullable="false" />
+          <Property Name="ExamDisciplineId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EducationLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GeneralEducationLineId" Type="int" Nullable="true" />
+          <Property Name="FacultyId" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="EducationForm" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="RequiredSum" Type="int" Nullable="true" />
+          <Property Name="Actual" Type="bit" Nullable="false" />
+          <Property Name="Price" Type="bit" Nullable="false" />
+          <Property Name="PaidPlacesNumber" Type="int" Nullable="false" />
+          <Property Name="FreePlacesNumber" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Prestige" Type="int" Nullable="false" />
+          <Property Name="HighSchoolId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HighSchool">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Prestige" Type="int" Nullable="false" />
+          <Property Name="CityId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GeneralEducationLine">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="UnitedStateExam">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Result" Type="int" Nullable="false" />
+          <Property Name="ExamDisciplineId" Type="int" Nullable="false" />
+          <Property Name="EntrantId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Olympiad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="ParticipationInOlympiad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Result" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="EntrantId" Type="int" Nullable="false" />
+          <Property Name="OlympiadId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchoolDiscipline">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="SchoolMark">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Result" Type="smallint" Nullable="false" />
+          <Property Name="Respect" Type="int" Nullable="true" />
+          <Property Name="EntrantId" Type="int" Nullable="false" />
+          <Property Name="SchoolDisciplineId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchoolType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="EducationQuality" Type="int" Nullable="false" />
+          <Property Name="SchoolTypeId" Type="int" Nullable="false" />
+          <Property Name="City_Id" Type="int" Nullable="true" />
+        </EntityType>
+        <EntityType Name="Section">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ActivityType" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Period" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentityRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentityUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="EntrantId" Type="int" Nullable="true" />
+          <Property Name="FacultyId" Type="int" Nullable="true" />
+          <Property Name="Discriminator" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentityUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="User_Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentityUserLogin">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentityUserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PreferenceCity">
+          <Key>
+            <PropertyRef Name="Preference_Id" />
+            <PropertyRef Name="City_Id" />
+          </Key>
+          <Property Name="Preference_Id" Type="int" Nullable="false" />
+          <Property Name="City_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HobbieEntrant">
+          <Key>
+            <PropertyRef Name="Hobbie_Id" />
+            <PropertyRef Name="Entrant_Id" />
+          </Key>
+          <Property Name="Hobbie_Id" Type="int" Nullable="false" />
+          <Property Name="Entrant_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SchoolEntrant">
+          <Key>
+            <PropertyRef Name="School_Id" />
+            <PropertyRef Name="Entrant_Id" />
+          </Key>
+          <Property Name="School_Id" Type="int" Nullable="false" />
+          <Property Name="Entrant_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="Preference_Cities_Source">
+          <End Role="Preference" Type="Self.Preference" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PreferenceCity" Type="Self.PreferenceCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Preference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PreferenceCity">
+              <PropertyRef Name="Preference_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Preference_Cities_Target">
+          <End Role="City" Type="Self.City" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PreferenceCity" Type="Self.PreferenceCity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PreferenceCity">
+              <PropertyRef Name="City_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Hobbie_Entrants_Source">
+          <End Role="Hobbie" Type="Self.Hobbie" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HobbieEntrant" Type="Self.HobbieEntrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobbie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HobbieEntrant">
+              <PropertyRef Name="Hobbie_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Hobbie_Entrants_Target">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HobbieEntrant" Type="Self.HobbieEntrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HobbieEntrant">
+              <PropertyRef Name="Entrant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Cluster_Weights">
+          <End Role="Cluster" Type="Self.Cluster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cluster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="ClusterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EducationLine_EducationLinesRequirements">
+          <End Role="EducationLine" Type="Self.EducationLine" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EducationLineRequirement" Type="Self.EducationLineRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EducationLine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLineRequirement">
+              <PropertyRef Name="EducationLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Faculty_FacultyEducationLines">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EducationLine" Type="Self.EducationLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLine">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HighSchool_City">
+          <End Role="City" Type="Self.City" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="HighSchool" Type="Self.HighSchool" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HighSchool">
+              <PropertyRef Name="CityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="HighSchool_Faculties">
+          <End Role="HighSchool" Type="Self.HighSchool" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="HighSchool">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Faculty">
+              <PropertyRef Name="HighSchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GeneralEducationLine_EducationLines">
+          <End Role="GeneralEducationLine" Type="Self.GeneralEducationLine" Multiplicity="0..1" />
+          <End Role="EducationLine" Type="Self.EducationLine" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GeneralEducationLine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLine">
+              <PropertyRef Name="GeneralEducationLineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EducationLineRequirement_ExamDiscipline">
+          <End Role="ExamDiscipline" Type="Self.ExamDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EducationLineRequirement" Type="Self.EducationLineRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDiscipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EducationLineRequirement">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UnitedStateExam_Entrant">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UnitedStateExam" Type="Self.UnitedStateExam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitedStateExam">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UnitedStateExam_ExamDiscipline">
+          <End Role="ExamDiscipline" Type="Self.ExamDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UnitedStateExam" Type="Self.UnitedStateExam" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDiscipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UnitedStateExam">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ExamDiscipline_Weights">
+          <End Role="ExamDiscipline" Type="Self.ExamDiscipline" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExamDiscipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="ExamDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Weight_Hobbie">
+          <End Role="Hobbie" Type="Self.Hobbie" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hobbie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="HobbieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParticipationInOlympiad_Entrant">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ParticipationInOlympiad" Type="Self.ParticipationInOlympiad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInOlympiad">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ParticipationInOlympiad_Olympiad">
+          <End Role="Olympiad" Type="Self.Olympiad" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ParticipationInOlympiad" Type="Self.ParticipationInOlympiad" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ParticipationInOlympiad">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Olympiad_Weights">
+          <End Role="Olympiad" Type="Self.Olympiad" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Olympiad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="OlympiadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolMark_Entrant">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SchoolMark" Type="Self.SchoolMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolMark">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolMark_SchoolDiscipline">
+          <End Role="SchoolDiscipline" Type="Self.SchoolDiscipline" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SchoolMark" Type="Self.SchoolMark" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolDiscipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolMark">
+              <PropertyRef Name="SchoolDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolDiscipline_Weights">
+          <End Role="SchoolDiscipline" Type="Self.SchoolDiscipline" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolDiscipline">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="SchoolDisciplineId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_City">
+          <End Role="City" Type="Self.City" Multiplicity="0..1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="City_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_Entrants_Source">
+          <End Role="School" Type="Self.School" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SchoolEntrant" Type="Self.SchoolEntrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolEntrant">
+              <PropertyRef Name="School_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_Entrants_Target">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SchoolEntrant" Type="Self.SchoolEntrant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SchoolEntrant">
+              <PropertyRef Name="Entrant_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="School_SchoolType">
+          <End Role="SchoolType" Type="Self.SchoolType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="SchoolTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SchoolType_Weights">
+          <End Role="SchoolType" Type="Self.SchoolType" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SchoolType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="SchoolTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Section_Weights">
+          <End Role="Section" Type="Self.Section" Multiplicity="0..1" />
+          <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Section">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Weight">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Entrant_Preferences">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Preference" Type="Self.Preference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Preference">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserLogin_User">
+          <End Role="IdentityUser" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentityUserLogin" Type="Self.IdentityUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentityUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserRole_Role">
+          <End Role="IdentityRole" Type="Self.IdentityRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentityUserRole" Type="Self.IdentityUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentityRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserRole_User">
+          <End Role="IdentityUser" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentityUserRole" Type="Self.IdentityUserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentityUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityUserClaim_User">
+          <End Role="IdentityUser" Type="Self.IdentityUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentityUserClaim" Type="Self.IdentityUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentityUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUserClaim">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Entrant">
+          <End Role="Entrant" Type="Self.Entrant" Multiplicity="0..1" />
+          <End Role="IdentityUser" Type="Self.IdentityUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Entrant">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUser">
+              <PropertyRef Name="EntrantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="0..1" />
+          <End Role="IdentityUser" Type="Self.IdentityUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IdentityUser">
+              <PropertyRef Name="FacultyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" Table="Cities" />
+          <EntitySet Name="Preference" EntityType="Self.Preference" Schema="dbo" Table="Preferences" />
+          <EntitySet Name="Entrant" EntityType="Self.Entrant" Schema="dbo" Table="Entrants" />
+          <EntitySet Name="Hobbie" EntityType="Self.Hobbie" Schema="dbo" Table="Hobbies" />
+          <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" Table="Weights" />
+          <EntitySet Name="Cluster" EntityType="Self.Cluster" Schema="dbo" Table="Clusters" />
+          <EntitySet Name="ExamDiscipline" EntityType="Self.ExamDiscipline" Schema="dbo" Table="ExamDisciplines" />
+          <EntitySet Name="EducationLineRequirement" EntityType="Self.EducationLineRequirement" Schema="dbo" Table="EducationLineRequirements" />
+          <EntitySet Name="EducationLine" EntityType="Self.EducationLine" Schema="dbo" Table="EducationLines" />
+          <EntitySet Name="Faculty" EntityType="Self.Faculty" Schema="dbo" Table="Faculties" />
+          <EntitySet Name="HighSchool" EntityType="Self.HighSchool" Schema="dbo" Table="HighSchools" />
+          <EntitySet Name="GeneralEducationLine" EntityType="Self.GeneralEducationLine" Schema="dbo" Table="GeneralEducationLines" />
+          <EntitySet Name="UnitedStateExam" EntityType="Self.UnitedStateExam" Schema="dbo" Table="UnitedStateExams" />
+          <EntitySet Name="Olympiad" EntityType="Self.Olympiad" Schema="dbo" Table="Olympiads" />
+          <EntitySet Name="ParticipationInOlympiad" EntityType="Self.ParticipationInOlympiad" Schema="dbo" Table="ParticipationInOlympiads" />
+          <EntitySet Name="SchoolDiscipline" EntityType="Self.SchoolDiscipline" Schema="dbo" Table="SchoolDisciplines" />
+          <EntitySet Name="SchoolMark" EntityType="Self.SchoolMark" Schema="dbo" Table="SchoolMarks" />
+          <EntitySet Name="SchoolType" EntityType="Self.SchoolType" Schema="dbo" Table="SchoolTypes" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" Table="Schools" />
+          <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" Table="Sections" />
+          <EntitySet Name="IdentityRole" EntityType="Self.IdentityRole" Schema="dbo" Table="AspNetRoles" />
+          <EntitySet Name="IdentityUser" EntityType="Self.IdentityUser" Schema="dbo" Table="AspNetUsers" />
+          <EntitySet Name="IdentityUserClaim" EntityType="Self.IdentityUserClaim" Schema="dbo" Table="AspNetUserClaims" />
+          <EntitySet Name="IdentityUserLogin" EntityType="Self.IdentityUserLogin" Schema="dbo" Table="AspNetUserLogins" />
+          <EntitySet Name="IdentityUserRole" EntityType="Self.IdentityUserRole" Schema="dbo" Table="AspNetUserRoles" />
+          <EntitySet Name="PreferenceCity" EntityType="Self.PreferenceCity" Schema="dbo" Table="PreferenceCities" />
+          <EntitySet Name="HobbieEntrant" EntityType="Self.HobbieEntrant" Schema="dbo" Table="HobbieEntrants" />
+          <EntitySet Name="SchoolEntrant" EntityType="Self.SchoolEntrant" Schema="dbo" Table="SchoolEntrants" />
+          <AssociationSet Name="Preference_Cities_Source" Association="Self.Preference_Cities_Source">
+            <End Role="Preference" EntitySet="Preference" />
+            <End Role="PreferenceCity" EntitySet="PreferenceCity" />
+          </AssociationSet>
+          <AssociationSet Name="Preference_Cities_Target" Association="Self.Preference_Cities_Target">
+            <End Role="City" EntitySet="City" />
+            <End Role="PreferenceCity" EntitySet="PreferenceCity" />
+          </AssociationSet>
+          <AssociationSet Name="Hobbie_Entrants_Source" Association="Self.Hobbie_Entrants_Source">
+            <End Role="Hobbie" EntitySet="Hobbie" />
+            <End Role="HobbieEntrant" EntitySet="HobbieEntrant" />
+          </AssociationSet>
+          <AssociationSet Name="Hobbie_Entrants_Target" Association="Self.Hobbie_Entrants_Target">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="HobbieEntrant" EntitySet="HobbieEntrant" />
+          </AssociationSet>
+          <AssociationSet Name="Cluster_Weights" Association="Self.Cluster_Weights">
+            <End Role="Cluster" EntitySet="Cluster" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="EducationLine_EducationLinesRequirements" Association="Self.EducationLine_EducationLinesRequirements">
+            <End Role="EducationLine" EntitySet="EducationLine" />
+            <End Role="EducationLineRequirement" EntitySet="EducationLineRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="Faculty_FacultyEducationLines" Association="Self.Faculty_FacultyEducationLines">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="EducationLine" EntitySet="EducationLine" />
+          </AssociationSet>
+          <AssociationSet Name="HighSchool_City" Association="Self.HighSchool_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="HighSchool" EntitySet="HighSchool" />
+          </AssociationSet>
+          <AssociationSet Name="HighSchool_Faculties" Association="Self.HighSchool_Faculties">
+            <End Role="HighSchool" EntitySet="HighSchool" />
+            <End Role="Faculty" EntitySet="Faculty" />
+          </AssociationSet>
+          <AssociationSet Name="GeneralEducationLine_EducationLines" Association="Self.GeneralEducationLine_EducationLines">
+            <End Role="GeneralEducationLine" EntitySet="GeneralEducationLine" />
+            <End Role="EducationLine" EntitySet="EducationLine" />
+          </AssociationSet>
+          <AssociationSet Name="EducationLineRequirement_ExamDiscipline" Association="Self.EducationLineRequirement_ExamDiscipline">
+            <End Role="ExamDiscipline" EntitySet="ExamDiscipline" />
+            <End Role="EducationLineRequirement" EntitySet="EducationLineRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="UnitedStateExam_Entrant" Association="Self.UnitedStateExam_Entrant">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="UnitedStateExam" EntitySet="UnitedStateExam" />
+          </AssociationSet>
+          <AssociationSet Name="UnitedStateExam_ExamDiscipline" Association="Self.UnitedStateExam_ExamDiscipline">
+            <End Role="ExamDiscipline" EntitySet="ExamDiscipline" />
+            <End Role="UnitedStateExam" EntitySet="UnitedStateExam" />
+          </AssociationSet>
+          <AssociationSet Name="ExamDiscipline_Weights" Association="Self.ExamDiscipline_Weights">
+            <End Role="ExamDiscipline" EntitySet="ExamDiscipline" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="Weight_Hobbie" Association="Self.Weight_Hobbie">
+            <End Role="Hobbie" EntitySet="Hobbie" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="ParticipationInOlympiad_Entrant" Association="Self.ParticipationInOlympiad_Entrant">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="ParticipationInOlympiad" EntitySet="ParticipationInOlympiad" />
+          </AssociationSet>
+          <AssociationSet Name="ParticipationInOlympiad_Olympiad" Association="Self.ParticipationInOlympiad_Olympiad">
+            <End Role="Olympiad" EntitySet="Olympiad" />
+            <End Role="ParticipationInOlympiad" EntitySet="ParticipationInOlympiad" />
+          </AssociationSet>
+          <AssociationSet Name="Olympiad_Weights" Association="Self.Olympiad_Weights">
+            <End Role="Olympiad" EntitySet="Olympiad" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolMark_Entrant" Association="Self.SchoolMark_Entrant">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="SchoolMark" EntitySet="SchoolMark" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolMark_SchoolDiscipline" Association="Self.SchoolMark_SchoolDiscipline">
+            <End Role="SchoolDiscipline" EntitySet="SchoolDiscipline" />
+            <End Role="SchoolMark" EntitySet="SchoolMark" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolDiscipline_Weights" Association="Self.SchoolDiscipline_Weights">
+            <End Role="SchoolDiscipline" EntitySet="SchoolDiscipline" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="School_City" Association="Self.School_City">
+            <End Role="City" EntitySet="City" />
+            <End Role="School" EntitySet="School" />
+          </AssociationSet>
+          <AssociationSet Name="School_Entrants_Source" Association="Self.School_Entrants_Source">
+            <End Role="School" EntitySet="School" />
+            <End Role="SchoolEntrant" EntitySet="SchoolEntrant" />
+          </AssociationSet>
+          <AssociationSet Name="School_Entrants_Target" Association="Self.School_Entrants_Target">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="SchoolEntrant" EntitySet="SchoolEntrant" />
+          </AssociationSet>
+          <AssociationSet Name="School_SchoolType" Association="Self.School_SchoolType">
+            <End Role="SchoolType" EntitySet="SchoolType" />
+            <End Role="School" EntitySet="School" />
+          </AssociationSet>
+          <AssociationSet Name="SchoolType_Weights" Association="Self.SchoolType_Weights">
+            <End Role="SchoolType" EntitySet="SchoolType" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="Section_Weights" Association="Self.Section_Weights">
+            <End Role="Section" EntitySet="Section" />
+            <End Role="Weight" EntitySet="Weight" />
+          </AssociationSet>
+          <AssociationSet Name="Entrant_Preferences" Association="Self.Entrant_Preferences">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="Preference" EntitySet="Preference" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserLogin_User" Association="Self.IdentityUserLogin_User">
+            <End Role="IdentityUser" EntitySet="IdentityUser" />
+            <End Role="IdentityUserLogin" EntitySet="IdentityUserLogin" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserRole_Role" Association="Self.IdentityUserRole_Role">
+            <End Role="IdentityRole" EntitySet="IdentityRole" />
+            <End Role="IdentityUserRole" EntitySet="IdentityUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserRole_User" Association="Self.IdentityUserRole_User">
+            <End Role="IdentityUser" EntitySet="IdentityUser" />
+            <End Role="IdentityUserRole" EntitySet="IdentityUserRole" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityUserClaim_User" Association="Self.IdentityUserClaim_User">
+            <End Role="IdentityUser" EntitySet="IdentityUser" />
+            <End Role="IdentityUserClaim" EntitySet="IdentityUserClaim" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Entrant" Association="Self.ApplicationUser_Entrant">
+            <End Role="Entrant" EntitySet="Entrant" />
+            <End Role="IdentityUser" EntitySet="IdentityUser" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Faculty" Association="Self.ApplicationUser_Faculty">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="IdentityUser" EntitySet="IdentityUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="70776930c8554d5e943a72364c411a97" Name="TotalDiagram" ZoomLevel="93" ShowGrid="false" DisplayType="true">
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.City" Width="1.5" PointX="6" PointY="6.625" IsExpanded="false" FillColor="Sienna" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Preference" Width="1.5" PointX="6.125" PointY="3.25" IsExpanded="false" FillColor="SandyBrown" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Entrant" Width="2.125" PointX="12.75" PointY="1.625" IsExpanded="false" FillColor="255, 128, 128" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Hobbie" Width="1.5" PointX="12.375" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Weight" Width="1.5" PointX="13.125" PointY="5.375" IsExpanded="false" FillColor="128, 64, 64" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Cluster" Width="1.5" PointX="13.125" PointY="6.25" IsExpanded="false" FillColor="Indigo" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ExamDiscipline" Width="1.5" PointX="20.625" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLineRequirement" Width="2.125" PointX="21.875" PointY="3.25" IsExpanded="false" FillColor="SandyBrown" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLine" Width="1.5" PointX="21.875" PointY="2.5" IsExpanded="false" FillColor="IndianRed" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Faculty" Width="1.5" PointX="21.875" PointY="1.625" IsExpanded="false" FillColor="255, 128, 128" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.HigherEducationInstitution" Width="2.25" PointX="24.625" PointY="0.5" IsExpanded="false" FillColor="DarkRed" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.GeneralEducationLine" Width="1.875" PointX="24" PointY="2.5" IsExpanded="false" FillColor="DarkGray" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.UnitedStateExam" Width="1.625" PointX="19.25" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Olympiad" Width="1.5" PointX="16.75" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ParticipationInOlympiad" Width="2" PointX="16.75" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolDiscipline" Width="1.625" PointX="14.25" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolMark" Width="1.625" PointX="14.25" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolType" Width="1.5" PointX="8.375" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.School" Width="1.5" PointX="8.375" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Section" Width="1.5" PointX="10.25" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityRole" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="false" FillColor="Teal" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ApplicationUser" Width="1.5" PointX="8.875" PointY="0.5" IsExpanded="false" FillColor="0, 64, 64" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserClaim" Width="1.75" PointX="2.375" PointY="1.25" IsExpanded="false" FillColor="Teal" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUser" Width="1.5" PointX="5.125" PointY="0.5" IsExpanded="false" FillColor="Teal" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserLogin" Width="1.75" PointX="2.375" PointY="1.875" IsExpanded="false" FillColor="Teal" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserRole" Width="1.75" PointX="2.375" PointY="0.5" IsExpanded="false" FillColor="Teal" />
+        <InheritanceConnector EntityType="OptimalEducation.DAL.Models.ApplicationUser" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Preference_Cities" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Hobbie_Entrants" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Cluster_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.EducationLine_EducationLinesRequirements" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Faculty_FacultyEducationLines" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.HighSchool_City" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.HighSchool_Faculties" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.GeneralEducationLine_EducationLines" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.EducationLineRequirement_ExamDiscipline" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.UnitedStateExam_Entrant" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.UnitedStateExam_ExamDiscipline" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ExamDiscipline_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Weight_Hobbie" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ParticipationInOlympiad_Entrant" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ParticipationInOlympiad_Olympiad" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Olympiad_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.SchoolMark_Entrant" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.SchoolMark_SchoolDiscipline" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.SchoolDiscipline_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.School_City" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="OptimalEducation.DAL.Models.School_Entrants" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.School_SchoolType" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.SchoolType_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Section_Weights" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.Entrant_Preferences" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserLogin_User" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserRole_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserRole_User" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserClaim_User" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ApplicationUser_Entrant" ManuallyRouted="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ApplicationUser_Faculty" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ParticipationInSection" Width="1.875" PointX="10.25" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.SectionParticipationInSection" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.EntrantParticipationInSection" ManuallyRouted="false" >
+        </AssociationConnector>
+      </Diagram>
+      <Diagram DiagramId="35069d55e20f419fa4ee9cae4af35cce" Name="Users" ZoomLevel="97" >
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Entrant" Width="1.5" PointX="2.375" PointY="4.125" FillColor="255, 128, 128" IsExpanded="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Faculty" Width="1.5" PointX="4.375" PointY="4.125" FillColor="255, 128, 128" IsExpanded="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityRole" Width="1.5" PointX="0.75" PointY="0.5" FillColor="Teal" IsExpanded="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ApplicationUser" Width="1.5" PointX="3.375" PointY="3.375" FillColor="0, 64, 64" IsExpanded="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ApplicationUser_Entrant" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.ApplicationUser_Faculty" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserClaim" Width="2" PointX="2.875" PointY="1.25" FillColor="Teal" IsExpanded="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUser" Width="1.5" PointX="3.375" PointY="2.625" FillColor="Teal" IsExpanded="false" />
+        <InheritanceConnector EntityType="OptimalEducation.DAL.Models.ApplicationUser" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserClaim_User" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserRole" Width="1.75" PointX="0.75" PointY="1.25" FillColor="Teal" IsExpanded="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserRole_Role" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserRole_User" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.IdentityUserLogin" Width="1.875" PointX="5.125" PointY="1.25" FillColor="Teal" IsExpanded="false" />
+        <AssociationConnector Association="OptimalEducation.DAL.Models.IdentityUserLogin_User" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>

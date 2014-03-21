@@ -3,12 +3,14 @@ namespace OptimalEducation.Models
 
 using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
 public partial class SchoolMark
 {
 
     public int Id { get; set; }
-
+    [Range(3, 5)]
+    [Display(Name = "ќценка")]
     public short Result { get; set; }
 
     public Nullable<int> Respect { get; set; }
