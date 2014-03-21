@@ -11,8 +11,6 @@ public partial class City
     public City()
     {
 
-        this.Preferences = new HashSet<Preference>();
-
         this.HigherEducationInstitutions = new HashSet<HigherEducationInstitution>();
 
         this.Schools = new HashSet<School>();
@@ -27,8 +25,6 @@ public partial class City
     public int Prestige { get; set; }
 
     public DbGeography Location { get; set; }
-
-    public virtual ICollection<Preference> Preferences { get; set; }
 
     public virtual ICollection<HigherEducationInstitution> HigherEducationInstitutions { get; set; }
 

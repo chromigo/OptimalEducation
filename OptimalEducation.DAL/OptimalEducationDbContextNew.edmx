@@ -12,7 +12,6 @@
           <Property Name="Prestige" Type="Int32" Nullable="false" />
           <Property Name="Location" Type="Geography" />
           <NavigationProperty Name="HigherEducationInstitutions" Relationship="Self.HigherEducationInstitution_City" FromRole="HigherEducationInstitution_City_Target" ToRole="HigherEducationInstitution_City_Source" />
-          <NavigationProperty Name="Preferences" Relationship="Self.Preference_Cities" FromRole="Preference_Cities_Target" ToRole="Preference_Cities_Source" />
           <NavigationProperty Name="Schools" Relationship="Self.School_City" FromRole="School_City_Target" ToRole="School_City_Source" />
         </EntityType>
         <EntityType Name="HigherEducationInstitution" customannotation:ClrType="OptimalEducation.DAL.Models.HigherEducationInstitution, OptimalEducation.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -105,7 +104,6 @@
           <NavigationProperty Name="ParticipationInOlympiads" Relationship="Self.ParticipationInOlympiad_Entrant" FromRole="ParticipationInOlympiad_Entrant_Target" ToRole="ParticipationInOlympiad_Entrant_Source" />
           <NavigationProperty Name="ParticipationInSchools" Relationship="Self.ParticipationInSchool_Entrants" FromRole="ParticipationInSchool_Entrants_Target" ToRole="ParticipationInSchool_Entrants_Source" />
           <NavigationProperty Name="ParticipationInSections" Relationship="Self.ParticipationInSection_Entrants" FromRole="ParticipationInSection_Entrants_Target" ToRole="ParticipationInSection_Entrants_Source" />
-          <NavigationProperty Name="Preferences" Relationship="Self.Preference_Entrant" FromRole="Preference_Entrant_Target" ToRole="Preference_Entrant_Source" />
           <NavigationProperty Name="SchoolMarks" Relationship="Self.SchoolMark_Entrant" FromRole="SchoolMark_Entrant_Target" ToRole="SchoolMark_Entrant_Source" />
           <NavigationProperty Name="UnitedStateExams" Relationship="Self.Entrant_UnitedStateExams" FromRole="Entrant_UnitedStateExams_Source" ToRole="Entrant_UnitedStateExams_Target" />
         </EntityType>
@@ -230,17 +228,6 @@
           <Property Name="YearPeriod" Type="Double" Nullable="false" />
           <NavigationProperty Name="Entrants" Relationship="Self.ParticipationInSection_Entrants" FromRole="ParticipationInSection_Entrants_Source" ToRole="ParticipationInSection_Entrants_Target" />
           <NavigationProperty Name="Section" Relationship="Self.ParticipationInSection_Section" FromRole="ParticipationInSection_Section_Source" ToRole="ParticipationInSection_Section_Target" />
-        </EntityType>
-        <EntityType Name="Preference" customannotation:ClrType="OptimalEducation.DAL.Models.Preference, OptimalEducation.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Presige" Type="Int32" Nullable="false" />
-          <Property Name="EducationFrom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EntrantId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cities" Relationship="Self.Preference_Cities" FromRole="Preference_Cities_Source" ToRole="Preference_Cities_Target" />
-          <NavigationProperty Name="Entrant" Relationship="Self.Preference_Entrant" FromRole="Preference_Entrant_Source" ToRole="Preference_Entrant_Target" />
         </EntityType>
         <EntityType Name="GeneralEducationLine" customannotation:ClrType="OptimalEducation.DAL.Models.GeneralEducationLine, OptimalEducation.DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <Key>
@@ -523,24 +510,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Preference_Cities">
-          <End Role="Preference_Cities_Source" Type="Self.Preference" Multiplicity="*" />
-          <End Role="Preference_Cities_Target" Type="Self.City" Multiplicity="*" />
-        </Association>
-        <Association Name="Preference_Entrant">
-          <End Role="Preference_Entrant_Source" Type="Self.Preference" Multiplicity="*" />
-          <End Role="Preference_Entrant_Target" Type="Self.Entrant" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <ReferentialConstraint>
-            <Principal Role="Preference_Entrant_Target">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Preference_Entrant_Source">
-              <PropertyRef Name="EntrantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Entrant_UnitedStateExams">
           <End Role="Entrant_UnitedStateExams_Source" Type="Self.Entrant" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -615,7 +584,6 @@
           <EntitySet Name="SchoolMarks" EntityType="Self.SchoolMark" />
           <EntitySet Name="Sections" EntityType="Self.Section" />
           <EntitySet Name="ParticipationInSections" EntityType="Self.ParticipationInSection" />
-          <EntitySet Name="Preferences" EntityType="Self.Preference" />
           <EntitySet Name="GeneralEducationLines" EntityType="Self.GeneralEducationLine" />
           <AssociationSet Name="HigherEducationInstitution_City" Association="Self.HigherEducationInstitution_City">
             <End Role="HigherEducationInstitution_City_Source" EntitySet="HigherEducationInstitutions" />
@@ -700,14 +668,6 @@
           <AssociationSet Name="Section_Weights" Association="Self.Section_Weights">
             <End Role="Section_Weights_Source" EntitySet="Sections" />
             <End Role="Section_Weights_Target" EntitySet="Weights" />
-          </AssociationSet>
-          <AssociationSet Name="Preference_Cities" Association="Self.Preference_Cities">
-            <End Role="Preference_Cities_Source" EntitySet="Preferences" />
-            <End Role="Preference_Cities_Target" EntitySet="Cities" />
-          </AssociationSet>
-          <AssociationSet Name="Preference_Entrant" Association="Self.Preference_Entrant">
-            <End Role="Preference_Entrant_Source" EntitySet="Preferences" />
-            <End Role="Preference_Entrant_Target" EntitySet="Entrants" />
           </AssociationSet>
           <AssociationSet Name="Entrant_UnitedStateExams" Association="Self.Entrant_UnitedStateExams">
             <End Role="Entrant_UnitedStateExams_Source" EntitySet="Entrants" />
@@ -927,16 +887,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Preferences">
-            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Preference">
-              <MappingFragment StoreEntitySet="Preference">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Presige" ColumnName="Presige" />
-                <ScalarProperty Name="EducationFrom" ColumnName="EducationFrom" />
-                <ScalarProperty Name="EntrantId" ColumnName="EntrantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="GeneralEducationLines">
             <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.GeneralEducationLine">
               <MappingFragment StoreEntitySet="GeneralEducationLine">
@@ -962,14 +912,6 @@
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
             <Condition IsNull="false" ColumnName="City_Id" />
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="Preference_Cities" TypeName="OptimalEducation.DAL.Models.Preference_Cities" StoreEntitySet="PreferenceCity">
-            <EndProperty Name="Preference_Cities_Source">
-              <ScalarProperty Name="Id" ColumnName="Preference_Id" />
-            </EndProperty>
-            <EndProperty Name="Preference_Cities_Target">
-              <ScalarProperty Name="Id" ColumnName="City_Id" />
-            </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
@@ -1154,15 +1096,6 @@
           <Property Name="SectionId" Type="int" customannotation:Index="{ Name: IX_SectionId, Order: 0 }" Nullable="false" />
           <Property Name="YearPeriod" Type="float" Nullable="false" />
         </EntityType>
-        <EntityType Name="Preference">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Presige" Type="int" Nullable="false" />
-          <Property Name="EducationFrom" Type="nvarchar(max)" Nullable="true" />
-          <Property Name="EntrantId" Type="int" customannotation:Index="{ Name: IX_EntrantId, Order: 0 }" Nullable="false" />
-        </EntityType>
         <EntityType Name="GeneralEducationLine">
           <Key>
             <PropertyRef Name="Id" />
@@ -1178,14 +1111,6 @@
           </Key>
           <Property Name="Hobbie_Id" Type="int" customannotation:Index="{ Name: IX_Hobbie_Id, Order: 0 }" Nullable="false" />
           <Property Name="Entrant_Id" Type="int" customannotation:Index="{ Name: IX_Entrant_Id, Order: 0 }" Nullable="false" />
-        </EntityType>
-        <EntityType Name="PreferenceCity">
-          <Key>
-            <PropertyRef Name="Preference_Id" />
-            <PropertyRef Name="City_Id" />
-          </Key>
-          <Property Name="Preference_Id" Type="int" customannotation:Index="{ Name: IX_Preference_Id, Order: 0 }" Nullable="false" />
-          <Property Name="City_Id" Type="int" customannotation:Index="{ Name: IX_City_Id, Order: 0 }" Nullable="false" />
         </EntityType>
         <Association Name="HigherEducationInstitution_City">
           <End Role="City" Type="Self.City" Multiplicity="1">
@@ -1481,48 +1406,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="Preference_Cities_Source">
-          <End Role="Preference" Type="Self.Preference" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PreferenceCity" Type="Self.PreferenceCity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Preference">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PreferenceCity">
-              <PropertyRef Name="Preference_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Preference_Cities_Target">
-          <End Role="City" Type="Self.City" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="PreferenceCity" Type="Self.PreferenceCity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="City">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PreferenceCity">
-              <PropertyRef Name="City_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="Preference_Entrant">
-          <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Preference" Type="Self.Preference" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entrant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Preference">
-              <PropertyRef Name="EntrantId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="Entrant_UnitedStateExams">
           <End Role="Entrant" Type="Self.Entrant" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1597,10 +1480,8 @@
           <EntitySet Name="SchoolMark" EntityType="Self.SchoolMark" Schema="dbo" Table="SchoolMarks" />
           <EntitySet Name="Section" EntityType="Self.Section" Schema="dbo" Table="Sections" />
           <EntitySet Name="ParticipationInSection" EntityType="Self.ParticipationInSection" Schema="dbo" Table="ParticipationInSections" />
-          <EntitySet Name="Preference" EntityType="Self.Preference" Schema="dbo" Table="Preferences" />
           <EntitySet Name="GeneralEducationLine" EntityType="Self.GeneralEducationLine" Schema="dbo" Table="GeneralEducationLines" />
           <EntitySet Name="HobbieEntrant" EntityType="Self.HobbieEntrant" Schema="dbo" Table="HobbieEntrants" />
-          <EntitySet Name="PreferenceCity" EntityType="Self.PreferenceCity" Schema="dbo" Table="PreferenceCities" />
           <AssociationSet Name="HigherEducationInstitution_City" Association="Self.HigherEducationInstitution_City">
             <End Role="City" EntitySet="City" />
             <End Role="HigherEducationInstitution" EntitySet="HigherEducationInstitution" />
@@ -1689,18 +1570,6 @@
             <End Role="Section" EntitySet="Section" />
             <End Role="Weight" EntitySet="Weight" />
           </AssociationSet>
-          <AssociationSet Name="Preference_Cities_Source" Association="Self.Preference_Cities_Source">
-            <End Role="Preference" EntitySet="Preference" />
-            <End Role="PreferenceCity" EntitySet="PreferenceCity" />
-          </AssociationSet>
-          <AssociationSet Name="Preference_Cities_Target" Association="Self.Preference_Cities_Target">
-            <End Role="City" EntitySet="City" />
-            <End Role="PreferenceCity" EntitySet="PreferenceCity" />
-          </AssociationSet>
-          <AssociationSet Name="Preference_Entrant" Association="Self.Preference_Entrant">
-            <End Role="Entrant" EntitySet="Entrant" />
-            <End Role="Preference" EntitySet="Preference" />
-          </AssociationSet>
           <AssociationSet Name="Entrant_UnitedStateExams" Association="Self.Entrant_UnitedStateExams">
             <End Role="Entrant" EntitySet="Entrant" />
             <End Role="UnitedStateExam" EntitySet="UnitedStateExam" />
@@ -1737,8 +1606,8 @@
     </Options>
     <Diagrams >
       <Diagram DiagramId="4e555269fe904ad3b44313735fcc0d48" Name="Diagram1" ZoomLevel="124">
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.City" Width="1.5" PointX="7.625" PointY="1.25" IsExpanded="false" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.HigherEducationInstitution" Width="2.25" PointX="19.625" PointY="2" IsExpanded="false" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.City" Width="1.5" PointX="7.625" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.HigherEducationInstitution" Width="2.25" PointX="21.875" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Faculty" Width="1.5" PointX="19.625" PointY="3" IsExpanded="false" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLine" Width="1.5" PointX="19.625" PointY="3.75" IsExpanded="false" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLineRequirement" Width="1.5" PointX="19.625" PointY="4.5" IsExpanded="false" />
@@ -1756,7 +1625,6 @@
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.SchoolMark" Width="1.5" PointX="11.25" PointY="4.625" IsExpanded="false" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Section" Width="1.5" PointX="6.625" PointY="5.625" IsExpanded="false" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ParticipationInSection" Width="1.875" PointX="6.625" PointY="4.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Preference" Width="1.5" PointX="4.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.GeneralEducationLine" Width="1.5" PointX="21.625" PointY="3.75" IsExpanded="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.HigherEducationInstitution_City" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.EducationLineRequirement_EducationLine" ManuallyRouted="false" />
@@ -1779,8 +1647,6 @@
         <AssociationConnector Association="OptimalEducation.DAL.Models.ParticipationInSection_Entrants" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.ParticipationInSection_Section" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.Section_Weights" ManuallyRouted="false" />
-        <AssociationConnector Association="OptimalEducation.DAL.Models.Preference_Cities" ManuallyRouted="false" />
-        <AssociationConnector Association="OptimalEducation.DAL.Models.Preference_Entrant" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.Entrant_UnitedStateExams" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.EducationLine_Faculty" ManuallyRouted="false" />
         <AssociationConnector Association="OptimalEducation.DAL.Models.GeneralEducationLine_EducationLines" ManuallyRouted="false" />
