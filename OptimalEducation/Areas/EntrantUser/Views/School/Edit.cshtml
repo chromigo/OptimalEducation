@@ -1,4 +1,4 @@
-﻿@model OptimalEducation.DAL.Models.ParticipationInSection
+﻿@model OptimalEducation.DAL.Models.ParticipationInSchool
 
 @{
     ViewBag.Title = "Edit";
@@ -11,15 +11,15 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Секция</h4>
+        <h4>Школа</h4>
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SectionId, "Секция", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SchoolId, "Школа", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.Section.Name)
+                @Html.DisplayFor(model => model.School.Name)
             </div>
         </div>
 

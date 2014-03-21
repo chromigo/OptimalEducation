@@ -1,0 +1,40 @@
+﻿@model OptimalEducation.DAL.Models.ParticipationInSchool
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Удалить</h2>
+
+<h3>Вы действительно уверены, что хотите удалить результаты?</h3>
+<div>
+    <h4>Секция</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.School.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.School.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.YearPeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YearPeriod)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Назад к списку", "Index")
+        </div>
+    }
+</div>
