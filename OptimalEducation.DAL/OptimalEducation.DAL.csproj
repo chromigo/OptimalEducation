@@ -54,7 +54,16 @@
     <Compile Include="Migrations\201403210958366_Init_Entities.Designer.cs">
       <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201403211527472_addLocation_coord.cs" />
+    <Compile Include="Migrations\201403211527472_addLocation_coord.Designer.cs">
+      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.cs" />
+    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.Designer.cs">
+      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
     <Compile Include="OptimalEducationDbContext.Designer.cs">
       <DependentUpon>OptimalEducationDbContext.edmx</DependentUpon>
@@ -78,10 +87,14 @@
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\SchoolDiscipline.cs" />
     <Compile Include="Models\SchoolMark.cs" />
-    <Compile Include="Models\SchoolType.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\UnitedStateExam.cs" />
     <Compile Include="Models\Weight.cs" />
+    <Compile Include="OptimalEducationDbContextNew.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OptimalEducationDbContextNew.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +105,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="OptimalEducationDbContextNew.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>OptimalEducationDbContextNew.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +120,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201403210958366_Init_Entities.resx">
       <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403211527472_addLocation_coord.resx">
+      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201403211607512_SchoolAndSchoolType.resx">
+      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
