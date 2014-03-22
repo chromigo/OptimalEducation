@@ -15,28 +15,21 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Requirement, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Requirement)
-                @Html.ValidationMessageFor(model => model.Requirement)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EducationLineId, "EducationLineId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EducationLineId", String.Empty)
-                @Html.ValidationMessageFor(model => model.EducationLineId)
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.EducationLineId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.ExamDisciplineId, "ExamDisciplineId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("ExamDisciplineId", String.Empty)
                 @Html.ValidationMessageFor(model => model.ExamDisciplineId)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Requirement, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Requirement)
+                @Html.ValidationMessageFor(model => model.Requirement)
             </div>
         </div>
 
@@ -49,5 +42,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { id = ViewBag.EducationLineId })
 </div>

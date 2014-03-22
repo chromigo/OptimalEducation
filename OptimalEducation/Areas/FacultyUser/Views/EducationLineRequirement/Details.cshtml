@@ -11,14 +11,6 @@
 	<hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.EducationLine.Code)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EducationLine.Code)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.ExamDiscipline.Name)
         </dt>
 
@@ -38,5 +30,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", new { id = ViewBag.EducationLineId })
 </p>

@@ -7,13 +7,10 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { educationLineId = ViewBag.EducationLineId })
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EducationLine.Code)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.ExamDiscipline.Name)
         </th>
@@ -25,9 +22,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.EducationLine.Code)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.ExamDiscipline.Name)
         </td>
