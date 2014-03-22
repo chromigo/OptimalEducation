@@ -136,13 +136,13 @@ namespace OptimalEducation.Logic.Clusterizer
         {
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
-            var lastSchool = _entrant.Schools.LastOrDefault();
-            if(lastSchool!=null)
+            var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
+            if(lastParticipationInSchool!=null)
             {
                 //Или еще учитывать кол-во лет обучения?(нет в модели)
-                var quality = lastSchool.EducationQuality;
-                var schoolType = lastSchool.SchoolType;
-                foreach (var weight in schoolType.Weights)
+                var quality = lastParticipationInSchool.School.EducationQuality;
+                var schoolWeights = lastParticipationInSchool.School.Weights;
+                foreach (var weight in schoolWeights)
                 {
                     var coeff = weight.Coefficient;
                     var clusterName = weight.Cluster.Name;

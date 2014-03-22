@@ -14,7 +14,7 @@ namespace UnitTests
         List<Olympiad> olympiads = new List<Olympiad>();
         List<Section> sections = new List<Section>();
         List<Hobbie> hobbies = new List<Hobbie>();
-        List<SchoolType> schoolTypes = new List<SchoolType>();
+        List<School> schools = new List<School>();
         List<Cluster> clusters;
         //MethodName_Scenario_ExpectedBehavior
         public ClusterizerUnitTest()
@@ -42,7 +42,7 @@ namespace UnitTests
         }
         private void SchoolTypeFill()
         {
-            schoolTypes.Add(new SchoolType
+            schools.Add(new School
             {
                 Name = "{Школа по Математике",
                 Weights = new List<Weight>()
@@ -51,7 +51,7 @@ namespace UnitTests
                         new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Информатика")},
                     },
             });
-            schoolTypes.Add(new SchoolType
+            schools.Add(new School
             {
                 Name = "Школа по Информатике",
                 Weights = new List<Weight>()
@@ -252,18 +252,17 @@ namespace UnitTests
                         Section=sections[1]
                     }
                 },
-                Hobbies = hobbies,
-                Schools = new List<School> 
+                ParticipationInSchools = new List<ParticipationInSchool> 
                 {
-                    new School
+                    new ParticipationInSchool
                     {
-                        EducationQuality=1,
-                        SchoolType=schoolTypes[0]
+                        YearPeriod=5,
+                        School=schools[0]
                     },
-                    new School
+                    new ParticipationInSchool
                     {
-                        EducationQuality=2,
-                        SchoolType=schoolTypes[1]
+                        YearPeriod=6,
+                        School=schools[1]
                     }
                 },
             };

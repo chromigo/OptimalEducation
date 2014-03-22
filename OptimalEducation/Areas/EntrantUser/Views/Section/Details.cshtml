@@ -1,0 +1,34 @@
+﻿@model OptimalEducation.DAL.Models.ParticipationInSection
+
+@{
+	ViewBag.Title = "Details";
+}
+
+<h2>Подробности</h2>
+
+<div>
+	<h4>Секция</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Section.Name)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.Section.Name)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.YearPeriod)
+		</dt>
+
+		<dd>
+			@Html.DisplayFor(model => model.YearPeriod)
+		</dd>
+
+	</dl>
+</div>
+<p>
+	@Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }) |
+	@Html.ActionLink("Назад к списку", "Index")
+</p>

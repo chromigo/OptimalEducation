@@ -92,11 +92,26 @@ namespace OptimalEducation.DAL.Migrations
             faculties.ForEach(s => context.Faculties.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
+            var generalEducationLines = new List<GeneralEducationLine>
+            {
+                new GeneralEducationLine {Id=1, Name = "Г Математика и информатика", Code="1"},
+                new GeneralEducationLine {Id=2, Name = "Г Информатика", Code="2" },
+                new GeneralEducationLine {Id=3, Name = "Г Физика", Code="3"}
+            };
+            generalEducationLines.ForEach(s => context.GeneralEducationLines.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
             var educationLines = new List<EducationLine>
             {
-                new EducationLine {Id=1, Name = "Математика и информатика", Actual=true,RequiredSum=250, Code="1122",FacultyId=context.Faculties.First().Id},
-                new EducationLine {Id=2, Name = "Информатика", Actual=true,RequiredSum=260, Code="1122",FacultyId=context.Faculties.First().Id },
-                new EducationLine {Id=3, Name = "Физика", Actual=true,RequiredSum=220, Code="1122",FacultyId=context.Faculties.First().Id}
+                new EducationLine {Id=1, Name = "Математика и информатика", Actual=true,RequiredSum=250, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="1")},
+                new EducationLine {Id=2, Name = "Информатика", Actual=true,RequiredSum=260, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="2")},
+                new EducationLine {Id=3, Name = "Физика", Actual=true,RequiredSum=220, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="3")}
             };
             educationLines.ForEach(s => context.EducationLines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
@@ -157,16 +172,14 @@ namespace OptimalEducation.DAL.Migrations
             };
             sections.ForEach(s => context.Sections.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
-            var schoolTypes = new List<SchoolType>
+
+            var schools = new List<School>
             {
-                new SchoolType {Id=1, Name = "Русский язык"},
-                new SchoolType {Id=2, Name = "Математика"},
-                new SchoolType {Id=3, Name = "Информатика"},
-                new SchoolType {Id=4, Name = "Физика"},
-                new SchoolType {Id=5, Name = "Химия"},
-                new SchoolType {Id=6, Name = "Английский язык"},
+                new School { Id=1, Name = "Школа русского",EducationQuality=3},
+                new School { Id=2, Name = "Школа матана", EducationQuality= 2},
+                new School { Id=3, Name = "Школа проги", EducationQuality=1}
             };
-            schoolTypes.ForEach(s => context.SchoolTypes.AddOrUpdate(p => p.Name, s));
+            schools.ForEach(s => context.Schools.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var hobbies = new List<Hobbie>
@@ -180,6 +193,8 @@ namespace OptimalEducation.DAL.Migrations
             };
             hobbies.ForEach(s => context.Hobbies.AddOrUpdate(s));
             context.SaveChanges();
+
+
 
             var educationLineRequirement = new List<EducationLineRequirement>
             {
@@ -234,11 +249,11 @@ namespace OptimalEducation.DAL.Migrations
                 new Weight {Id=19, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
                 new Weight {Id=20, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
 
-                new Weight {Id=21, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=22, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=23, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=24, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=21, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа русского").Id},
+                new Weight {Id=22, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
+                new Weight {Id=23, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
+                new Weight {Id=24, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
+                new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
 
                 new Weight {Id=26, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Русский язык").Id},
                 new Weight {Id=27, Coefficient = 1, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
@@ -247,15 +262,6 @@ namespace OptimalEducation.DAL.Migrations
                 new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Clusters.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
             };
             weights.ForEach(s => context.Weights.AddOrUpdate(s));
-            context.SaveChanges();
-
-            var schools = new List<School>
-            {
-                new School { Id=1, Name = "Москва",EducationQuality=3, SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Информатика").Id },
-                new School { Id=2, Name = "Санкт-Петербург", EducationQuality= 2 , SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Математика").Id },
-                new School { Id=3, Name = "Екатеринбург", EducationQuality=1 , SchoolTypeId=context.SchoolTypes.Single(p=>p.Name=="Русский язык").Id }
-            };
-            schools.ForEach(s => context.Schools.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
         }
     }

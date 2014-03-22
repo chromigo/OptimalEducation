@@ -12,9 +12,9 @@ namespace OptimalEducation.DAL.Models
         public int EntrantsId { get; set; }
         [Display(Name = "Секция")]
         public int SectionId { get; set; }
-        [Display(Name = "Общее время занятий")]
+        [Display(Name = "Лет")]
+        [Range(0.5,30)]
         public double YearPeriod { get; set; }
-
 
 
         public virtual Entrant Entrants { get; set; }

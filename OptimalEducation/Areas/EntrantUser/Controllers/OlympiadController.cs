@@ -165,6 +165,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
+                dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}

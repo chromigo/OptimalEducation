@@ -182,11 +182,16 @@
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\InfoController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\SchoolController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\SectionController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OlympiadController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SchoolMarkController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\UnitedStateExamsController.cs" />
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
     <Compile Include="Areas\EntrantUser\Models\ViewModels\AssignedHobbie.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\EducationLineController.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\EducationLineRequirementController.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\InfoController.cs" />
     <Compile Include="Areas\FacultyUser\FacultyUserAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -238,6 +243,29 @@
     <Content Include="Areas\EntrantUser\Views\Olympiad\Details.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Olympiad\Edit.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Olympiad\Index.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Section\Create.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Section\Delete.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Section\Details.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Section\Edit.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Section\Index.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\School\Create.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\School\Delete.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\School\Details.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\School\Edit.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\School\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Create.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Delete.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Details.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Edit.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\Info\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Create.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Delete.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Details.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Edit.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -640,9 +668,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\FacultyUser\Controllers\" />
     <Folder Include="Areas\FacultyUser\Models\" />
-    <Folder Include="Areas\FacultyUser\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
