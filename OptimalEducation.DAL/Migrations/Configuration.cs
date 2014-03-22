@@ -92,11 +92,26 @@ namespace OptimalEducation.DAL.Migrations
             faculties.ForEach(s => context.Faculties.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
+            var generalEducationLines = new List<GeneralEducationLine>
+            {
+                new GeneralEducationLine {Id=1, Name = "Г Математика и информатика", Code="1"},
+                new GeneralEducationLine {Id=2, Name = "Г Информатика", Code="2" },
+                new GeneralEducationLine {Id=3, Name = "Г Физика", Code="3"}
+            };
+            generalEducationLines.ForEach(s => context.GeneralEducationLines.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+
             var educationLines = new List<EducationLine>
             {
-                new EducationLine {Id=1, Name = "Математика и информатика", Actual=true,RequiredSum=250, Code="1122",FacultyId=context.Faculties.First().Id},
-                new EducationLine {Id=2, Name = "Информатика", Actual=true,RequiredSum=260, Code="1122",FacultyId=context.Faculties.First().Id },
-                new EducationLine {Id=3, Name = "Физика", Actual=true,RequiredSum=220, Code="1122",FacultyId=context.Faculties.First().Id}
+                new EducationLine {Id=1, Name = "Математика и информатика", Actual=true,RequiredSum=250, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="1")},
+                new EducationLine {Id=2, Name = "Информатика", Actual=true,RequiredSum=260, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="2")},
+                new EducationLine {Id=3, Name = "Физика", Actual=true,RequiredSum=220, Code="1122",
+                    FacultyId=context.Faculties.First().Id,
+                    GeneralEducationLine=context.GeneralEducationLines.Single(p=>p.Code=="3")}
             };
             educationLines.ForEach(s => context.EducationLines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();

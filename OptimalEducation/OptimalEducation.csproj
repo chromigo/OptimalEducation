@@ -189,6 +189,9 @@
     <Compile Include="Areas\EntrantUser\Controllers\UnitedStateExamsController.cs" />
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
     <Compile Include="Areas\EntrantUser\Models\ViewModels\AssignedHobbie.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\EducationLineController.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\EducationLineRequirementController.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\InfoController.cs" />
     <Compile Include="Areas\FacultyUser\FacultyUserAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -250,6 +253,19 @@
     <Content Include="Areas\EntrantUser\Views\School\Details.cshtml" />
     <Content Include="Areas\EntrantUser\Views\School\Edit.cshtml" />
     <Content Include="Areas\EntrantUser\Views\School\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Create.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Delete.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Details.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Edit.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLine\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\Info\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Create.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Delete.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Details.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Edit.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -652,9 +668,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\FacultyUser\Controllers\" />
     <Folder Include="Areas\FacultyUser\Models\" />
-    <Folder Include="Areas\FacultyUser\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

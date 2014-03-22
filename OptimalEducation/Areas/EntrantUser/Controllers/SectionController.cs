@@ -49,7 +49,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -69,7 +69,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationinSection)
 		{
 			participationinSection.EntrantsId = await GetEntrantId();
 			if (ModelState.IsValid)
@@ -93,7 +93,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p=>p.EntrantsId==entrantId)
-				.FirstOrDefaultAsync(p=>p.Id==id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -106,7 +106,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationinSection)
 		{
 			//var entrantId = await GetEntrantId();
 			//participationinSection.EntrantId = entrantId;
@@ -114,7 +114,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (ModelState.IsValid)
 			{
 				var dbPartOlymp = await db.ParticipationInSections.FindAsync(participationinSection.Id);
-                dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
+				dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
 				await db.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
@@ -131,7 +131,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+				.SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -147,7 +147,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			db.ParticipationInSections.Remove(participationinSection);
 			await db.SaveChangesAsync();
 			return RedirectToAction("Index");
@@ -156,7 +156,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private async Task<int> GetEntrantId()
 		{
 			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
 		}
@@ -165,6 +165,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
+				dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}
