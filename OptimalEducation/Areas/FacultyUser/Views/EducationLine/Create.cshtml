@@ -15,13 +15,13 @@
         <hr />
         @Html.ValidationSummary(true)
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.GeneralEducationLineId, "GeneralEducationLineId", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("GeneralEducationLineId", String.Empty)
                 @Html.ValidationMessageFor(model => model.GeneralEducationLineId)
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.FacultyId, "FacultyId", new { @class = "control-label col-md-2" })
