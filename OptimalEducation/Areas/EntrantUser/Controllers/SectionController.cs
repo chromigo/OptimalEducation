@@ -69,7 +69,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationinSection)
 		{
 			participationinSection.EntrantsId = await GetEntrantId();
 			if (ModelState.IsValid)
@@ -106,7 +106,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationinSection)
 		{
 			//var entrantId = await GetEntrantId();
 			//participationinSection.EntrantId = entrantId;
@@ -114,7 +114,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (ModelState.IsValid)
 			{
 				var dbPartOlymp = await db.ParticipationInSections.FindAsync(participationinSection.Id);
-                dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
+				dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
 				await db.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
@@ -165,7 +165,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
-                dbIdentity.Dispose();
+				dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}

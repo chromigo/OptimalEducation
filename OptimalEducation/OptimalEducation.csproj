@@ -190,6 +190,7 @@
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
     <Compile Include="Areas\EntrantUser\Models\ViewModels\AssignedHobbie.cs" />
     <Compile Include="Areas\FacultyUser\Controllers\EducationLineController.cs" />
+    <Compile Include="Areas\FacultyUser\Controllers\InfoController.cs" />
     <Compile Include="Areas\FacultyUser\FacultyUserAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -258,6 +259,7 @@
     <Content Include="Areas\FacultyUser\Views\EducationLine\Details.cshtml" />
     <Content Include="Areas\FacultyUser\Views\EducationLine\Edit.cshtml" />
     <Content Include="Areas\FacultyUser\Views\EducationLine\Index.cshtml" />
+    <Content Include="Areas\FacultyUser\Views\Info\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
