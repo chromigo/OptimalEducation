@@ -16,14 +16,6 @@
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.GeneralEducationLineId, "GeneralEducationLineId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("GeneralEducationLineId", String.Empty)
-                @Html.ValidationMessageFor(model => model.GeneralEducationLineId)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Name)
@@ -36,6 +28,14 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Code)
                 @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GeneralEducationLineId, "GeneralEducationLineId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GeneralEducationLineId", String.Empty)
+                @Html.ValidationMessageFor(model => model.GeneralEducationLineId)
             </div>
         </div>
 

@@ -34,8 +34,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			var facultyId = await GetFacultyId();
 			var educationlines = db.EducationLines
 				.Include(e => e.Faculty)
-				.Include(e => e.GeneralEducationLine)
-				.Where(e=>e.Id==facultyId);
+				.Where(e=>e.FacultyId==facultyId);
 			return View(await educationlines.ToListAsync());
 		}
 
@@ -47,7 +46,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
             var facultyId = await GetFacultyId();
-            EducationLine educationline = await db.EducationLines
+            var educationline = await db.EducationLines
                 .Where(p => p.FacultyId == facultyId)
                 .FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
@@ -60,7 +59,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// GET: /FacultyUser/EducationLine/Create
 		public ActionResult Create()
 		{
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code");
+			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");
 			return View();
 		}
 
@@ -69,8 +68,9 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create([Bind(Include="Id,GeneralEducationLineId,,Code,EducationForm,Name,RequiredSum,Actual,Price,PaidPlacesNumber,FreePlacesNumber")] EducationLine educationline)
+        public async Task<ActionResult> Create([Bind(Include = "Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
 		{
+            educationline.FacultyId = await GetFacultyId();
 			if (ModelState.IsValid)
 			{
 				db.EducationLines.Add(educationline);
@@ -78,7 +78,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationline.GeneralEducationLineId);
+            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -89,13 +89,16 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			EducationLine educationline = await db.EducationLines.FindAsync(id);
+            var facultyId = await GetFacultyId();
+            var educationline = await db.EducationLines
+                .Where(p => p.FacultyId == facultyId)
+                .FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
 			{
 				return HttpNotFound();
 			}
-			ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name", educationline.FacultyId);
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationline.GeneralEducationLineId);
+
+			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -104,16 +107,19 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Edit([Bind(Include="Id,GeneralEducationLineId,FacultyId,Code,EducationForm,Name,RequiredSum,Actual,Price,PaidPlacesNumber,FreePlacesNumber")] EducationLine educationline)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FacultyId,Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
 		{
 			if (ModelState.IsValid)
 			{
-				db.Entry(educationline).State = EntityState.Modified;
-				await db.SaveChangesAsync();
-				return RedirectToAction("Index");
+                var facultyId = await GetFacultyId();
+                if (educationline.FacultyId==facultyId)
+                {
+                    db.Entry(educationline).State = EntityState.Modified;
+				    await db.SaveChangesAsync();
+				    return RedirectToAction("Index");
+                }
 			}
-			ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name", educationline.FacultyId);
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationline.GeneralEducationLineId);
+			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -124,12 +130,15 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			EducationLine educationline = await db.EducationLines.FindAsync(id);
-			if (educationline == null)
+            var facultyId = await GetFacultyId();
+            var educationLinesFromDb = await db.EducationLines
+                .Where(p => p.FacultyId == facultyId && p.Id == id)
+                .SingleOrDefaultAsync();
+            if (educationLinesFromDb == null)
 			{
 				return HttpNotFound();
 			}
-			return View(educationline);
+            return View(educationLinesFromDb);
 		}
 
 		// POST: /FacultyUser/EducationLine/Delete/5
@@ -137,8 +146,11 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-			EducationLine educationline = await db.EducationLines.FindAsync(id);
-			db.EducationLines.Remove(educationline);
+            var facultyId = await GetFacultyId();
+            var educationLinesFromDb = await db.EducationLines
+                .Where(p => p.FacultyId == facultyId && p.Id == id)
+                .SingleOrDefaultAsync();
+            db.EducationLines.Remove(educationLinesFromDb);
 			await db.SaveChangesAsync();
 			return RedirectToAction("Index");
 		}
@@ -146,7 +158,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		private async Task<int> GetFacultyId()
 		{
 			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+			var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
 		}

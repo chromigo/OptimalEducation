@@ -15,20 +15,12 @@
         <hr />
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
-
+        @Html.HiddenFor(model => model.FacultyId)
         <div class="form-group">
-            @Html.LabelFor(model => model.GeneralEducationLineId, "GeneralEducationLineId", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("GeneralEducationLineId", String.Empty)
-                @Html.ValidationMessageFor(model => model.GeneralEducationLineId)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FacultyId, "FacultyId", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("FacultyId", String.Empty)
-                @Html.ValidationMessageFor(model => model.FacultyId)
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
 
@@ -41,26 +33,18 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.GeneralEducationLineId, "GeneralEducationLineId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("GeneralEducationLineId", String.Empty)
+                @Html.ValidationMessageFor(model => model.GeneralEducationLineId)
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.EducationForm, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.EducationForm)
                 @Html.ValidationMessageFor(model => model.EducationForm)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RequiredSum, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RequiredSum)
-                @Html.ValidationMessageFor(model => model.RequiredSum)
             </div>
         </div>
 
@@ -73,10 +57,18 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FreePlacesNumber, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
+                @Html.EditorFor(model => model.FreePlacesNumber)
+                @Html.ValidationMessageFor(model => model.FreePlacesNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequiredSum, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RequiredSum)
+                @Html.ValidationMessageFor(model => model.RequiredSum)
             </div>
         </div>
 
@@ -89,10 +81,10 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FreePlacesNumber, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FreePlacesNumber)
-                @Html.ValidationMessageFor(model => model.FreePlacesNumber)
+                @Html.EditorFor(model => model.Price)
+                @Html.ValidationMessageFor(model => model.Price)
             </div>
         </div>
 

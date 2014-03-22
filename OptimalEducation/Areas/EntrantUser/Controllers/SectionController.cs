@@ -49,7 +49,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -93,7 +93,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p=>p.EntrantsId==entrantId)
-				.FirstOrDefaultAsync(p=>p.Id==id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -131,7 +131,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+				.SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -147,7 +147,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			ParticipationInSection participationinSection = await db.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+                .SingleOrDefaultAsync(p => p.Id == id);
 			db.ParticipationInSections.Remove(participationinSection);
 			await db.SaveChangesAsync();
 			return RedirectToAction("Index");
@@ -156,7 +156,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private async Task<int> GetEntrantId()
 		{
 			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
 		}
