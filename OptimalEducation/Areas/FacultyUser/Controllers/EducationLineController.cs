@@ -46,15 +46,22 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-            var facultyId = await GetFacultyId();
-            var educationline = await db.EducationLines
-                .Where(p => p.FacultyId == facultyId)
-                .FirstOrDefaultAsync(p => p.Id == id);
+			//Отобразить характеристики текущего направления
+			var facultyId = await GetFacultyId();
+			var educationline = await db.EducationLines
+				.Where(p => p.FacultyId == facultyId)
+				.FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
 			{
 				return HttpNotFound();
 			}
-            ViewBag.CluserResults = new EducationLineClusterizer(educationline).Cluster;
+			ViewBag.CluserResults = new EducationLineClusterizer(educationline).Cluster;
+			//Отобразить рекомендуемый список абитуриентов
+			
+			var entrants = await db.Entrants
+				.ToListAsync();
+			ViewBag.RecomendationForEducationLine= ClusterComparer.GetRecomendationForEducationLine(educationline, entrants);
+
 			return View(educationline);
 		}
 
@@ -70,9 +77,9 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
+		public async Task<ActionResult> Create([Bind(Include = "Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
 		{
-            educationline.FacultyId = await GetFacultyId();
+			educationline.FacultyId = await GetFacultyId();
 			if (ModelState.IsValid)
 			{
 				db.EducationLines.Add(educationline);
@@ -80,7 +87,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return RedirectToAction("Index");
 			}
 
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
+			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -91,10 +98,10 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-            var facultyId = await GetFacultyId();
-            var educationline = await db.EducationLines
-                .Where(p => p.FacultyId == facultyId)
-                .FirstOrDefaultAsync(p => p.Id == id);
+			var facultyId = await GetFacultyId();
+			var educationline = await db.EducationLines
+				.Where(p => p.FacultyId == facultyId)
+				.FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
 			{
 				return HttpNotFound();
@@ -109,17 +116,17 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FacultyId,Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
+		public async Task<ActionResult> Edit([Bind(Include = "Id,FacultyId,Name,Code,GeneralEducationLineId,EducationForm,Actual,FreePlacesNumber,RequiredSum,PaidPlacesNumber,Price")] EducationLine educationline)
 		{
 			if (ModelState.IsValid)
 			{
-                var facultyId = await GetFacultyId();
-                if (educationline.FacultyId==facultyId)
-                {
-                    db.Entry(educationline).State = EntityState.Modified;
-				    await db.SaveChangesAsync();
-				    return RedirectToAction("Index");
-                }
+				var facultyId = await GetFacultyId();
+				if (educationline.FacultyId==facultyId)
+				{
+					db.Entry(educationline).State = EntityState.Modified;
+					await db.SaveChangesAsync();
+					return RedirectToAction("Index");
+				}
 			}
 			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
@@ -132,15 +139,15 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-            var facultyId = await GetFacultyId();
-            var educationLinesFromDb = await db.EducationLines
-                .Where(p => p.FacultyId == facultyId && p.Id == id)
-                .SingleOrDefaultAsync();
-            if (educationLinesFromDb == null)
+			var facultyId = await GetFacultyId();
+			var educationLinesFromDb = await db.EducationLines
+				.Where(p => p.FacultyId == facultyId && p.Id == id)
+				.SingleOrDefaultAsync();
+			if (educationLinesFromDb == null)
 			{
 				return HttpNotFound();
 			}
-            return View(educationLinesFromDb);
+			return View(educationLinesFromDb);
 		}
 
 		// POST: /FacultyUser/EducationLine/Delete/5
@@ -148,11 +155,11 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-            var facultyId = await GetFacultyId();
-            var educationLinesFromDb = await db.EducationLines
-                .Where(p => p.FacultyId == facultyId && p.Id == id)
-                .SingleOrDefaultAsync();
-            db.EducationLines.Remove(educationLinesFromDb);
+			var facultyId = await GetFacultyId();
+			var educationLinesFromDb = await db.EducationLines
+				.Where(p => p.FacultyId == facultyId && p.Id == id)
+				.SingleOrDefaultAsync();
+			db.EducationLines.Remove(educationLinesFromDb);
 			await db.SaveChangesAsync();
 			return RedirectToAction("Index");
 		}
@@ -170,7 +177,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			if (disposing)
 			{
 				db.Dispose();
-                dbIdentity.Dispose();
+				dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);
 		}

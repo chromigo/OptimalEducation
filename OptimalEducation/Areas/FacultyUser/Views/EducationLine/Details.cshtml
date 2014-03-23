@@ -116,6 +116,49 @@
             }
         </dl>
     </div>
+
+    <hr />
+    <h4>Рекомендация по выбору учеников</h4>
+    <hr />
+
+    <table class="table">
+        @{
+            var recomendationForEducationLine = (ViewBag.RecomendationForEducationLine as Dictionary<OptimalEducation.DAL.Models.Entrant, double>);
+        }
+        <tr>
+            <th>
+                Близость
+            <th>
+                ФИО
+            </th>
+            <th>
+                Средная оценка
+            </th>
+            <th>
+                Город (откуда)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var recomendation in recomendationForEducationLine)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.FirstName) @Html.DisplayFor(model => recomendation.Key.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.AverageMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.Citizenship)
+                </td>
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
