@@ -1,7 +1,23 @@
-﻿
+﻿@model Dictionary<string, double>
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Main info about user</h2>
+<h2>Вычисленные предпочтения пользователя</h2>
+<h3>По предметам</h3>
+
+<div>
+    <dl class="dl-horizontal">
+        @foreach (var clusterRes in Model)
+        {
+            <dt>
+                @Html.DisplayFor(model => clusterRes.Key)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => clusterRes.Value)
+            </dd>
+        }
+    </dl>
+</div>
+
 

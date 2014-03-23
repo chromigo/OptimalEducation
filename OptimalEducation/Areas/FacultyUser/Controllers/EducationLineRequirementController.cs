@@ -48,7 +48,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			}
 			
 			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
-            ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
+			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
 				return HttpNotFound();
@@ -86,7 +86,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				{
 					db.EducationLineRequirements.Add(educationlinerequirement);
 					await db.SaveChangesAsync();
-                    return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
+					return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 				}
 				else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
@@ -103,7 +103,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
-            ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
+			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
 				return HttpNotFound();
@@ -133,7 +133,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				{
 					db.Entry(educationlinerequirement).State = EntityState.Modified;
 					await db.SaveChangesAsync();
-                    return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
+					return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 				}
 				else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
@@ -149,7 +149,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
-            ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
+			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
 				return HttpNotFound();
@@ -174,7 +174,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				db.EducationLineRequirements.Remove(educationlinerequirement);
 				await db.SaveChangesAsync();
-                return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
+				return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 			}
 			else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		}

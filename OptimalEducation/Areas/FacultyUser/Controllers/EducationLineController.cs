@@ -11,6 +11,7 @@ using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.Logic.Clusterizer;
 
 namespace OptimalEducation.Areas.FacultyUser.Controllers
 {
@@ -53,6 +54,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return HttpNotFound();
 			}
+            ViewBag.CluserResults = new EducationLineClusterizer(educationline).Cluster;
 			return View(educationline);
 		}
 

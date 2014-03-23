@@ -98,6 +98,24 @@
         </dd>
 
     </dl>
+
+    <hr />
+    <h4>Вычисленная ориентация по предметам</h4>
+    <hr />
+
+    <div>
+        <dl class="dl-horizontal">
+            @foreach (var clusterRes in (ViewBag.CluserResults as Dictionary<string,double>))
+            {
+                <dt>
+                    @Html.DisplayFor(model => clusterRes.Key)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => clusterRes.Value)
+                </dd>
+            }
+        </dl>
+    </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

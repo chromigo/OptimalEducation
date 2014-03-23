@@ -69,14 +69,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			}
 		}
 
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
-		}
-
 		//POST: /EntrantUser/UnitedStateExams/Index
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -121,7 +113,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			await db.SaveChangesAsync();
 			return RedirectToAction("Index");
 		}
-
+        private async Task<int> GetEntrantId()
+        {
+            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
+            var entrantId = int.Parse(entrantClaim.ClaimValue);
+            return entrantId;
+        }
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
