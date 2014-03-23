@@ -19,5 +19,50 @@
         }
     </dl>
 </div>
+<table class="table">
+    @{
+        var recomendationForEntrant = (ViewBag.RecomendationForEntrant as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
+    }
+    <tr>
+        <th>
+            Близость
+        <th>
+            Название направления
+        </th>
+        <th>
+            Код направления
+        </th>
+        <th>
+            Название факультета
+        </th>
+        <th>
+            Название ВУЗ-а
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var recomendation in recomendationForEntrant)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => recomendation.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Key.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Key.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Key.Faculty.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)
+            </td>
+        </tr>
+    }
+
+</table>
+
 
 

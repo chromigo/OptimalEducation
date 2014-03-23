@@ -62,7 +62,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		}
 
 		// GET: /FacultyUser/EducationLineRequirement/Create
-		public async Task<ActionResult> Create(int educationLineId)
+		public ActionResult Create(int educationLineId)
 		{
 			ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name");
 			ViewBag.EducationLineId = educationLineId;

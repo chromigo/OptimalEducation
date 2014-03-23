@@ -6,6 +6,7 @@ using OptimalEducation.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -32,10 +33,18 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Info/
 		public async Task<ActionResult> Index()
 		{
+            //Отобразить характеристики текущего пользователя
 			var entrantId = await GetEntrantId();
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
 			var clusterizer = new EntrantClusterizer(entrant);
+
+            //Отобразить рекомендуемые учебные направления
+            var educationLines = await db.EducationLines
+                .Where(p => p.Actual == true)
+                .ToListAsync();
+            ViewBag.RecomendationForEntrant = ClusterComparer.GetRecomendationForEntrant(entrant, educationLines);
+            
 			return View(clusterizer.Cluster);
 		}
 

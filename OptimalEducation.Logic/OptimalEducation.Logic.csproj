@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyticHierarchyProcess\AHPUser.cs" />
+    <Compile Include="Clusterizer\ClusterComparer.cs" />
     <Compile Include="Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Clusterizer\EntrantClusterizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
