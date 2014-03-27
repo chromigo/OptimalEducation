@@ -51,6 +51,26 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         #endregion
 
 
+        #region Переменные для тертьего критерия - престиж (универов и направлений)
+        List<ThirdCriterionUnit> ThirdCriterionContainer = new List<ThirdCriterionUnit>();
+
+        int thirdCriterionMatrixSize = 0;
+        double HEIprestigePart = 0.7;
+
+        class ThirdCriterionUnit
+        {
+            public int databaseId;
+            public int matrixId;
+
+            public int facultyPrestige;
+            public int HEIPrestige;
+
+            public double localPriorityFaculty;
+            public double localPriorityHEI;
+        }
+        #endregion
+
+
         #region Переменные и классы для сложения критериев в конечную оценку
         public List<TotalResultUnit> AllCriterionContainer = new List<TotalResultUnit>();
         public class TotalResultUnit
@@ -67,9 +87,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         #region Общие настройки метода и приоритеты критериев
 
-        double firstCriterionPriority = 1;
-        double secondCriterionPriority = 0;
-        double thirdCriterionPriority = 0;
+        double firstCriterionPriority = 0.34;
+        double secondCriterionPriority = 0.33;
+        double thirdCriterionPriority = 0.33;
 
         int firstCriterionLazyGap = 10;
 
@@ -89,6 +109,15 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             CalculateAll();
         }
 
+        public AHPUser(int userID)
+        {
+            _entrant = context.Entrants.Find(userID);
+
+            //Console.WriteLine(_entrant.FirstName + " " + _entrant.LastName);
+            CalculateAll();
+        }
+
+
 
         private void CalculateAll()
         {
@@ -96,6 +125,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             CalculateFirstCriterion();
             InitialiseSecondCriterion();
             CalculateSecondCriterion();
+            InitialiseThirdCriterion();
+            CalculateThirdCriterion();
+
 
             FinalCalculate();
         }
@@ -394,7 +426,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         }
 
 
-        //Подсчет значений для сравнения в таблице
+        //Подсчет значений для сравнения в таблице 2 критерий
         private double GetSecondCriterionEdLineValue(Dictionary<string, double> EdLineClusters)
         {
             double difference = 0;
@@ -430,6 +462,98 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         }
 
 
+        //Критерий пррестижа - заполнение направлений во временный список
+        private void InitialiseThirdCriterion()
+        {
+            int counter = 0;
+
+            foreach (EducationLine EdLine in context.EducationLines)
+            {
+
+                ThirdCriterionUnit EducationLine = new ThirdCriterionUnit();
+                EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
+                EducationLine.matrixId = counter;
+
+                if (EdLine.Faculty.Prestige > 0) EducationLine.facultyPrestige = EdLine.Faculty.Prestige;
+                else EducationLine.facultyPrestige = 0;
+
+                if (EdLine.Faculty.HigherEducationInstitution.Prestige > 0) EducationLine.HEIPrestige = EdLine.Faculty.HigherEducationInstitution.Prestige;
+                else EducationLine.HEIPrestige = 0;
+
+                EducationLine.localPriorityFaculty = 0;
+                EducationLine.localPriorityHEI = 0;
+
+                counter++;
+
+                ThirdCriterionContainer.Add(EducationLine);                
+            }
+            thirdCriterionMatrixSize = counter;
+        }
+
+
+        //Критерий престижа - расчет притетов для всех направлений
+        private void CalculateThirdCriterion()
+        {
+
+            double[,] pairwiseComparisonMatrix = new double[thirdCriterionMatrixSize, thirdCriterionMatrixSize];
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                for (int j = 0; j < thirdCriterionMatrixSize; j++)
+                {
+                    double a = GetThirdCriterionEdLineValue(ThirdCriterionContainer.Find(x => x.matrixId == i).facultyPrestige);
+                    double b = GetThirdCriterionEdLineValue(ThirdCriterionContainer.Find(y => y.matrixId == j).facultyPrestige);
+                    
+                    pairwiseComparisonMatrix[i, j] = a/b;
+
+                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
+                }
+            }
+
+            double[] resultVector1 = CalcEigenvectors(pairwiseComparisonMatrix, thirdCriterionMatrixSize);
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                ThirdCriterionContainer.Find(x => x.matrixId == i).localPriorityFaculty = resultVector1[i];
+            }
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                for (int j = 0; j < thirdCriterionMatrixSize; j++)
+                {
+                    double a = GetThirdCriterionEdLineValue(ThirdCriterionContainer.Find(x => x.matrixId == i).HEIPrestige);
+                    double b = GetThirdCriterionEdLineValue(ThirdCriterionContainer.Find(y => y.matrixId == j).HEIPrestige);
+
+                    pairwiseComparisonMatrix[i, j] = a / b;
+
+                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
+                }
+            }
+
+            double[] resultVector2 = CalcEigenvectors(pairwiseComparisonMatrix, thirdCriterionMatrixSize);
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                ThirdCriterionContainer.Find(x => x.matrixId == i).localPriorityHEI = resultVector2[i];
+            }
+            
+            //Тертий критерий закончил рачет приоритетов (локальных)
+
+        }
+
+
+        //Подсчет значений для сравнения в таблице 3 критерий (сильно упростился, но вообще убирать лень)
+        private double GetThirdCriterionEdLineValue(int prestige)
+        {
+            if (prestige <= 0) return 1;
+            else return Convert.ToDouble(prestige);
+        }
+
+
+
+
+
+
 
 
         //Расчет конечных приоритетов и сортировка
@@ -452,7 +576,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
                     FirstCriterionContainer[i].localPriority * firstCriterionPriority;
             }
-            //Потом тоже самое для остальных критериев
+            //Потом тоже самое для 2 критерия
             for (int i = 0; i < SecondCriterionContainer.Count; i++)
             {
                 if ((AllCriterionContainer.FindIndex(x => x.databaseId == SecondCriterionContainer[i].databaseId)) >= 0)
@@ -468,6 +592,24 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
                     SecondCriterionContainer[i].localPriority * secondCriterionPriority;
+            }
+            //Потом тоже самое для 3-го
+            for (int i = 0; i < ThirdCriterionContainer.Count; i++)
+            {
+                if ((AllCriterionContainer.FindIndex(x => x.databaseId == ThirdCriterionContainer[i].databaseId)) >= 0)
+                {
+                    //DUNNO LOL
+                }
+                else
+                {
+                    TotalResultUnit EducationLineFinal = new TotalResultUnit();
+                    EducationLineFinal.databaseId = ThirdCriterionContainer[i].databaseId;
+                    AllCriterionContainer.Add(EducationLineFinal);
+                }
+
+                AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
+                    ThirdCriterionContainer[i].localPriorityFaculty * thirdCriterionPriority * (1 - HEIprestigePart) +
+                        ThirdCriterionContainer[i].localPriorityHEI * thirdCriterionPriority * HEIprestigePart;
             }
 
             //Завершающее сложение и заполнение выходного словарая
