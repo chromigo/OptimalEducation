@@ -629,7 +629,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.localPriority = 0;
                     
                     if (EdLine.Faculty.HigherEducationInstitution.City.Id == fourthCriterionCityID) EducationLine.distance = 0;
-                    else EducationLine.distance = 9;
+                    else EducationLine.distance = 9.0;
                     
                     counter++;
 
