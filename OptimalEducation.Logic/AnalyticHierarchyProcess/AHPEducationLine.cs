@@ -81,7 +81,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             if (firstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
-                //CalculateFirstCriterion();
+                CalculateFirstCriterion();
 
                 FinalCalculate();
             }
@@ -140,7 +140,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     User.entrantSum = entrExamSum;
                     User.localPriority = 0;
 
-                    //Console.WriteLine(">>>>>>>> WEAK DIFF: " + EducationLine.weakenedDifficulty);
+                    //Console.WriteLine(">>>>>>>> USER RESULT: " + User.entrantSum);
 
                     counter++;
 
@@ -149,45 +149,97 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             }
 
             firstCriterionMatrixSize = counter;
-            Console.WriteLine("TOTAL USERS TO GO: " + counter.ToString());
-            Console.WriteLine("TOTAL USERS IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
+            //Console.WriteLine("TOTAL USERS TO GO: " + counter.ToString());
+            //Console.WriteLine("TOTAL USERS IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
         }
 
 
 
         //Критерий трудности по ЕГЭ - расчеты приоритетов для всех подхолдящий направлений
-        //private void CalculateFirstCriterion()
-        //{
-        //    //Console.WriteLine();
-        //    //Console.WriteLine("======================================================================");
-        //    //Console.WriteLine("======================================================================");
-        //    //Console.WriteLine();
+        private void CalculateFirstCriterion()
+        {
 
-        //    double[,] pairwiseComparisonMatrix = new double[firstCriterionMatrixSize, firstCriterionMatrixSize];
+            double[,] pairwiseComparisonMatrix = new double[firstCriterionMatrixSize, firstCriterionMatrixSize];
 
-        //    for (int i = 0; i < firstCriterionMatrixSize; i++)
-        //    {
-        //        for (int j = 0; j < firstCriterionMatrixSize; j++)
-        //        {
-        //            int a = FirstCriterionContainer.Find(x => x.matrixId == i).weakenedDifficulty;
-        //            int b = FirstCriterionContainer.Find(y => y.matrixId == j).weakenedDifficulty;
-        //            pairwiseComparisonMatrix[i, j] = FirstCriterionCompare(a, b);
-        //        }
-        //    }
+            for (int i = 0; i < firstCriterionMatrixSize; i++)
+            {
+                for (int j = 0; j < firstCriterionMatrixSize; j++)
+                {
+                    int a = CalculatedDifficultyResult(FirstCriterionContainer.Find(x => x.matrixId == i).entrantSum);
+                    int b = CalculatedDifficultyResult(FirstCriterionContainer.Find(y => y.matrixId == j).entrantSum);
 
-        //    double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, firstCriterionMatrixSize);
+                    //Console.Write("    Pair is " + a.ToString());
+                    //Console.WriteLine(" - " + b.ToString());
 
-        //    //Console.WriteLine();
+                    pairwiseComparisonMatrix[i, j] = FirstCriterionCompare(a, b);
+                }
+            }
 
-        //    for (int i = 0; i < firstCriterionMatrixSize; i++)
-        //    {
-        //        FirstCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
-        //    }
-        //    //Первый критерий закончил рачет приоритетов (локальных)
+            double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, firstCriterionMatrixSize);
 
-        //}
+            //Console.WriteLine();
+
+            for (int i = 0; i < firstCriterionMatrixSize; i++)
+            {
+                FirstCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
+
+            }
+            //Первый критерий закончил рачет приоритетов (локальных)
+
+        }
 
 
+        private int CalculatedDifficultyResult(int entrantSum)
+        {
+            int tempResEntr = entrantSum;
+
+            if (tempResEntr < 0) tempResEntr = 0;
+
+            int weakResult = tempResEntr - Math.Abs(tempResEntr - edLineRequiredSum);
+            if (weakResult < 0) weakResult = 0;
+            return weakResult;
+        }
+
+
+        //Сравнение результатов 2 направлений (1 критерий)
+        private double FirstCriterionCompare(int firstNum, int secondNum)
+        {
+            if ((firstNum <= 0) && (secondNum <= 0)) return 1;
+            else if (firstNum <= 0) return (1 / Convert.ToDouble(secondNum));
+            else if (secondNum <= 0) return firstNum;
+            else return Convert.ToDouble(firstNum) / Convert.ToDouble(secondNum);
+        }
+
+
+        //Нахождение собственного вектора через приближенные оценки
+        private double[] CalcEigenvectors(double[,] matrix, int martixSize)
+        {
+            double[] resultVector = new double[martixSize];
+
+            for (int i = 0; i < martixSize; i++)
+            {
+                double lineProduction = 1;
+
+                for (int j = 0; j < martixSize; j++)
+                {
+                    lineProduction = lineProduction * matrix[i, j];
+                }
+                resultVector[i] = Math.Pow(lineProduction, 1 / Convert.ToDouble(martixSize));
+            }
+
+            double vectorCompSum = 0;
+            for (int i = 0; i < martixSize; i++)
+            {
+                vectorCompSum = vectorCompSum + resultVector[i];
+            }
+            //Console.WriteLine("> Eigenvector:");
+            for (int i = 0; i < martixSize; i++)
+            {
+                resultVector[i] = resultVector[i] / vectorCompSum;
+                //Console.WriteLine(resultVector[i].ToString());
+            }
+            return resultVector;
+        }
 
 
 
