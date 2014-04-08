@@ -495,6 +495,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EdLineClusters)
             {
+                if (!entruntClusters.ContainsKey(item.Key)) continue;
+
                 double normalizedEdLineValue;
                 if (EdLineClusters.Values.Max() > 0) normalizedEdLineValue = item.Value / EdLineClusters.Values.Max();
                 else normalizedEdLineValue = 0;

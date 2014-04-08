@@ -19,9 +19,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         #region Общие настройки метода и приоритеты критериев
 
-        double firstCriterionPriority = 0.40;
-        double secondCriterionPriority = 0.35;
-        double thirdCriterionPriority = 0.25;
+        double firstCriterionPriority = 0.5;
+        double secondCriterionPriority = 0.5;
+        double thirdCriterionPriority = 0.0;
 
         #endregion
 
@@ -39,8 +39,27 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             public double localPriority;
         }
         #endregion
-        
 
+        
+        #region Переменные для второго критерия - схожести интересов (кластеров)
+        List<SecondCriterionUnit> SecondCriterionContainer = new List<SecondCriterionUnit>();
+        Dictionary<string, double> educationLineClusters = new Dictionary<string, double>();
+        double maxEdLineClusterSum = 0;
+        int secondCriterionMatrixSize = 0;
+
+        class SecondCriterionUnit
+        {
+            public int databaseId;
+            public bool secondCriterionAcceptable;
+            public int matrixId;
+
+            public Dictionary<string, double> entrantClusters = new Dictionary<string, double>();
+
+            public double localPriority;
+        }
+        #endregion
+        
+        
         #region Переменные и классы для сложения критериев в конечную оценку
         public List<TotalResultUnit> AllCriterionContainer = new List<TotalResultUnit>();
         public class TotalResultUnit
@@ -82,9 +101,14 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 InitialiseFirstCriterion();
                 CalculateFirstCriterion();
-
-                FinalCalculate();
             }
+            if (secondCriterionPriority > 0)
+            {
+                InitialiseSecondCriterion();
+                CalculateSecondCriterion();
+            }
+
+            FinalCalculate();
         }
 
 
@@ -152,8 +176,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("TOTAL USERS TO GO: " + counter.ToString());
             //Console.WriteLine("TOTAL USERS IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
         }
-
-
+        
 
         //Критерий трудности по ЕГЭ - расчеты приоритетов для всех подхолдящий направлений
         private void CalculateFirstCriterion()
@@ -189,6 +212,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         }
 
 
+        //Первый критерий что-то вспомогательное
         private int CalculatedDifficultyResult(int entrantSum)
         {
             int tempResEntr = entrantSum;
@@ -242,6 +266,154 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         }
 
 
+        //Критерий совпадения кластеров - заполнение направлений во временный список
+        private void InitialiseSecondCriterion()
+        {
+            int totalAvailLines = 0;
+            EducationLineClusterizer EdLineClusterizer = new EducationLineClusterizer(_educationLine);
+
+            maxEdLineClusterSum = EdLineClusterizer.Cluster.Values.Max();
+            educationLineClusters = EdLineClusterizer.Cluster;
+
+            //foreach (var item in EdLineClusterizer.Cluster)
+            //{
+            //    Console.WriteLine(item.Key.ToString());
+            //}
+            //Console.WriteLine("++++++++++++++++++++++++++");
+
+
+            foreach (Entrant entrant in context.Entrants)
+            {
+                bool userAcceptable = true;
+
+                EntrantClusterizer EntrClusterizer = new EntrantClusterizer(entrant);
+                if (EntrClusterizer.Cluster.Count() <= 0) userAcceptable = false;
+
+                //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());
+                //foreach (var item in EntrClusterizer.Cluster)
+                //{
+                //    Console.WriteLine(item.Key.ToString());
+                //}
+
+                foreach (var item in educationLineClusters)
+                {
+                    if (!EntrClusterizer.Cluster.ContainsKey(item.Key))
+                    {
+                        userAcceptable = false;
+                    }
+                }
+
+                if (userAcceptable == false)
+                {
+                    //Console.WriteLine("====== NOT ACCEPTABLE CLUSTERS");
+
+                    SecondCriterionUnit Entant = new SecondCriterionUnit();
+                    Entant.databaseId = Convert.ToInt32(entrant.Id);
+                    Entant.secondCriterionAcceptable = false;
+                    Entant.localPriority = 0;
+
+                    SecondCriterionContainer.Add(Entant);
+                    //Console.WriteLine(">>>>>entrant failed!");
+                    //Console.WriteLine("++++++++++++++++++++++++++");
+                }
+                else
+                {
+                    //Console.WriteLine("====== ENTRANT HAS THIS CLUSTERS");
+
+                    SecondCriterionUnit Entant = new SecondCriterionUnit();
+                    Entant.databaseId = Convert.ToInt32(entrant.Id);
+                    Entant.secondCriterionAcceptable = true;
+                    Entant.matrixId = totalAvailLines;
+                    Entant.entrantClusters = EntrClusterizer.Cluster;
+                    Entant.localPriority = 0;
+                    //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Cluster.Values.Max());
+
+                    totalAvailLines++;
+
+                    SecondCriterionContainer.Add(Entant);
+                    //Console.WriteLine(">>>>>entrant SUCCES!");
+                    //Console.WriteLine("++++++++++++++++++++++++++");
+                }
+            }
+            secondCriterionMatrixSize = totalAvailLines;
+
+            //Console.WriteLine("MAX ENTRUNT CLUSTER SUM: " + maxEntrantClusterSum.ToString());
+
+            //Console.WriteLine("TOTAL LINES TO GO: " + totalAvailLines.ToString());
+            //Console.WriteLine("TOTAL LINES IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
+
+            //if (SecondCriterionContainer.Count > totalEducationLines) totalEducationLines = SecondCriterionContainer.Count;
+        }
+
+
+        //Критерий совпадения кластеров - расчеты приоритетов для всех подхолдящий направлений
+        private void CalculateSecondCriterion()
+        {
+
+            double[,] pairwiseComparisonMatrix = new double[secondCriterionMatrixSize, secondCriterionMatrixSize];
+
+            for (int i = 0; i < secondCriterionMatrixSize; i++)
+            {
+                for (int j = 0; j < secondCriterionMatrixSize; j++)
+                {
+                    double a = GetSecondCriterionEntruntValue(SecondCriterionContainer.Find(x => x.matrixId == i).entrantClusters);
+                    double b = GetSecondCriterionEntruntValue(SecondCriterionContainer.Find(y => y.matrixId == j).entrantClusters);
+                    pairwiseComparisonMatrix[i, j] = SecondCriterionCompare(a, b);
+
+                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
+                }
+            }
+            
+            double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, secondCriterionMatrixSize);
+
+            //Console.WriteLine();
+
+            for (int i = 0; i < secondCriterionMatrixSize; i++)
+            {
+                SecondCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
+            }
+            //Второй критерий закончил рачет приоритетов (локальных)
+
+        }
+
+
+        //Подсчет значений для сравнения в таблице 2 критерий
+        private double GetSecondCriterionEntruntValue(Dictionary<string, double> EntClusters)
+        {
+            double difference = 0;
+            int clustersCount = 0;
+
+            //Console.WriteLine("++++++++++++++++++++++");
+            foreach (var item in EntClusters)
+            {
+                if (!educationLineClusters.ContainsKey(item.Key)) continue;
+
+                double normalizedEntrValue;
+                if (EntClusters.Values.Max() > 0) normalizedEntrValue = item.Value / EntClusters.Values.Max();
+                else normalizedEntrValue = 0;
+                double normalizedEdLineValue = educationLineClusters[item.Key] / maxEdLineClusterSum;
+
+                difference = +Math.Abs(normalizedEntrValue - normalizedEdLineValue);
+
+                //Console.WriteLine("EDLINE: " + normalizedEdLineValue.ToString());
+                //Console.WriteLine("ENTRANT " + normalizedEntrantValuse.ToString());
+                clustersCount++;
+            }
+            //Console.WriteLine("++++++++++++++++++++++");
+
+            return Math.Abs((Convert.ToDouble(clustersCount) - difference)) / Convert.ToDouble(clustersCount);
+        }
+
+
+        //Сравнение результатов 2 направлений 2 критерий
+        private double SecondCriterionCompare(double firstNum, double secondNum)
+        {
+            if ((firstNum <= 0) && (secondNum <= 0)) return 1;
+            else if (firstNum <= 0) return (1 / secondNum);
+            else if (secondNum <= 0) return firstNum;
+            else return firstNum / secondNum;
+        }
+
 
 
 
@@ -265,6 +437,26 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
                     FirstCriterionContainer[i].localPriority * firstCriterionPriority;
             }
+            //Потом тоже самое для 2 критерия
+            for (int i = 0; i < SecondCriterionContainer.Count; i++)
+            {
+                if ((AllCriterionContainer.FindIndex(x => x.databaseId == SecondCriterionContainer[i].databaseId)) >= 0)
+                {
+                    //DUNNO LOL
+                }
+                else
+                {
+                    TotalResultUnit EducationLineFinal = new TotalResultUnit();
+                    EducationLineFinal.databaseId = SecondCriterionContainer[i].databaseId;
+                    AllCriterionContainer.Add(EducationLineFinal);
+                }
+
+                AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
+                    SecondCriterionContainer[i].localPriority * secondCriterionPriority;
+            }
+
+
+
 
             //Завершающее сложение и заполнение выходного словарая
             foreach (TotalResultUnit UserFinal in AllCriterionContainer)
