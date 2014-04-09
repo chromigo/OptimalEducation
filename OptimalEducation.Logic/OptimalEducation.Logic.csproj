@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalyticHierarchyProcess\AHPEducationLine.cs" />
     <Compile Include="AnalyticHierarchyProcess\AHPUser.cs" />
     <Compile Include="Clusterizer\ClusterComparer.cs" />
     <Compile Include="Clusterizer\EducationLineClusterizer.cs" />

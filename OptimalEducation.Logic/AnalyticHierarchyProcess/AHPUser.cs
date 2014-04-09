@@ -495,6 +495,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EdLineClusters)
             {
+                if (!entruntClusters.ContainsKey(item.Key)) continue;
+
                 double normalizedEdLineValue;
                 if (EdLineClusters.Values.Max() > 0) normalizedEdLineValue = item.Value / EdLineClusters.Values.Max();
                 else normalizedEdLineValue = 0;
@@ -629,7 +631,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.localPriority = 0;
                     
                     if (EdLine.Faculty.HigherEducationInstitution.City.Id == fourthCriterionCityID) EducationLine.distance = 0;
-                    else EducationLine.distance = 9;
+                    else EducationLine.distance = 9.0;
                     
                     counter++;
 
