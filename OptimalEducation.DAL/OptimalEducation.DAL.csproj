@@ -68,6 +68,10 @@
     <Compile Include="Migrations\201403211808489_RemovePreference.Designer.cs">
       <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404091848327_addEntrantCity.cs" />
+    <Compile Include="Migrations\201404091848327_addEntrantCity.Designer.cs">
+      <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -134,6 +138,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201403211808489_RemovePreference.resx">
       <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404091848327_addEntrantCity.resx">
+      <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

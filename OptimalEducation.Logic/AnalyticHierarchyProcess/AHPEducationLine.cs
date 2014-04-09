@@ -19,9 +19,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         #region Общие настройки метода и приоритеты критериев
 
-        double firstCriterionPriority = 0.5;
-        double secondCriterionPriority = 0.5;
-        double thirdCriterionPriority = 0.0;
+        double firstCriterionPriority = 0.4;
+        double secondCriterionPriority = 0.35;
+        double thirdCriterionPriority = 0.25;
 
         #endregion
 
@@ -58,8 +58,25 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             public double localPriority;
         }
         #endregion
-        
-        
+
+
+        #region Переменные для 3 критерия - приоритет для не требующих общежития
+        List<ThirdCriterionUnit> ThirdCriterionContainer = new List<ThirdCriterionUnit>();
+
+        int thirdCriterionMatrixSize = 0;
+
+        class ThirdCriterionUnit
+        {
+            public int databaseId;
+            public int matrixId;
+
+            public bool localUser;
+
+            public double localPriority;
+        }
+        #endregion
+
+
         #region Переменные и классы для сложения критериев в конечную оценку
         public List<TotalResultUnit> AllCriterionContainer = new List<TotalResultUnit>();
         public class TotalResultUnit
@@ -97,6 +114,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
             //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
 
+
             if (firstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
@@ -106,6 +124,13 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 InitialiseSecondCriterion();
                 CalculateSecondCriterion();
+            }
+
+            if (_educationLine.Faculty.HigherEducationInstitution.City == null) thirdCriterionPriority = 0;
+            if (thirdCriterionPriority > 0)
+            {
+                InitialiseThirdCriterion();
+                CalculateThirdCriterion();
             }
 
             FinalCalculate();
@@ -415,6 +440,75 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         }
 
 
+        //Критерий местных абитуриентов - заполнение направлений во временный список
+        private void InitialiseThirdCriterion()
+        {
+            int counter = 0;
+
+            foreach (Entrant entrant in context.Entrants)
+            {
+
+                ThirdCriterionUnit user = new ThirdCriterionUnit();
+
+                user.databaseId = Convert.ToInt32(entrant.Id);
+                user.matrixId = counter;
+                user.localPriority = 0;
+                if ((entrant.City != null) && (entrant.City.Id == _educationLine.Faculty.HigherEducationInstitution.City.Id))
+                {
+                    user.localUser = true;
+                    //Console.WriteLine(entrant.Id.ToString() + " is LOCAL");
+                }
+                else
+                {
+                    user.localUser = false;
+                    //Console.WriteLine(entrant.Id.ToString() + " is NOT");
+                }
+                
+                counter++;
+
+                ThirdCriterionContainer.Add(user);
+            }
+            thirdCriterionMatrixSize = counter;
+        }
+
+
+        //Критерий местных абитуриентов - расчет притетов для всех направлений
+        private void CalculateThirdCriterion()
+        {
+
+            double[,] pairwiseComparisonMatrix = new double[thirdCriterionMatrixSize, thirdCriterionMatrixSize];
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                for (int j = 0; j < thirdCriterionMatrixSize; j++)
+                {
+                    bool a = ThirdCriterionContainer.Find(x => x.matrixId == i).localUser;
+                    bool b = ThirdCriterionContainer.Find(y => y.matrixId == j).localUser;
+
+                    if (a == b) pairwiseComparisonMatrix[i, j] = 1.0;
+                    else if (a == true) pairwiseComparisonMatrix[i, j] = 9.0;
+                    else pairwiseComparisonMatrix[i, j]  = 1.0/9.0;
+                    
+                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
+                }
+            }
+
+            double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, thirdCriterionMatrixSize);
+
+            //Console.WriteLine();
+
+            for (int i = 0; i < thirdCriterionMatrixSize; i++)
+            {
+                ThirdCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
+            }
+
+            //Тертий критерий закончил рачет приоритетов (локальных)
+
+        }
+
+
+
+
 
 
         //Расчет конечных приоритетов и сортировка
@@ -429,9 +523,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
                 else
                 {
-                    TotalResultUnit EducationLineFinal = new TotalResultUnit();
-                    EducationLineFinal.databaseId = FirstCriterionContainer[i].databaseId;
-                    AllCriterionContainer.Add(EducationLineFinal);
+                    TotalResultUnit EntrantFinal = new TotalResultUnit();
+                    EntrantFinal.databaseId = FirstCriterionContainer[i].databaseId;
+                    AllCriterionContainer.Add(EntrantFinal);
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
@@ -446,15 +540,31 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
                 else
                 {
-                    TotalResultUnit EducationLineFinal = new TotalResultUnit();
-                    EducationLineFinal.databaseId = SecondCriterionContainer[i].databaseId;
-                    AllCriterionContainer.Add(EducationLineFinal);
+                    TotalResultUnit EntrantFinal = new TotalResultUnit();
+                    EntrantFinal.databaseId = SecondCriterionContainer[i].databaseId;
+                    AllCriterionContainer.Add(EntrantFinal);
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
                     SecondCriterionContainer[i].localPriority * secondCriterionPriority;
             }
+            //Потом тоже самое для 3 критерия
+            for (int i = 0; i < ThirdCriterionContainer.Count; i++)
+            {
+                if ((AllCriterionContainer.FindIndex(x => x.databaseId == ThirdCriterionContainer[i].databaseId)) >= 0)
+                {
+                    //DUNNO LOL
+                }
+                else
+                {
+                    TotalResultUnit EntrantFinal = new TotalResultUnit();
+                    EntrantFinal.databaseId = ThirdCriterionContainer[i].databaseId;
+                    AllCriterionContainer.Add(EntrantFinal);
+                }
 
+                AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
+                    ThirdCriterionContainer[i].localPriority * thirdCriterionPriority;
+            }
 
 
 
