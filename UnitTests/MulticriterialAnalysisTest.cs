@@ -52,47 +52,13 @@ namespace UnitTests
         public void CreateNewParetto()
         {
             //Определяем группу важных критериев
-            var finder = new MostValueCoefficientFinder(_userCluster);
+            var finder = new MulticriterialAnalysis(_userCluster, _totalUniversityClusters);
             var userPrefer = finder.GetPreferenceRelations();
-
-            var recalculateUniversityClusters = new List<Dictionary<string, double>>();
-            foreach (var universityClusters in _totalUniversityClusters)
-            {
-                //Забиваем все кластеры теккущего вуза на важные и неважные
-                var importantClusters = new Dictionary<string, double>();
-                var unImportantClusters = new Dictionary<string, double>();
-                foreach (var cluster in universityClusters)
-                {
-                    if (userPrefer.Any(p => p.ImportantClusterName == cluster.Key))
-                        importantClusters.Add(cluster.Key, cluster.Value);
-                    else
-                        unImportantClusters.Add(cluster.Key, cluster.Value);
-                }
-
-                //Пересчитываем значения неважных кластеров
-                var recalculatedClusters = new Dictionary<string, double>();
-                foreach (var importantCluster in importantClusters)
-                {
-                    recalculatedClusters.Add(importantCluster.Key, importantCluster.Value);//Добавляем текущий значимый
-                    foreach (var unImportantCluster in unImportantClusters)
-                    {
-                        //формула пересчета
-                        var f_i = importantCluster.Value;
-                        var f_j = unImportantCluster.Value;
-
-                        var preference = userPrefer.Single(p => p.ImportantClusterName == importantCluster.Key);//находим значимый кластер в списке с предпочтениями
-                        var teta = preference.Tetas.Single(p => p.Key == unImportantCluster.Key).Value;//находим в этом кластере текущее отношение предпочтения
-
-                        var recalculatedCluster = teta * f_i + (1 - teta) * f_j;
-
-                        recalculatedClusters.Add(unImportantCluster.Key, recalculatedCluster);//добавляем пересчитанный
-                    }
-                }
-                recalculateUniversityClusters.Add(recalculatedClusters);
-            }
 
             //Сужаем получившуюся таблицу - Паретто
         }
+
+
 
     }
 

@@ -55,7 +55,6 @@
     <Compile Include="Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Clusterizer\EntrantClusterizer.cs" />
     <Compile Include="MulticriterialAnalysis\MostValueCoefficientFinder.cs" />
-    <Compile Include="MulticriterialAnalysis\Parreto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
