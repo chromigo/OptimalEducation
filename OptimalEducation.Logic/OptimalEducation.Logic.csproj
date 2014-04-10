@@ -54,6 +54,7 @@
     <Compile Include="Clusterizer\ClusterComparer.cs" />
     <Compile Include="Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Clusterizer\EntrantClusterizer.cs" />
+    <Compile Include="MulticriterialAnalysis\MostValueCoefficientFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,9 +63,7 @@
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MulticriterialAnalysis\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
