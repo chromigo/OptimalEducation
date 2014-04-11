@@ -54,7 +54,12 @@
     <Compile Include="Clusterizer\ClusterComparer.cs" />
     <Compile Include="Clusterizer\EducationLineClusterizer.cs" />
     <Compile Include="Clusterizer\EntrantClusterizer.cs" />
+    <Compile Include="MulticriterialAnalysis\Models\EducationLineAndClustersRow.cs" />
+    <Compile Include="MulticriterialAnalysis\Models\PreferenceRelation.cs" />
     <Compile Include="MulticriterialAnalysis\MulticriterialAnalysis.cs" />
+    <Compile Include="MulticriterialAnalysis\ParretoCalculator.cs" />
+    <Compile Include="MulticriterialAnalysis\PreferenceRelationCalculator.cs" />
+    <Compile Include="MulticriterialAnalysis\VectorCriteriaRecalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
