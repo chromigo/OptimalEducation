@@ -35,7 +35,9 @@ namespace OptimalEducation.DAL.Models
 
 	    public string Medal { get; set; }
 
-	    public string Citizenship { get; set; }
+        public string Citizenship { get; set; }
+
+        public virtual City City { get; set; }
 
 	    public Nullable<double> AverageMark { get; set; }
 
