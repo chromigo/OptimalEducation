@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Clusterizer
+namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
     /// Результаты кластеризации для пользователя. 
     /// Класс инкапсулирует логику построения частичных кластеров(по каждой характеристике пользователя)
     /// и ихнему суммированию в целостный кластер.
     /// </summary>
-    public class EntrantClusterizer
+    public class EntrantCharacterizer
     {
         Entrant _entrant;
         Dictionary<string, double> unatedStatedExamCluster = new Dictionary<string, double>();
@@ -24,7 +24,7 @@ namespace OptimalEducation.Logic.Clusterizer
 
         Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
         public Dictionary<string, double> Cluster { get { return _totalCluster; } }
-        public EntrantClusterizer(Entrant entrant)
+        public EntrantCharacterizer(Entrant entrant)
         {
             _entrant = entrant;
             CalculateSum();

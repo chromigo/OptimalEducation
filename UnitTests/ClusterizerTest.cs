@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 
 namespace UnitTests
 {
@@ -267,7 +267,7 @@ namespace UnitTests
                 },
             };
 
-            var clusterizer = new EntrantClusterizer(entrant);
+            var clusterizer = new EntrantCharacterizer(entrant);
 
             var rus = clusterizer.Cluster["Русский язык"];
             var math = clusterizer.Cluster["Математика"];
@@ -293,7 +293,7 @@ namespace UnitTests
                 }
             };
 
-            var clusterizer = new EducationLineClusterizer(educationLine);
+            var clusterizer = new EducationLineCharacterizer(educationLine);
 
             var rus = clusterizer.Cluster["Русский язык"];
             var math = clusterizer.Cluster["Математика"];

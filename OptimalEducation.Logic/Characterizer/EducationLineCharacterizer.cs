@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace OptimalEducation.Logic.Clusterizer
+namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
     /// Результаты кластеризации для учебного направления. 
     /// </summary>
-    public class EducationLineClusterizer
+    public class EducationLineCharacterizer
     {
         EducationLine _educationLine;
         Dictionary<string, double> _educationLineCluster = new Dictionary<string, double>();
@@ -17,7 +17,7 @@ namespace OptimalEducation.Logic.Clusterizer
         Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
         public Dictionary<string, double> Cluster { get { return _totalCluster; } }
 
-        public EducationLineClusterizer(EducationLine educationLine)
+        public EducationLineCharacterizer(EducationLine educationLine)
         {
             _educationLine = educationLine;
             CalculateSum();

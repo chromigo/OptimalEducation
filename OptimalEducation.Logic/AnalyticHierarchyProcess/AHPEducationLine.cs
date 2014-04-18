@@ -1,5 +1,5 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
@@ -295,7 +295,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EducationLineClusterizer EdLineClusterizer = new EducationLineClusterizer(_educationLine);
+            EducationLineCharacterizer EdLineClusterizer = new EducationLineCharacterizer(_educationLine);
 
             maxEdLineClusterSum = EdLineClusterizer.Cluster.Values.Max();
             educationLineClusters = EdLineClusterizer.Cluster;
@@ -311,7 +311,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool userAcceptable = true;
 
-                EntrantClusterizer EntrClusterizer = new EntrantClusterizer(entrant);
+                EntrantCharacterizer EntrClusterizer = new EntrantCharacterizer(entrant);
                 if (EntrClusterizer.Cluster.Count() <= 0) userAcceptable = false;
 
                 //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());

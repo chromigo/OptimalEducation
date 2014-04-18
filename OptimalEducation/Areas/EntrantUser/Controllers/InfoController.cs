@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.Models;
 using System;
 using System.Collections.Generic;
@@ -37,13 +37,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
-			var clusterizer = new EntrantClusterizer(entrant);
+			var clusterizer = new EntrantCharacterizer(entrant);
 
             //Отобразить рекомендуемые учебные направления
             var educationLines = await db.EducationLines
                 .Where(p => p.Actual == true)
                 .ToListAsync();
-            ViewBag.RecomendationForEntrant = ClusterComparer.GetRecomendationForEntrant(entrant, educationLines);
+            ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
             
 			return View(clusterizer.Cluster);
 		}
