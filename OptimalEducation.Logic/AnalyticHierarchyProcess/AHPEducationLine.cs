@@ -1,5 +1,5 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
@@ -295,10 +295,10 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EducationLineClusterizer EdLineClusterizer = new EducationLineClusterizer(_educationLine);
+            EducationLineCharacterizer EdLineClusterizer = new EducationLineCharacterizer(_educationLine);
 
-            maxEdLineClusterSum = EdLineClusterizer.Cluster.Values.Max();
-            educationLineClusters = EdLineClusterizer.Cluster;
+            maxEdLineClusterSum = EdLineClusterizer.Characteristics.Values.Max();
+            educationLineClusters = EdLineClusterizer.Characteristics;
 
             //foreach (var item in EdLineClusterizer.Cluster)
             //{
@@ -311,8 +311,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool userAcceptable = true;
 
-                EntrantClusterizer EntrClusterizer = new EntrantClusterizer(entrant);
-                if (EntrClusterizer.Cluster.Count() <= 0) userAcceptable = false;
+                EntrantCharacterizer EntrClusterizer = new EntrantCharacterizer(entrant);
+                if (EntrClusterizer.Characterisics.Count() <= 0) userAcceptable = false;
 
                 //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());
                 //foreach (var item in EntrClusterizer.Cluster)
@@ -322,7 +322,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 foreach (var item in educationLineClusters)
                 {
-                    if (!EntrClusterizer.Cluster.ContainsKey(item.Key))
+                    if (!EntrClusterizer.Characterisics.ContainsKey(item.Key))
                     {
                         userAcceptable = false;
                     }
@@ -349,7 +349,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     Entant.databaseId = Convert.ToInt32(entrant.Id);
                     Entant.secondCriterionAcceptable = true;
                     Entant.matrixId = totalAvailLines;
-                    Entant.entrantClusters = EntrClusterizer.Cluster;
+                    Entant.entrantClusters = EntrClusterizer.Characterisics;
                     Entant.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Cluster.Values.Max());
 

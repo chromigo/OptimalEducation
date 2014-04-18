@@ -2,12 +2,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 
 namespace UnitTests
 {
     [TestClass]
-    public class ClusterizerTest
+    public class CharacterizerTest
     {
         List<ExamDiscipline> examDisciplines=new List<ExamDiscipline>();
         List<SchoolDiscipline> schoolDisciplines=new List<SchoolDiscipline>();
@@ -15,18 +15,18 @@ namespace UnitTests
         List<Section> sections = new List<Section>();
         List<Hobbie> hobbies = new List<Hobbie>();
         List<School> schools = new List<School>();
-        List<Cluster> clusters;
+        List<Characteristic> clusters;
         //MethodName_Scenario_ExpectedBehavior
-        public ClusterizerTest()
+        public CharacterizerTest()
         {
-            clusters = new List<Cluster>
+            clusters = new List<Characteristic>
             {
-                new Cluster { Name = "Русский язык"},
-                new Cluster { Name = "Математика"},
-                new Cluster { Name = "Информатика"},
-                new Cluster { Name = "Физика"},
-                new Cluster { Name = "Химия"},
-                new Cluster { Name = "Английский язык"},
+                new Characteristic { Name = "Русский язык"},
+                new Characteristic { Name = "Математика"},
+                new Characteristic { Name = "Информатика"},
+                new Characteristic { Name = "Физика"},
+                new Characteristic { Name = "Химия"},
+                new Characteristic { Name = "Английский язык"},
             };
 
             ExamFill();
@@ -267,11 +267,11 @@ namespace UnitTests
                 },
             };
 
-            var clusterizer = new EntrantClusterizer(entrant);
+            var clusterizer = new EntrantCharacterizer(entrant);
 
-            var rus = clusterizer.Cluster["Русский язык"];
-            var math = clusterizer.Cluster["Математика"];
-            var inf = clusterizer.Cluster["Информатика"];
+            var rus = clusterizer.Characterisics["Русский язык"];
+            var math = clusterizer.Characterisics["Математика"];
+            var inf = clusterizer.Characterisics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             //TODO: Подправить значения в зависимости от Enum-ов
@@ -293,11 +293,11 @@ namespace UnitTests
                 }
             };
 
-            var clusterizer = new EducationLineClusterizer(educationLine);
+            var clusterizer = new EducationLineCharacterizer(educationLine);
 
-            var rus = clusterizer.Cluster["Русский язык"];
-            var math = clusterizer.Cluster["Математика"];
-            var inf = clusterizer.Cluster["Информатика"];
+            var rus = clusterizer.Characteristics["Русский язык"];
+            var math = clusterizer.Characteristics["Математика"];
+            var inf = clusterizer.Characteristics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             Assert.AreEqual(rus, 60);

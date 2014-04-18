@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Clusterizer
+namespace OptimalEducation.Logic.Characterizer
 {
-	public static class ClusterComparer
+	public static class DistanceCharacterisiticRecomendator
 	{
 		/// <summary>
 		/// Вычисляет рекомендации по учебным направлениям для конкретного абитуриента
@@ -18,13 +18,13 @@ namespace OptimalEducation.Logic.Clusterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-			var entratnCluster = new EntrantClusterizer(entrant).Cluster;
+			var entratnCluster = new EntrantCharacterizer(entrant).Characterisics;
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
-				var educationLineCluster = new EducationLineClusterizer(edLine).Cluster;
+				var educationLineCluster = new EducationLineCharacterizer(edLine).Characteristics;
 				//Выполняем сравнение
-				var compareResult = CompareClusters_Entrant_EducationLine(entratnCluster, educationLineCluster);
+                var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCluster, educationLineCluster);
 				if(compareResult.HasValue)
 				{
 					results.Add(edLine, compareResult.Value);
@@ -41,38 +41,19 @@ namespace OptimalEducation.Logic.Clusterizer
 		public static Dictionary<Entrant, double> GetRecomendationForEducationLine(EducationLine educationLine, List<Entrant> entrants)
 		{
 			//Вычисляем кластеры для направления и абитуриентов
-			var educationLineCluster = new EducationLineClusterizer(educationLine).Cluster;
+			var educationLineCluster = new EducationLineCharacterizer(educationLine).Characteristics;
 			var results = new Dictionary<Entrant, double>();
 			foreach (var entrant in entrants)
 			{
-				var entratnCluster = new EntrantClusterizer(entrant).Cluster;
+				var entratnCluster = new EntrantCharacterizer(entrant).Characterisics;
 				//Выполняем сравнение
-				var compareResult = CompareClusters_Entrant_EducationLine(entratnCluster, educationLineCluster);
+                var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCluster, educationLineCluster);
 				if (compareResult.HasValue)
 				{
 					results.Add(entrant, compareResult.Value);
 				}
 			}
 			return results;
-		}
-		/// <summary>
-		/// Выполняет сравнение 2-х кластеров(ученик и учебное направление) и возвращает Евклидово расстояние межде ними
-		/// </summary>
-		/// <param name="entrantCluster">Значение вычисленного кластера для данного абитуриента</param>
-		/// <param name="educationLineCluster">Значение вычисленного кластера для данного учебного направления</param>
-		private static double? CompareClusters_Entrant_EducationLine(Dictionary<string, double> entrantCluster, Dictionary<string,double> educationLineCluster)
-		{
-			double result=0;
-			foreach (var discipline in educationLineCluster)
-			{
-				//Если у ученика отсутсвую какие-либо направления, которые есть  в учебном направлении - исключаем из результатов?
-				if (entrantCluster.ContainsKey(discipline.Key))
-				{
-					result += Math.Pow(entrantCluster[discipline.Key] - discipline.Value, 2);
-				}
-				else { return null; }
-			}
-			return Math.Sqrt(result);
 		}
 	}
 }

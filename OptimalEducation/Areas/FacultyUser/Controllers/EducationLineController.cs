@@ -11,7 +11,7 @@ using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 
 namespace OptimalEducation.Areas.FacultyUser.Controllers
 {
@@ -55,12 +55,12 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return HttpNotFound();
 			}
-			ViewBag.CluserResults = new EducationLineClusterizer(educationline).Cluster;
+			ViewBag.CluserResults = new EducationLineCharacterizer(educationline).Characteristics;
 			//Отобразить рекомендуемый список абитуриентов
 			
 			var entrants = await db.Entrants
 				.ToListAsync();
-			ViewBag.RecomendationForEducationLine= ClusterComparer.GetRecomendationForEducationLine(educationline, entrants);
+			ViewBag.RecomendationForEducationLine= DistanceCharacterisiticRecomendator.GetRecomendationForEducationLine(educationline, entrants);
 
 			return View(educationline);
 		}

@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Logic.Clusterizer;
+using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers

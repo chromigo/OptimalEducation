@@ -52,9 +52,10 @@
   <ItemGroup>
     <Compile Include="AnalyticHierarchyProcess\AHPEducationLine.cs" />
     <Compile Include="AnalyticHierarchyProcess\AHPUser.cs" />
-    <Compile Include="Clusterizer\ClusterComparer.cs" />
-    <Compile Include="Clusterizer\EducationLineClusterizer.cs" />
-    <Compile Include="Clusterizer\EntrantClusterizer.cs" />
+    <Compile Include="Characterizer\CharacteristicDistance.cs" />
+    <Compile Include="Characterizer\DistanceCharacterisiticRecomendator.cs" />
+    <Compile Include="Characterizer\EducationLineCharacterizer.cs" />
+    <Compile Include="Characterizer\EntrantCharacterizer.cs" />
     <Compile Include="MulticriterialAnalysis\Models\EducationLineAndClustersRow.cs" />
     <Compile Include="MulticriterialAnalysis\Models\PreferenceRelation.cs" />
     <Compile Include="MulticriterialAnalysis\MulticriterialAnalysis.cs" />

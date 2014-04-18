@@ -28,7 +28,7 @@ namespace OptimalEducation.DAL.Models
 
         public virtual DbSet<ExamDiscipline> ExamDisciplines { get; set; }
 
-        public virtual DbSet<Cluster> Clusters { get; set; }
+        public virtual DbSet<Characteristic> Characteristics { get; set; }
 
         public virtual DbSet<HigherEducationInstitution> HigherEducationInstitutions { get; set; }
 
