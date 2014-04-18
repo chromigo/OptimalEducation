@@ -7,7 +7,7 @@ using OptimalEducation.Logic.Characterizer;
 namespace UnitTests
 {
     [TestClass]
-    public class ClusterizerTest
+    public class CharacterizerTest
     {
         List<ExamDiscipline> examDisciplines=new List<ExamDiscipline>();
         List<SchoolDiscipline> schoolDisciplines=new List<SchoolDiscipline>();
@@ -17,7 +17,7 @@ namespace UnitTests
         List<School> schools = new List<School>();
         List<Cluster> clusters;
         //MethodName_Scenario_ExpectedBehavior
-        public ClusterizerTest()
+        public CharacterizerTest()
         {
             clusters = new List<Cluster>
             {
