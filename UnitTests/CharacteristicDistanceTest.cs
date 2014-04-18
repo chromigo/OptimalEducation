@@ -8,6 +8,7 @@ namespace UnitTests
     [TestClass]
     public class CharacteristicDistanceTest
     {
+        //Внимание! помнить про то что double не дает 100% точности при вычислениях
         //TODO: Добавить тесты, проверяющие результаты вычислений когда у пользователя и вуза отличается набор характеристик?
         readonly Dictionary<string, double> entrantCharacteristics=new Dictionary<string,double>();
         readonly Dictionary<string, double> educationLineCharacteristics = new Dictionary<string, double>();
