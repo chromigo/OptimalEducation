@@ -9,13 +9,15 @@ namespace UnitTests
     [TestClass]
     public class CharacterizerTest
     {
-        List<ExamDiscipline> examDisciplines=new List<ExamDiscipline>();
-        List<SchoolDiscipline> schoolDisciplines=new List<SchoolDiscipline>();
+        #region Fields
+        List<ExamDiscipline> examDisciplines = new List<ExamDiscipline>();
+        List<SchoolDiscipline> schoolDisciplines = new List<SchoolDiscipline>();
         List<Olympiad> olympiads = new List<Olympiad>();
         List<Section> sections = new List<Section>();
         List<Hobbie> hobbies = new List<Hobbie>();
         List<School> schools = new List<School>();
-        List<Characteristic> clusters;
+        List<Characteristic> clusters; 
+        #endregion
         //MethodName_Scenario_ExpectedBehavior
         public CharacterizerTest()
         {
@@ -40,6 +42,7 @@ namespace UnitTests
             HobbieFill();
             SchoolTypeFill();
         }
+        #region Init helpers
         private void SchoolTypeFill()
         {
             schools.Add(new School
@@ -124,7 +127,6 @@ namespace UnitTests
                     },
             });
         }
-
         private void SchoolDisciplineFill()
         {
             schoolDisciplines.Add(new SchoolDiscipline
@@ -154,7 +156,6 @@ namespace UnitTests
                 },
             });
         }
-
         private void ExamFill()
         {
             examDisciplines.Add(new ExamDiscipline
@@ -185,8 +186,7 @@ namespace UnitTests
             });
         }
 
-        [TestMethod]
-        public void EntrantCluster_GetCalculatedCluster_ReturnCorrectValue()
+        private Entrant CreateEntrant()
         {
             var entrant = new Entrant()
             {
@@ -266,6 +266,14 @@ namespace UnitTests
                     }
                 },
             };
+            return entrant;
+        } 
+        #endregion
+
+        [TestMethod]
+        public void EntrantCluster_GetCalculatedCluster_ReturnCorrectValue()
+        {
+            var entrant = CreateEntrant();
 
             var clusterizer = new EntrantCharacterizer(entrant);
 
@@ -279,6 +287,8 @@ namespace UnitTests
             Assert.AreEqual(math, 190+105+(1.5*100+0.5*50)+(100+50)+(50*2));
             Assert.AreEqual(inf, 200 + 105 + (0.5 * 100 + 1.5 * 50)+(100+50)+(100*2));
         }
+
+        
 
         [TestMethod]
         public void EducationLineCluster_GetCalculatedCluster_ReturnCorrectValue()
