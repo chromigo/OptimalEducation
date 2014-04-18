@@ -7,15 +7,15 @@ using System.Web;
 namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
-    /// Результаты кластеризации для учебного направления. 
+    /// Результаты характеристикиизации для учебного направления. 
     /// </summary>
     public class EducationLineCharacterizer
     {
         EducationLine _educationLine;
-        Dictionary<string, double> _educationLineCluster = new Dictionary<string, double>();
+        Dictionary<string, double> _educationLineCharacteristics = new Dictionary<string, double>();
 
-        Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
-        public Dictionary<string, double> Cluster { get { return _totalCluster; } }
+        Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
+        public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
 
         public EducationLineCharacterizer(EducationLine educationLine)
         {
@@ -23,8 +23,8 @@ namespace OptimalEducation.Logic.Characterizer
             CalculateSum();
         }
 
-        #region По заданным характеристикам строит частичные кластеры с результатами
-        private void EducationLinesRequirementsClustering()
+        #region По заданным характеристикам строит частичные характеристикиы с результатами
+        private void EducationLinesRequirementsCharacterising()
         {
             foreach (var requirement in _educationLine.EducationLinesRequirements)
             {
@@ -33,35 +33,35 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
                     var clusterResult = result * coeff;
-                    FillPartialCluster(_educationLineCluster, clusterName, clusterResult);
+                    FillPartialCharacteristics(_educationLineCharacteristics, characteristicName, clusterResult);
                 }
             }
         }
         /// <summary>
-        /// Заполняет выбранный кластер заданными значениями(добавляет или суммирует)
+        /// Заполняет выбранный характеристики заданными значениями(добавляет или суммирует)
         /// </summary>
-        /// <param name="clusterToFill">Кластер, который необходимо заполнить/обновить</param>
-        /// <param name="clusterName">Элемент кластера, который добавляют/обновляют</param>
-        /// <param name="clusterResult"></param>
-        private void FillPartialCluster(Dictionary<string,double> clusterToFill ,string clusterName, double clusterResult)
+        /// <param name="characteristicsToFill">характеристики, которые необходимо заполнить/обновить</param>
+        /// <param name="characteristicsName">Элемент характеристикиа, который добавляют/обновляют</param>
+        /// <param name="characterisicResult"></param>
+        private void FillPartialCharacteristics(Dictionary<string,double> characteristicsToFill ,string characteristicsName, double characterisicResult)
         {
-            if (!clusterToFill.ContainsKey(clusterName))
-                clusterToFill.Add(clusterName, clusterResult);
+            if (!characteristicsToFill.ContainsKey(characteristicsName))
+                characteristicsToFill.Add(characteristicsName, characterisicResult);
             else
-                clusterToFill[clusterName] += clusterResult;
+                characteristicsToFill[characteristicsName] += characterisicResult;
         }
         #endregion
         /// <summary>
-        /// Складывает результаты каждого частного кластера по определенному правилу
+        /// Складывает результаты каждого частного характеристикиа по определенному правилу
         /// </summary>
         private void CalculateSum()
         {
-            EducationLinesRequirementsClustering();
+            EducationLinesRequirementsCharacterising();
 
-            _totalCluster = _educationLineCluster;
+            _totalCharacteristics = _educationLineCharacteristics;
             //Добавить если будут дополнительные характеристики
             //foreach (var item in educationLineCluster)
             //{
@@ -71,10 +71,10 @@ namespace OptimalEducation.Logic.Characterizer
 
         private void FillTotalCluster(KeyValuePair<string, double> item)
         {
-            if (!_totalCluster.ContainsKey(item.Key))
-                _totalCluster.Add(item.Key, item.Value);
+            if (!_totalCharacteristics.ContainsKey(item.Key))
+                _totalCharacteristics.Add(item.Key, item.Value);
             else
-                _totalCluster[item.Key] += item.Value;
+                _totalCharacteristics[item.Key] += item.Value;
         }
     }
 }

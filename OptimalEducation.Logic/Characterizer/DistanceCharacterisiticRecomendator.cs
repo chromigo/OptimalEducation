@@ -18,11 +18,11 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-			var entratnCluster = new EntrantCharacterizer(entrant).Cluster;
+			var entratnCluster = new EntrantCharacterizer(entrant).Characterisics;
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
-				var educationLineCluster = new EducationLineCharacterizer(edLine).Cluster;
+				var educationLineCluster = new EducationLineCharacterizer(edLine).Characteristics;
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCluster, educationLineCluster);
 				if(compareResult.HasValue)
@@ -41,11 +41,11 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<Entrant, double> GetRecomendationForEducationLine(EducationLine educationLine, List<Entrant> entrants)
 		{
 			//Вычисляем кластеры для направления и абитуриентов
-			var educationLineCluster = new EducationLineCharacterizer(educationLine).Cluster;
+			var educationLineCluster = new EducationLineCharacterizer(educationLine).Characteristics;
 			var results = new Dictionary<Entrant, double>();
 			foreach (var entrant in entrants)
 			{
-				var entratnCluster = new EntrantCharacterizer(entrant).Cluster;
+				var entratnCluster = new EntrantCharacterizer(entrant).Characterisics;
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCluster, educationLineCluster);
 				if (compareResult.HasValue)

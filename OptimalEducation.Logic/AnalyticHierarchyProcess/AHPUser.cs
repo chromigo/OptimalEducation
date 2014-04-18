@@ -374,19 +374,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             int totalAvailLines = 0;
             EntrantCharacterizer EntrClusterizer = new EntrantCharacterizer(_entrant);
 
-            maxEntrantClusterSum = EntrClusterizer.Cluster.Values.Max();
-            entruntClusters = EntrClusterizer.Cluster;
+            maxEntrantClusterSum = EntrClusterizer.Characterisics.Values.Max();
+            entruntClusters = EntrClusterizer.Characterisics;
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
                 bool edLineAcceptable = true;
 
                 EducationLineCharacterizer EdLineClusterizer = new EducationLineCharacterizer(EdLine);
-                if (EdLineClusterizer.Cluster.Count() <= 0) edLineAcceptable = false;
+                if (EdLineClusterizer.Characteristics.Count() <= 0) edLineAcceptable = false;
 
 
                 //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
-                foreach (var item in EdLineClusterizer.Cluster) 
+                foreach (var item in EdLineClusterizer.Characteristics) 
                 {
 
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
@@ -415,7 +415,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
-                    EducationLine.educationLineClusters = EdLineClusterizer.Cluster;
+                    EducationLine.educationLineClusters = EdLineClusterizer.Characteristics;
                     EducationLine.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Cluster.Values.Max());
 

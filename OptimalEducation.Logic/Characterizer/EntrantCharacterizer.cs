@@ -8,30 +8,30 @@ using System.Threading.Tasks;
 namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
-    /// Результаты кластеризации для пользователя. 
-    /// Класс инкапсулирует логику построения частичных кластеров(по каждой характеристике пользователя)
-    /// и ихнему суммированию в целостный кластер.
+    /// Результаты характеристикиизации для пользователя. 
+    /// Класс инкапсулирует логику построения частичных характеристикиов(по каждой характеристике пользователя)
+    /// и ихнему суммированию в целостный характеристики.
     /// </summary>
     public class EntrantCharacterizer
     {
         Entrant _entrant;
-        Dictionary<string, double> unatedStatedExamCluster = new Dictionary<string, double>();
-        Dictionary<string, double> schoolMarkCluster = new Dictionary<string, double>();
-        Dictionary<string, double> olympiadCluster = new Dictionary<string, double>();
-        Dictionary<string, double> sectionCluster = new Dictionary<string, double>();
-        Dictionary<string, double> hobbieCluster = new Dictionary<string, double>();
-        Dictionary<string, double> schoolTypeCluster = new Dictionary<string, double>();
+        Dictionary<string, double> unatedStatedExamCharacterisics = new Dictionary<string, double>();
+        Dictionary<string, double> schoolMarkCharacterisics = new Dictionary<string, double>();
+        Dictionary<string, double> olympiadCharacterisics = new Dictionary<string, double>();
+        Dictionary<string, double> sectionCharacterisics = new Dictionary<string, double>();
+        Dictionary<string, double> hobbieCharacterisics = new Dictionary<string, double>();
+        Dictionary<string, double> schoolTypeCharacterisics = new Dictionary<string, double>();
 
-        Dictionary<string, double> _totalCluster = new Dictionary<string, double>();
-        public Dictionary<string, double> Cluster { get { return _totalCluster; } }
+        Dictionary<string, double> _totalCharacterisics = new Dictionary<string, double>();
+        public Dictionary<string, double> Characterisics { get { return _totalCharacterisics; } }
         public EntrantCharacterizer(Entrant entrant)
         {
             _entrant = entrant;
             CalculateSum();
         }
 
-        #region По заданным характеристикам строит частичные кластеры с результатами
-        private void UnatedStateExamClustering()
+        #region По заданным частным данным абитуриента(егэ, оценки, хобби и пр) строит частичные таблицы с характеристиками, которые позже просуммируются по заданному правилу
+        private void UnatedStateExamCharacterising()
         {
             foreach (var exam in _entrant.UnitedStateExams)
             {
@@ -40,15 +40,15 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
-                    var clusterResult = result * coeff;
-                    FillPartialCluster(unatedStatedExamCluster, clusterName, clusterResult);
+                    var characteristicResult = result * coeff;
+                    FillPartialCharacteristics(unatedStatedExamCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
 
-        private void SchoolMarkClustering()
+        private void SchoolMarkCharacterising()
         {
             foreach (var shoolMark in _entrant.SchoolMarks)
             {
@@ -57,15 +57,15 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
-                    var clusterResult = result * coeff;
-                    FillPartialCluster(schoolMarkCluster, clusterName, clusterResult);
+                    var characteristicResult = result * coeff;
+                    FillPartialCharacteristics(schoolMarkCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
 
-        private void OlympiadClustering()
+        private void OlympiadCharacterising()
         {
             foreach (var olympResult in _entrant.ParticipationInOlympiads)
             {
@@ -74,28 +74,28 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in olympiad.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
-                    double clusterResult = 0;
+                    double characteristicResult = 0;
                     //TODO: Реализовать особую логику учета данных?
                     switch (result)
                     {
-                        case OlypmpiadResult.FirstPlace: clusterResult = (int)result * coeff;
+                        case OlypmpiadResult.FirstPlace: characteristicResult = (int)result * coeff;
                             break;
-                        case OlypmpiadResult.SecondPlace: clusterResult = (int)result * coeff;
+                        case OlypmpiadResult.SecondPlace: characteristicResult = (int)result * coeff;
                             break;
-                        case OlypmpiadResult.ThirdPlace: clusterResult = (int)result * coeff;
+                        case OlypmpiadResult.ThirdPlace: characteristicResult = (int)result * coeff;
                             break;
                         default:
                             break;
                     }
 
-                    FillPartialCluster(olympiadCluster, clusterName, clusterResult);
+                    FillPartialCharacteristics(olympiadCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
 
-        private void SectionClustering()
+        private void SectionCharacterising()
         {
             foreach (var sectionResult in _entrant.ParticipationInSections)
             {
@@ -104,35 +104,35 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in section.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
                     //TODO: Реализовать особую логику учета данных?
-                    double clusterResult = result * coeff;
+                    double characteristicResult = result * coeff;
 
-                    FillPartialCluster(sectionCluster, clusterName, clusterResult);
+                    FillPartialCharacteristics(sectionCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
 
-        private void HobbieClustering()
+        private void HobbieCharacterising()
         {
             foreach (var hobbieResult in _entrant.Hobbies)
             {
                 foreach (var weight in hobbieResult.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
                     //TODO: Реализовать особую логику учета данных?
                     double someValue = 1;
-                    double clusterResult = someValue * coeff;
+                    double characteristicResult = someValue * coeff;
 
-                    FillPartialCluster(hobbieCluster, clusterName, clusterResult);
+                    FillPartialCharacteristics(hobbieCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
 
-        private void SchoolTypeClustering()
+        private void SchoolTypeCharacterising()
         {
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
@@ -145,74 +145,74 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in schoolWeights)
                 {
                     var coeff = weight.Coefficient;
-                    var clusterName = weight.Cluster.Name;
+                    var characteristicName = weight.Cluster.Name;
 
                     //TODO: Реализовать особую логику учета данных?
-                    double clusterResult = (int)quality * coeff;
+                    double characteristicResult = (int)quality * coeff;
 
-                    FillPartialCluster(schoolTypeCluster, clusterName, clusterResult);
+                    FillPartialCharacteristics(schoolTypeCharacterisics, characteristicName, characteristicResult);
                 }
             }
         }
         /// <summary>
-        /// Заполняет выбранный кластер заданными значениями(добавляет или суммирует)
+        /// Заполняет выбранный характеристики заданными значениями(добавляет или суммирует)
         /// </summary>
-        /// <param name="clusterToFill">Кластер, который необходимо заполнить/обновить</param>
-        /// <param name="clusterName">Элемент кластера, который добавляют/обновляют</param>
-        /// <param name="clusterResult"></param>
-        private void FillPartialCluster(Dictionary<string,double> clusterToFill ,string clusterName, double clusterResult)
+        /// <param name="characteristicToFill">характеристики, который необходимо заполнить/обновить</param>
+        /// <param name="characteristicName">Элемент характеристики, который добавляют/обновляют</param>
+        /// <param name="characteristicResult"></param>
+        private void FillPartialCharacteristics(Dictionary<string,double> characteristicToFill ,string characteristicName, double characteristicResult)
         {
-            if (!clusterToFill.ContainsKey(clusterName))
-                clusterToFill.Add(clusterName, clusterResult);
+            if (!characteristicToFill.ContainsKey(characteristicName))
+                characteristicToFill.Add(characteristicName, characteristicResult);
             else
-                clusterToFill[clusterName] += clusterResult;
+                characteristicToFill[characteristicName] += characteristicResult;
         }
         #endregion
 
         /// <summary>
-        /// Складывает результаты каждого частного кластера по определенному правилу
+        /// Складывает результаты каждого частного характеристикиа по определенному правилу
         /// </summary>
         private void CalculateSum()
         {
-            UnatedStateExamClustering();
-            SchoolMarkClustering();
-            OlympiadClustering();
-            SectionClustering();
-            HobbieClustering();
-            SchoolTypeClustering();
+            UnatedStateExamCharacterising();
+            SchoolMarkCharacterising();
+            OlympiadCharacterising();
+            SectionCharacterising();
+            HobbieCharacterising();
+            SchoolTypeCharacterising();
 
-            foreach (var item in unatedStatedExamCluster)
+            foreach (var item in unatedStatedExamCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
-            foreach (var item in schoolMarkCluster)
+            foreach (var item in schoolMarkCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
-            foreach (var item in olympiadCluster)
+            foreach (var item in olympiadCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
-            foreach (var item in sectionCluster)
+            foreach (var item in sectionCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
-            foreach (var item in hobbieCluster)
+            foreach (var item in hobbieCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
-            foreach (var item in schoolTypeCluster)
+            foreach (var item in schoolTypeCharacterisics)
             {
-                FillTotalCluster(item);
+                FillTotalCharacteristics(item);
             }
         }
 
-        private void FillTotalCluster(KeyValuePair<string, double> item)
+        private void FillTotalCharacteristics(KeyValuePair<string, double> item)
         {
-            if (!_totalCluster.ContainsKey(item.Key))
-                _totalCluster.Add(item.Key, item.Value);
+            if (!_totalCharacterisics.ContainsKey(item.Key))
+                _totalCharacterisics.Add(item.Key, item.Value);
             else
-                _totalCluster[item.Key] += item.Value;
+                _totalCharacterisics[item.Key] += item.Value;
         }
     }
 }

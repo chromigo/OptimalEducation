@@ -269,9 +269,9 @@ namespace UnitTests
 
             var clusterizer = new EntrantCharacterizer(entrant);
 
-            var rus = clusterizer.Cluster["Русский язык"];
-            var math = clusterizer.Cluster["Математика"];
-            var inf = clusterizer.Cluster["Информатика"];
+            var rus = clusterizer.Characterisics["Русский язык"];
+            var math = clusterizer.Characterisics["Математика"];
+            var inf = clusterizer.Characterisics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             //TODO: Подправить значения в зависимости от Enum-ов
@@ -295,9 +295,9 @@ namespace UnitTests
 
             var clusterizer = new EducationLineCharacterizer(educationLine);
 
-            var rus = clusterizer.Cluster["Русский язык"];
-            var math = clusterizer.Cluster["Математика"];
-            var inf = clusterizer.Cluster["Информатика"];
+            var rus = clusterizer.Characteristics["Русский язык"];
+            var math = clusterizer.Characteristics["Математика"];
+            var inf = clusterizer.Characteristics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             Assert.AreEqual(rus, 60);

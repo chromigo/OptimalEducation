@@ -45,7 +45,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
                 .ToListAsync();
             ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
             
-			return View(clusterizer.Cluster);
+			return View(clusterizer.Characterisics);
 		}
 
 		private async Task<int> GetEntrantId()

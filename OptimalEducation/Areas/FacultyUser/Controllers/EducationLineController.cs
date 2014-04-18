@@ -55,7 +55,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return HttpNotFound();
 			}
-			ViewBag.CluserResults = new EducationLineCharacterizer(educationline).Cluster;
+			ViewBag.CluserResults = new EducationLineCharacterizer(educationline).Characteristics;
 			//Отобразить рекомендуемый список абитуриентов
 			
 			var entrants = await db.Entrants
