@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201404091848327_addEntrantCity.Designer.cs">
       <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404181746208_RenameClusterToCharacteristic.cs" />
+    <Compile Include="Migrations\201404181746208_RenameClusterToCharacteristic.Designer.cs">
+      <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -81,7 +85,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Cluster.cs" />
+    <Compile Include="Models\Characteristic.cs" />
     <Compile Include="Models\Olympiad.cs" />
     <Compile Include="Models\EducationLine.cs" />
     <Compile Include="Models\EducationLinesRequirement.cs" />
@@ -141,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404091848327_addEntrantCity.resx">
       <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404181746208_RenameClusterToCharacteristic.resx">
+      <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

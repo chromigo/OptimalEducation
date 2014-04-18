@@ -27,7 +27,7 @@ namespace OptimalEducation.DAL.Models
 
 
 
-        public virtual Cluster Cluster { get; set; }
+        public virtual Characteristic Cluster { get; set; }
 
         public virtual School School { get; set; }
 

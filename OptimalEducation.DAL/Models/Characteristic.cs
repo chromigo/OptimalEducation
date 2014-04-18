@@ -5,12 +5,12 @@ namespace OptimalEducation.DAL.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     /// <summary>
-    /// Кластер для весов (данный вес вносит свой вклад в данный кластер)
+    /// Характеристика для весов (данный вес вносит свой вклад в данную харатеристику)
     /// </summary>
-    public partial class Cluster
+    public partial class Characteristic
     {
 
-        public Cluster()
+        public Characteristic()
         {
 
             this.Weights = new HashSet<Weight>();

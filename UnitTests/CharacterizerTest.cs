@@ -15,18 +15,18 @@ namespace UnitTests
         List<Section> sections = new List<Section>();
         List<Hobbie> hobbies = new List<Hobbie>();
         List<School> schools = new List<School>();
-        List<Cluster> clusters;
+        List<Characteristic> clusters;
         //MethodName_Scenario_ExpectedBehavior
         public CharacterizerTest()
         {
-            clusters = new List<Cluster>
+            clusters = new List<Characteristic>
             {
-                new Cluster { Name = "Русский язык"},
-                new Cluster { Name = "Математика"},
-                new Cluster { Name = "Информатика"},
-                new Cluster { Name = "Физика"},
-                new Cluster { Name = "Химия"},
-                new Cluster { Name = "Английский язык"},
+                new Characteristic { Name = "Русский язык"},
+                new Characteristic { Name = "Математика"},
+                new Characteristic { Name = "Информатика"},
+                new Characteristic { Name = "Физика"},
+                new Characteristic { Name = "Химия"},
+                new Characteristic { Name = "Английский язык"},
             };
 
             ExamFill();
