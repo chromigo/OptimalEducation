@@ -52,33 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201403210958366_Init_Entities.cs" />
-    <Compile Include="Migrations\201403210958366_Init_Entities.Designer.cs">
-      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403211527472_addLocation_coord.cs" />
-    <Compile Include="Migrations\201403211527472_addLocation_coord.Designer.cs">
-      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.cs" />
-    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.Designer.cs">
-      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201403211808489_RemovePreference.cs" />
-    <Compile Include="Migrations\201403211808489_RemovePreference.Designer.cs">
-      <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404091848327_addEntrantCity.cs" />
-    <Compile Include="Migrations\201404091848327_addEntrantCity.Designer.cs">
-      <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404181746208_RenameClusterToCharacteristic.cs" />
-    <Compile Include="Migrations\201404181746208_RenameClusterToCharacteristic.Designer.cs">
-      <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.cs" />
-    <Compile Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.Designer.cs">
-      <DependentUpon>201404191718572_renameOtherClusterToCharacteristic.cs</DependentUpon>
+    <Compile Include="Migrations\201404191749513_Initialize.cs" />
+    <Compile Include="Migrations\201404191749513_Initialize.Designer.cs">
+      <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
@@ -126,26 +102,8 @@
     <Content Include="SQLScripts\dbo.UnitedStateExams.data.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403210958366_Init_Entities.resx">
-      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211527472_addLocation_coord.resx">
-      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211607512_SchoolAndSchoolType.resx">
-      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211808489_RemovePreference.resx">
-      <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404091848327_addEntrantCity.resx">
-      <DependentUpon>201404091848327_addEntrantCity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404181746208_RenameClusterToCharacteristic.resx">
-      <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.resx">
-      <DependentUpon>201404191718572_renameOtherClusterToCharacteristic.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404191749513_Initialize.resx">
+      <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

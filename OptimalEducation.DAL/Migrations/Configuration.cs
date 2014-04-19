@@ -67,7 +67,7 @@ namespace OptimalEducation.DAL.Migrations
         {
             var cities = new List<City>
             {
-                new City { Id=1, Name = "Москва", Prestige = 90 },
+                new City { Id=1, Name = "Москва", Prestige = 90},
                 new City { Id=2, Name = "Санкт-Петербург", Prestige = 80 },
                 new City { Id=3, Name = "Екатеринбург", Prestige = 60 }
             };
@@ -115,7 +115,8 @@ namespace OptimalEducation.DAL.Migrations
             };
             educationLines.ForEach(s => context.EducationLines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
-
+            //на данный момент формируется на основе егэ экзаменов.
+            //В дальнейшем необходимо подумать и перерасбить более разумно
             var Characterisics = new List<Characteristic>
             {
                 new Characteristic { Id=1, Name = "Русский язык"},
@@ -124,29 +125,60 @@ namespace OptimalEducation.DAL.Migrations
                 new Characteristic { Id=4, Name = "Физика"},
                 new Characteristic { Id=5, Name = "Химия"},
                 new Characteristic { Id=6, Name = "Английский язык"},
+                new Characteristic { Id=7, Name = "Литература"},
+                new Characteristic { Id=8, Name = "История"},
+                new Characteristic { Id=9, Name = "Обществознание"},
+                new Characteristic { Id=10, Name = "Биология"},
+                new Characteristic { Id=11, Name = "География"},
+                new Characteristic { Id=12, Name = "Немецкий язык"},
+                new Characteristic { Id=13, Name = "Французский язык"},
+                new Characteristic { Id=14, Name = "Испанский язык"},
             };
             Characterisics.ForEach(s => context.Characteristics.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
-            var disciplines = new List<ExamDiscipline>
+            var examDisciplines = new List<ExamDiscipline>
             {
                 new ExamDiscipline { Id=1, Name = "Русский язык"},
                 new ExamDiscipline { Id=2, Name = "Математика"},
+
                 new ExamDiscipline { Id=3, Name = "Информатика"},
                 new ExamDiscipline { Id=4, Name = "Физика"},
                 new ExamDiscipline { Id=5, Name = "Химия"},
-                new ExamDiscipline { Id=6, Name = "Английский язык"},
+                new ExamDiscipline { Id=6, Name = "Биология"},
+                new ExamDiscipline { Id=7, Name = "География"},
+
+                new ExamDiscipline { Id=8, Name = "Обществознание"},
+                new ExamDiscipline { Id=9, Name = "История"},
+                new ExamDiscipline { Id=10, Name = "Литература"},
+
+                new ExamDiscipline { Id=11, Name = "Английский язык"},
+                new ExamDiscipline { Id=12, Name = "Немецкий язык"},
+                new ExamDiscipline { Id=13, Name = "Французский язык"},
+                new ExamDiscipline { Id=14, Name = "Испанский язык"},
             };
-            disciplines.ForEach(s => context.ExamDisciplines.AddOrUpdate(p => p.Name, s));
+            examDisciplines.ForEach(s => context.ExamDisciplines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
+            //На данный момент только за 11 класс
             var schoolDiscipline = new List<SchoolDiscipline>
             {
-                new SchoolDiscipline {Id=1, Name = "Русский язык"},
-                new SchoolDiscipline {Id=2, Name = "Математика"},
+                new SchoolDiscipline {Id=1, Name = "Алгебра"},
+                new SchoolDiscipline {Id=2, Name = "Геометрия"},
                 new SchoolDiscipline {Id=3, Name = "Информатика"},
                 new SchoolDiscipline {Id=4, Name = "Физика"},
                 new SchoolDiscipline {Id=5, Name = "Химия"},
-                new SchoolDiscipline {Id=6, Name = "Английский язык"},
+                new SchoolDiscipline {Id=6, Name = "Биология"},
+                new SchoolDiscipline {Id=7, Name = "География"},
+
+                new SchoolDiscipline {Id=8, Name = "История"},
+                new SchoolDiscipline {Id=9, Name = "Обществознание"},
+                new SchoolDiscipline {Id=10, Name = "Литература"},
+                
+                new SchoolDiscipline {Id=11, Name = "Русский язык"},
+                new SchoolDiscipline {Id=12, Name = "Английский язык"},
+                new SchoolDiscipline {Id=13, Name = "Немецкий язык"},
+                new SchoolDiscipline {Id=14, Name = "Французский язык"},
+                new SchoolDiscipline {Id=15, Name = "Испанский язык"},
             };
             schoolDiscipline.ForEach(s => context.SchoolDisciplines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
@@ -175,9 +207,9 @@ namespace OptimalEducation.DAL.Migrations
 
             var schools = new List<School>
             {
-                new School { Id=1, Name = "Школа русского",EducationQuality=3},
-                new School { Id=2, Name = "Школа матана", EducationQuality= 2},
-                new School { Id=3, Name = "Школа проги", EducationQuality=1}
+                new School {Id=1, Name = "Школа русского",EducationQuality=3},
+                new School {Id=2, Name = "Школа матана", EducationQuality= 2},
+                new School {Id=3, Name = "Школа проги", EducationQuality=1}
             };
             schools.ForEach(s => context.Schools.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
@@ -232,8 +264,8 @@ namespace OptimalEducation.DAL.Migrations
                 new Weight {Id=5, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
 
                 new Weight {Id=6, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=7, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=8, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=7, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Алгебра").Id},
+                new Weight {Id=8, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Алгебра").Id},
                 new Weight {Id=9, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
                 new Weight {Id=10, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
 
