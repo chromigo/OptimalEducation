@@ -76,6 +76,10 @@
     <Compile Include="Migrations\201404181746208_RenameClusterToCharacteristic.Designer.cs">
       <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.cs" />
+    <Compile Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.Designer.cs">
+      <DependentUpon>201404191718572_renameOtherClusterToCharacteristic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -103,11 +107,6 @@
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\UnitedStateExam.cs" />
     <Compile Include="Models\Weight.cs" />
-    <Compile Include="OptimalEducationDbContextNew.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OptimalEducationDbContextNew.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,10 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="OptimalEducationDbContextNew.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OptimalEducationDbContextNew.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404181746208_RenameClusterToCharacteristic.resx">
       <DependentUpon>201404181746208_RenameClusterToCharacteristic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404191718572_renameOtherClusterToCharacteristic.resx">
+      <DependentUpon>201404191718572_renameOtherClusterToCharacteristic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

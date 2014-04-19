@@ -57,7 +57,7 @@ namespace OptimalEducation.Logic.Characterizer
         /// Расстояние городских кварталов (манхэттенское расстояние) м/д абитуриентом и учебным направлением
         /// </summary>
         /// <param name="entrantCharacteristics">Значение вычисленного кластера для данного абитуриента</param>
-        /// <param name="educationLineCluster">Значение вычисленного кластера для данного учебного направления</param>
+        /// <param name="educationLineCharacteristics">Значение вычисленного кластера для данного учебного направления</param>
         public static double? GetCityBlockDistance(Dictionary<string, double> entrantCharacteristics, Dictionary<string, double> educationLineCharacteristics)
         {
             //Влияние отдельных больших разностей (выбросов) уменьшается (т.к. они не возводятся в квадрат).
@@ -78,7 +78,7 @@ namespace OptimalEducation.Logic.Characterizer
         /// Расстояние Чебышева м/д абитуриентом и учебным направлением
         /// </summary>
         /// <param name="entrantCharacteristics">Значение вычисленного кластера для данного абитуриента</param>
-        /// <param name="educationLineCluster">Значение вычисленного кластера для данного учебного направления</param>
+        /// <param name="educationLineCharacteristics">Значение вычисленного кластера для данного учебного направления</param>
         public static double? GetChebishevDistance(Dictionary<string, double> entrantCharacteristics, Dictionary<string, double> educationLineCharacteristics)
         {
             //Это расстояние может оказаться полезным, когда нужно определить два объекта как «различные», если они различаются по какой-либо одной координате. 
@@ -100,7 +100,7 @@ namespace OptimalEducation.Logic.Characterizer
         /// Степенное расстояние м/д абитуриентом и учебным направлением
         /// </summary>
         /// <param name="entrantCharacteristics">Значение вычисленного кластера для данного абитуриента</param>
-        /// <param name="educationLineCluster">Значение вычисленного кластера для данного учебного направления</param>
+        /// <param name="educationLineCharacteristics">Значение вычисленного кластера для данного учебного направления</param>
         /// <param name="p">Ответственен за постепенное взвешивание разностей по отдельным координатам</param>
         /// <param name="r">Ответственен за прогрессивное взвешивание больших расстояний между объектами</param>
         public static double? GetPowerDistance(Dictionary<string, double> entrantCharacteristics, Dictionary<string, double> educationLineCharacteristics, double p, double r)

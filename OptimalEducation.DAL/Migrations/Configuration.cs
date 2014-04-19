@@ -116,7 +116,7 @@ namespace OptimalEducation.DAL.Migrations
             educationLines.ForEach(s => context.EducationLines.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
-            var clusters = new List<Characteristic>
+            var Characterisics = new List<Characteristic>
             {
                 new Characteristic { Id=1, Name = "Русский язык"},
                 new Characteristic { Id=2, Name = "Математика"},
@@ -125,7 +125,7 @@ namespace OptimalEducation.DAL.Migrations
                 new Characteristic { Id=5, Name = "Химия"},
                 new Characteristic { Id=6, Name = "Английский язык"},
             };
-            clusters.ForEach(s => context.Characteristics.AddOrUpdate(p => p.Name, s));
+            Characterisics.ForEach(s => context.Characteristics.AddOrUpdate(p => p.Name, s));
             context.SaveChanges();
 
             var disciplines = new List<ExamDiscipline>
@@ -225,41 +225,41 @@ namespace OptimalEducation.DAL.Migrations
 
             var weights = new List<Weight>
             {
-                new Weight {Id=1, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=2, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=3, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=4, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=5, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=1, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=2, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=3, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=4, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=5, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=6, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=7, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=8, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=9, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=10, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=6, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=7, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=8, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=9, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=10, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolDisciplineId=context.SchoolDisciplines.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=11, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Русский язык").Id},
-                new Weight {Id=12, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=13, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
-                new Weight {Id=14, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
-                new Weight {Id=15, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=11, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Русский язык").Id},
+                new Weight {Id=12, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=13, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Математика").Id},
+                new Weight {Id=14, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
+                new Weight {Id=15, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,OlympiadId=context.Olympiads.Single(p=>p.Name=="Информатика").Id},
 
-                new Weight {Id=16, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SectionId=context.Sections.Single(p=>p.Name=="Бег").Id},
-                new Weight {Id=17, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
-                new Weight {Id=18, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
-                new Weight {Id=19, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
-                new Weight {Id=20, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
+                new Weight {Id=16, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SectionId=context.Sections.Single(p=>p.Name=="Бег").Id},
+                new Weight {Id=17, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
+                new Weight {Id=18, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Матанир").Id},
+                new Weight {Id=19, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
+                new Weight {Id=20, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SectionId=context.Sections.Single(p=>p.Name=="Программир").Id},
 
-                new Weight {Id=21, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа русского").Id},
-                new Weight {Id=22, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
-                new Weight {Id=23, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
-                new Weight {Id=24, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
-                new Weight {Id=25, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
+                new Weight {Id=21, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа русского").Id},
+                new Weight {Id=22, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
+                new Weight {Id=23, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа матана").Id},
+                new Weight {Id=24, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
+                new Weight {Id=25, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,SchoolId=context.Schools.Single(p=>p.Name=="Школа проги").Id},
 
-                new Weight {Id=26, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Русский язык").Id},
-                new Weight {Id=27, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
-                new Weight {Id=28, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
-                new Weight {Id=29, Coefficient = 1, ClusterId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
-                new Weight {Id=30, Coefficient = 0.7, ClusterId = context.Characteristics.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
+                new Weight {Id=26, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Русский язык").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Русский язык").Id},
+                new Weight {Id=27, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
+                new Weight {Id=28, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Математика").Id},
+                new Weight {Id=29, Coefficient = 1, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Информатика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
+                new Weight {Id=30, Coefficient = 0.7, CharacterisicId = context.Characteristics.Single(p=>p.Name=="Математика").Id,HobbieId=context.Hobbies.Single(p=>p.Name=="Хобби Информатика").Id},
             };
             weights.ForEach(s => context.Weights.AddOrUpdate(s));
             context.SaveChanges();

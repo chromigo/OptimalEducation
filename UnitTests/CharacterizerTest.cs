@@ -16,12 +16,12 @@ namespace UnitTests
         List<Section> sections = new List<Section>();
         List<Hobbie> hobbies = new List<Hobbie>();
         List<School> schools = new List<School>();
-        List<Characteristic> clusters; 
+        List<Characteristic> characterisics; 
         #endregion
         //MethodName_Scenario_ExpectedBehavior
         public CharacterizerTest()
         {
-            clusters = new List<Characteristic>
+            characterisics = new List<Characteristic>
             {
                 new Characteristic { Name = "Русский язык"},
                 new Characteristic { Name = "Математика"},
@@ -50,8 +50,8 @@ namespace UnitTests
                 Name = "{Школа по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
             schools.Add(new School
@@ -59,8 +59,8 @@ namespace UnitTests
                 Name = "Школа по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
         }
@@ -71,8 +71,8 @@ namespace UnitTests
                 Name = "{Хобби(лол) по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
             hobbies.Add(new Hobbie
@@ -80,8 +80,8 @@ namespace UnitTests
                 Name = "Хобби(лол) по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
         }
@@ -92,8 +92,8 @@ namespace UnitTests
                 Name = "Секция(лол) по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
             sections.Add(new Section
@@ -101,8 +101,8 @@ namespace UnitTests
                 Name = "Секция(лол) по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
         }
@@ -113,8 +113,8 @@ namespace UnitTests
                 Name = "Олимпиада по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
             olympiads.Add(new Olympiad
@@ -122,8 +122,8 @@ namespace UnitTests
                 Name = "Олимпиада по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
         }
@@ -134,7 +134,7 @@ namespace UnitTests
                 Name = "Русский язык",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Русский язык")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
                 },
             });
             schoolDisciplines.Add(new SchoolDiscipline
@@ -142,8 +142,8 @@ namespace UnitTests
                 Name = "Математика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                    new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                 },
             });
             schoolDisciplines.Add(new SchoolDiscipline
@@ -151,8 +151,8 @@ namespace UnitTests
                 Name = "Информатика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                    new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                 },
             });
         }
@@ -163,7 +163,7 @@ namespace UnitTests
                 Name = "Русский язык",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Русский язык")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
                 },
             });
             examDisciplines.Add(new ExamDiscipline
@@ -171,8 +171,8 @@ namespace UnitTests
                 Name = "Математика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Математика")},
-                    new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                 },
             });
             examDisciplines.Add(new ExamDiscipline
@@ -180,8 +180,8 @@ namespace UnitTests
                 Name = "Информатика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Cluster=clusters.Find(p=>p.Name=="Информатика")},
-                    new Weight(){Coefficient=0.5,Cluster=clusters.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                 },
             });
         }
@@ -271,15 +271,15 @@ namespace UnitTests
         #endregion
 
         [TestMethod]
-        public void EntrantCluster_GetCalculatedCluster_ReturnCorrectValue()
+        public void EntrantCharacterisics_GetCalculatedCharacterisics_ReturnCorrectValue()
         {
             var entrant = CreateEntrant();
 
-            var clusterizer = new EntrantCharacterizer(entrant);
+            var characterizer = new EntrantCharacterizer(entrant);
 
-            var rus = clusterizer.Characterisics["Русский язык"];
-            var math = clusterizer.Characterisics["Математика"];
-            var inf = clusterizer.Characterisics["Информатика"];
+            var rus = characterizer.Characterisics["Русский язык"];
+            var math = characterizer.Characterisics["Математика"];
+            var inf = characterizer.Characterisics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             //TODO: Подправить значения в зависимости от Enum-ов
@@ -291,7 +291,7 @@ namespace UnitTests
         
 
         [TestMethod]
-        public void EducationLineCluster_GetCalculatedCluster_ReturnCorrectValue()
+        public void EducationLineCharacterisics_GetCalculatedCharacterisics_ReturnCorrectValue()
         {
             var educationLine = new EducationLine
             {
@@ -303,11 +303,11 @@ namespace UnitTests
                 }
             };
 
-            var clusterizer = new EducationLineCharacterizer(educationLine);
+            var characterisicsizer = new EducationLineCharacterizer(educationLine);
 
-            var rus = clusterizer.Characteristics["Русский язык"];
-            var math = clusterizer.Characteristics["Математика"];
-            var inf = clusterizer.Characteristics["Информатика"];
+            var rus = characterisicsizer.Characteristics["Русский язык"];
+            var math = characterisicsizer.Characteristics["Математика"];
+            var inf = characterisicsizer.Characteristics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             Assert.AreEqual(rus, 60);

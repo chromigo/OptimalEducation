@@ -13,24 +13,24 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         VectorCriteriaRecalculator vectorCriteriaRecalculator;
         ParretoCalculator parretoCalculator;
 
-        List<EducationLineAndClustersRow> educationLineRequrements;
+        List<EducationLineAndCharacterisicsRow> educationLineRequrements;
 
-        public MulticriterialAnalysis(Dictionary<string, double> userCluster, List<EducationLineAndClustersRow> educationLineRequrements)
+        public MulticriterialAnalysis(Dictionary<string, double> userCharacterisics, List<EducationLineAndCharacterisicsRow> educationLineRequrements)
         {
-            preferenceRelationCalculator = new PreferenceRelationCalculator(userCluster);
+            preferenceRelationCalculator = new PreferenceRelationCalculator(userCharacterisics);
             vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
             parretoCalculator = new ParretoCalculator();
 
             this.educationLineRequrements = educationLineRequrements;
         }
 
-        public List<EducationLineAndClustersRow> Calculate()
+        public List<EducationLineAndCharacterisicsRow> Calculate()
         {
             var userPref = preferenceRelationCalculator.GetPreferenceRelations();//Получаем предпочтения пользователя
-            var recalculatedCluster = vectorCriteriaRecalculator.RecalculateEducationLineClusters(educationLineRequrements, userPref);//Пересчитываем кластеры университетов с учетом предпочтений пользователя
-            var parretoEducationLineClusters = parretoCalculator.ParretoSetCreate(recalculatedCluster);//Строим множество паррето-оптимальных веткоров
+            var recalculatedCharacterisics = vectorCriteriaRecalculator.RecalculateEducationLineCharacterisics(educationLineRequrements, userPref);//Пересчитываем кластеры университетов с учетом предпочтений пользователя
+            var parretoEducationLineCharacterisics = parretoCalculator.ParretoSetCreate(recalculatedCharacterisics);//Строим множество паррето-оптимальных веткоров
 
-            return parretoEducationLineClusters;
+            return parretoEducationLineCharacterisics;
         }
     }
 }
