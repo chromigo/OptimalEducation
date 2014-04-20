@@ -35,7 +35,7 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var exam in _entrant.UnitedStateExams)
             {
-                var result = exam.Result;
+                double result = exam.Result/100.0;//нормализованный результат(100б=1.00, 70,=0.7)
                 var discipline = exam.Discipline;
                 foreach (var weight in discipline.Weights)
                 {
@@ -52,7 +52,8 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var shoolMark in _entrant.SchoolMarks)
             {
-                var result = shoolMark.Result;
+                //нормализованный результат(5=1.00)
+                double result = shoolMark.Result/5.0;
                 var discipline = shoolMark.SchoolDiscipline;
                 foreach (var weight in discipline.Weights)
                 {
@@ -80,11 +81,11 @@ namespace OptimalEducation.Logic.Characterizer
                     //TODO: Реализовать особую логику учета данных?
                     switch (result)
                     {
-                        case OlypmpiadResult.FirstPlace: characteristicResult = (int)result * coeff;
+                        case OlypmpiadResult.FirstPlace: characteristicResult = ((double)result/100) * coeff;
                             break;
-                        case OlypmpiadResult.SecondPlace: characteristicResult = (int)result * coeff;
+                        case OlypmpiadResult.SecondPlace: characteristicResult = ((double)result / 100) * coeff;
                             break;
-                        case OlypmpiadResult.ThirdPlace: characteristicResult = (int)result * coeff;
+                        case OlypmpiadResult.ThirdPlace: characteristicResult = ((double)result / 100) * coeff;
                             break;
                         default:
                             break;
@@ -99,7 +100,14 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var sectionResult in _entrant.ParticipationInSections)
             {
-                var result = sectionResult.YearPeriod;
+                double result = 0;
+                //По правилу 80/20?
+                if (sectionResult.YearPeriod >= 10) result = 1.00;
+                else if (sectionResult.YearPeriod>5) result = 0.90;
+                else if (sectionResult.YearPeriod > 2) result = 0.80;
+                else if (sectionResult.YearPeriod > 1) result = 0.40;
+                else if (sectionResult.YearPeriod > 0.5) result = 0.20;
+
                 var section = sectionResult.Section;
                 foreach (var weight in section.Weights)
                 {
@@ -124,6 +132,7 @@ namespace OptimalEducation.Logic.Characterizer
                     var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
+                    //пока просто учитывается наличие хобби как факт
                     double someValue = 1;
                     double characteristicResult = someValue * coeff;
 
@@ -139,8 +148,8 @@ namespace OptimalEducation.Logic.Characterizer
             var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
             if(lastParticipationInSchool!=null)
             {
-                //Или еще учитывать кол-во лет обучения?(нет в модели)
-                var quality = lastParticipationInSchool.School.EducationQuality;
+                //Или еще учитывать кол-во лет обучения?
+                var quality = lastParticipationInSchool.School.EducationQuality/100.0;
                 var schoolWeights = lastParticipationInSchool.School.Weights;
                 foreach (var weight in schoolWeights)
                 {
@@ -148,7 +157,7 @@ namespace OptimalEducation.Logic.Characterizer
                     var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
-                    double characteristicResult = (int)quality * coeff;
+                    double characteristicResult = quality * coeff;
 
                     FillPartialCharacteristics(schoolTypeCharacterisics, characteristicName, characteristicResult);
                 }
