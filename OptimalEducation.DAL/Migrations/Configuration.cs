@@ -69,70 +69,38 @@ namespace OptimalEducation.DAL.Migrations
             //В текущей версии просто 1 раз заполняются данные, если не существуют.
             //Соответсвеноо, если добавлять новые записи - они добавятся при обновлении.
             //Если менять существующие - они не обновятся(только если пересоздавать базу)
-            var cities = new List<City>
-            {
-                new City { Name = "Москва", Prestige = 90},
-                new City { Name = "Санкт-Петербург", Prestige = 80 },
-                new City { Name = "Екатеринбург", Prestige = 60 }
-            };
-            foreach (var item in cities)
-            {
-                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
-                if (context.Cities.SingleOrDefault(p => p.Name == item.Name) == null)
-                {
-                    context.Cities.Add(item);
-                }
-            }
-            context.SaveChanges();
 
-            var higherEducationInstitutions = new List<HigherEducationInstitution>
-            {
-                new HigherEducationInstitution { Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
-                new HigherEducationInstitution { Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
-                new HigherEducationInstitution { Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
-            };
-            foreach (var item in higherEducationInstitutions)
-            {
-                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
-                if (context.HigherEducationInstitutions.SingleOrDefault(p => p.Name == item.Name) == null)
-                {
-                    context.HigherEducationInstitutions.Add(item);
-                }
-            }
-            context.SaveChanges();
+            var cities = CityInit(context);
 
-            var faculties = new List<Faculty>
-            {
-                new Faculty {Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
-                new Faculty {Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
-                new Faculty {Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
-            };
-            foreach (var item in faculties)
-            {
-                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
-                if (context.Faculties.SingleOrDefault(p => p.Name == item.Name) == null)
-                {
-                    context.Faculties.Add(item);
-                }
-            }
-            context.SaveChanges();
+            var higherEducationInstitutions = HigherEducationInsitutionInit(context, cities);
 
-            var generalEducationLines = new List<GeneralEducationLine>
-            {
-                new GeneralEducationLine {Name = "Г Математика и информатика", Code="1"},
-                new GeneralEducationLine {Name = "Г Информатика", Code="2" },
-                new GeneralEducationLine {Name = "Г Физика", Code="3"}
-            };
-            foreach (var item in generalEducationLines)
-            {
-                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
-                if (context.GeneralEducationLines.SingleOrDefault(p => p.Name == item.Name) == null)
-                {
-                    context.GeneralEducationLines.Add(item);
-                }
-            }
-            context.SaveChanges();
+            FacultiesInit(context, higherEducationInstitutions);
 
+            GeneralEducationLinesInit(context);
+
+            var сharacterisics = CharacteristicInit(context);
+
+            //Каждый объект(напр. дисциплина егэ математики) может иметь несколько весов. 
+            //Но их сумма = 1. В данном случае это упрощение, которое в дальнейшем, возможно, потребуется поправить.
+
+            Exams_Weight(context, сharacterisics);
+
+            SchoolDisciplines_Weight(context, сharacterisics);
+
+            Olympiads_Weight(context, сharacterisics);
+
+            Sections_Weight(context, сharacterisics);
+
+            Schools_Weight(context, сharacterisics);
+
+            Hobbies_Weight(context, сharacterisics);
+
+
+            EducationLines_Requirements(context);
+        }
+
+        private static List<Characteristic> CharacteristicInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        {
             //на данный момент формируется на основе егэ экзаменов.
             //В дальнейшем необходимо подумать и перерасбить более разумно
             //В идеале разделить на "предметы", "физ данные", "прочие"
@@ -169,21 +137,85 @@ namespace OptimalEducation.DAL.Migrations
                 }
             }
             context.SaveChanges();
+            return сharacterisics;
+        }
 
-            Exams_Weight(context, сharacterisics);
+        private static void GeneralEducationLinesInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        {
+            var generalEducationLines = new List<GeneralEducationLine>
+            {
+                new GeneralEducationLine {Name = "Г Математика и информатика", Code="1"},
+                new GeneralEducationLine {Name = "Г Информатика", Code="2" },
+                new GeneralEducationLine {Name = "Г Физика", Code="3"}
+            };
+            foreach (var item in generalEducationLines)
+            {
+                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
+                if (context.GeneralEducationLines.SingleOrDefault(p => p.Name == item.Name) == null)
+                {
+                    context.GeneralEducationLines.Add(item);
+                }
+            }
+            context.SaveChanges();
+        }
 
-            SchoolDisciplines_Weight(context, сharacterisics);
+        private static void FacultiesInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<HigherEducationInstitution> higherEducationInstitutions)
+        {
+            var faculties = new List<Faculty>
+            {
+                new Faculty {Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
+                new Faculty {Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
+                new Faculty {Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
+            };
+            foreach (var item in faculties)
+            {
+                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
+                if (context.Faculties.SingleOrDefault(p => p.Name == item.Name) == null)
+                {
+                    context.Faculties.Add(item);
+                }
+            }
+            context.SaveChanges();
+        }
 
-            Olympiads_Weight(context, сharacterisics);
+        private static List<HigherEducationInstitution> HigherEducationInsitutionInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<City> cities)
+        {
+            var higherEducationInstitutions = new List<HigherEducationInstitution>
+            {
+                new HigherEducationInstitution { Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
+                new HigherEducationInstitution { Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
+                new HigherEducationInstitution { Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
+            };
+            foreach (var item in higherEducationInstitutions)
+            {
+                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
+                if (context.HigherEducationInstitutions.SingleOrDefault(p => p.Name == item.Name) == null)
+                {
+                    context.HigherEducationInstitutions.Add(item);
+                }
+            }
+            context.SaveChanges();
+            return higherEducationInstitutions;
+        }
 
-            Sections_Weight(context, сharacterisics);
-
-            Schools_Weight(context, сharacterisics);
-
-            Hobbies_Weight(context, сharacterisics);
-
-
-            EducationLines_Requirements(context);
+        private static List<City> CityInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        {
+            var cities = new List<City>
+            {
+                new City { Name = "Москва", Prestige = 90},
+                new City { Name = "Санкт-Петербург", Prestige = 80 },
+                new City { Name = "Екатеринбург", Prestige = 60 }
+            };
+            foreach (var item in cities)
+            {
+                //Если нету такой записи - добавляем. Иначе игнорируем(не надо обновлять)
+                if (context.Cities.SingleOrDefault(p => p.Name == item.Name) == null)
+                {
+                    context.Cities.Add(item);
+                }
+            }
+            context.SaveChanges();
+            return cities;
         }
 
         private static void EducationLines_Requirements(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
