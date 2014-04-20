@@ -10,10 +10,10 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis.Models
     {
         public PreferenceRelation(string name)
         {
-            ImportantClusterName = name;
+            ImportantCharacterisicName = name;
             Tetas = new Dictionary<string, double>();
         }
-        public string ImportantClusterName { get; private set; }
+        public string ImportantCharacterisicName { get; private set; }
         /// <summary>
         /// Словарь "Название неважного кластера, Тета - коэффциент"
         /// </summary>

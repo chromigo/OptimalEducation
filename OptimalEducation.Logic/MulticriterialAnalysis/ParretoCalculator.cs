@@ -12,22 +12,22 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         /// <summary>
         /// Строит множество Парето из заданного множества
         /// </summary>
-        /// <param name="educationLineClusters">Множество, из которого требуется строить мн-во Парето</param>
+        /// <param name="educationLineCharacteristics">Множество, из которого требуется строить мн-во Парето</param>
         /// <returns>Построенное множество Парето</returns>
-        public List<EducationLineAndClustersRow> ParretoSetCreate(List<EducationLineAndClustersRow> educationLineClusters)
+        public List<EducationLineAndCharacterisicsRow> ParretoSetCreate(List<EducationLineAndCharacterisicsRow> educationLineCharacteristics)
         {
-            List<EducationLineAndClustersRow> parretoList = new List<EducationLineAndClustersRow>();
+            List<EducationLineAndCharacterisicsRow> parretoList = new List<EducationLineAndCharacterisicsRow>();
 
-            for (int i = 0; i < educationLineClusters.Count; i++)
+            for (int i = 0; i < educationLineCharacteristics.Count; i++)
             {
-                var comparedItemClusters = educationLineClusters[i].Clusters.ToArray();//Этот элемент(строку) сравниваем с остальными
-                for (int j = i + 1; j < educationLineClusters.Count; j++)
+                var comparedItemCharacteristics = educationLineCharacteristics[i].Characterisics.ToArray();//Этот элемент(строку) сравниваем с остальными
+                for (int j = i + 1; j < educationLineCharacteristics.Count; j++)
                 {
-                    var itemClusters = educationLineClusters[j].Clusters.ToArray();//С этим элементом сравниваем
+                    var itemCharacteristics = educationLineCharacteristics[j].Characterisics.ToArray();//С этим элементом сравниваем
                     bool comparedIsMore = true;
-                    for (int k = 0; k < comparedItemClusters.Count(); k++)
+                    for (int k = 0; k < comparedItemCharacteristics.Count(); k++)
                     {
-                        if (comparedItemClusters[k].Value < itemClusters[k].Value)
+                        if (comparedItemCharacteristics[k].Value < itemCharacteristics[k].Value)
                         {
                             //переход к шагу 5 алгоритма, если оказывается несравним
                             comparedIsMore = false;
@@ -38,16 +38,16 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                     if (comparedIsMore)
                     {
                         //1-й вектор оказался больше 2-го, поэтому удаляем 2-й из общего множества
-                        educationLineClusters.Remove(educationLineClusters[j]);
+                        educationLineCharacteristics.Remove(educationLineCharacteristics[j]);
                         //т.к. массив по которому мы проходим поменялся
                         --j;
                     }
                     else//проверяем на равенство эти же объекты, но в другом порядке(шаг 5)
                     {
                         bool itemIsMore = true;
-                        for (int k = 0; k < comparedItemClusters.Count(); k++)
+                        for (int k = 0; k < comparedItemCharacteristics.Count(); k++)
                         {
-                            if (itemClusters[k].Value < comparedItemClusters[k].Value)
+                            if (itemCharacteristics[k].Value < comparedItemCharacteristics[k].Value)
                             {
                                 itemIsMore = false;
                                 break;
@@ -56,7 +56,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                         if (itemIsMore)
                         {
                             //2-й вектор оказался больше 1-го, поэтому удаляем 1-й из общего множества
-                            educationLineClusters.Remove(educationLineClusters[i]);
+                            educationLineCharacteristics.Remove(educationLineCharacteristics[i]);
                             //т.к. массив по которому мы проходим поменялся
                             --i; break;
                         }
@@ -65,8 +65,8 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                 //После выполнения сравнения со всеми векторами, если вектор не удалился в процессе - удаляем его
                 if (i != -1)
                 {
-                    parretoList.Add(educationLineClusters[i]);
-                    educationLineClusters.Remove(educationLineClusters[0]);
+                    parretoList.Add(educationLineCharacteristics[i]);
+                    educationLineCharacteristics.Remove(educationLineCharacteristics[0]);
                     --i;
                 }
             }

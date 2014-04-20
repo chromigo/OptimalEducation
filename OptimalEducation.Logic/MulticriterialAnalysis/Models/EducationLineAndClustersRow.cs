@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis.Models
 {
-    public class EducationLineAndClustersRow
+    public class EducationLineAndCharacterisicsRow
     {
         public int Id { get; set; }
         public string Code { get; set; }
 
-        public Dictionary<string, double> Clusters { get; set; }
+        public Dictionary<string, double> Characterisics { get; set; }
 
-        public EducationLineAndClustersRow(int id)
+        public EducationLineAndCharacterisicsRow(int id)
         {
             Id = id;
-            Clusters = new Dictionary<string, double>();
+            Characterisics = new Dictionary<string, double>();
         }
     }
 }

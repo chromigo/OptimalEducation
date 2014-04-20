@@ -9,18 +9,18 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
     public class PreferenceRelationCalculator
     {
-        //SeparateClustersToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
+        //SeparateCharacterisicsToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
         //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
 
-        Dictionary<string, double> _userCluster;
+        Dictionary<string, double> _userCharacteristics;
 
-        Dictionary<string, double> _importantClusters;
-        Dictionary<string, double> _unImportantClusters;
+        Dictionary<string, double> _importantCharacterisics;
+        Dictionary<string, double> _unImportantCharacterisics;
 
-        public PreferenceRelationCalculator(Dictionary<string, double> userCluster)
+        public PreferenceRelationCalculator(Dictionary<string, double> userCharacteristics)
         {
-            _userCluster = userCluster;
-            SeparateClustersToImprotantAnd_Unimportant();
+            _userCharacteristics = userCharacteristics;
+            SeparateCharacterisicsToImprotantAnd_Unimportant();
         }
 
         /// <summary>
@@ -31,10 +31,10 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         {
             var preferenceRelations = new List<PreferenceRelation>();
             //Определяем коэффициенты отн важности. Здесь настраиваем правило, по которому будем строить эти коэффициенты
-            foreach (var impCluster in _importantClusters)
+            foreach (var impCharacteristic in _importantCharacterisics)
             {
-                var preferenceRelation = new PreferenceRelation(impCluster.Key);
-                foreach (var unImpCluster in _unImportantClusters)
+                var preferenceRelation = new PreferenceRelation(impCharacteristic.Key);
+                foreach (var unImpCharacteristic in _unImportantCharacterisics)
                 {
                     //TODO: Определеить более клевую логику по выбору коэффициентов относительной важности
 
@@ -42,12 +42,12 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                     //var teta = TetaMethod();
 
                     //2. Другой вариант - тупо попробовать использовать не формулу, а (1-значение значимости неважного коэффициента)
-                    var teta = 1 - unImpCluster.Value;
+                    var teta = 1 - unImpCharacteristic.Value;
 
                     //3. Etc
                     //var teta = Wizzard.SuperMathFormula_Magic();
 
-                    preferenceRelation.Tetas.Add(unImpCluster.Key, teta);
+                    preferenceRelation.Tetas.Add(unImpCharacteristic.Key, teta);
                 }
                 preferenceRelations.Add(preferenceRelation);
             }
@@ -55,20 +55,20 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         }
 
         #region Helpers
-        void SeparateClustersToImprotantAnd_Unimportant()
+        void SeparateCharacterisicsToImprotantAnd_Unimportant()
         {
             //Пусть пока работает по такому правилу:
             //Находим максимальный критерий
-            var maxCluster = GetMaxValue(_userCluster);
+            var maxCharacteristic = GetMaxValue(_userCharacteristics);
             //При предположении что все значения у нас от 0 до 1
             //находим близкие по значению критерии - с разницей до -0,1
-            _importantClusters = (from cluster in _userCluster
-                                  where (cluster.Value >= (maxCluster - 0.101))
-                                  select cluster).ToDictionary(p => p.Key, el => el.Value);
+            _importantCharacterisics = (from characteristic in _userCharacteristics
+                                  where (characteristic.Value >= (maxCharacteristic - 0.101))
+                                  select characteristic).ToDictionary(p => p.Key, el => el.Value);
 
-            _unImportantClusters = (from cluster in _userCluster
-                                    where (cluster.Value < (maxCluster - 0.101))
-                                    select cluster).ToDictionary(p => p.Key, el => el.Value);
+            _unImportantCharacterisics = (from characteristic in _userCharacteristics
+                                    where (characteristic.Value < (maxCharacteristic - 0.101))
+                                    select characteristic).ToDictionary(p => p.Key, el => el.Value);
         }
         /// <summary>
         /// Вычисляем коэф. относительной важности

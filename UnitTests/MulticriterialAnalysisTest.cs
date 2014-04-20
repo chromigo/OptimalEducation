@@ -15,83 +15,83 @@ namespace UnitTests
         public void GetPreferenceRelations_ReturnCorrectAnswer()
         {
             #region Arrange
-            var userCluster = new Dictionary<string, double>();
+            var userCharacterisitcs = new Dictionary<string, double>();
             //2 группы
             //Важные(max-0.1 разница)
-            userCluster.Add("Математика", 0.8);
-            userCluster.Add("Физика", 0.7);
+            userCharacterisitcs.Add("Математика", 0.8);
+            userCharacterisitcs.Add("Физика", 0.7);
             //неважные
-            userCluster.Add("Литература", 0.4);
-            userCluster.Add("Русский", 0.3);
-            userCluster.Add("Химия", 0.5);
-            userCluster.Add("Биология", 0.6);
-            userCluster.Add("География", 0.6);
-            userCluster.Add("История", 0.5); 
+            userCharacterisitcs.Add("Литература", 0.4);
+            userCharacterisitcs.Add("Русский", 0.3);
+            userCharacterisitcs.Add("Химия", 0.5);
+            userCharacterisitcs.Add("Биология", 0.6);
+            userCharacterisitcs.Add("География", 0.6);
+            userCharacterisitcs.Add("История", 0.5); 
             #endregion
 
             #region Act
-            var preferenceCalculator = new PreferenceRelationCalculator(userCluster);
+            var preferenceCalculator = new PreferenceRelationCalculator(userCharacterisitcs);
             var calculatedPreferences = preferenceCalculator.GetPreferenceRelations(); 
             #endregion
 
             #region Asserts
             Assert.IsTrue(calculatedPreferences.Count == 2);
-            Assert.IsTrue(calculatedPreferences.Exists(p => p.ImportantClusterName == "Математика"));
-            Assert.IsTrue(calculatedPreferences.Exists(p => p.ImportantClusterName == "Физика"));
+            Assert.IsTrue(calculatedPreferences.Exists(p => p.ImportantCharacterisicName == "Математика"));
+            Assert.IsTrue(calculatedPreferences.Exists(p => p.ImportantCharacterisicName == "Физика"));
 
             //Не изменились
             foreach (var preference in calculatedPreferences)
             {
                 Assert.IsTrue(preference.Tetas.Count == 6);
                 //Корректно изменились (1-значение)
-                Assert.AreEqual(preference.Tetas["Литература"], (1 - userCluster["Литература"]));
-                Assert.AreEqual(preference.Tetas["Русский"], (1 - userCluster["Русский"]));
-                Assert.AreEqual(preference.Tetas["Химия"], (1 - userCluster["Химия"]));
-                Assert.AreEqual(preference.Tetas["Биология"], (1 - userCluster["Биология"]));
-                Assert.AreEqual(preference.Tetas["География"], (1 - userCluster["География"]));
-                Assert.AreEqual(preference.Tetas["История"], (1 - userCluster["История"]));
+                Assert.AreEqual(preference.Tetas["Литература"], (1 - userCharacterisitcs["Литература"]));
+                Assert.AreEqual(preference.Tetas["Русский"], (1 - userCharacterisitcs["Русский"]));
+                Assert.AreEqual(preference.Tetas["Химия"], (1 - userCharacterisitcs["Химия"]));
+                Assert.AreEqual(preference.Tetas["Биология"], (1 - userCharacterisitcs["Биология"]));
+                Assert.AreEqual(preference.Tetas["География"], (1 - userCharacterisitcs["География"]));
+                Assert.AreEqual(preference.Tetas["История"], (1 - userCharacterisitcs["История"]));
             } 
             #endregion
         }
 
         [TestMethod]
-        public void RecalculateEducationLineClusters_ReturnCorrectAnswer()
+        public void RecalculateEducationLineCharacterisics_ReturnCorrectAnswer()
         {
             #region Arrange
-            var clusters1=new Dictionary<string,double>();
-            clusters1.Add("Математика", 0.9);    
-            clusters1.Add("Физика", 0.8);
-            clusters1.Add("Литература", 0.4);
-            clusters1.Add("Русский", 0.3);
-            clusters1.Add("Химия", 0.5);
-            clusters1.Add("Биология", 0.3);
-            clusters1.Add("География", 0.3);
-            clusters1.Add("История", 0.3);
+            var characterisitcs1=new Dictionary<string,double>();
+            characterisitcs1.Add("Математика", 0.9);    
+            characterisitcs1.Add("Физика", 0.8);
+            characterisitcs1.Add("Литература", 0.4);
+            characterisitcs1.Add("Русский", 0.3);
+            characterisitcs1.Add("Химия", 0.5);
+            characterisitcs1.Add("Биология", 0.3);
+            characterisitcs1.Add("География", 0.3);
+            characterisitcs1.Add("История", 0.3);
 
-            var clusters2 = new Dictionary<string, double>();
-            clusters2.Add("Математика", 0.7);
-            clusters2.Add("Физика", 0.6);
-            clusters2.Add("Литература", 0.3);
-            clusters2.Add("Русский", 0.5);
-            clusters2.Add("Химия", 0.5);
-            clusters2.Add("Биология", 0.6);
-            clusters2.Add("География", 0.4);
-            clusters2.Add("История", 0.3);
+            var characterisitcs2 = new Dictionary<string, double>();
+            characterisitcs2.Add("Математика", 0.7);
+            characterisitcs2.Add("Физика", 0.6);
+            characterisitcs2.Add("Литература", 0.3);
+            characterisitcs2.Add("Русский", 0.5);
+            characterisitcs2.Add("Химия", 0.5);
+            characterisitcs2.Add("Биология", 0.6);
+            characterisitcs2.Add("География", 0.4);
+            characterisitcs2.Add("История", 0.3);
 
-            var clusters3 = new Dictionary<string, double>();
-            clusters3.Add("Математика", 0.4);
-            clusters3.Add("Физика", 0.3);
-            clusters3.Add("Литература", 0.3);
-            clusters3.Add("Русский", 0.8);
-            clusters3.Add("Химия", 0.3);
-            clusters3.Add("Биология", 0.3);
-            clusters3.Add("География", 0.3);
-            clusters3.Add("История", 0.7);
+            var characterisitcs3 = new Dictionary<string, double>();
+            characterisitcs3.Add("Математика", 0.4);
+            characterisitcs3.Add("Физика", 0.3);
+            characterisitcs3.Add("Литература", 0.3);
+            characterisitcs3.Add("Русский", 0.8);
+            characterisitcs3.Add("Химия", 0.3);
+            characterisitcs3.Add("Биология", 0.3);
+            characterisitcs3.Add("География", 0.3);
+            characterisitcs3.Add("История", 0.7);
 
-            var educationLineClusters = new List<EducationLineAndClustersRow>();
-            educationLineClusters.Add(new EducationLineAndClustersRow(1) { Clusters = clusters1 });
-            educationLineClusters.Add(new EducationLineAndClustersRow(2) { Clusters = clusters2 });
-            educationLineClusters.Add(new EducationLineAndClustersRow(3) { Clusters = clusters3 });
+            var educationLineCharacterisics = new List<EducationLineAndCharacterisicsRow>();
+            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(1) { Characterisics = characterisitcs1 });
+            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(2) { Characterisics = characterisitcs2 });
+            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(3) { Characterisics = characterisitcs3 });
 
             var tetasMath = new Dictionary<string, double>();
             tetasMath.Add("Литература", 0.6);
@@ -117,37 +117,37 @@ namespace UnitTests
 
             #region Act
             var vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
-            var recalculatedEducationLineClusters = vectorCriteriaRecalculator.RecalculateEducationLineClusters(educationLineClusters, userPref); 
+            var recalculatedEducationLineCharacterisics = vectorCriteriaRecalculator.RecalculateEducationLineCharacterisics(educationLineCharacterisics, userPref); 
             #endregion
 
             #region Asserts
             //Проверка что значения важных кластеров(Математика и Физика) не изменились
-            var clusters = recalculatedEducationLineClusters[0];
+            var characterisics = recalculatedEducationLineCharacterisics[0];
 
-            Assert.IsTrue(clusters.Clusters["Математика"] == clusters1["Математика"]);
-            Assert.IsTrue(clusters.Clusters["Физика"] == clusters1["Физика"]);
+            Assert.IsTrue(characterisics.Characterisics["Математика"] == characterisitcs1["Математика"]);
+            Assert.IsTrue(characterisics.Characterisics["Физика"] == characterisitcs1["Физика"]);
 
-            Assert.IsTrue(recalculatedEducationLineClusters[1].Clusters["Математика"] == clusters2["Математика"]);
-            Assert.IsTrue(recalculatedEducationLineClusters[1].Clusters["Физика"] == clusters2["Физика"]);
+            Assert.IsTrue(recalculatedEducationLineCharacterisics[1].Characterisics["Математика"] == characterisitcs2["Математика"]);
+            Assert.IsTrue(recalculatedEducationLineCharacterisics[1].Characterisics["Физика"] == characterisitcs2["Физика"]);
 
-            Assert.IsTrue(recalculatedEducationLineClusters[2].Clusters["Математика"] == clusters3["Математика"]);
-            Assert.IsTrue(recalculatedEducationLineClusters[2].Clusters["Физика"] == clusters3["Физика"]);
+            Assert.IsTrue(recalculatedEducationLineCharacterisics[2].Characterisics["Математика"] == characterisitcs3["Математика"]);
+            Assert.IsTrue(recalculatedEducationLineCharacterisics[2].Characterisics["Физика"] == characterisitcs3["Физика"]);
 
             //Проверка корректности вычислений
             //Значения в виде диапазона(+ - 0.01). Т.к. он по ебанутому округляет
-            Assert.IsTrue(clusters.Clusters["Литература(1)"] >= 0.69 && clusters.Clusters["Литература(1)"] < 0.71);
-            Assert.IsTrue(clusters.Clusters["Русский(1)"] >= 0.71 && clusters.Clusters["Русский(1)"]<0.73);
-            Assert.IsTrue(clusters.Clusters["Химия(1)"] >= 0.69 && clusters.Clusters["Химия(1)"] < 0.71);
-            Assert.IsTrue(clusters.Clusters["Биология(1)"] >= 0.53 && clusters.Clusters["Биология(1)"] < 0.55);
-            Assert.IsTrue(clusters.Clusters["География(1)"] >= 0.53 && clusters.Clusters["География(1)"] < 0.55);
-            Assert.IsTrue(clusters.Clusters["История(1)"] >= 0.59 && clusters.Clusters["История(1)"] < 0.61);
+            Assert.IsTrue(characterisics.Characterisics["Литература(1)"] >= 0.69 && characterisics.Characterisics["Литература(1)"] < 0.71);
+            Assert.IsTrue(characterisics.Characterisics["Русский(1)"] >= 0.71 && characterisics.Characterisics["Русский(1)"]<0.73);
+            Assert.IsTrue(characterisics.Characterisics["Химия(1)"] >= 0.69 && characterisics.Characterisics["Химия(1)"] < 0.71);
+            Assert.IsTrue(characterisics.Characterisics["Биология(1)"] >= 0.53 && characterisics.Characterisics["Биология(1)"] < 0.55);
+            Assert.IsTrue(characterisics.Characterisics["География(1)"] >= 0.53 && characterisics.Characterisics["География(1)"] < 0.55);
+            Assert.IsTrue(characterisics.Characterisics["История(1)"] >= 0.59 && characterisics.Characterisics["История(1)"] < 0.61);
 
-            Assert.IsTrue(clusters.Clusters["Литература(2)"] >= 0.63 && clusters.Clusters["Литература(2)"] < 0.65);
-            Assert.IsTrue(clusters.Clusters["Русский(2)"] >= 0.64 && clusters.Clusters["Русский(2)"] < 0.66);
-            Assert.IsTrue(clusters.Clusters["Химия(2)"] >= 0.64 && clusters.Clusters["Химия(2)"] < 0.66);
-            Assert.IsTrue(clusters.Clusters["Биология(2)"] >= 0.49 && clusters.Clusters["Биология(2)"] < 0.51);
-            Assert.IsTrue(clusters.Clusters["География(2)"] >= 0.49 && clusters.Clusters["География(2)"] < 0.51);
-            Assert.IsTrue(clusters.Clusters["История(2)"] >= 0.54 && clusters.Clusters["История(2)"] < 0.56);
+            Assert.IsTrue(characterisics.Characterisics["Литература(2)"] >= 0.63 && characterisics.Characterisics["Литература(2)"] < 0.65);
+            Assert.IsTrue(characterisics.Characterisics["Русский(2)"] >= 0.64 && characterisics.Characterisics["Русский(2)"] < 0.66);
+            Assert.IsTrue(characterisics.Characterisics["Химия(2)"] >= 0.64 && characterisics.Characterisics["Химия(2)"] < 0.66);
+            Assert.IsTrue(characterisics.Characterisics["Биология(2)"] >= 0.49 && characterisics.Characterisics["Биология(2)"] < 0.51);
+            Assert.IsTrue(characterisics.Characterisics["География(2)"] >= 0.49 && characterisics.Characterisics["География(2)"] < 0.51);
+            Assert.IsTrue(characterisics.Characterisics["История(2)"] >= 0.54 && characterisics.Characterisics["История(2)"] < 0.56);
 
             #endregion
         }
@@ -186,15 +186,15 @@ namespace UnitTests
             y5.Add("3", 2);
             y5.Add("4", 3);
 
-            List<EducationLineAndClustersRow> table = new List<EducationLineAndClustersRow>();
-            table.Add(new EducationLineAndClustersRow(1) { Clusters = y1 });
-            table.Add(new EducationLineAndClustersRow(2) { Clusters = y2 });
-            table.Add(new EducationLineAndClustersRow(3) { Clusters = y3 });
-            table.Add(new EducationLineAndClustersRow(4) { Clusters = y4 });
-            table.Add(new EducationLineAndClustersRow(5) { Clusters = y5 });
+            List<EducationLineAndCharacterisicsRow> table = new List<EducationLineAndCharacterisicsRow>();
+            table.Add(new EducationLineAndCharacterisicsRow(1) { Characterisics = y1 });
+            table.Add(new EducationLineAndCharacterisicsRow(2) { Characterisics = y2 });
+            table.Add(new EducationLineAndCharacterisicsRow(3) { Characterisics = y3 });
+            table.Add(new EducationLineAndCharacterisicsRow(4) { Characterisics = y4 });
+            table.Add(new EducationLineAndCharacterisicsRow(5) { Characterisics = y5 });
 
 
-            var answerTable = new List<EducationLineAndClustersRow>();
+            var answerTable = new List<EducationLineAndCharacterisicsRow>();
             answerTable.Add(table[0]);
             answerTable.Add(table[1]);
             answerTable.Add(table[4]); 

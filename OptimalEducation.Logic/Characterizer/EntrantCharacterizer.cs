@@ -40,7 +40,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     var characteristicResult = result * coeff;
                     FillPartialCharacteristics(unatedStatedExamCharacterisics, characteristicName, characteristicResult);
@@ -57,7 +57,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     var characteristicResult = result * coeff;
                     FillPartialCharacteristics(schoolMarkCharacterisics, characteristicName, characteristicResult);
@@ -74,7 +74,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in olympiad.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     double characteristicResult = 0;
                     //TODO: Реализовать особую логику учета данных?
@@ -104,7 +104,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in section.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = result * coeff;
@@ -121,7 +121,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in hobbieResult.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
                     double someValue = 1;
@@ -145,7 +145,7 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in schoolWeights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = (int)quality * coeff;

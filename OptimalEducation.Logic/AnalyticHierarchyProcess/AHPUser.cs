@@ -417,7 +417,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.matrixId = totalAvailLines;
                     EducationLine.educationLineClusters = EdLineClusterizer.Characteristics;
                     EducationLine.localPriority = 0;
-                    //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Cluster.Values.Max());
+                    //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
                     totalAvailLines++;
 

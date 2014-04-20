@@ -37,7 +37,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
-			var clusterizer = new EntrantCharacterizer(entrant);
+			var Characterisicizer = new EntrantCharacterizer(entrant);
 
             //Отобразить рекомендуемые учебные направления
             var educationLines = await db.EducationLines
@@ -45,7 +45,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
                 .ToListAsync();
             ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
             
-			return View(clusterizer.Characterisics);
+			return View(Characterisicizer.Characterisics);
 		}
 
 		private async Task<int> GetEntrantId()

@@ -33,10 +33,10 @@ namespace OptimalEducation.Logic.Characterizer
                 foreach (var weight in discipline.Weights)
                 {
                     var coeff = weight.Coefficient;
-                    var characteristicName = weight.Cluster.Name;
+                    var characteristicName = weight.Characterisic.Name;
 
-                    var clusterResult = result * coeff;
-                    FillPartialCharacteristics(_educationLineCharacteristics, characteristicName, clusterResult);
+                    var characterisitcResult = result * coeff;
+                    FillPartialCharacteristics(_educationLineCharacteristics, characteristicName, characterisitcResult);
                 }
             }
         }
@@ -63,13 +63,13 @@ namespace OptimalEducation.Logic.Characterizer
 
             _totalCharacteristics = _educationLineCharacteristics;
             //Добавить если будут дополнительные характеристики
-            //foreach (var item in educationLineCluster)
+            //foreach (var item in educationLineCharacteristics)
             //{
-            //    FillTotalCluster(item);
+            //    FillTotalCharacteristics(item);
             //}
         }
 
-        private void FillTotalCluster(KeyValuePair<string, double> item)
+        private void FillTotalCharacteristics(KeyValuePair<string, double> item)
         {
             if (!_totalCharacteristics.ContainsKey(item.Key))
                 _totalCharacteristics.Add(item.Key, item.Value);

@@ -105,13 +105,13 @@
 
     <div>
         <dl class="dl-horizontal">
-            @foreach (var clusterRes in (ViewBag.CluserResults as Dictionary<string,double>))
+            @foreach (var characterisicRes in (ViewBag.CluserResults as Dictionary<string,double>))
             {
                 <dt>
-                    @Html.DisplayFor(model => clusterRes.Key)
+                    @Html.DisplayFor(model => characterisicRes.Key)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => clusterRes.Value)
+                    @Html.DisplayFor(model => characterisicRes.Value)
                 </dd>
             }
         </dl>

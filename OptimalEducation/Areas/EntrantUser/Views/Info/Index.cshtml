@@ -8,13 +8,13 @@
 
 <div>
     <dl class="dl-horizontal">
-        @foreach (var clusterRes in Model)
+        @foreach (var characterisicRes in Model)
         {
             <dt>
-                @Html.DisplayFor(model => clusterRes.Key)
+                @Html.DisplayFor(model => characterisicRes.Key)
             </dt>
             <dd>
-                @Html.DisplayFor(model => clusterRes.Value)
+                @Html.DisplayFor(model => characterisicRes.Value)
             </dd>
         }
     </dl>
