@@ -47,32 +47,34 @@ namespace UnitTests
         {
             schools.Add(new School
             {
-                Name = "{Школа по Математике",
+                Name = "Школа по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
+                    EducationQuality=90
             });
             schools.Add(new School
             {
                 Name = "Школа по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
+                EducationQuality = 87
             });
         }
         private void HobbieFill()
         {
             hobbies.Add(new Hobbie
             {
-                Name = "{Хобби(лол) по Математике",
+                Name = "Хобби(лол) по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
             hobbies.Add(new Hobbie
@@ -80,8 +82,8 @@ namespace UnitTests
                 Name = "Хобби(лол) по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
         }
@@ -92,8 +94,8 @@ namespace UnitTests
                 Name = "Секция(лол) по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
             sections.Add(new Section
@@ -101,8 +103,8 @@ namespace UnitTests
                 Name = "Секция(лол) по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=100,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=50,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
         }
@@ -113,8 +115,8 @@ namespace UnitTests
                 Name = "Олимпиада по Математике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                        new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                     },
             });
             olympiads.Add(new Olympiad
@@ -122,8 +124,8 @@ namespace UnitTests
                 Name = "Олимпиада по Информатике",
                 Weights = new List<Weight>()
                     {
-                        new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                        new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                        new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                        new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                     },
             });
         }
@@ -134,7 +136,7 @@ namespace UnitTests
                 Name = "Русский язык",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
                 },
             });
             schoolDisciplines.Add(new SchoolDiscipline
@@ -142,8 +144,8 @@ namespace UnitTests
                 Name = "Математика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                 },
             });
             schoolDisciplines.Add(new SchoolDiscipline
@@ -151,8 +153,8 @@ namespace UnitTests
                 Name = "Информатика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                 },
             });
         }
@@ -163,7 +165,7 @@ namespace UnitTests
                 Name = "Русский язык",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Русский язык")},
                 },
             });
             examDisciplines.Add(new ExamDiscipline
@@ -171,8 +173,8 @@ namespace UnitTests
                 Name = "Математика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
-                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
                 },
             });
             examDisciplines.Add(new ExamDiscipline
@@ -180,8 +182,8 @@ namespace UnitTests
                 Name = "Информатика",
                 Weights = new List<Weight>()
                 {
-                    new Weight(){Coefficient=1,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
-                    new Weight(){Coefficient=0.5,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
+                    new Weight(){Coefficient=0.7,Characterisic=characterisics.Find(p=>p.Name=="Информатика")},
+                    new Weight(){Coefficient=0.3,Characterisic=characterisics.Find(p=>p.Name=="Математика")},
                 },
             });
         }
@@ -212,17 +214,17 @@ namespace UnitTests
                 {
                     new SchoolMark()
                     {
-                        Result = 50,
+                        Result = 5,
                         SchoolDiscipline=schoolDisciplines[0],
                     },
                     new SchoolMark()
                     {
-                        Result = 60,
+                        Result = 4,
                         SchoolDiscipline=schoolDisciplines[1],
                     },
                     new SchoolMark()
                     {
-                        Result = 70,
+                        Result = 5,
                         SchoolDiscipline=schoolDisciplines[2],
                     },
                 },
@@ -265,6 +267,7 @@ namespace UnitTests
                         School=schools[1]
                     }
                 },
+                Hobbies = hobbies
             };
             return entrant;
         } 

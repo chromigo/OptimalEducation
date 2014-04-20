@@ -329,17 +329,17 @@ namespace OptimalEducation.DAL.Migrations
         {
             var schools = new List<School>
             {
-                new School {Name = "Школа английского языка",EducationQuality=3, Weights=new List<Weight>()
+                new School {Name = "Школа английского языка",EducationQuality=100, Weights=new List<Weight>()
                 {
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.8},
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
                 }},
-                new School {Name = "Физмат лицей", EducationQuality= 2, Weights=new List<Weight>()
+                new School {Name = "Физмат лицей", EducationQuality= 70, Weights=new List<Weight>()
                 {
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.5},
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.5},
                 }},
-                new School {Name = "Обычная школа", EducationQuality=2, Weights=new List<Weight>()
+                new School {Name = "Обычная школа", EducationQuality=60, Weights=new List<Weight>()
                 {
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.7},
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
