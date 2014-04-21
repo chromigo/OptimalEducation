@@ -14,15 +14,15 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         /// </summary>
         /// <param name="userPrefer">Отношения предпочтения пользователя</param>
         /// <returns>Перестроенная "таблица" учебноеНаправлени/кластер</returns>
-        public List<EducationLineAndCharacterisicsRow> RecalculateEducationLineCharacterisics(List<EducationLineAndCharacterisicsRow> educationLineCharacterisics, List<PreferenceRelation> userPrefer)
+        public List<EducationLineWithCharacterisics> RecalculateEducationLineCharacterisics(List<EducationLineWithCharacterisics> educationLineWithCharacterisics, List<PreferenceRelation> userPrefer)
         {
-            var recalculateEducationLineCharacterisics = new List<EducationLineAndCharacterisicsRow>();
-            foreach (var educationLine in educationLineCharacterisics)
+            var recalculateEducationLineCharacterisics = new List<EducationLineWithCharacterisics>();
+            foreach (var item in educationLineWithCharacterisics)
             {
                 //Разбиваем все кластеры текущего направления на важные и неважные
-                var importantCharacterisics = new EducationLineAndCharacterisicsRow(educationLine.Id);
-                var unImportantCharacterisics = new EducationLineAndCharacterisicsRow(educationLine.Id);
-                foreach (var characterisics in educationLine.Characterisics)
+                var importantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
+                var unImportantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
+                foreach (var characterisics in item.Characterisics)
                 {
                     if (userPrefer.Any(p => p.ImportantCharacterisicName == characterisics.Key))
                         importantCharacterisics.Characterisics.Add(characterisics.Key, characterisics.Value);
@@ -31,7 +31,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                 }
 
                 //Пересчитываем значения неважных кластеров
-                var recalculatedCharacterisics = new EducationLineAndCharacterisicsRow(educationLine.Id);
+                var recalculatedCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
                 int i = 0;//используется для поментки пересозданных кластеров
                 foreach (var importantCharacterisic in importantCharacterisics.Characterisics)
                 {

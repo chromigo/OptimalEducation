@@ -313,9 +313,9 @@ namespace UnitTests
             var inf = characterisicsizer.Characteristics["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
-            Assert.AreEqual(rus, 60);
-            Assert.AreEqual(math, 70*1+80*0.5);
-            Assert.AreEqual(inf, 80*1+70*0.5);
+            Assert.AreEqual(rus, 0.60);
+            Assert.AreEqual(math, 0.70*1+0.80*0.5);
+            Assert.AreEqual(inf, 0.80*1+0.70*0.5);
 
         }
     }
