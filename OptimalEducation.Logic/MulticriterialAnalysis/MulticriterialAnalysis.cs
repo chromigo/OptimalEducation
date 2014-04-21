@@ -42,7 +42,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             parretoCalculator = new ParretoCalculator();
         }
 
-        public List<EducationLineWithCharacterisics> Calculate()
+        public List<EducationLine> Calculate()
         {
             //Получаем предпочтения пользователя
             var userPref = preferenceRelationCalculator.GetPreferenceRelations();
@@ -51,7 +51,13 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             //Строим множество паррето-оптимальных веткоров
             var parretoEducationLineCharacterisics = parretoCalculator.ParretoSetCreate(recalculatedCharacterisics);
 
-            return parretoEducationLineCharacterisics;
+            var recomendedEducationLines = new List<EducationLine>();
+            foreach (var item in parretoEducationLineCharacterisics)
+            {
+                recomendedEducationLines.Add(item.EducationLine);
+            }
+
+            return recomendedEducationLines;
         }
     }
 }

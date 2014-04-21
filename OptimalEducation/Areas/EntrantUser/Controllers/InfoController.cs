@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using OptimalEducation.Logic.MulticriterialAnalysis;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -40,10 +41,15 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var Characterisicizer = new EntrantCharacterizer(entrant);
 
             //Отобразить рекомендуемые учебные направления
+
+            //По методу сравнения расстояний мд характеристиками
             var educationLines = await db.EducationLines
                 .Where(p => p.Actual == true)
                 .ToListAsync();
             ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+            //По методу многокритериального анализа
+            var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
+            ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
             
 			return View(Characterisicizer.Characterisics);
 		}
