@@ -28,7 +28,7 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var requirement in _educationLine.EducationLinesRequirements)
             {
-                var result = requirement.Requirement;
+                var result = requirement.Requirement/100.0;
                 var discipline = requirement.ExamDiscipline;
                 foreach (var weight in discipline.Weights)
                 {

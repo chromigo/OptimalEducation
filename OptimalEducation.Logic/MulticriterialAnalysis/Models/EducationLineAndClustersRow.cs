@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OptimalEducation.DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +7,14 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis.Models
 {
-    public class EducationLineAndCharacterisicsRow
+    public class EducationLineWithCharacterisics
     {
-        public int Id { get; set; }
-        public string Code { get; set; }
-
+        public EducationLine EducationLine { get; set; }
         public Dictionary<string, double> Characterisics { get; set; }
 
-        public EducationLineAndCharacterisicsRow(int id)
+        public EducationLineWithCharacterisics(EducationLine educationLine)
         {
-            Id = id;
+            EducationLine = educationLine;
             Characterisics = new Dictionary<string, double>();
         }
     }

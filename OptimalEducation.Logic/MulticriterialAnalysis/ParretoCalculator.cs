@@ -14,9 +14,9 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         /// </summary>
         /// <param name="educationLineCharacteristics">Множество, из которого требуется строить мн-во Парето</param>
         /// <returns>Построенное множество Парето</returns>
-        public List<EducationLineAndCharacterisicsRow> ParretoSetCreate(List<EducationLineAndCharacterisicsRow> educationLineCharacteristics)
+        public List<EducationLineWithCharacterisics> ParretoSetCreate(List<EducationLineWithCharacterisics> educationLineCharacteristics)
         {
-            List<EducationLineAndCharacterisicsRow> parretoList = new List<EducationLineAndCharacterisicsRow>();
+            List<EducationLineWithCharacterisics> parretoList = new List<EducationLineWithCharacterisics>();
 
             for (int i = 0; i < educationLineCharacteristics.Count; i++)
             {

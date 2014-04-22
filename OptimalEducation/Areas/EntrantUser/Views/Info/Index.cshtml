@@ -19,6 +19,8 @@
         }
     </dl>
 </div>
+
+<h3>Метод сравнения расстояний(Евклидова метрика)</h3>
 <table class="table">
     @{
         var recomendationForEntrant = (ViewBag.RecomendationForEntrant as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
@@ -63,6 +65,49 @@
     }
 
 </table>
+
+<h3>Многокритериальный анализ</h3>
+<table class="table">
+    @{
+        var multicriterialRecomendations = (ViewBag.MulticriterialRecomendations as List<OptimalEducation.DAL.Models.EducationLine>);
+    }
+    <tr>
+        <th>
+            Название направления
+        </th>
+        <th>
+            Код направления
+        </th>
+        <th>
+            Название факультета
+        </th>
+        <th>
+            Название ВУЗ-а
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var recomendation in multicriterialRecomendations)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(model => recomendation.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Faculty.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(model => recomendation.Faculty.HigherEducationInstitution.Name)
+            </td>
+        </tr>
+    }
+
+</table>
+
 
 
 

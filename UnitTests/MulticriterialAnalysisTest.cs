@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OptimalEducation.Logic.MulticriterialAnalysis;
 using OptimalEducation.Logic.MulticriterialAnalysis.Models;
+using OptimalEducation.DAL.Models;
 
 namespace UnitTests
 {
@@ -88,10 +89,14 @@ namespace UnitTests
             characterisitcs3.Add("География", 0.3);
             characterisitcs3.Add("История", 0.7);
 
-            var educationLineCharacterisics = new List<EducationLineAndCharacterisicsRow>();
-            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(1) { Characterisics = characterisitcs1 });
-            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(2) { Characterisics = characterisitcs2 });
-            educationLineCharacterisics.Add(new EducationLineAndCharacterisicsRow(3) { Characterisics = characterisitcs3 });
+            var educationLine1 = new EducationLine() { Id = 1 };
+            var educationLine2 = new EducationLine() { Id = 2 };
+            var educationLine3 = new EducationLine() { Id = 3 };
+
+            var educationLineCharacterisics = new List<EducationLineWithCharacterisics>();
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine1) { Characterisics = characterisitcs1 });
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine2) { Characterisics = characterisitcs2 });
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine3) { Characterisics = characterisitcs3 });
 
             var tetasMath = new Dictionary<string, double>();
             tetasMath.Add("Литература", 0.6);
@@ -134,7 +139,7 @@ namespace UnitTests
             Assert.IsTrue(recalculatedEducationLineCharacterisics[2].Characterisics["Физика"] == characterisitcs3["Физика"]);
 
             //Проверка корректности вычислений
-            //Значения в виде диапазона(+ - 0.01). Т.к. он по ебанутому округляет
+            //Значения в виде диапазона(+ - 0.01). Т.к. он по ебанутому округляет(т.к. double тип)
             Assert.IsTrue(characterisics.Characterisics["Литература(1)"] >= 0.69 && characterisics.Characterisics["Литература(1)"] < 0.71);
             Assert.IsTrue(characterisics.Characterisics["Русский(1)"] >= 0.71 && characterisics.Characterisics["Русский(1)"]<0.73);
             Assert.IsTrue(characterisics.Characterisics["Химия(1)"] >= 0.69 && characterisics.Characterisics["Химия(1)"] < 0.71);
@@ -186,15 +191,21 @@ namespace UnitTests
             y5.Add("3", 2);
             y5.Add("4", 3);
 
-            List<EducationLineAndCharacterisicsRow> table = new List<EducationLineAndCharacterisicsRow>();
-            table.Add(new EducationLineAndCharacterisicsRow(1) { Characterisics = y1 });
-            table.Add(new EducationLineAndCharacterisicsRow(2) { Characterisics = y2 });
-            table.Add(new EducationLineAndCharacterisicsRow(3) { Characterisics = y3 });
-            table.Add(new EducationLineAndCharacterisicsRow(4) { Characterisics = y4 });
-            table.Add(new EducationLineAndCharacterisicsRow(5) { Characterisics = y5 });
+
+            var educationLine1 = new EducationLine() { Id = 1 };
+            var educationLine2 = new EducationLine() { Id = 2 };
+            var educationLine3 = new EducationLine() { Id = 3 };
+            var educationLine4 = new EducationLine() { Id = 4 };
+            var educationLine5 = new EducationLine() { Id = 5 };
+            List<EducationLineWithCharacterisics> table = new List<EducationLineWithCharacterisics>();
+            table.Add(new EducationLineWithCharacterisics(educationLine1) { Characterisics = y1 });
+            table.Add(new EducationLineWithCharacterisics(educationLine2) { Characterisics = y2 });
+            table.Add(new EducationLineWithCharacterisics(educationLine3) { Characterisics = y3 });
+            table.Add(new EducationLineWithCharacterisics(educationLine4) { Characterisics = y4 });
+            table.Add(new EducationLineWithCharacterisics(educationLine5) { Characterisics = y5 });
 
 
-            var answerTable = new List<EducationLineAndCharacterisicsRow>();
+            var answerTable = new List<EducationLineWithCharacterisics>();
             answerTable.Add(table[0]);
             answerTable.Add(table[1]);
             answerTable.Add(table[4]); 
