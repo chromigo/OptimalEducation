@@ -27,9 +27,24 @@ namespace OptimalEducation.Logic.Characterizer
         public EntrantCharacterizer(Entrant entrant)
         {
             _entrant = entrant;
+            InitCharacterisitcs();
             CalculateSum();
         }
-
+        private void InitCharacterisitcs()
+        {
+            //Заполняем словарь всеми ключами по возможным весам
+            OptimalEducationDbContext context = new OptimalEducationDbContext();
+            var characterisitcs = context.Characteristics.Select(p => p.Name).ToList();
+            foreach (var item in characterisitcs)
+            {
+                unatedStatedExamCharacterisics.Add(item, 0);
+                schoolMarkCharacterisics.Add(item, 0);
+                olympiadCharacterisics.Add(item, 0);
+                sectionCharacterisics.Add(item, 0);
+                hobbieCharacterisics.Add(item, 0);
+                schoolTypeCharacterisics.Add(item, 0);
+            }
+        }
         #region По заданным частным данным абитуриента(егэ, оценки, хобби и пр) строит частичные таблицы с характеристиками, которые позже просуммируются по заданному правилу
         private void UnatedStateExamCharacterising()
         {

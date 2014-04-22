@@ -20,6 +20,7 @@ namespace OptimalEducation.Logic.Characterizer
         public EducationLineCharacterizer(EducationLine educationLine)
         {
             _educationLine = educationLine;
+            InitCharacterisitcs();
             CalculateSum();
         }
 
@@ -35,23 +36,21 @@ namespace OptimalEducation.Logic.Characterizer
                     var coeff = weight.Coefficient;
                     var characteristicName = weight.Characterisic.Name;
 
-                    var characterisitcResult = result * coeff;
-                    FillPartialCharacteristics(_educationLineCharacteristics, characteristicName, characterisitcResult);
+                    var characteristicResult = result * coeff;
+                    _educationLineCharacteristics[characteristicName] += characteristicResult;
                 }
             }
         }
-        /// <summary>
-        /// Заполняет выбранный характеристики заданными значениями(добавляет или суммирует)
-        /// </summary>
-        /// <param name="characteristicsToFill">характеристики, которые необходимо заполнить/обновить</param>
-        /// <param name="characteristicsName">Элемент характеристикиа, который добавляют/обновляют</param>
-        /// <param name="characterisicResult"></param>
-        private void FillPartialCharacteristics(Dictionary<string,double> characteristicsToFill ,string characteristicsName, double characterisicResult)
+
+        private void InitCharacterisitcs()
         {
-            if (!characteristicsToFill.ContainsKey(characteristicsName))
-                characteristicsToFill.Add(characteristicsName, characterisicResult);
-            else
-                characteristicsToFill[characteristicsName] += characterisicResult;
+            //Заполняем словарь всеми ключами по возможным весам
+            OptimalEducationDbContext context = new OptimalEducationDbContext();
+            var characterisitcs = context.Characteristics.Select(p => p.Name).ToList();
+            foreach (var item in characterisitcs)
+            {
+                _educationLineCharacteristics.Add(item, 0);
+            }
         }
         #endregion
         /// <summary>
