@@ -27,13 +27,16 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             educationLineRequrements = new List<EducationLineWithCharacterisics>();
             foreach (var item in educationLines)
             {
-                var educationLineCharacterizer = new EducationLineCharacterizer(item);
-                var characteristics = educationLineCharacterizer.Characteristics;
-                var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
+                if(item.EducationLinesRequirements.Count>0)
                 {
-                    Characterisics = characteristics
-                };
-                educationLineRequrements.Add(educationLineWithCharacteristics);
+                    var educationLineCharacterizer = new EducationLineCharacterizer(item);
+                    var characteristics = educationLineCharacterizer.Characteristics;
+                    var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
+                    {
+                        Characterisics = characteristics
+                    };
+                    educationLineRequrements.Add(educationLineWithCharacteristics);
+                }
             }
 
 

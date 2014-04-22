@@ -256,7 +256,25 @@ namespace OptimalEducation.DAL.Migrations
                     RequiredSum=260, 
                     Code="1123",
                     FacultyId=context.Faculties.First().Id,
-                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="2").Id
+                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="2").Id,
+                    EducationLinesRequirements=new List<EducationLineRequirement>
+                    {
+                        new EducationLineRequirement 
+                        {
+                            Requirement=50, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=65, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=85, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                        },
+                    }
                 },
                 new EducationLine 
                 {
@@ -264,7 +282,77 @@ namespace OptimalEducation.DAL.Migrations
                     Actual=true,RequiredSum=220,
                     Code="1124",
                     FacultyId=context.Faculties.First().Id,
-                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id
+                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                    EducationLinesRequirements=new List<EducationLineRequirement>
+                    {
+                        new EducationLineRequirement 
+                        {
+                            Requirement=50, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=70, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=80, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Физика").Id
+                        },
+                    }
+                },
+                new EducationLine 
+                {
+                    Name = "Литературы и искуств",
+                    Actual=true,RequiredSum=220,
+                    Code="6665",
+                    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
+                    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                    EducationLinesRequirements=new List<EducationLineRequirement>
+                    {
+                        new EducationLineRequirement 
+                        {
+                            Requirement=70, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=50, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=80, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Литература").Id
+                        },
+                    }
+                },
+                new EducationLine 
+                {
+                    Name = "Исторический",
+                    Actual=true,RequiredSum=220,
+                    Code="6666",
+                    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
+                    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                    EducationLinesRequirements=new List<EducationLineRequirement>
+                    {
+                        new EducationLineRequirement 
+                        {
+                            Requirement=60, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=50, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=80, 
+                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="История").Id
+                        },
+                    }
                 }
             };
             foreach (var educationLine in educationLines)
