@@ -64,6 +64,10 @@
     <Compile Include="Migrations\201404220724563_SchoolMarkCanBeNull.Designer.cs">
       <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.cs" />
+    <Compile Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.Designer.cs">
+      <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -118,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201404220724563_SchoolMarkCanBeNull.resx">
       <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.resx">
+      <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

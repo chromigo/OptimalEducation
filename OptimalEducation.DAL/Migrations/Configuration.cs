@@ -106,27 +106,27 @@ namespace OptimalEducation.DAL.Migrations
             //В идеале разделить на "предметы", "физ данные", "прочие"
             var сharacterisics = new List<Characteristic>
             {
-                new Characteristic {Name = "Математика"},
-                new Characteristic {Name = "Информатика"},
-                new Characteristic {Name = "Физика"},
-                new Characteristic {Name = "Химия"},
-                new Characteristic {Name = "Биология"},
-                new Characteristic {Name = "География"},
+                new Characteristic {Name = "Математика",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Информатика",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Физика",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Химия",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Биология",Type=CharacteristicType.Education},
+                new Characteristic {Name = "География",Type=CharacteristicType.Education},
 
-                new Characteristic {Name = "Литература"},
-                new Characteristic {Name = "История"},
-                new Characteristic {Name = "Обществознание"},
+                new Characteristic {Name = "Литература",Type=CharacteristicType.Education},
+                new Characteristic {Name = "История",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Обществознание",Type=CharacteristicType.Education},
 
-                new Characteristic {Name = "Русский язык"},
-                new Characteristic {Name = "Английский язык"},
-                new Characteristic {Name = "Немецкий язык"},
-                new Characteristic {Name = "Французский язык"},
-                new Characteristic {Name = "Испанский язык"},
+                new Characteristic {Name = "Русский язык",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Английский язык",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Немецкий язык",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Французский язык",Type=CharacteristicType.Education},
+                new Characteristic {Name = "Испанский язык",Type=CharacteristicType.Education},
 
-                new Characteristic {Name = "Сила"},
-                new Characteristic {Name = "Выносливость"},
-                new Characteristic {Name = "Скорость реакции"},
-                new Characteristic {Name = "Зрение"},
+                new Characteristic {Name = "Сила",Type=CharacteristicType.Physical},
+                new Characteristic {Name = "Выносливость",Type=CharacteristicType.Physical},
+                new Characteristic {Name = "Скорость реакции",Type=CharacteristicType.Physical},
+                new Characteristic {Name = "Зрение",Type=CharacteristicType.Physical},
             };
             foreach (var item in сharacterisics)
             {

@@ -23,12 +23,12 @@ namespace UnitTests
         {
             characterisics = new List<Characteristic>
             {
-                new Characteristic { Name = "Русский язык"},
-                new Characteristic { Name = "Математика"},
-                new Characteristic { Name = "Информатика"},
-                new Characteristic { Name = "Физика"},
-                new Characteristic { Name = "Химия"},
-                new Characteristic { Name = "Английский язык"},
+                new Characteristic { Name = "Русский язык",Type=CharacteristicType.Education},
+                new Characteristic { Name = "Математика",Type=CharacteristicType.Education},
+                new Characteristic { Name = "Информатика",Type=CharacteristicType.Education},
+                new Characteristic { Name = "Физика",Type=CharacteristicType.Education},
+                new Characteristic { Name = "Химия",Type=CharacteristicType.Education},
+                new Characteristic { Name = "Английский язык",Type=CharacteristicType.Education},
             };
 
             ExamFill();

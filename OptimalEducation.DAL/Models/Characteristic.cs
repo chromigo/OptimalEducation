@@ -22,9 +22,19 @@ namespace OptimalEducation.DAL.Models
         
         public string Name { get; set; }
 
+        public CharacteristicType Type { get; set; }
 
         public virtual ICollection<Weight> Weights { get; set; }
 
     }
+    /// <summary>
+    /// ќбозначаем к какому типу относитс€ заданна€ характеристика: образовательна€, спортивна€, хобби
+    /// </summary>
+    public enum CharacteristicType
+	{
+        Education,
+        Physical,
+        Etc
+	}
 
 }
