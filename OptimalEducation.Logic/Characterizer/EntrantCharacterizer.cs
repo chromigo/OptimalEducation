@@ -35,15 +35,18 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var exam in _entrant.UnitedStateExams)
             {
-                double result = exam.Result/100.0;//нормализованный результат(100б=1.00, 70,=0.7)
-                var discipline = exam.Discipline;
-                foreach (var weight in discipline.Weights)
+                if(exam.Result.HasValue)
                 {
-                    var coeff = weight.Coefficient;
-                    var characteristicName = weight.Characterisic.Name;
+                    double result = exam.Result.Value / 100.0;//нормализованный результат(100б=1.00, 70,=0.7)
+                    var discipline = exam.Discipline;
+                    foreach (var weight in discipline.Weights)
+                    {
+                        var coeff = weight.Coefficient;
+                        var characteristicName = weight.Characterisic.Name;
 
-                    var characteristicResult = result * coeff;
-                    FillPartialCharacteristics(unatedStatedExamCharacterisics, characteristicName, characteristicResult);
+                        var characteristicResult = result * coeff;
+                        FillPartialCharacteristics(unatedStatedExamCharacterisics, characteristicName, characteristicResult);
+                    }
                 }
             }
         }
@@ -52,16 +55,19 @@ namespace OptimalEducation.Logic.Characterizer
         {
             foreach (var shoolMark in _entrant.SchoolMarks)
             {
-                //нормализованный результат(5=1.00)
-                double result = shoolMark.Result/5.0;
-                var discipline = shoolMark.SchoolDiscipline;
-                foreach (var weight in discipline.Weights)
+                if (shoolMark.Result.HasValue)
                 {
-                    var coeff = weight.Coefficient;
-                    var characteristicName = weight.Characterisic.Name;
+                    //нормализованный результат(5=1.00)
+                    double result = shoolMark.Result.Value / 5.0;
+                    var discipline = shoolMark.SchoolDiscipline;
+                    foreach (var weight in discipline.Weights)
+                    {
+                        var coeff = weight.Coefficient;
+                        var characteristicName = weight.Characterisic.Name;
 
-                    var characteristicResult = result * coeff;
-                    FillPartialCharacteristics(schoolMarkCharacterisics, characteristicName, characteristicResult);
+                        var characteristicResult = result * coeff;
+                        FillPartialCharacteristics(schoolMarkCharacterisics, characteristicName, characteristicResult);
+                    }
                 }
             }
         }

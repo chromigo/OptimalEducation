@@ -56,6 +56,14 @@
     <Compile Include="Migrations\201404191749513_Initialize.Designer.cs">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201404220719193_ResultCanBeEmpty.cs" />
+    <Compile Include="Migrations\201404220719193_ResultCanBeEmpty.Designer.cs">
+      <DependentUpon>201404220719193_ResultCanBeEmpty.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201404220724563_SchoolMarkCanBeNull.cs" />
+    <Compile Include="Migrations\201404220724563_SchoolMarkCanBeNull.Designer.cs">
+      <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -104,6 +112,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201404191749513_Initialize.resx">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404220719193_ResultCanBeEmpty.resx">
+      <DependentUpon>201404220719193_ResultCanBeEmpty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201404220724563_SchoolMarkCanBeNull.resx">
+      <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
