@@ -11,7 +11,7 @@ public partial class SchoolMark
     public int Id { get; set; }
     [Range(3, 5)]
     [Display(Name = "ќценка")]
-    public short Result { get; set; }
+    public short? Result { get; set; }
 
     public Nullable<int> Respect { get; set; }
 

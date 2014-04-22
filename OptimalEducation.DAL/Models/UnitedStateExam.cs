@@ -12,7 +12,7 @@ namespace OptimalEducation.DAL.Models
         public int Id { get; set; }
         [Range(0,100)]
         [Display(Name = "Результат")]
-        public int Result { get; set; }
+        public int? Result { get; set; }
 
         public int ExamDisciplineId { get; set; }
         
