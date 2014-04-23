@@ -372,16 +372,16 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EntrantCharacterizer EntrClusterizer = new EntrantCharacterizer(_entrant);
+            EntrantCharacterizer_PartialCharacteristic EntrClusterizer = new EntrantCharacterizer_PartialCharacteristic(_entrant);
 
-            maxEntrantClusterSum = EntrClusterizer.Characterisics.Values.Max();
-            entruntClusters = EntrClusterizer.Characterisics;
+            maxEntrantClusterSum = EntrClusterizer.Characteristics.Values.Max();
+            entruntClusters = EntrClusterizer.Characteristics;
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
                 bool edLineAcceptable = true;
 
-                EducationLineCharacterizer EdLineClusterizer = new EducationLineCharacterizer(EdLine);
+                EducationLineCharacterizer_PartialCharacteristic EdLineClusterizer = new EducationLineCharacterizer_PartialCharacteristic(EdLine);
                 if (EdLineClusterizer.Characteristics.Count() <= 0) edLineAcceptable = false;
 
 
