@@ -34,16 +34,20 @@ namespace OptimalEducation.Logic.Characterizer
         {
             //Заполняем словарь всеми ключами по возможным весам
             OptimalEducationDbContext context = new OptimalEducationDbContext();
-            var characterisitcs = context.Characteristics.Select(p => p.Name).ToList();
-            foreach (var item in characterisitcs)
+            var educationCharacterisitcs = context.Characteristics
+                .Where(p=>p.Type==CharacteristicType.Education)
+                .Select(p => p.Name)
+                .ToList();
+            foreach (var item in educationCharacterisitcs)
             {
                 unatedStatedExamCharacterisics.Add(item, 0);
                 schoolMarkCharacterisics.Add(item, 0);
                 olympiadCharacterisics.Add(item, 0);
-                sectionCharacterisics.Add(item, 0);
-                hobbieCharacterisics.Add(item, 0);
-                schoolTypeCharacterisics.Add(item, 0);
             }
+            //Аналогочно для других хар-к
+            //sectionCharacterisics.Add(item, 0);
+            //hobbieCharacterisics.Add(item, 0);
+            //schoolTypeCharacterisics.Add(item, 0);
         }
         #region По заданным частным данным абитуриента(егэ, оценки, хобби и пр) строит частичные таблицы с характеристиками, которые позже просуммируются по заданному правилу
         private void UnatedStateExamCharacterising()
@@ -209,9 +213,9 @@ namespace OptimalEducation.Logic.Characterizer
             UnatedStateExamCharacterising();
             SchoolMarkCharacterising();
             OlympiadCharacterising();
-            SectionCharacterising();
-            HobbieCharacterising();
-            SchoolTypeCharacterising();
+            //SectionCharacterising();
+            //HobbieCharacterising();
+            //SchoolTypeCharacterising();
 
             //Скаладываем по правилу:
             //T1*K1 + T2*K2 + T3*K3 +...

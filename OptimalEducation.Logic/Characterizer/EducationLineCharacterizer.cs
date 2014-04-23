@@ -44,9 +44,12 @@ namespace OptimalEducation.Logic.Characterizer
 
         private void InitCharacterisitcs()
         {
-            //Заполняем словарь всеми ключами по возможным весам
+            //Заполняем словарь всеми ключами по возможным весам, типа Education
             OptimalEducationDbContext context = new OptimalEducationDbContext();
-            var characterisitcs = context.Characteristics.Select(p => p.Name).ToList();
+            var characterisitcs = context.Characteristics
+                .Where(p=>p.Type==CharacteristicType.Education)
+                .Select(p => p.Name)
+                .ToList();
             foreach (var item in characterisitcs)
             {
                 _educationLineCharacteristics.Add(item, 0);

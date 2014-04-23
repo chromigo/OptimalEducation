@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Logic.MulticriterialAnalysis;
+using OptimalEducation.Logic.AnalyticHierarchyProcess;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -50,7 +51,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             //По методу многокритериального анализа
             var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
             ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
-            
+            //По МАИ
+            //var AHPAnalyzer=new AHPUser(entrantId,)
+            //ViewBag.APHRecomendations = 
 			return View(Characterisicizer.Characterisics);
 		}
 
