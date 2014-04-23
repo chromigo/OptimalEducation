@@ -113,20 +113,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             _entrant = context.Entrants.Find(userID);
             _settings = settings;
 
-            //if (_settings.FourthCriterionPriority > 0)
-            //{
-
-            //    if (_settings.FourthCriterionCityID != 0)
-            //    {
-            //        if (context.Cities.Find(_settings.FourthCriterionCityID).Location == null)
-            //        {
-            //            _settings.FourthCriterionExactLocation = true;
-            //        }
-            //    }
-            //    else _settings.FourthCriterionPriority = 0;
-                
-            //}
-            ////Console.WriteLine(_entrant.FirstName + " " + _entrant.LastName);
             CalculateAll();
         }
 
@@ -789,6 +775,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     public class AHPUserSettings
     {
         #region Fields
+        OptimalEducationDbContext context = new OptimalEducationDbContext();
+
         double firstCriterionPriority = 0.40;
         double secondCriterionPriority = 0.35;
         double thirdCriterionPriority = 0.25;
@@ -815,7 +803,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         public double FourthCriterionPriority
         {
             get { return fourthCriterionPriority; }
-            set { fourthCriterionPriority = value; }//убрать?
         }
 
         public int FirstCriterionLazyGap
@@ -825,7 +812,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         public bool FourthCriterionExactLocation
         {
             get { return fourthCriterionExactLocation; }
-            set { fourthCriterionExactLocation = true; }//убрать?
         }
         public int FourthCriterionCityID
         {
@@ -835,19 +821,18 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         public AHPUserSettings()
         {
-            //Без контекста
-
-            //if (fourthCriterionPriority > 0)
-            //{
-            //    if (fourthCriterionCityID != 0)
-            //    {
-            //        if (context.Cities.Find(fourthCriterionCityID).Location == null)
-            //        {
-            //            fourthCriterionExactLocation = true;
-            //        }
-            //    }
-            //    else fourthCriterionPriority = 0;
-            //}
+            if (fourthCriterionPriority > 0)
+            {
+                if (fourthCriterionCityID != 0)
+                {
+                    //Лучше без контекста(убрать вообще проверку, принять что у всех городов есть координаты)
+                    if (context.Cities.Find(fourthCriterionCityID).Location == null)
+                    {
+                        fourthCriterionExactLocation = true;
+                    }
+                }
+                else fourthCriterionPriority = 0;
+            }
         }
     }
 }
