@@ -17,14 +17,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         OptimalEducationDbContext context = new OptimalEducationDbContext();
 
 
-        #region Общие настройки метода и приоритеты критериев
-
-        double firstCriterionPriority = 0.4;
-        double secondCriterionPriority = 0.35;
-        double thirdCriterionPriority = 0.25;
-
-        #endregion
-
+        //Общие настройки метода и приоритеты критериев
+        AHPEdLineSettings _settings;
         
         #region Переменные для первого критерия - сложности на основе ЕГЭ
         List<FirstCriterionUnit> FirstCriterionContainer = new List<FirstCriterionUnit>();
@@ -91,8 +85,10 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         #endregion
 
 
-        public AHPEducationLine(int edLineID, Dictionary<string, double> settings)
+        public AHPEducationLine(int edLineID, AHPEdLineSettings settings)
         {
+            _settings = settings;
+
             _educationLine = context.EducationLines.Find(edLineID);
             CalculateAll();
         }
@@ -100,6 +96,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         public AHPEducationLine(int edLineID)
         {
+            _settings = new AHPEdLineSettings();
+
             _educationLine = context.EducationLines.Find(edLineID);
             CalculateAll();
         }
@@ -115,19 +113,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
 
 
-            if (firstCriterionPriority > 0)
+            if (_settings.firstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
                 CalculateFirstCriterion();
             }
-            if (secondCriterionPriority > 0)
+            if (_settings.secondCriterionPriority > 0)
             {
                 InitialiseSecondCriterion();
                 CalculateSecondCriterion();
             }
 
-            if (_educationLine.Faculty.HigherEducationInstitution.City == null) thirdCriterionPriority = 0;
-            if (thirdCriterionPriority > 0)
+            if (_educationLine.Faculty.HigherEducationInstitution.City == null) _settings.thirdCriterionPriority = 0;
+            if (_settings.thirdCriterionPriority > 0)
             {
                 InitialiseThirdCriterion();
                 CalculateThirdCriterion();
@@ -529,7 +527,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
-                    FirstCriterionContainer[i].localPriority * firstCriterionPriority;
+                    FirstCriterionContainer[i].localPriority * _settings.firstCriterionPriority;
             }
             //Потом тоже самое для 2 критерия
             for (int i = 0; i < SecondCriterionContainer.Count; i++)
@@ -546,7 +544,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
-                    SecondCriterionContainer[i].localPriority * secondCriterionPriority;
+                    SecondCriterionContainer[i].localPriority * _settings.secondCriterionPriority;
             }
             //Потом тоже самое для 3 критерия
             for (int i = 0; i < ThirdCriterionContainer.Count; i++)
@@ -563,7 +561,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
-                    ThirdCriterionContainer[i].localPriority * thirdCriterionPriority;
+                    ThirdCriterionContainer[i].localPriority * _settings.thirdCriterionPriority;
             }
 
 
@@ -581,5 +579,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
 
 
+    }
+    public class AHPEdLineSettings
+    {
+        public double firstCriterionPriority = 0.4;
+        public double secondCriterionPriority = 0.35;
+        public double thirdCriterionPriority = 0.25;
     }
 }
