@@ -17,17 +17,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         OptimalEducationDbContext context = new OptimalEducationDbContext();
 
 
-        #region Общие настройки метода и приоритеты критериев
-        public class AHPEdLineSettings
-        {
-            public double firstCriterionPriority = 0.4;
-            public double secondCriterionPriority = 0.35;
-            public double thirdCriterionPriority = 0.25;
-        }
+        //Общие настройки метода и приоритеты критериев
         AHPEdLineSettings _settings;
-
-        #endregion
-
         
         #region Переменные для первого критерия - сложности на основе ЕГЭ
         List<FirstCriterionUnit> FirstCriterionContainer = new List<FirstCriterionUnit>();
@@ -588,5 +579,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
 
 
+    }
+    public class AHPEdLineSettings
+    {
+        public double firstCriterionPriority = 0.4;
+        public double secondCriterionPriority = 0.35;
+        public double thirdCriterionPriority = 0.25;
     }
 }
