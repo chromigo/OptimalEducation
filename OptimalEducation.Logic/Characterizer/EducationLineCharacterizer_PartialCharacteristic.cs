@@ -7,9 +7,11 @@ using System.Web;
 namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
-    /// Результаты характеристикиизации для учебного направления. 
+    /// Результаты характеристикиизации для учебного направления по методу частичных сумм:
+    /// Для каждой группы криетриев(балы егэ, оценки в школе и тп) строится отдельная таблица характеристик
+    /// Позже эти отдельные таблицы определенным(пока не определенным) образом складываются и получается итоговый ответ.
     /// </summary>
-    public class EducationLineCharacterizer
+    public class EducationLineCharacterizer_PartialCharacteristic
     {
         EducationLine _educationLine;
         Dictionary<string, double> _educationLineCharacteristics = new Dictionary<string, double>();
@@ -17,7 +19,7 @@ namespace OptimalEducation.Logic.Characterizer
         Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
         public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
 
-        public EducationLineCharacterizer(EducationLine educationLine)
+        public EducationLineCharacterizer_PartialCharacteristic(EducationLine educationLine)
         {
             _educationLine = educationLine;
             InitCharacterisitcs();

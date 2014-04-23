@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace OptimalEducation.Logic.Characterizer
 {
     /// <summary>
-    /// Результаты характеристикиизации для пользователя. 
-    /// Класс инкапсулирует логику построения частичных характеристикиов(по каждой характеристике пользователя)
-    /// и ихнему суммированию в целостный характеристики.
+    /// Результаты характеристикиизации для пользователя по методу частичных сумм:
+    /// Для каждой группы криетриев(балы егэ, оценки в школе и тп) строится отдельная таблица характеристик
+    /// Позже эти отдельные таблицы определенным(пока не определенным) образом складываются и получается итоговый ответ.
     /// </summary>
-    public class EntrantCharacterizer
+    public class EntrantCharacterizer_PartialCharacteristic
     {
         Entrant _entrant;
         Dictionary<string, double> unatedStatedExamCharacterisics = new Dictionary<string, double>();
@@ -22,9 +22,9 @@ namespace OptimalEducation.Logic.Characterizer
         Dictionary<string, double> hobbieCharacterisics = new Dictionary<string, double>();
         Dictionary<string, double> schoolTypeCharacterisics = new Dictionary<string, double>();
 
-        Dictionary<string, double> _totalCharacterisics = new Dictionary<string, double>();
-        public Dictionary<string, double> Characterisics { get { return _totalCharacterisics; } }
-        public EntrantCharacterizer(Entrant entrant)
+        Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
+        public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
+        public EntrantCharacterizer_PartialCharacteristic(Entrant entrant)
         {
             _entrant = entrant;
             InitCharacterisitcs();
@@ -258,10 +258,10 @@ namespace OptimalEducation.Logic.Characterizer
 
         private void FillTotalCharacteristics(KeyValuePair<string, double> item)
         {
-            if (!_totalCharacterisics.ContainsKey(item.Key))
-                _totalCharacterisics.Add(item.Key, item.Value);
+            if (!_totalCharacteristics.ContainsKey(item.Key))
+                _totalCharacteristics.Add(item.Key, item.Value);
             else
-                _totalCharacterisics[item.Key] += item.Value;
+                _totalCharacteristics[item.Key] += item.Value;
         }
     }
 }
