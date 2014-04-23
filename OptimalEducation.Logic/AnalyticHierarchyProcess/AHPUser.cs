@@ -106,46 +106,39 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
 
         #region Общие настройки метода и приоритеты критериев
+        
+        public class AHPUserSettings
+        {
+            public double firstCriterionPriority = 0.40;
+            public double secondCriterionPriority = 0.35;
+            public double thirdCriterionPriority = 0.25;
+            public double fourthCriterionPriority = 0.0;
 
-        double firstCriterionPriority = 0.40;
-        double secondCriterionPriority = 0.35;
-        double thirdCriterionPriority = 0.25;
-        double fourthCriterionPriority = 0.0;
-
-        int firstCriterionLazyGap = 10;
-        bool fourthCriterionExactLocation = false;
-        int fourthCriterionCityID = 0;
+            public int firstCriterionLazyGap = 10;
+            public bool fourthCriterionExactLocation = false;
+            public int fourthCriterionCityID = 0;
+        }
+        AHPUserSettings _settings;
 
         #endregion
 
 
-        public AHPUser(int userID, Dictionary<string, double> settings)
+        public AHPUser(int userID, AHPUserSettings settings)
         {
             _entrant = context.Entrants.Find(userID);
+            _settings = settings;
 
-            if (settings.ContainsKey("firstCriterionPriority")) firstCriterionPriority = settings["firstCriterionPriority"];
-            if (settings.ContainsKey("secondCriterionPriority")) secondCriterionPriority = settings["secondCriterionPriority"];
-            if (settings.ContainsKey("thirdCriterionPriority")) thirdCriterionPriority = settings["thirdCriterionPriority"];
-            if (settings.ContainsKey("fourthCriterionPriority")) fourthCriterionPriority = settings["fourthCriterionPriority"];
-
-            if (settings.ContainsKey("firstCriterionLazyGap")) firstCriterionLazyGap = Convert.ToInt32(settings["firstCriterionLazyGap"]);
-
-            if (fourthCriterionPriority > 0)
+            if (_settings.fourthCriterionPriority > 0)
             {
-                if (settings.ContainsKey("fourthCriterionExactLocation"))
+
+                if (_settings.fourthCriterionCityID != 0)
                 {
-                    if (settings["fourthCriterionExactLocation"] == 1) fourthCriterionExactLocation = true;
-                    if (settings["fourthCriterionExactLocation"] == 0) fourthCriterionExactLocation = false;
-                }
-                if (settings.ContainsKey("fourthCriterionCityID"))
-                {
-                    fourthCriterionCityID = Convert.ToInt32(settings["fourthCriterionCityID"]);
-                    if (context.Cities.Find(fourthCriterionCityID).Location == null)
+                    if (context.Cities.Find(_settings.fourthCriterionCityID).Location == null)
                     {
-                        fourthCriterionExactLocation = true;
+                        _settings.fourthCriterionExactLocation = true;
                     }
                 }
-                else fourthCriterionPriority = 0;
+                else _settings.fourthCriterionPriority = 0;
                 
             }
 
@@ -156,6 +149,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         public AHPUser(int userID)
         {
             _entrant = context.Entrants.Find(userID);
+            _settings = new AHPUserSettings();
 
             //Console.WriteLine(_entrant.FirstName + " " + _entrant.LastName);
             CalculateAll();
@@ -165,25 +159,25 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         private void CalculateAll()
         {
-            if (firstCriterionPriority > 0)
+            if (_settings.firstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
                 CalculateFirstCriterion();
             }
 
-            if (secondCriterionPriority > 0)
+            if (_settings.secondCriterionPriority > 0)
             {
                 InitialiseSecondCriterion();
                 CalculateSecondCriterion();
             }
 
-            if (thirdCriterionPriority > 0)
+            if (_settings.thirdCriterionPriority > 0)
             {
                 InitialiseThirdCriterion();
                 CalculateThirdCriterion();
             }
 
-            if (fourthCriterionPriority > 0)
+            if (_settings.fourthCriterionPriority > 0)
             {
                 InitialiseFourthCriterion();
                 CalculateFourthCriterion();
@@ -319,7 +313,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         //Расчет "ослабленного" результата направления
         private int WeakenedDifficultyResult(int entrantSum, int requiredSum)
         {
-            int weakResEntr = (entrantSum - firstCriterionLazyGap);
+            int weakResEntr = (entrantSum - _settings.firstCriterionLazyGap);
             if (weakResEntr < 0) weakResEntr = 0;
             int weakResult = weakResEntr - Math.Abs(weakResEntr - requiredSum);
             if (weakResult < 0) weakResult = 0;
@@ -617,20 +611,20 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int counter = 0;
 
-            Console.WriteLine(fourthCriterionExactLocation.ToString());
+            Console.WriteLine(_settings.fourthCriterionExactLocation.ToString());
 
             foreach (EducationLine EdLine in context.EducationLines)
             {
 
-                if (fourthCriterionExactLocation == true)
+                if (_settings.fourthCriterionExactLocation == true)
                 {
                     FourthCriterionUnit EducationLine = new FourthCriterionUnit();
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.matrixId = counter;
                     EducationLine.hasCoordinates = false;
                     EducationLine.localPriority = 0;
-                    
-                    if (EdLine.Faculty.HigherEducationInstitution.City.Id == fourthCriterionCityID) EducationLine.distance = 0;
+
+                    if (EdLine.Faculty.HigherEducationInstitution.City.Id == _settings.fourthCriterionCityID) EducationLine.distance = 0;
                     else EducationLine.distance = 9.0;
                     
                     counter++;
@@ -640,7 +634,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 else
                 {
 
-                    var subjectLocation = context.Cities.Find(fourthCriterionCityID).Location;
+                    var subjectLocation = context.Cities.Find(_settings.fourthCriterionCityID).Location;
 
                     if (EdLine.Faculty.HigherEducationInstitution.City.Location == null)
                     {
@@ -740,7 +734,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
-                    FirstCriterionContainer[i].localPriority * firstCriterionPriority;
+                    FirstCriterionContainer[i].localPriority * _settings.firstCriterionPriority;
             }
             //Потом тоже самое для 2 критерия
             for (int i = 0; i < SecondCriterionContainer.Count; i++)
@@ -757,7 +751,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
-                    SecondCriterionContainer[i].localPriority * secondCriterionPriority;
+                    SecondCriterionContainer[i].localPriority * _settings.secondCriterionPriority;
             }
             //Потом тоже самое для 3-го
             for (int i = 0; i < ThirdCriterionContainer.Count; i++)
@@ -774,8 +768,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
-                    ThirdCriterionContainer[i].localPriorityFaculty * thirdCriterionPriority * (1 - HEIprestigePart) +
-                        ThirdCriterionContainer[i].localPriorityHEI * thirdCriterionPriority * HEIprestigePart;
+                    ThirdCriterionContainer[i].localPriorityFaculty * _settings.thirdCriterionPriority * (1 - HEIprestigePart) +
+                        ThirdCriterionContainer[i].localPriorityHEI * _settings.thirdCriterionPriority * HEIprestigePart;
             }
             //Потом тоже самое для 4 критерия
             for (int i = 0; i < FourthCriterionContainer.Count; i++)
@@ -792,7 +786,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FourthCriterionContainer[i].databaseId).fourthCriterionFinalPriority =
-                    FourthCriterionContainer[i].localPriority * fourthCriterionPriority;
+                    FourthCriterionContainer[i].localPriority * _settings.fourthCriterionPriority;
             }
 
             //Завершающее сложение и заполнение выходного словарая
