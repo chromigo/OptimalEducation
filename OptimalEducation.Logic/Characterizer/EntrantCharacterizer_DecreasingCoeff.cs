@@ -16,10 +16,17 @@ namespace OptimalEducation.Logic.Characterizer
     public class EntrantCharacterizer_DecreasingCoeff
     {
         Entrant _entrant;
-        Dictionary<string, List<double>> characterisicAddItems = new Dictionary<string, List<double>>();
+        List<string> educationCharacterisiticNames;
+        Dictionary<string, List<double>> schoolMarkCharactericAddItems = new Dictionary<string, List<double>>();
+        Dictionary<string, List<double>> olympiadCharacteristicAddItems = new Dictionary<string, List<double>>();
 
-        Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
-        public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
+        Dictionary<string, List<double>> sectionCharactericAddItems = new Dictionary<string, List<double>>();
+        Dictionary<string, List<double>> hobbieCharactericAddItems = new Dictionary<string, List<double>>();
+        Dictionary<string, List<double>> schoolTypeCharactericAddItems = new Dictionary<string, List<double>>();
+
+
+        //Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
+        //public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
 
         public EntrantCharacterizer_DecreasingCoeff(Entrant entrant)
         {
@@ -31,18 +38,22 @@ namespace OptimalEducation.Logic.Characterizer
         {
             //Заполняем словарь всеми ключами по возможным весам
             OptimalEducationDbContext context = new OptimalEducationDbContext();
-            var educationCharacterisitcs = context.Characteristics
+            educationCharacterisiticNames = context.Characteristics
                 .Where(p=>p.Type==CharacteristicType.Education)
                 .Select(p => p.Name)
                 .ToList();
-            foreach (var item in educationCharacterisitcs)
-            {
-                characterisicAddItems.Add(item, new List<double>());
-            }
         }
         #region Добавляем в списки слагаемые для сложени(для каждой характеристики)
-        private void UnatedStateExamCharacterising()
+        private Dictionary<string, double> UnatedStateExamCharacterising()
         {
+            Dictionary<string, List<double>> unatedStateExamCharactericAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                unatedStateExamCharactericAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
             foreach (var exam in _entrant.UnitedStateExams)
             {
                 if(exam.Result.HasValue)
@@ -55,14 +66,33 @@ namespace OptimalEducation.Logic.Characterizer
                         var characteristicName = weight.Characterisic.Name;
 
                         var characteristicResult = result * coeff;
-                        characterisicAddItems[characteristicName].Add(characteristicResult);
+                        unatedStateExamCharactericAddItems[characteristicName].Add(characteristicResult);
                     }
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in unatedStateExamCharactericAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
 
-        private void SchoolMarkCharacterising()
+        private Dictionary<string, double> SchoolMarkCharacterising()
         {
+            Dictionary<string, List<double>> schoolMarkCharactericAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                schoolMarkCharactericAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
             foreach (var shoolMark in _entrant.SchoolMarks)
             {
                 if (shoolMark.Result.HasValue)
@@ -76,14 +106,34 @@ namespace OptimalEducation.Logic.Characterizer
                         var characteristicName = weight.Characterisic.Name;
 
                         var characteristicResult = result * coeff;
-                        characterisicAddItems[characteristicName].Add(characteristicResult);
+                        schoolMarkCharactericAddItems[characteristicName].Add(characteristicResult);
                     }
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in schoolMarkCharactericAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
 
-        private void OlympiadCharacterising()
+        private Dictionary<string, double> OlympiadCharacterising()
         {
+            Dictionary<string, List<double>> olympiadCharacteristicAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                olympiadCharacteristicAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
+            //Т.к. олимпиад может быть очень много, результаты будет складывать в отдельный список(по хар-кам).
             foreach (var olympResult in _entrant.ParticipationInOlympiads)
             {
                 var result = olympResult.Result;
@@ -94,7 +144,6 @@ namespace OptimalEducation.Logic.Characterizer
                     var characteristicName = weight.Characterisic.Name;
 
                     double characteristicResult = 0;
-                    //TODO: Реализовать особую логику учета данных?
                     switch (result)
                     {
                         case OlypmpiadResult.FirstPlace: characteristicResult = ((double)result/100) * coeff;
@@ -107,13 +156,32 @@ namespace OptimalEducation.Logic.Characterizer
                             break;
                     }
 
-                    characterisicAddItems[characteristicName].Add(characteristicResult);
+                    olympiadCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in olympiadCharacteristicAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
 
-        private void SectionCharacterising()
+        private Dictionary<string, double> SectionCharacterising()
         {
+            Dictionary<string, List<double>> sectionCharactericAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                sectionCharactericAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
             foreach (var sectionResult in _entrant.ParticipationInSections)
             {
                 double result = 0;
@@ -133,13 +201,32 @@ namespace OptimalEducation.Logic.Characterizer
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = result * coeff;
 
-                    characterisicAddItems[characteristicName].Add(characteristicResult);
+                    sectionCharactericAddItems[characteristicName].Add(characteristicResult);
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in sectionCharactericAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
 
-        private void HobbieCharacterising()
+        private Dictionary<string, double> HobbieCharacterising()
         {
+            Dictionary<string, List<double>> hobbieCharactericAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                hobbieCharactericAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
             foreach (var hobbieResult in _entrant.Hobbies)
             {
                 foreach (var weight in hobbieResult.Weights)
@@ -152,13 +239,32 @@ namespace OptimalEducation.Logic.Characterizer
                     double someValue = 1;
                     double characteristicResult = someValue * coeff;
 
-                    characterisicAddItems[characteristicName].Add(characteristicResult);
+                    hobbieCharactericAddItems[characteristicName].Add(characteristicResult);
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in hobbieCharactericAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
 
-        private void SchoolTypeCharacterising()
+        private Dictionary<string, double> SchoolTypeCharacterising()
         {
+            Dictionary<string, List<double>> schoolTypeCharactericAddItems = new Dictionary<string, List<double>>();
+            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                schoolTypeCharactericAddItems.Add(name, new List<double>());
+                resultCharacteristics.Add(name, 0);
+            }
+
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
             var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
@@ -175,9 +281,20 @@ namespace OptimalEducation.Logic.Characterizer
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = quality * coeff;
 
-                    characterisicAddItems[characteristicName].Add(characteristicResult);
+                    schoolTypeCharactericAddItems[characteristicName].Add(characteristicResult);
                 }
             }
+
+            //TODO: Логика суммирования
+            foreach (var item in schoolTypeCharactericAddItems)
+            {
+                item.Value.Sort();
+                //Складываем
+                double sum = 0;
+                //TODO: сложить по правилу
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
         }
         #endregion
 
@@ -196,16 +313,6 @@ namespace OptimalEducation.Logic.Characterizer
             //SchoolTypeCharacterising();
 
             //TODO: Сортируем в нужном порядке и Складываем по определенному правилу
-
-            foreach (var item in characterisicAddItems)
-            {
-                item.Value.Sort();
-                _totalCharacteristics.Add(item.Key, 0);
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                _totalCharacteristics[item.Key] = sum;
-            }
         }
     }
 }
