@@ -277,8 +277,11 @@ namespace OptimalEducation.Logic.Characterizer
             var unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
             var schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
             var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
+            //TODO: Остальные методы(хобби, секции и пр)
 
-            //TODO: Сортируем в нужном порядке и Складываем по определенному правилу
+            //Просто складываем и делим на норм. число
+            //(Или складываем по аналогии с геом. прогрессией и делим на норм число?)
+
         }
     }
 }

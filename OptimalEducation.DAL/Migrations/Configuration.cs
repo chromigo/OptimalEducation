@@ -22,10 +22,13 @@ namespace OptimalEducation.DAL.Migrations
             // основные данные
             BaseEntitiesInit(context);
             // для asp.net identity контескта(пользователи, права)
-            CreateEntrant();
+            CreateCommonEntrant();
+
+            //Идеальный ученик(все на максимум, нужен для нормирования результатов)
+            CreateIdealEntrant();
         }
 
-        private void CreateEntrant()
+        private void CreateCommonEntrant()
         {
             if(db.Entrants.SingleOrDefault(p=>p.Id==1)==null)
             {
@@ -56,6 +59,55 @@ namespace OptimalEducation.DAL.Migrations
                             SchoolDiscipline = schoolDisc,
                             Entrant = entrant,
                             Result = 4,
+                        });
+                }
+                db.Entrants.Add(entrant);
+                db.SaveChanges();
+            }
+        }
+
+        private void CreateIdealEntrant()
+        {
+            if (db.Entrants.SingleOrDefault(p => p.Id == 2) == null)
+            {
+                //Создаем абитуриента с базовой информацией
+                var entrant = new Entrant()
+                {
+                    Id = 2,
+                    FirstName = "IDEAL",
+                    Gender = "Male",
+                };
+                //Добавляем ему результаты по ЕГЭ
+                foreach (var discipline in db.ExamDisciplines)
+                {
+                    entrant.UnitedStateExams.Add(
+                        new UnitedStateExam
+                        {
+                            Discipline = discipline,
+                            Entrant = entrant,
+                            Result = 100,
+                        });
+                }
+                //Добавляем ему результаты по школьным предметам
+                foreach (var schoolDisc in db.SchoolDisciplines)
+                {
+                    entrant.SchoolMarks.Add(
+                        new SchoolMark
+                        {
+                            SchoolDiscipline = schoolDisc,
+                            Entrant = entrant,
+                            Result = 5,
+                        });
+                }
+                //Добавляем ему результаты по олимпиадам(по всем???)
+                foreach (var olympiad in db.Olympiads)
+                {
+                    entrant.ParticipationInOlympiads.Add(
+                        new ParticipationInOlympiad()
+                        {
+                            Entrant = entrant,
+                            Result = OlypmpiadResult.FirstPlace,
+                            Olympiad = olympiad
                         });
                 }
                 db.Entrants.Add(entrant);
