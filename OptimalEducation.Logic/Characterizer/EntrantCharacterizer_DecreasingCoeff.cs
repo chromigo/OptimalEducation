@@ -17,13 +17,6 @@ namespace OptimalEducation.Logic.Characterizer
     {
         Entrant _entrant;
         List<string> educationCharacterisiticNames;
-        Dictionary<string, List<double>> schoolMarkCharactericAddItems = new Dictionary<string, List<double>>();
-        Dictionary<string, List<double>> olympiadCharacteristicAddItems = new Dictionary<string, List<double>>();
-
-        Dictionary<string, List<double>> sectionCharactericAddItems = new Dictionary<string, List<double>>();
-        Dictionary<string, List<double>> hobbieCharactericAddItems = new Dictionary<string, List<double>>();
-        Dictionary<string, List<double>> schoolTypeCharactericAddItems = new Dictionary<string, List<double>>();
-
 
         //Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
         //public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
@@ -44,19 +37,47 @@ namespace OptimalEducation.Logic.Characterizer
                 .ToList();
         }
         #region Добавляем в списки слагаемые для сложени(для каждой характеристики)
-        private Dictionary<string, double> UnatedStateExamCharacterising()
+        private Dictionary<string, double> Characterising(Action<Dictionary<string, List<double>>> partSumsMethod)
         {
-            Dictionary<string, List<double>> unatedStateExamCharactericAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
+            var characteristicAddItems = new Dictionary<string, List<double>>();
+            var resultCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)
             {
-                unatedStateExamCharactericAddItems.Add(name, new List<double>());
+                characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
             }
 
+            //Т.к. олимпиад может быть очень много, результаты будет складывать в отдельный список(по хар-кам).
+            partSumsMethod(characteristicAddItems);
+
+            //Логика суммирования
+            foreach (var item in characteristicAddItems)
+            {
+                item.Value.Sort();
+                var itemList = item.Value;
+                //Используем идею геометрической прогрессии
+                //Наибольший вклад вносит первое(наибольшее) значение. 
+                //чем больше результатов, тем меньше их вклад
+                //Пример: 4,3,3,2: 4*1+3/2 + 3/4 +2/8
+                double b = 1;
+                double sum = 0;
+                for (int i = 0; i < itemList.Count; i++)
+                {
+                    sum += itemList[i] * b;
+                    b = b / 2;
+                }
+
+                resultCharacteristics[item.Key] = sum;
+            }
+            return resultCharacteristics;
+        }
+
+        private void CreateUnatedStateExamPartSums(Dictionary<string, List<double>> unatedStateExamCharactericAddItems)
+        {
+            //Вычисляем пары "название кластера"+"спискок частичных сумм"
             foreach (var exam in _entrant.UnitedStateExams)
             {
-                if(exam.Result.HasValue)
+                if (exam.Result.HasValue)
                 {
                     double result = exam.Result.Value / 100.0;//нормализованный результат(100б=1.00, 70,=0.7)
                     var discipline = exam.Discipline;
@@ -70,29 +91,10 @@ namespace OptimalEducation.Logic.Characterizer
                     }
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in unatedStateExamCharactericAddItems)
-            {
-                item.Value.Sort();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
 
-        private Dictionary<string, double> SchoolMarkCharacterising()
+        private void CreateSchoolMarkPartSums(Dictionary<string, List<double>> schoolMarkCharactericAddItems)
         {
-            Dictionary<string, List<double>> schoolMarkCharactericAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                schoolMarkCharactericAddItems.Add(name, new List<double>());
-                resultCharacteristics.Add(name, 0);
-            }
-
             foreach (var shoolMark in _entrant.SchoolMarks)
             {
                 if (shoolMark.Result.HasValue)
@@ -110,30 +112,10 @@ namespace OptimalEducation.Logic.Characterizer
                     }
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in schoolMarkCharactericAddItems)
-            {
-                item.Value.Sort();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
 
-        private Dictionary<string, double> OlympiadCharacterising()
+        private void CreateOlympiadPartSums(Dictionary<string, List<double>> olympiadCharacteristicAddItems)
         {
-            Dictionary<string, List<double>> olympiadCharacteristicAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                olympiadCharacteristicAddItems.Add(name, new List<double>());
-                resultCharacteristics.Add(name, 0);
-            }
-
-            //Т.к. олимпиад может быть очень много, результаты будет складывать в отдельный список(по хар-кам).
             foreach (var olympResult in _entrant.ParticipationInOlympiads)
             {
                 var result = olympResult.Result;
@@ -146,30 +128,17 @@ namespace OptimalEducation.Logic.Characterizer
                     double characteristicResult = 0;
                     switch (result)
                     {
-                        case OlypmpiadResult.FirstPlace: characteristicResult = ((double)result/100) * coeff;
+                        case OlypmpiadResult.FirstPlace: characteristicResult = ((double)result / 100) * coeff;
                             break;
                         case OlypmpiadResult.SecondPlace: characteristicResult = ((double)result / 100) * coeff;
                             break;
                         case OlypmpiadResult.ThirdPlace: characteristicResult = ((double)result / 100) * coeff;
-                            break;
-                        default:
                             break;
                     }
 
                     olympiadCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in olympiadCharacteristicAddItems)
-            {
-                item.Value.Sort();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
 
         private Dictionary<string, double> SectionCharacterising()
@@ -305,12 +274,9 @@ namespace OptimalEducation.Logic.Characterizer
         {
             //Вычисляем частичные характеристики
             //в результатер работы каждой функции получается новая таблица характеристик
-            UnatedStateExamCharacterising();
-            SchoolMarkCharacterising();
-            OlympiadCharacterising();
-            //SectionCharacterising();
-            //HobbieCharacterising();
-            //SchoolTypeCharacterising();
+            var unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
+            var schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
+            var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
 
             //TODO: Сортируем в нужном порядке и Складываем по определенному правилу
         }
