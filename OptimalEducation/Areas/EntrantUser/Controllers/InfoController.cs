@@ -40,7 +40,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
 			var Characterisicizer = new EntrantCharacterizer_PartialCharacteristic(entrant);
-
+            var newCharacterizer = new EntrantCharacterizer_DecreasingCoeff(entrant);
+            var t1 = newCharacterizer.CalculateSimpleNormSum();
+            var t2 = newCharacterizer.CalculateComplicatedNormSum();
             //Отобразить рекомендуемые учебные направления
 
             //По методу сравнения расстояний мд характеристиками

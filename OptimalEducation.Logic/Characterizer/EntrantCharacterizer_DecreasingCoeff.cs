@@ -18,14 +18,10 @@ namespace OptimalEducation.Logic.Characterizer
         Entrant _entrant;
         List<string> educationCharacterisiticNames;
 
-        //Dictionary<string, double> _totalCharacteristics = new Dictionary<string, double>();
-        //public Dictionary<string, double> Characteristics { get { return _totalCharacteristics; } }
-
         public EntrantCharacterizer_DecreasingCoeff(Entrant entrant)
         {
             _entrant = entrant;
             InitCharacterisitcs();
-            CalculateSum();
         }
         private void InitCharacterisitcs()
         {
@@ -268,9 +264,11 @@ namespace OptimalEducation.Logic.Characterizer
         #endregion
 
         /// <summary>
-        /// Складывает результаты каждого частного характеристикиа по определенному правилу
+        /// Вычесленный результат по правилу: простое сложение частичных результатов
+        /// (по идее будет плохой результат, если, к примеру, не указаны олимпиады. Возможно такое поведение и нужно.)
         /// </summary>
-        private void CalculateSum()
+        /// <returns></returns>
+        public Dictionary<string, double> CalculateSimpleSum()
         {
             //Вычисляем частичные характеристики
             //в результатер работы каждой функции получается новая таблица характеристик
@@ -281,7 +279,141 @@ namespace OptimalEducation.Logic.Characterizer
 
             //Просто складываем и делим на норм. число
             //(Или складываем по аналогии с геом. прогрессией и делим на норм число?)
+            var totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
 
+            foreach (var item in unatedStateExamCharacteristics)
+            {
+                totalCharacteristics[item.Key] += item.Value;
+            }
+            foreach (var item in schoolMarkCharacteristics)
+            {
+                totalCharacteristics[item.Key] += item.Value;
+            }
+            foreach (var item in olympiadCharacteristics)
+            {
+                totalCharacteristics[item.Key] += item.Value;
+            }
+
+            return totalCharacteristics;
+        }
+        public Dictionary<string,double> CalculateSimpleNormSum()
+        {
+            var sum = CalculateSimpleSum();
+            var idealResult = IdealEntrantResult.SimpleResult;
+
+            var totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //Нормируем
+            foreach (var item in sum)
+            {
+                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+            }
+            return totalCharacteristics;
+        }
+
+        public Dictionary<string, double> CalculateComplicatedSum()
+        {
+            //Вычисляем частичные характеристики
+            //в результатер работы каждой функции получается новая таблица характеристик
+            var unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
+            var schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
+            var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
+            //TODO: Остальные методы(хобби, секции и пр)
+
+            //Cкладываем по аналогии с геом. прогрессией и делим на норм число
+            var characteristicAddItems = new Dictionary<string, List<double>>();
+            var resultCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                characteristicAddItems.Add(name, new List<double>()
+                    {
+                        unatedStateExamCharacteristics[name],
+                        schoolMarkCharacteristics[name],
+                        olympiadCharacteristics[name]
+                    });
+                resultCharacteristics.Add(name, 0);
+            }
+            foreach (var item in characteristicAddItems)
+            {
+                item.Value.Sort();
+                var itemList = item.Value;
+                double b = 1;
+                double sum = 0;
+                for (int i = 0; i < itemList.Count; i++)
+                {
+                    sum += itemList[i] * b;
+                    b = b / 2;
+                }
+
+                resultCharacteristics[item.Key] = sum;
+            }
+
+            return resultCharacteristics;
+        }
+        public Dictionary<string, double> CalculateComplicatedNormSum()
+        {
+            var sum = CalculateComplicatedSum();
+            var idealResult = IdealEntrantResult.ComplicatedResult;
+
+            var totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //Нормируем
+            foreach (var item in sum)
+            {
+                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+            }
+            return totalCharacteristics;
+        }
+    }
+    /// <summary>
+    /// Статичный класс для вычислений 1 раз и получения в дальнейшем идеального результата(для абитуриента).
+    /// Используется при нормировании результата.
+    /// </summary>
+    public static class IdealEntrantResult
+    {
+        //Для 1-го предположения(простое сложение+ нормир)
+        static Dictionary<string, double> simpleResult;
+        public static Dictionary<string, double> SimpleResult
+        {
+            get 
+            {
+                if (simpleResult == null)
+                {
+                    var context = new OptimalEducationDbContext();
+                    var idealEntrant = context.Entrants.Find(2);
+                    var characterizer = new EntrantCharacterizer_DecreasingCoeff(idealEntrant);
+                    simpleResult = characterizer.CalculateSimpleSum();
+                }
+                return simpleResult;
+            }
+        }
+        //Для 2-го предположения(геом сложение+ нормир)
+        static Dictionary<string, double> complicatedResult;
+        public static Dictionary<string, double> ComplicatedResult
+        {
+            get
+            {
+                if (complicatedResult == null)
+                {
+                    var context = new OptimalEducationDbContext();
+                    var idealEntrant = context.Entrants.Find(2);
+                    var characterizer = new EntrantCharacterizer_DecreasingCoeff(idealEntrant);
+                    complicatedResult = characterizer.CalculateComplicatedSum();
+                }
+                return complicatedResult;
+            }
         }
     }
 }
