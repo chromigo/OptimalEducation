@@ -278,11 +278,11 @@ namespace UnitTests
         {
             var entrant = CreateEntrant();
 
-            var characterizer = new EntrantCharacterizer(entrant);
+            var entratnCharacterisitcs = new EntrantCharacterizer(entrant).CalculateNormSum(false) ;
 
-            var rus = characterizer.Result["Русский язык"];
-            var math = characterizer.Result["Математика"];
-            var inf = characterizer.Result["Информатика"];
+            var rus = entratnCharacterisitcs["Русский язык"];
+            var math = entratnCharacterisitcs["Математика"];
+            var inf = entratnCharacterisitcs["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             //TODO: Подправить значения в зависимости от Enum-ов

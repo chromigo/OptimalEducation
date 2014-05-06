@@ -193,9 +193,12 @@ namespace OptimalEducation.Logic.Characterizer
             return resultCharacteristics;
         }
 
-
         #endregion
     }
+    /// <summary>
+    /// Статичный класс для вычислений 1 раз и получения в дальнейшем идеального результата(для учебн.направлений).
+    /// Используется при нормировании результата.
+    /// </summary>
     public static class IdealEducationLineResult
     {
         //Для 1-го предположения(простое сложение+ нормир)

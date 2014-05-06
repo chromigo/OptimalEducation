@@ -18,7 +18,7 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-            var entratnCharacteristic = new EntrantCharacterizer(entrant).Result;
+            var entratnCharacteristic = new EntrantCharacterizer(entrant).CalculateNormSum();
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
@@ -45,7 +45,7 @@ namespace OptimalEducation.Logic.Characterizer
 			var results = new Dictionary<Entrant, double>();
 			foreach (var entrant in entrants)
 			{
-                var entratnCharacterisic = new EntrantCharacterizer(entrant).Result;
+                var entratnCharacterisic = new EntrantCharacterizer(entrant).CalculateNormSum();
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacterisic, educationLineCharacterisic);
 				if (compareResult.HasValue)

@@ -7,33 +7,62 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.Characterizer
 {
-    /// <summary>
-    /// Результаты характеристикиизации для пользователя по методу уменьш коэф-в:
-    /// Вычисляются значения для каждой характеристики(например, потенциал в математике, информатике, русском)
-    /// Эти значения не суммируются сразу, а складываются в списки, соотносящиеся с данной характеристикой
-    /// Позже эти значения сортируются и домножаются на убывающий коэффициент
-    /// </summary>
     public class EntrantCharacterizer
+    {
+        EntrantSummator entrantCharacterizer;
+        List<string> educationCharacterisiticNames;
+
+        public EntrantCharacterizer(Entrant entrant)
+        {
+            //характеристики для нашего направления
+            entrantCharacterizer = new EntrantSummator(entrant);
+            //(характеристики для идеального направления вычисляются в статическом классе)
+
+            OptimalEducationDbContext context = new OptimalEducationDbContext();
+            educationCharacterisiticNames = context.Characteristics
+                .Where(p => p.Type == CharacteristicType.Education)
+                .Select(p => p.Name)
+                .ToList();
+        }
+
+        public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode = false)
+        {
+            Dictionary<string, double> sum;
+            Dictionary<string, double> idealResult;
+
+            //Здесь выбираем метод которым формируем результат
+            if (isComlicatedMode)
+            {
+                sum = entrantCharacterizer.CalculateComplicatedSum();
+                idealResult = IdealEntrantResult.ComplicatedResult;
+            }
+            else
+            {
+                sum = entrantCharacterizer.CalculateSimpleSum();
+                idealResult = IdealEntrantResult.SimpleResult;
+            }
+
+            var totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //Нормируем
+            foreach (var item in sum)
+            {
+                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+            }
+            return totalCharacteristics;
+        }
+    }
+
+    public class EntrantSummator
     {
         Entrant _entrant;
         List<string> educationCharacterisiticNames;
 
-        Dictionary<string, double> result;
-        public Dictionary<string, double> Result
-        {
-            get
-            {
-                if(result==null)
-                {
-                    //Здесь выбираем метод которым формируем результат
-                    result = CalculateSimpleNormSum();
-                    //Result = CalculateComplicatedNormSum();
-                }
-                return result;
-            }
-        }
-
-        public EntrantCharacterizer(Entrant entrant)
+        public EntrantSummator(Entrant entrant)
         {
             _entrant = entrant;
             InitCharacterisitcs();
@@ -43,11 +72,12 @@ namespace OptimalEducation.Logic.Characterizer
             //Заполняем словарь всеми ключами по возможным весам
             OptimalEducationDbContext context = new OptimalEducationDbContext();
             educationCharacterisiticNames = context.Characteristics
-                .Where(p=>p.Type==CharacteristicType.Education)
+                .Where(p => p.Type == CharacteristicType.Education)
                 .Select(p => p.Name)
                 .ToList();
         }
-        #region Добавляем в списки слагаемые для сложения(для каждой характеристики)
+
+        #region Построение словарей с характеристиками
         private Dictionary<string, double> Characterising(Action<Dictionary<string, List<double>>> partSumsMethod)
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
@@ -167,7 +197,7 @@ namespace OptimalEducation.Logic.Characterizer
                 double result = 0;
                 //По правилу 80/20?
                 if (sectionResult.YearPeriod >= 10) result = 1.00;
-                else if (sectionResult.YearPeriod>5) result = 0.90;
+                else if (sectionResult.YearPeriod > 5) result = 0.90;
                 else if (sectionResult.YearPeriod > 2) result = 0.80;
                 else if (sectionResult.YearPeriod > 1) result = 0.40;
                 else if (sectionResult.YearPeriod > 0.5) result = 0.20;
@@ -248,10 +278,10 @@ namespace OptimalEducation.Logic.Characterizer
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
             var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
-            if(lastParticipationInSchool!=null)
+            if (lastParticipationInSchool != null)
             {
                 //Или еще учитывать кол-во лет обучения?
-                var quality = lastParticipationInSchool.School.EducationQuality/100.0;
+                var quality = lastParticipationInSchool.School.EducationQuality / 100.0;
                 var schoolWeights = lastParticipationInSchool.School.Weights;
                 foreach (var weight in schoolWeights)
                 {
@@ -316,25 +346,6 @@ namespace OptimalEducation.Logic.Characterizer
 
             return totalCharacteristics;
         }
-        public Dictionary<string, double> CalculateSimpleNormSum()
-        {
-            var sum = CalculateSimpleSum();
-            var idealResult = IdealEntrantResult.SimpleResult;
-
-            var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
-            }
-
-            //Нормируем
-            foreach (var item in sum)
-            {
-                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
-            }
-            return totalCharacteristics;
-        }
-
         public Dictionary<string, double> CalculateComplicatedSum()
         {
             //Вычисляем частичные характеристики
@@ -374,26 +385,9 @@ namespace OptimalEducation.Logic.Characterizer
 
             return resultCharacteristics;
         }
-        public Dictionary<string, double> CalculateComplicatedNormSum()
-        {
-            var sum = CalculateComplicatedSum();
-            var idealResult = IdealEntrantResult.ComplicatedResult;
-
-            var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
-            }
-
-            //Нормируем
-            foreach (var item in sum)
-            {
-                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
-            }
-            return totalCharacteristics;
-        } 
         #endregion
     }
+
     /// <summary>
     /// Статичный класс для вычислений 1 раз и получения в дальнейшем идеального результата(для абитуриента).
     /// Используется при нормировании результата.
@@ -410,7 +404,7 @@ namespace OptimalEducation.Logic.Characterizer
                 {
                     var context = new OptimalEducationDbContext();
                     var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantCharacterizer(idealEntrant);
+                    var characterizer = new EntrantSummator(idealEntrant);
                     simpleResult = characterizer.CalculateSimpleSum();
                 }
                 return simpleResult;
@@ -426,7 +420,7 @@ namespace OptimalEducation.Logic.Characterizer
                 {
                     var context = new OptimalEducationDbContext();
                     var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantCharacterizer(idealEntrant);
+                    var characterizer = new EntrantSummator(idealEntrant);
                     complicatedResult = characterizer.CalculateComplicatedSum();
                 }
                 return complicatedResult;

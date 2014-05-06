@@ -35,7 +35,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         #region Переменные для второго критерия - схожести интересов (кластеров)
         List<SecondCriterionUnit> SecondCriterionContainer = new List<SecondCriterionUnit>();
-        Dictionary<string, double> entruntClusters = new Dictionary<string, double>();
+        Dictionary<string, double> entrantCharacteristics = new Dictionary<string, double>();
         double maxEntrantClusterSum = 0;
         int secondCriterionMatrixSize = 0;
 
@@ -336,10 +336,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            var EntrClusterizer = new EntrantCharacterizer(_entrant);
 
-            maxEntrantClusterSum = EntrClusterizer.Result.Values.Max();
-            entruntClusters = EntrClusterizer.Result;
+            entrantCharacteristics = new EntrantCharacterizer(_entrant).CalculateNormSum();
+            maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
@@ -356,7 +355,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 {
 
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
-                    if (!entruntClusters.ContainsKey(item.Key))
+                    if (!entrantCharacteristics.ContainsKey(item.Key))
                     {
                         edLineAcceptable = false;
                     }
@@ -461,12 +460,12 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EdLineClusters)
             {
-                if (!entruntClusters.ContainsKey(item.Key)) continue;
+                if (!entrantCharacteristics.ContainsKey(item.Key)) continue;
 
                 double normalizedEdLineValue;
                 if (EdLineClusters.Values.Max() > 0) normalizedEdLineValue = item.Value / EdLineClusters.Values.Max();
                 else normalizedEdLineValue = 0;
-                double normalizedEntrantValuse = entruntClusters[item.Key] / maxEntrantClusterSum;
+                double normalizedEntrantValuse = entrantCharacteristics[item.Key] / maxEntrantClusterSum;
 
                 difference =+ Math.Abs(normalizedEdLineValue - normalizedEntrantValuse);
 

@@ -40,7 +40,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
 
-            var characterizer = new EntrantCharacterizer(entrant);
+            var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum();
             
             //Отобразить рекомендуемые учебные направления
 
@@ -55,7 +55,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             //По МАИ
             //var AHPAnalyzer=new AHPUser(entrantId,)
             //ViewBag.APHRecomendations = 
-            return View(characterizer.Result);
+            return View(entrantCharacteristics);
 		}
 
 		private async Task<int> GetEntrantId()
