@@ -177,8 +177,9 @@ namespace OptimalEducation.Logic.Characterizer
             }
             foreach (var item in characteristicAddItems)
             {
-                item.Value.Sort();
-                var itemList = item.Value;
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 double b = 1;
                 double sum = 0;
                 for (int i = 0; i < itemList.Count; i++)
