@@ -20,8 +20,8 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         public MulticriterialAnalysis(Entrant entrant, IEnumerable<EducationLine> educationLines)
         {
             //Вычисляем характеристики пользователя
-            var entrantCharacterizer = new EntrantCharacterizer_PartialCharacteristic(entrant);
-            var userCharacterisics = entrantCharacterizer.Characteristics;
+            var entrantCharacterizer = new EntrantCharacterizer(entrant);
+            var userCharacterisics = entrantCharacterizer.Result;
 
             //Вычисляем характеристики учебных направлений
             educationLineRequrements = new List<EducationLineWithCharacterisics>();
@@ -29,8 +29,8 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             {
                 if(item.EducationLinesRequirements.Count>0)
                 {
-                    var educationLineCharacterizer = new EducationLineCharacterizer_PartialCharacteristic(item);
-                    var characteristics = educationLineCharacterizer.Characteristics;
+                    var educationLineCharacterizer = new EducationLineCharacterizer(item);
+                    var characteristics = educationLineCharacterizer.Result;
                     var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
                     {
                         Characterisics = characteristics

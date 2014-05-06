@@ -54,10 +54,8 @@
     <Compile Include="AnalyticHierarchyProcess\AHPUser.cs" />
     <Compile Include="Characterizer\CharacteristicDistance.cs" />
     <Compile Include="Characterizer\DistanceCharacterisiticRecomendator.cs" />
-    <Compile Include="Characterizer\EducationLineCharacterizer_DecreasingCoeff.cs" />
-    <Compile Include="Characterizer\EducationLineCharacterizer_PartialCharacteristic.cs" />
-    <Compile Include="Characterizer\EntrantCharacterizer_DecreasingCoeff.cs" />
-    <Compile Include="Characterizer\EntrantCharacterizer_PartialCharacteristic.cs" />
+    <Compile Include="Characterizer\EducationLineCharacterizer.cs" />
+    <Compile Include="Characterizer\EntrantCharacterizer.cs" />
     <Compile Include="MulticriterialAnalysis\Models\EducationLineAndClustersRow.cs" />
     <Compile Include="MulticriterialAnalysis\Models\PreferenceRelation.cs" />
     <Compile Include="MulticriterialAnalysis\MulticriterialAnalysis.cs" />

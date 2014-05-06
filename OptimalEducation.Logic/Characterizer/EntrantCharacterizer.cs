@@ -13,12 +13,27 @@ namespace OptimalEducation.Logic.Characterizer
     /// Эти значения не суммируются сразу, а складываются в списки, соотносящиеся с данной характеристикой
     /// Позже эти значения сортируются и домножаются на убывающий коэффициент
     /// </summary>
-    public class EntrantCharacterizer_DecreasingCoeff
+    public class EntrantCharacterizer
     {
         Entrant _entrant;
         List<string> educationCharacterisiticNames;
 
-        public EntrantCharacterizer_DecreasingCoeff(Entrant entrant)
+        Dictionary<string, double> result;
+        public Dictionary<string, double> Result
+        {
+            get
+            {
+                if(result==null)
+                {
+                    //Здесь выбираем метод которым формируем результат
+                    result = CalculateSimpleNormSum();
+                    //Result = CalculateComplicatedNormSum();
+                }
+                return result;
+            }
+        }
+
+        public EntrantCharacterizer(Entrant entrant)
         {
             _entrant = entrant;
             InitCharacterisitcs();
@@ -32,7 +47,7 @@ namespace OptimalEducation.Logic.Characterizer
                 .Select(p => p.Name)
                 .ToList();
         }
-        #region Добавляем в списки слагаемые для сложени(для каждой характеристики)
+        #region Добавляем в списки слагаемые для сложения(для каждой характеристики)
         private Dictionary<string, double> Characterising(Action<Dictionary<string, List<double>>> partSumsMethod)
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
@@ -263,6 +278,7 @@ namespace OptimalEducation.Logic.Characterizer
         }
         #endregion
 
+        #region 2 Метода + вспомогаетльные для вычисления результата
         /// <summary>
         /// Вычесленный результат по правилу: простое сложение частичных результатов
         /// (по идее будет плохой результат, если, к примеру, не указаны олимпиады. Возможно такое поведение и нужно.)
@@ -277,14 +293,14 @@ namespace OptimalEducation.Logic.Characterizer
             var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
             //TODO: Остальные методы(хобби, секции и пр)
 
-            //Просто складываем и делим на норм. число
-            //(Или складываем по аналогии с геом. прогрессией и делим на норм число?)
+
             var totalCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)
             {
                 totalCharacteristics.Add(name, 0);
             }
-
+            //Просто складываем и делим на норм. число
+            //(Или складываем по аналогии с геом. прогрессией и делим на норм число?)
             foreach (var item in unatedStateExamCharacteristics)
             {
                 totalCharacteristics[item.Key] += item.Value;
@@ -300,7 +316,7 @@ namespace OptimalEducation.Logic.Characterizer
 
             return totalCharacteristics;
         }
-        public Dictionary<string,double> CalculateSimpleNormSum()
+        public Dictionary<string, double> CalculateSimpleNormSum()
         {
             var sum = CalculateSimpleSum();
             var idealResult = IdealEntrantResult.SimpleResult;
@@ -375,7 +391,8 @@ namespace OptimalEducation.Logic.Characterizer
                 totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
             return totalCharacteristics;
-        }
+        } 
+        #endregion
     }
     /// <summary>
     /// Статичный класс для вычислений 1 раз и получения в дальнейшем идеального результата(для абитуриента).
@@ -393,7 +410,7 @@ namespace OptimalEducation.Logic.Characterizer
                 {
                     var context = new OptimalEducationDbContext();
                     var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantCharacterizer_DecreasingCoeff(idealEntrant);
+                    var characterizer = new EntrantCharacterizer(idealEntrant);
                     simpleResult = characterizer.CalculateSimpleSum();
                 }
                 return simpleResult;
@@ -409,7 +426,7 @@ namespace OptimalEducation.Logic.Characterizer
                 {
                     var context = new OptimalEducationDbContext();
                     var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantCharacterizer_DecreasingCoeff(idealEntrant);
+                    var characterizer = new EntrantCharacterizer(idealEntrant);
                     complicatedResult = characterizer.CalculateComplicatedSum();
                 }
                 return complicatedResult;

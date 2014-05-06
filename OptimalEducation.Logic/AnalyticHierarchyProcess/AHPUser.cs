@@ -336,21 +336,21 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EntrantCharacterizer_PartialCharacteristic EntrClusterizer = new EntrantCharacterizer_PartialCharacteristic(_entrant);
+            var EntrClusterizer = new EntrantCharacterizer(_entrant);
 
-            maxEntrantClusterSum = EntrClusterizer.Characteristics.Values.Max();
-            entruntClusters = EntrClusterizer.Characteristics;
+            maxEntrantClusterSum = EntrClusterizer.Result.Values.Max();
+            entruntClusters = EntrClusterizer.Result;
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
                 bool edLineAcceptable = true;
 
-                EducationLineCharacterizer_PartialCharacteristic EdLineClusterizer = new EducationLineCharacterizer_PartialCharacteristic(EdLine);
-                if (EdLineClusterizer.Characteristics.Count() <= 0) edLineAcceptable = false;
+                var EdLineClusterizer = new EducationLineCharacterizer(EdLine);
+                if (EdLineClusterizer.Result.Count() <= 0) edLineAcceptable = false;
 
 
                 //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
-                foreach (var item in EdLineClusterizer.Characteristics) 
+                foreach (var item in EdLineClusterizer.Result) 
                 {
 
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
@@ -379,7 +379,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
-                    EducationLine.educationLineClusters = EdLineClusterizer.Characteristics;
+                    EducationLine.educationLineClusters = EdLineClusterizer.Result;
                     EducationLine.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 

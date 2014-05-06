@@ -293,10 +293,10 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EducationLineCharacterizer_PartialCharacteristic EdLineClusterizer = new EducationLineCharacterizer_PartialCharacteristic(_educationLine);
+            var EdLineClusterizer = new EducationLineCharacterizer(_educationLine);
 
-            maxEdLineClusterSum = EdLineClusterizer.Characteristics.Values.Max();
-            educationLineClusters = EdLineClusterizer.Characteristics;
+            maxEdLineClusterSum = EdLineClusterizer.Result.Values.Max();
+            educationLineClusters = EdLineClusterizer.Result;
 
             //foreach (var item in EdLineClusterizer.Characterisic)
             //{
@@ -309,8 +309,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool userAcceptable = true;
 
-                EntrantCharacterizer_PartialCharacteristic EntrClusterizer = new EntrantCharacterizer_PartialCharacteristic(entrant);
-                if (EntrClusterizer.Characteristics.Count() <= 0) userAcceptable = false;
+                var EntrClusterizer = new EntrantCharacterizer(entrant);
+                if (EntrClusterizer.Result.Count() <= 0) userAcceptable = false;
 
                 //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());
                 //foreach (var item in EntrClusterizer.Characterisic)
@@ -320,7 +320,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 foreach (var item in educationLineClusters)
                 {
-                    if (!EntrClusterizer.Characteristics.ContainsKey(item.Key))
+                    if (!EntrClusterizer.Result.ContainsKey(item.Key))
                     {
                         userAcceptable = false;
                     }
@@ -347,7 +347,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     Entant.databaseId = Convert.ToInt32(entrant.Id);
                     Entant.secondCriterionAcceptable = true;
                     Entant.matrixId = totalAvailLines;
-                    Entant.entrantClusters = EntrClusterizer.Characteristics;
+                    Entant.entrantClusters = EntrClusterizer.Result;
                     Entant.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
