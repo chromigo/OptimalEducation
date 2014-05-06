@@ -11,7 +11,7 @@ namespace OptimalEducation.DAL.Models
 
         public double Coefficient { get; set; }
 
-        public int ClusterId { get; set; }
+        public int CharacterisicId { get; set; }
 
         public Nullable<int> SchoolId { get; set; }
 
@@ -27,7 +27,7 @@ namespace OptimalEducation.DAL.Models
 
 
 
-        public virtual Cluster Cluster { get; set; }
+        public virtual Characteristic Characterisic { get; set; }
 
         public virtual School School { get; set; }
 

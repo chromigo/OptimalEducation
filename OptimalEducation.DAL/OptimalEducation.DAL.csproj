@@ -52,21 +52,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201403210958366_Init_Entities.cs" />
-    <Compile Include="Migrations\201403210958366_Init_Entities.Designer.cs">
-      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
+    <Compile Include="Migrations\201404191749513_Initialize.cs" />
+    <Compile Include="Migrations\201404191749513_Initialize.Designer.cs">
+      <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403211527472_addLocation_coord.cs" />
-    <Compile Include="Migrations\201403211527472_addLocation_coord.Designer.cs">
-      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
+    <Compile Include="Migrations\201404220719193_ResultCanBeEmpty.cs" />
+    <Compile Include="Migrations\201404220719193_ResultCanBeEmpty.Designer.cs">
+      <DependentUpon>201404220719193_ResultCanBeEmpty.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.cs" />
-    <Compile Include="Migrations\201403211607512_SchoolAndSchoolType.Designer.cs">
-      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
+    <Compile Include="Migrations\201404220724563_SchoolMarkCanBeNull.cs" />
+    <Compile Include="Migrations\201404220724563_SchoolMarkCanBeNull.Designer.cs">
+      <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201403211808489_RemovePreference.cs" />
-    <Compile Include="Migrations\201403211808489_RemovePreference.Designer.cs">
-      <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
+    <Compile Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.cs" />
+    <Compile Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.Designer.cs">
+      <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
@@ -77,7 +77,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Cluster.cs" />
+    <Compile Include="Models\Characteristic.cs" />
     <Compile Include="Models\Olympiad.cs" />
     <Compile Include="Models\EducationLine.cs" />
     <Compile Include="Models\EducationLinesRequirement.cs" />
@@ -95,11 +95,6 @@
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\UnitedStateExam.cs" />
     <Compile Include="Models\Weight.cs" />
-    <Compile Include="OptimalEducationDbContextNew.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OptimalEducationDbContextNew.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,10 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="OptimalEducationDbContextNew.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>OptimalEducationDbContextNew.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -123,17 +114,17 @@
     <Content Include="SQLScripts\dbo.UnitedStateExams.data.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201403210958366_Init_Entities.resx">
-      <DependentUpon>201403210958366_Init_Entities.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404191749513_Initialize.resx">
+      <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211527472_addLocation_coord.resx">
-      <DependentUpon>201403211527472_addLocation_coord.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404220719193_ResultCanBeEmpty.resx">
+      <DependentUpon>201404220719193_ResultCanBeEmpty.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211607512_SchoolAndSchoolType.resx">
-      <DependentUpon>201403211607512_SchoolAndSchoolType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404220724563_SchoolMarkCanBeNull.resx">
+      <DependentUpon>201404220724563_SchoolMarkCanBeNull.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201403211808489_RemovePreference.resx">
-      <DependentUpon>201403211808489_RemovePreference.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.resx">
+      <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

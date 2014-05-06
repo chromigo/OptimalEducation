@@ -7,13 +7,13 @@ namespace OptimalEducation.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class RemovePreference : IMigrationMetadata
+    public sealed partial class AddCharacteristicEnum_Into_Characteristics : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RemovePreference));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddCharacteristicEnum_Into_Characteristics));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403211808489_RemovePreference"; }
+            get { return "201404221055052_AddCharacteristicEnum_Into_Characteristics"; }
         }
         
         string IMigrationMetadata.Source

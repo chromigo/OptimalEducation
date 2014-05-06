@@ -18,7 +18,7 @@ namespace OptimalEducation.DAL.Models
         public int Id { get; set; }
         [Display(Name = "Ўкола")]
         public string Name { get; set; }
-        [Display(AutoGenerateField=false)]
+        [Display(AutoGenerateField=false), Range(0,100)]
         public int EducationQuality { get; set; }
 
         public virtual ICollection<ParticipationInSchool> ParticipationInSchools { get; set; }

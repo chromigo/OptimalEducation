@@ -67,7 +67,7 @@
           <Property Name="HobbieId" Type="Int32" />
           <Property Name="OlympiadId" Type="Int32" />
           <Property Name="ExamDisciplineId" Type="Int32" />
-          <NavigationProperty Name="Cluster" Relationship="Self.Cluster_Weights" FromRole="Cluster_Weights_Target" ToRole="Cluster_Weights_Source" />
+          <NavigationProperty Name="Characterisic" Relationship="Self.Cluster_Weights" FromRole="Cluster_Weights_Target" ToRole="Cluster_Weights_Source" />
           <NavigationProperty Name="ExamDiscipline" Relationship="Self.ExamDiscipline_Weights" FromRole="ExamDiscipline_Weights_Target" ToRole="ExamDiscipline_Weights_Source" />
           <NavigationProperty Name="Hobbie" Relationship="Self.Weight_Hobbie" FromRole="Weight_Hobbie_Source" ToRole="Weight_Hobbie_Target" />
           <NavigationProperty Name="Olympiad" Relationship="Self.Olympiad_Weights" FromRole="Olympiad_Weights_Target" ToRole="Olympiad_Weights_Source" />
@@ -75,7 +75,7 @@
           <NavigationProperty Name="SchoolType" Relationship="Self.SchoolType_Weights" FromRole="SchoolType_Weights_Target" ToRole="SchoolType_Weights_Source" />
           <NavigationProperty Name="Section" Relationship="Self.Section_Weights" FromRole="Section_Weights_Target" ToRole="Section_Weights_Source" />
         </EntityType>
-        <EntityType Name="Cluster">
+        <EntityType Name="Characterisic">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -307,7 +307,7 @@
           <End Role="Hobbie_Entrants_Target" Type="Self.Entrant" Multiplicity="*" />
         </Association>
         <Association Name="Cluster_Weights">
-          <End Role="Cluster_Weights_Source" Type="Self.Cluster" Multiplicity="1">
+          <End Role="Cluster_Weights_Source" Type="Self.Characterisic" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Cluster_Weights_Target" Type="Self.Weight" Multiplicity="*" />
@@ -672,7 +672,7 @@
           <EntitySet Name="Entrants" EntityType="Self.Entrant" />
           <EntitySet Name="Hobbies" EntityType="Self.Hobbie" />
           <EntitySet Name="Weights" EntityType="Self.Weight" />
-          <EntitySet Name="Clusters" EntityType="Self.Cluster" />
+          <EntitySet Name="Clusters" EntityType="Self.Characterisic" />
           <EntitySet Name="Disciplines" EntityType="Self.ExamDiscipline" />
           <EntitySet Name="EducationLineRequirements" EntityType="Self.EducationLineRequirement" />
           <EntitySet Name="EducationLines" EntityType="Self.EducationLine" />
@@ -923,8 +923,8 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Clusters">
-            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Cluster">
-              <MappingFragment StoreEntitySet="Cluster">
+            <EntityTypeMapping TypeName="OptimalEducation.DAL.Models.Characterisic">
+              <MappingFragment StoreEntitySet="Characterisic">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
@@ -1224,7 +1224,7 @@
           <Property Name="OlympiadId" Type="int" Nullable="true" />
           <Property Name="ExamDisciplineId" Type="int" Nullable="true" />
         </EntityType>
-        <EntityType Name="Cluster">
+        <EntityType Name="Characterisic">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1485,12 +1485,12 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="Cluster_Weights">
-          <End Role="Cluster" Type="Self.Cluster" Multiplicity="1">
+          <End Role="Characterisic" Type="Self.Characterisic" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="Weight" Type="Self.Weight" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Cluster">
+            <Principal Role="Characterisic">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Weight">
@@ -1890,7 +1890,7 @@
           <EntitySet Name="Entrant" EntityType="Self.Entrant" Schema="dbo" Table="Entrants" />
           <EntitySet Name="Hobbie" EntityType="Self.Hobbie" Schema="dbo" Table="Hobbies" />
           <EntitySet Name="Weight" EntityType="Self.Weight" Schema="dbo" Table="Weights" />
-          <EntitySet Name="Cluster" EntityType="Self.Cluster" Schema="dbo" Table="Clusters" />
+          <EntitySet Name="Characterisic" EntityType="Self.Characterisic" Schema="dbo" Table="Clusters" />
           <EntitySet Name="ExamDiscipline" EntityType="Self.ExamDiscipline" Schema="dbo" Table="ExamDisciplines" />
           <EntitySet Name="EducationLineRequirement" EntityType="Self.EducationLineRequirement" Schema="dbo" Table="EducationLineRequirements" />
           <EntitySet Name="EducationLine" EntityType="Self.EducationLine" Schema="dbo" Table="EducationLines" />
@@ -1930,7 +1930,7 @@
             <End Role="HobbieEntrant" EntitySet="HobbieEntrant" />
           </AssociationSet>
           <AssociationSet Name="Cluster_Weights" Association="Self.Cluster_Weights">
-            <End Role="Cluster" EntitySet="Cluster" />
+            <End Role="Characterisic" EntitySet="Characterisic" />
             <End Role="Weight" EntitySet="Weight" />
           </AssociationSet>
           <AssociationSet Name="EducationLine_EducationLinesRequirements" Association="Self.EducationLine_EducationLinesRequirements">
@@ -2073,7 +2073,7 @@
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Entrant" Width="2.125" PointX="12.75" PointY="1.625" IsExpanded="false" FillColor="255, 128, 128" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Hobbie" Width="1.5" PointX="12.375" PointY="3.25" IsExpanded="false" FillColor="PeachPuff" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Weight" Width="1.5" PointX="13.125" PointY="5.375" IsExpanded="false" FillColor="128, 64, 64" />
-        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Cluster" Width="1.5" PointX="13.125" PointY="6.25" IsExpanded="false" FillColor="Indigo" />
+        <EntityTypeShape EntityType="OptimalEducation.DAL.Models.Characterisic" Width="1.5" PointX="13.125" PointY="6.25" IsExpanded="false" FillColor="Indigo" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.ExamDiscipline" Width="1.5" PointX="20.625" PointY="4.125" IsExpanded="false" FillColor="DarkSeaGreen" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLineRequirement" Width="2.125" PointX="21.875" PointY="3.25" IsExpanded="false" FillColor="SandyBrown" />
         <EntityTypeShape EntityType="OptimalEducation.DAL.Models.EducationLine" Width="1.5" PointX="21.875" PointY="2.5" IsExpanded="false" FillColor="IndianRed" />

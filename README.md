@@ -1,3 +1,4 @@
+п»ї[![Stories in Ready](https://badge.waffle.io/chromigo/optimaleducation.png?label=ready&title=Ready)](https://waffle.io/chromigo/optimaleducation)
 OptimalEducation
 ================
 
@@ -9,20 +10,8 @@ Open PAckgae Manager Console and enter following command:
 Update-Database -ProjectName:OptimalEducation
 Update-Database -ProjectName:OptimalEducation.DAL
 
-Что сделано:
-1. Аутентификация/Авторизация для 3-х групп: Администратор, Абитуриент, Представитель факультета.
-Регистрироваться можно только абитуриентам.
-2. Возможность заполнять информацию о себе абитуриенту(егэ, школьные оценки, олимпиады, хобби, секции, школы)
-3. Возможность заполнять информацию об учебных направлениях и связанных с ними требованиями.
-4. Базовые методы по созданию кластеров для учебных направлений и абитуриентов + тесты
-5. Миграции для БД c заполнением основной информации
-
 ps
-Пароли и логины для тестовых пользоватлей: (можно смотреть в Seed методе)
+Logins and Passwords:
 administrator administrator
 entrant entrant
 faculty faculty
-
-pss
-Под вопросом правильность проверок на безопасность операций CRUD(может ли другой пользователь заполнить данные за другого, через хитрый запрос)
-Так же не обрабатываются все exception-ы, связанные с неправильными действиями пользователя

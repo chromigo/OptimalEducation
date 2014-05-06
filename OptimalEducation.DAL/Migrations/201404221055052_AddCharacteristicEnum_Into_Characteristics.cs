@@ -2,18 +2,17 @@ namespace OptimalEducation.DAL.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    using System.Data.Entity.Spatial;
     
-    public partial class addLocation_coord : DbMigration
+    public partial class AddCharacteristicEnum_Into_Characteristics : DbMigration
     {
         public override void Up()
         {
-            AddColumn("dbo.Cities", "Location", c => c.Geography());
+            AddColumn("dbo.Characteristics", "Type", c => c.Int(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Cities", "Location");
+            DropColumn("dbo.Characteristics", "Type");
         }
     }
 }

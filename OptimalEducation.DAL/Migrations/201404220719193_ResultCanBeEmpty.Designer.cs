@@ -7,13 +7,13 @@ namespace OptimalEducation.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class addLocation_coord : IMigrationMetadata
+    public sealed partial class ResultCanBeEmpty : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addLocation_coord));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ResultCanBeEmpty));
         
         string IMigrationMetadata.Id
         {
-            get { return "201403211527472_addLocation_coord"; }
+            get { return "201404220719193_ResultCanBeEmpty"; }
         }
         
         string IMigrationMetadata.Source

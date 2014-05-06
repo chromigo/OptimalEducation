@@ -98,6 +98,67 @@
         </dd>
 
     </dl>
+
+    <hr />
+    <h4>Вычисленная ориентация по предметам</h4>
+    <hr />
+
+    <div>
+        <dl class="dl-horizontal">
+            @foreach (var characterisicRes in (ViewBag.CluserResults as Dictionary<string,double>))
+            {
+                <dt>
+                    @Html.DisplayFor(model => characterisicRes.Key)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => characterisicRes.Value)
+                </dd>
+            }
+        </dl>
+    </div>
+
+    <hr />
+    <h4>Рекомендация по выбору учеников</h4>
+    <hr />
+
+    <table class="table">
+        @{
+            var recomendationForEducationLine = (ViewBag.RecomendationForEducationLine as Dictionary<OptimalEducation.DAL.Models.Entrant, double>);
+        }
+        <tr>
+            <th>
+                Близость
+            <th>
+                ФИО
+            </th>
+            <th>
+                Средная оценка
+            </th>
+            <th>
+                Город (откуда)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var recomendation in recomendationForEducationLine)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.FirstName) @Html.DisplayFor(model => recomendation.Key.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.AverageMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.Citizenship)
+                </td>
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

@@ -52,8 +52,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ClusterizerUnitTest.cs" />
+    <Compile Include="CharacteristicDistanceTest.cs" />
+    <Compile Include="CharacterizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MulticriterialAnalysisTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
