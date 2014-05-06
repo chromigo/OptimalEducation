@@ -91,8 +91,9 @@ namespace OptimalEducation.Logic.Characterizer
             //Логика суммирования
             foreach (var item in characteristicAddItems)
             {
-                item.Value.Sort();
-                var itemList = item.Value;
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 //Используем идею геометрической прогрессии
                 //Наибольший вклад вносит первое(наибольшее) значение. 
                 //чем больше результатов, тем меньше их вклад

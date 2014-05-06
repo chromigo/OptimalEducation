@@ -40,7 +40,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
 
-            var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum(true);
+            var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum();
             
             //Отобразить рекомендуемые учебные направления
 

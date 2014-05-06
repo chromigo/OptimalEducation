@@ -94,8 +94,9 @@ namespace OptimalEducation.Logic.Characterizer
             //Логика суммирования
             foreach (var item in characteristicAddItems)
             {
-                item.Value.Sort();
-                var itemList = item.Value;
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 //Используем идею геометрической прогрессии
                 //Наибольший вклад вносит первое(наибольшее) значение. 
                 //чем больше результатов, тем меньше их вклад
@@ -218,7 +219,9 @@ namespace OptimalEducation.Logic.Characterizer
             //TODO: Логика суммирования
             foreach (var item in sectionCharactericAddItems)
             {
-                item.Value.Sort();
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 //Складываем
                 double sum = 0;
                 //TODO: сложить по правилу
@@ -256,7 +259,9 @@ namespace OptimalEducation.Logic.Characterizer
             //TODO: Логика суммирования
             foreach (var item in hobbieCharactericAddItems)
             {
-                item.Value.Sort();
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 //Складываем
                 double sum = 0;
                 //TODO: сложить по правилу
@@ -298,7 +303,9 @@ namespace OptimalEducation.Logic.Characterizer
             //TODO: Логика суммирования
             foreach (var item in schoolTypeCharactericAddItems)
             {
-                item.Value.Sort();
+                var itemList = (from elem in item.Value
+                                orderby elem descending
+                                select elem).ToList();
                 //Складываем
                 double sum = 0;
                 //TODO: сложить по правилу
