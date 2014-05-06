@@ -35,7 +35,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         #region Переменные для второго критерия - схожести интересов (кластеров)
         List<SecondCriterionUnit> SecondCriterionContainer = new List<SecondCriterionUnit>();
-        Dictionary<string, double> entruntClusters = new Dictionary<string, double>();
+        Dictionary<string, double> entrantCharacteristics = new Dictionary<string, double>();
         double maxEntrantClusterSum = 0;
         int secondCriterionMatrixSize = 0;
 
@@ -336,25 +336,26 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            EntrantCharacterizer_PartialCharacteristic EntrClusterizer = new EntrantCharacterizer_PartialCharacteristic(_entrant);
 
-            maxEntrantClusterSum = EntrClusterizer.Characteristics.Values.Max();
-            entruntClusters = EntrClusterizer.Characteristics;
+            entrantCharacteristics = new EntrantCharacterizer(_entrant).CalculateNormSum();
+            maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
                 bool edLineAcceptable = true;
 
-                EducationLineCharacterizer_PartialCharacteristic EdLineClusterizer = new EducationLineCharacterizer_PartialCharacteristic(EdLine);
-                if (EdLineClusterizer.Characteristics.Count() <= 0) edLineAcceptable = false;
+                var edLineClusterizer = new EducationLineCharacterizer(EdLine);
+                var edLineResult = edLineClusterizer.CalculateNormSum();
+
+                if (edLineResult.Count() <= 0) edLineAcceptable = false;
 
 
                 //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
-                foreach (var item in EdLineClusterizer.Characteristics) 
+                foreach (var item in edLineResult) 
                 {
 
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
-                    if (!entruntClusters.ContainsKey(item.Key))
+                    if (!entrantCharacteristics.ContainsKey(item.Key))
                     {
                         edLineAcceptable = false;
                     }
@@ -379,7 +380,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
-                    EducationLine.educationLineClusters = EdLineClusterizer.Characteristics;
+                    EducationLine.educationLineClusters = edLineResult;
                     EducationLine.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
@@ -459,12 +460,12 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EdLineClusters)
             {
-                if (!entruntClusters.ContainsKey(item.Key)) continue;
+                if (!entrantCharacteristics.ContainsKey(item.Key)) continue;
 
                 double normalizedEdLineValue;
                 if (EdLineClusters.Values.Max() > 0) normalizedEdLineValue = item.Value / EdLineClusters.Values.Max();
                 else normalizedEdLineValue = 0;
-                double normalizedEntrantValuse = entruntClusters[item.Key] / maxEntrantClusterSum;
+                double normalizedEntrantValuse = entrantCharacteristics[item.Key] / maxEntrantClusterSum;
 
                 difference =+ Math.Abs(normalizedEdLineValue - normalizedEntrantValuse);
 

@@ -26,6 +26,7 @@ namespace OptimalEducation.DAL.Migrations
 
             //Идеальный ученик(все на максимум, нужен для нормирования результатов)
             CreateIdealEntrant();
+            CreateIdealEducationLine();
         }
 
         private void CreateCommonEntrant()
@@ -111,6 +112,97 @@ namespace OptimalEducation.DAL.Migrations
                         });
                 }
                 db.Entrants.Add(entrant);
+                db.SaveChanges();
+            }
+        }
+        private void CreateIdealEducationLine()
+        {
+            if (db.EducationLines.SingleOrDefault(p => p.Name == "IDEAL") == null)
+            {
+                var idealEducationLine = new EducationLine
+                {
+                    Name = "IDEAL",
+                    Actual = true,
+                    RequiredSum = 300,
+                    Code = "666666666",
+                    FacultyId = db.Faculties.First().Id,
+                    GeneralEducationLineId = db.GeneralEducationLines.Single(p => p.Code == "1").Id,
+                    EducationLinesRequirements = new List<EducationLineRequirement>
+                    {
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                        },
+
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Физика").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Химия").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Биология").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="География").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Обществознание").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="История").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Литература").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Английский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Немецкий язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Французский язык").Id
+                        },
+                        new EducationLineRequirement 
+                        {
+                            Requirement=100, 
+                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Испанский язык").Id
+                        },
+                    }
+                };
+                db.EducationLines.Add(idealEducationLine);
                 db.SaveChanges();
             }
         }
