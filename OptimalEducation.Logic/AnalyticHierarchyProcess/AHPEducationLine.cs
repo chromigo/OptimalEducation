@@ -293,10 +293,10 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            var EdLineClusterizer = new EducationLineCharacterizer(_educationLine);
+            var edLineClusterizer = new EducationLineCharacterizer(_educationLine);
 
-            maxEdLineClusterSum = EdLineClusterizer.Result.Values.Max();
-            educationLineClusters = EdLineClusterizer.Result;
+            educationLineClusters = edLineClusterizer.CalculateNormSum(false);
+            maxEdLineClusterSum = educationLineClusters.Values.Max();
 
             //foreach (var item in EdLineClusterizer.Characterisic)
             //{

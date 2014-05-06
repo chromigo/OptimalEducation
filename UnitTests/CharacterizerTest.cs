@@ -307,10 +307,11 @@ namespace UnitTests
             };
 
             var characterisicsizer = new EducationLineCharacterizer(educationLine);
+            var result = characterisicsizer.CalculateNormSum(false);
 
-            var rus = characterisicsizer.Result["Русский язык"];
-            var math = characterisicsizer.Result["Математика"];
-            var inf = characterisicsizer.Result["Информатика"];
+            var rus = result["Русский язык"];
+            var math = result["Математика"];
+            var inf = result["Информатика"];
 
             //для данных значений (50,60,70 для егэ и школьн оценок должно получаться след. значение)
             Assert.AreEqual(rus, 0.60);

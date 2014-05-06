@@ -345,12 +345,14 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool edLineAcceptable = true;
 
-                var EdLineClusterizer = new EducationLineCharacterizer(EdLine);
-                if (EdLineClusterizer.Result.Count() <= 0) edLineAcceptable = false;
+                var edLineClusterizer = new EducationLineCharacterizer(EdLine);
+                var edLineResult = edLineClusterizer.CalculateNormSum();
+
+                if (edLineResult.Count() <= 0) edLineAcceptable = false;
 
 
                 //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
-                foreach (var item in EdLineClusterizer.Result) 
+                foreach (var item in edLineResult) 
                 {
 
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
@@ -379,7 +381,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
-                    EducationLine.educationLineClusters = EdLineClusterizer.Result;
+                    EducationLine.educationLineClusters = edLineResult;
                     EducationLine.localPriority = 0;
                     //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
