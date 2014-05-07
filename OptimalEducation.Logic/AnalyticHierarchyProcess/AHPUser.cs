@@ -337,7 +337,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            entrantCharacteristics = new EntrantCharacterizer(_entrant).CalculateNormSum();
+            entrantCharacteristics = new EntrantCharacterizer(_entrant,new EntrantCalculationOptions()).CalculateNormSum();
             maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
             foreach (EducationLine EdLine in context.EducationLines)

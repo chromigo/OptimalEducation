@@ -309,7 +309,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool userAcceptable = true;
 
-                var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum();
+                var entrantCharacteristics = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
                 if (entrantCharacteristics.Count() <= 0) userAcceptable = false;
 
                 //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());

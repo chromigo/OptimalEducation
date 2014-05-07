@@ -20,7 +20,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         public MulticriterialAnalysis(Entrant entrant, IEnumerable<EducationLine> educationLines)
         {
             //Вычисляем характеристики пользователя
-            var userCharacterisics = new EntrantCharacterizer(entrant).CalculateNormSum();
+            var userCharacterisics = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
 
             //Вычисляем характеристики учебных направлений
             educationLineRequrements = new List<EducationLineWithCharacterisics>();
