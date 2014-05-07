@@ -28,7 +28,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             {
                 if(item.EducationLinesRequirements.Count>0)
                 {
-                    var educationLineCharacterizer = new EducationLineCharacterizer(item);
+                    var educationLineCharacterizer = new EducationLineCharacterizer(item, new EducationLineCalculationOptions());
                     var characteristics = educationLineCharacterizer.CalculateNormSum(false);
                     var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
                     {

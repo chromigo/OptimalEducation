@@ -55,7 +55,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return HttpNotFound();
 			}
-            var educationLineCharacterizer = new EducationLineCharacterizer(educationline);
+            var educationLineCharacterizer = new EducationLineCharacterizer(educationline,new EducationLineCalculationOptions());
             ViewBag.CluserResults = educationLineCharacterizer.CalculateNormSum(false);
 			//Отобразить рекомендуемый список абитуриентов
 			

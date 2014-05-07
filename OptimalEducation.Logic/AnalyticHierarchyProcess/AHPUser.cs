@@ -344,7 +344,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool edLineAcceptable = true;
 
-                var edLineClusterizer = new EducationLineCharacterizer(EdLine);
+                var edLineClusterizer = new EducationLineCharacterizer(EdLine, new EducationLineCalculationOptions());
                 var edLineResult = edLineClusterizer.CalculateNormSum();
 
                 if (edLineResult.Count() <= 0) edLineAcceptable = false;

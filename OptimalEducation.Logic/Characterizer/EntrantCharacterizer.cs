@@ -347,13 +347,8 @@ namespace OptimalEducation.Logic.Characterizer
             Dictionary<string, double> sectionCharacteristics;
             Dictionary<string, double> hobbieCharacteristics;
             Dictionary<string, double> schoolTypeCharacteristics;
-                    //            {
-                    //    unatedStateExamCharacteristics[name],
-                    //    schoolMarkCharacteristics[name],
-                    //    olympiadCharacteristics[name]
-                    //}
             //Вычисляем частичные характеристики
-            //в результатер работы каждой функции получается новая таблица характеристик
+            //в результатер работы каждой функции получается новая таблица характеристик, которую мы добавляем в общий список
             if (_options.IsCalculateUnateStateExam)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
@@ -403,7 +398,7 @@ namespace OptimalEducation.Logic.Characterizer
     }
 
     /// <summary>
-    /// Класс для вычислений идеального результата(для абитуриента).
+    /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
     public class IdealEntrantResult
@@ -450,7 +445,8 @@ namespace OptimalEducation.Logic.Characterizer
     }
 
     /// <summary>
-    /// Настройки вычисляемых параметров(что вычислять). Стандартный конструкор без параметров - вычислять все.
+    /// Насктройки, в которых указывается, какие данные пользователя учитывать.
+    /// Стандартный конструкор без параметров - вычислять все.
     /// </summary>
     public class EntrantCalculationOptions
     {
