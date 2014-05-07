@@ -186,73 +186,72 @@ namespace OptimalEducation.Logic.Characterizer
             }
         }
 
-        private void CreateSectionPartSums()
+        private void CreateSectionPartSums(Dictionary<string, List<double>> sectionCharacteristicAddItems)
         {
+            foreach (var sectionResult in _entrant.ParticipationInSections)
+            {
+                double result = 0;
+                //По правилу 80/20?
+                if (sectionResult.YearPeriod >= 10) result = 1.00;
+                else if (sectionResult.YearPeriod > 5) result = 0.90;
+                else if (sectionResult.YearPeriod > 2) result = 0.80;
+                else if (sectionResult.YearPeriod > 1) result = 0.40;
+                else if (sectionResult.YearPeriod > 0.5) result = 0.20;
 
-            //foreach (var sectionResult in _entrant.ParticipationInSections)
-            //{
-            //    double result = 0;
-            //    //По правилу 80/20?
-            //    if (sectionResult.YearPeriod >= 10) result = 1.00;
-            //    else if (sectionResult.YearPeriod > 5) result = 0.90;
-            //    else if (sectionResult.YearPeriod > 2) result = 0.80;
-            //    else if (sectionResult.YearPeriod > 1) result = 0.40;
-            //    else if (sectionResult.YearPeriod > 0.5) result = 0.20;
+                var section = sectionResult.Section;
+                foreach (var weight in section.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var characteristicName = weight.Characterisic.Name;
 
-            //    var section = sectionResult.Section;
-            //    foreach (var weight in section.Weights)
-            //    {
-            //        var coeff = weight.Coefficient;
-            //        var characteristicName = weight.Characterisic.Name;
+                    //TODO: Реализовать особую логику учета данных?
+                    double characteristicResult = result * coeff;
 
-            //        //TODO: Реализовать особую логику учета данных?
-            //        double characteristicResult = result * coeff;
-
-            //        sectionCharactericAddItems[characteristicName].Add(characteristicResult);
-            //    }
-            //}
+                    sectionCharacteristicAddItems[characteristicName].Add(characteristicResult);
+                }
+            }
         }
 
-        private void CreateHobbiePartSums()
+        private void CreateHobbiePartSums(Dictionary<string, List<double>> hobbieCharacteristicAddItems)
         {
-            //foreach (var hobbieResult in _entrant.Hobbies)
-            //{
-            //    foreach (var weight in hobbieResult.Weights)
-            //    {
-            //        var coeff = weight.Coefficient;
-            //        var characteristicName = weight.Characterisic.Name;
+            foreach (var hobbieResult in _entrant.Hobbies)
+            {
+                foreach (var weight in hobbieResult.Weights)
+                {
+                    var coeff = weight.Coefficient;
+                    var characteristicName = weight.Characterisic.Name;
 
-            //        //TODO: Реализовать особую логику учета данных?
-            //        //пока просто учитывается наличие хобби как факт
-            //        double someValue = 1;
-            //        double characteristicResult = someValue * coeff;
+                    //TODO: Реализовать особую логику учета данных?
+                    //пока просто учитывается наличие хобби как факт
+                    double someValue = 1;
+                    double characteristicResult = someValue * coeff;
 
-            //        hobbieCharactericAddItems[characteristicName].Add(characteristicResult);
-            //    }
-            //}
+                    hobbieCharacteristicAddItems[characteristicName].Add(characteristicResult);
+                }
+            }
         }
 
-        private void CreateSchoolTypePartSums()
+        private void CreateSchoolTypePartSums(Dictionary<string, List<double>> schoolTypeCharacteristicAddItems)
         {
-            ////для простоты будем брать последнюю школу, где абитуриент учился
-            ////(возможно стоит рассмотреть более сложный вариант в будущем)
-            //var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
-            //if (lastParticipationInSchool != null)
-            //{
-            //    //Или еще учитывать кол-во лет обучения?
-            //    var quality = lastParticipationInSchool.School.EducationQuality / 100.0;
-            //    var schoolWeights = lastParticipationInSchool.School.Weights;
-            //    foreach (var weight in schoolWeights)
-            //    {
-            //        var coeff = weight.Coefficient;
-            //        var characteristicName = weight.Characterisic.Name;
+            //для простоты будем брать последнюю школу, где абитуриент учился
+            //(возможно стоит рассмотреть более сложный вариант в будущем)
+            var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
+            if (lastParticipationInSchool != null)
+            {
+                //Или еще учитывать кол-во лет обучения?
+                var quality = lastParticipationInSchool.School.EducationQuality / 100.0;
+                var schoolWeights = lastParticipationInSchool.School.Weights;
+                foreach (var weight in schoolWeights)
+                {
+                    var coeff = weight.Coefficient;
+                    var characteristicName = weight.Characterisic.Name;
 
-            //        //TODO: Реализовать особую логику учета данных?
-            //        double characteristicResult = quality * coeff;
+                    //TODO: Реализовать особую логику учета данных?
+                    double characteristicResult = quality * coeff;
 
-            //        schoolTypeCharactericAddItems[characteristicName].Add(characteristicResult);
-            //    }
-            //}
+                    schoolTypeCharacteristicAddItems[characteristicName].Add(characteristicResult);
+                }
+            }
         }
         #endregion
 
@@ -303,7 +302,6 @@ namespace OptimalEducation.Logic.Characterizer
                     totalCharacteristics[item.Key] += item.Value;
                 }
             }
-            //TODO: Остальные методы(хобби, секции и пр)
             //if (_options.IsCalculateSection)
             //{
             //    sectionCharacteristics = Characterising(CreateOlympiadPartSums);
@@ -373,7 +371,30 @@ namespace OptimalEducation.Logic.Characterizer
                     characteristicAddItems[name].Add(olympiadCharacteristics[name]);
                 }
             }
-            //TODO: Остальные методы(хобби, секции и пр)
+            //if (_options.IsCalculateSection)
+            //{
+            //    sectionCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(sectionCharacteristics[name]);
+            //    }
+            //}
+            //if (_options.IsCalculateHobbie)
+            //{
+            //    hobbieCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(hobbieCharacteristics[name]);
+            //    }
+            //}
+            //if (_options.IsCalculateSchoolType)
+            //{
+            //    schoolTypeCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(schoolTypeCharacteristics[name]);
+            //    }
+            //}
 
             //Cкладываем по аналогии с геом. прогрессией и делим на норм число
             foreach (var item in characteristicAddItems)
