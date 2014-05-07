@@ -293,7 +293,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         private void InitialiseSecondCriterion()
         {
             int totalAvailLines = 0;
-            var edLineClusterizer = new EducationLineCharacterizer(_educationLine);
+            var edLineClusterizer = new EducationLineCharacterizer(_educationLine, new EducationLineCalculationOptions());
 
             educationLineClusters = edLineClusterizer.CalculateNormSum(false);
             maxEdLineClusterSum = educationLineClusters.Values.Max();
@@ -309,7 +309,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 bool userAcceptable = true;
 
-                var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum();
+                var entrantCharacteristics = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
                 if (entrantCharacteristics.Count() <= 0) userAcceptable = false;
 
                 //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());

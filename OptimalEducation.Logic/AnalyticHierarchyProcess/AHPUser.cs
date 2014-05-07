@@ -337,14 +337,14 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            entrantCharacteristics = new EntrantCharacterizer(_entrant).CalculateNormSum();
+            entrantCharacteristics = new EntrantCharacterizer(_entrant,new EntrantCalculationOptions()).CalculateNormSum();
             maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
             foreach (EducationLine EdLine in context.EducationLines)
             {
                 bool edLineAcceptable = true;
 
-                var edLineClusterizer = new EducationLineCharacterizer(EdLine);
+                var edLineClusterizer = new EducationLineCharacterizer(EdLine, new EducationLineCalculationOptions());
                 var edLineResult = edLineClusterizer.CalculateNormSum();
 
                 if (edLineResult.Count() <= 0) edLineAcceptable = false;

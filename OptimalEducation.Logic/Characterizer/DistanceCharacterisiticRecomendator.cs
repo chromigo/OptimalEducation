@@ -18,11 +18,11 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-            var entratnCharacteristic = new EntrantCharacterizer(entrant).CalculateNormSum();
+            var entratnCharacteristic = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
-                var educationLineCharacterisic = new EducationLineCharacterizer(edLine).CalculateNormSum(false);
+                var educationLineCharacterisic = new EducationLineCharacterizer(edLine,new EducationLineCalculationOptions()).CalculateNormSum(false);
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
 				if(compareResult.HasValue)
@@ -41,11 +41,11 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<Entrant, double> GetRecomendationForEducationLine(EducationLine educationLine, List<Entrant> entrants)
 		{
 			//Вычисляем кластеры для направления и абитуриентов
-            var educationLineCharacterisic = new EducationLineCharacterizer(educationLine).CalculateNormSum(false);
+            var educationLineCharacterisic = new EducationLineCharacterizer(educationLine, new EducationLineCalculationOptions()).CalculateNormSum(false);
 			var results = new Dictionary<Entrant, double>();
 			foreach (var entrant in entrants)
 			{
-                var entratnCharacterisic = new EntrantCharacterizer(entrant).CalculateNormSum();
+                var entratnCharacterisic = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacterisic, educationLineCharacterisic);
 				if (compareResult.HasValue)
