@@ -113,19 +113,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
 
 
-            if (_settings.firstCriterionPriority > 0)
+            if (_settings.FirstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
                 CalculateFirstCriterion();
             }
-            if (_settings.secondCriterionPriority > 0)
+            if (_settings.SecondCriterionPriority > 0)
             {
                 InitialiseSecondCriterion();
                 CalculateSecondCriterion();
             }
 
-            if (_educationLine.Faculty.HigherEducationInstitution.City == null) _settings.thirdCriterionPriority = 0;
-            if (_settings.thirdCriterionPriority > 0)
+
+            if (_settings.ThirdCriterionPriority > 0)
             {
                 InitialiseThirdCriterion();
                 CalculateThirdCriterion();
@@ -527,7 +527,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
-                    FirstCriterionContainer[i].localPriority * _settings.firstCriterionPriority;
+                    FirstCriterionContainer[i].localPriority * _settings.FirstCriterionPriority;
             }
             //Потом тоже самое для 2 критерия
             for (int i = 0; i < SecondCriterionContainer.Count; i++)
@@ -544,7 +544,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
-                    SecondCriterionContainer[i].localPriority * _settings.secondCriterionPriority;
+                    SecondCriterionContainer[i].localPriority * _settings.SecondCriterionPriority;
             }
             //Потом тоже самое для 3 критерия
             for (int i = 0; i < ThirdCriterionContainer.Count; i++)
@@ -561,7 +561,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
-                    ThirdCriterionContainer[i].localPriority * _settings.thirdCriterionPriority;
+                    ThirdCriterionContainer[i].localPriority * _settings.ThirdCriterionPriority;
             }
 
 
@@ -582,8 +582,41 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     }
     public class AHPEdLineSettings
     {
+        #region Fields
+        OptimalEducationDbContext context = new OptimalEducationDbContext();
+
         public double firstCriterionPriority = 0.4;
         public double secondCriterionPriority = 0.35;
         public double thirdCriterionPriority = 0.25;
+
+        #endregion
+        
+
+        #region Properties
+        public double FirstCriterionPriority
+        {
+            get { return firstCriterionPriority; }
+        }
+        public double SecondCriterionPriority
+        {
+            get { return secondCriterionPriority; }
+        }
+        public double ThirdCriterionPriority
+        {
+            get { return thirdCriterionPriority; }
+        }
+        #endregion
+
+
+        public AHPEdLineSettings()
+        {
+        }
+
+        public AHPEdLineSettings(double firstPriority, double secondPriority, double thirdPriority)
+        {
+            firstCriterionPriority = firstPriority;
+            secondCriterionPriority = secondPriority;
+            thirdCriterionPriority = thirdPriority;
+        }
     }
 }

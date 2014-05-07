@@ -835,5 +835,34 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 else fourthCriterionPriority = 0;
             }
         }
+
+        public AHPUserSettings(double firstPriority, double secondPriority, double thirdPriority, double fourthPriority,
+                            int lazyGap, bool exactLocation, int cityId)
+        {
+            firstCriterionPriority = firstPriority;
+            secondCriterionPriority = secondPriority;
+            thirdCriterionPriority = thirdPriority;
+            fourthCriterionPriority = fourthPriority;
+
+            firstCriterionLazyGap = lazyGap;
+            fourthCriterionExactLocation = exactLocation;
+            fourthCriterionCityID = cityId;
+
+
+            if (fourthCriterionPriority > 0)
+            {
+                if (fourthCriterionCityID != 0)
+                {
+                    //Лучше без контекста(убрать вообще проверку, принять что у всех городов есть координаты)
+                    if (context.Cities.Find(fourthCriterionCityID).Location == null)
+                    {
+                        fourthCriterionExactLocation = true;
+                    }
+                }
+                else fourthCriterionPriority = 0;
+            }
+        }
+
+
     }
 }
