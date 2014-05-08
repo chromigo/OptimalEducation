@@ -46,7 +46,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
             //По методу сравнения расстояний мд характеристиками
             var educationLines = await db.EducationLines
-                .Where(p => p.Actual == true)
+                .Where(p => p.Actual == true && p.Name!="IDEAL")
                 .ToListAsync();
             ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
             //По методу многокритериального анализа

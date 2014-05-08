@@ -49,7 +49,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			//Отобразить характеристики текущего направления
 			var facultyId = await GetFacultyId();
 			var educationline = await db.EducationLines
-				.Where(p => p.FacultyId == facultyId)
+                .Where(p => p.FacultyId == facultyId)
 				.FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
 			{
@@ -59,7 +59,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
             ViewBag.CluserResults = educationLineCharacterizer.CalculateNormSum(false);
 			//Отобразить рекомендуемый список абитуриентов
 			
-			var entrants = await db.Entrants
+			var entrants = await db.Entrants.Where(p=>p.FirstName != "IDEAL")
 				.ToListAsync();
 			ViewBag.RecomendationForEducationLine= DistanceCharacterisiticRecomendator.GetRecomendationForEducationLine(educationline, entrants);
 

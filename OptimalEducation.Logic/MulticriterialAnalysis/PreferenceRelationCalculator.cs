@@ -12,7 +12,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         //SeparateCharacterisicsToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
         //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
 
-        Dictionary<string, double> _userCharacteristics=new Dictionary<string,double>();
+        Dictionary<string, double> _userCharacteristics;
 
         Dictionary<string, double> _importantCharacterisics;
         Dictionary<string, double> _unImportantCharacterisics;
@@ -21,12 +21,13 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         {
             //Временно: на данный момент не определисиь с конечной логикой сложения частных характеристик пользователя в общую
             //Поэтому пока будет использовать нормирование по макс хар-ке
-            var maxCharacteristic = GetMaxValue(userCharacteristics);
-            foreach (var item in userCharacteristics)
-            {
-                _userCharacteristics.Add(item.Key, item.Value / maxCharacteristic);
-            }
+            //var maxCharacteristic = GetMaxValue(userCharacteristics);
+            //foreach (var item in userCharacteristics)
+            //{
+            //    _userCharacteristics.Add(item.Key, item.Value / maxCharacteristic);
+            //}
 
+            _userCharacteristics = userCharacteristics;
             SeparateCharacterisicsToImprotantAnd_Unimportant();
         }
 
