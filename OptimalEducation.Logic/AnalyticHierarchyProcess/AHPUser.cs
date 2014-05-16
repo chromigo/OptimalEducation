@@ -14,6 +14,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     public class AHPUser
     {
         Entrant _entrant;
+        List<EducationLine> _educationLines = new List<EducationLine>();
+
         OptimalEducationDbContext context = new OptimalEducationDbContext();
         int totalEducationLines = 0;
 
@@ -108,10 +110,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         //Общие настройки метода и приоритеты критериев
         AHPUserSettings _settings;
 
-        public AHPUser(int userID, AHPUserSettings settings)
+        public AHPUser(Entrant entrantGiven, List<EducationLine> educationLinesGiven, AHPUserSettings settings)
         {
-            _entrant = context.Entrants.Find(userID);
+            _entrant = entrantGiven;
+            _educationLines = educationLinesGiven;
             _settings = settings;
+
+            CalculateAll();
+        }
+        public AHPUser(Entrant entrantGiven, List<EducationLine> educationLinesGiven)
+        {
+            _entrant = entrantGiven;
+            _educationLines = educationLinesGiven;
+            _settings = new AHPUserSettings();
 
             CalculateAll();
         }
@@ -119,9 +130,12 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         public AHPUser(int userID)
         {
             _entrant = context.Entrants.Find(userID);
+            foreach (var edLineInDB in context.EducationLines)
+            {
+                _educationLines.Add(edLineInDB);
+            }
             _settings = new AHPUserSettings();
 
-            //Console.WriteLine(_entrant.FirstName + " " + _entrant.LastName);
             CalculateAll();
         }
 
@@ -162,7 +176,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
                 int reqExamSum = 0;
                 int entrExamSum = 0;
@@ -338,9 +352,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             int totalAvailLines = 0;
 
             entrantCharacteristics = new EntrantCharacterizer(_entrant,new EntrantCalculationOptions()).CalculateNormSum();
+            
+            foreach (var item in entrantCharacteristics)
+            {
+                if (item.Value == null)
+                {
+                    Console.WriteLine("Removing : " + item.Key);
+                    entrantCharacteristics.Remove(item.Key);
+                }
+            }
+            
             maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
                 bool edLineAcceptable = true;
 
@@ -349,11 +373,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 if (edLineResult.Count() <= 0) edLineAcceptable = false;
 
+                foreach (var item in edLineResult)
+                {
+                    if (item.Value == null)
+                    {
+                        Console.WriteLine("Removing : " + item.Key);
+                        edLineResult.Remove(item.Key);
+                    }
+                }
 
                 //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
                 foreach (var item in edLineResult) 
                 {
-
+               //     if ()
                     //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
                     if (!entrantCharacteristics.ContainsKey(item.Key))
                     {
@@ -494,7 +526,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int counter = 0;
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
 
                 ThirdCriterionUnit EducationLine = new ThirdCriterionUnit();
@@ -584,7 +616,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
             Console.WriteLine(_settings.FourthCriterionExactLocation.ToString());
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
 
                 if (_settings.FourthCriterionExactLocation == true)
