@@ -14,6 +14,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     public class AHPEducationLine
     {
         EducationLine _educationLine;
+        List<Entrant> _entrants = new List<Entrant>();
         OptimalEducationDbContext context = new OptimalEducationDbContext();
 
 
@@ -85,20 +86,33 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         #endregion
 
 
-        public AHPEducationLine(int edLineID, AHPEdLineSettings settings)
+        public AHPEducationLine(EducationLine educationLineGiven, List<Entrant> entrantsGiven, AHPEdLineSettings settings)
         {
+            _educationLine = educationLineGiven;
+            _entrants = entrantsGiven;
             _settings = settings;
 
-            _educationLine = context.EducationLines.Find(edLineID);
             CalculateAll();
         }
 
+        public AHPEducationLine(EducationLine educationLineGiven, List<Entrant> entrantsGiven)
+        {
+            _educationLine = educationLineGiven;
+            _entrants = entrantsGiven;
+            _settings = new AHPEdLineSettings();
+
+            CalculateAll();
+        }
 
         public AHPEducationLine(int edLineID)
         {
+            _educationLine = context.EducationLines.Find(edLineID);
+            foreach (var entrInDB in context.Entrants)
+            {
+                _entrants.Add(entrInDB);
+            }
             _settings = new AHPEdLineSettings();
 
-            _educationLine = context.EducationLines.Find(edLineID);
             CalculateAll();
         }
 
@@ -113,19 +127,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
 
 
-            if (_settings.firstCriterionPriority > 0)
+            if (_settings.FirstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
                 CalculateFirstCriterion();
             }
-            if (_settings.secondCriterionPriority > 0)
+            if (_settings.SecondCriterionPriority > 0)
             {
                 InitialiseSecondCriterion();
                 CalculateSecondCriterion();
             }
 
-            if (_educationLine.Faculty.HigherEducationInstitution.City == null) _settings.thirdCriterionPriority = 0;
-            if (_settings.thirdCriterionPriority > 0)
+
+            if (_settings.ThirdCriterionPriority > 0)
             {
                 InitialiseThirdCriterion();
                 CalculateThirdCriterion();
@@ -140,7 +154,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int counter = 0;
 
-            foreach (Entrant entrant in context.Entrants)
+            foreach (Entrant entrant in _entrants)
             {
                 int entrExamSum = 0;
                 bool edLineAcceptable = true;
@@ -298,6 +312,15 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             educationLineClusters = edLineClusterizer.CalculateNormSum(false);
             maxEdLineClusterSum = educationLineClusters.Values.Max();
 
+            foreach (var item in educationLineClusters)
+            {
+                if (item.Value == null)
+                {
+                    Console.WriteLine("Removing : " + item.Key);
+                    educationLineClusters.Remove(item.Key);
+                }
+            }
+
             //foreach (var item in EdLineClusterizer.Characterisic)
             //{
             //    Console.WriteLine(item.Key.ToString());
@@ -305,7 +328,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //Console.WriteLine("++++++++++++++++++++++++++");
 
 
-            foreach (Entrant entrant in context.Entrants)
+            foreach (Entrant entrant in _entrants)
             {
                 bool userAcceptable = true;
 
@@ -318,6 +341,15 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 //    Console.WriteLine(item.Key.ToString());
                 //}
 
+                foreach (var item in entrantCharacteristics)
+                {
+                    if (item.Value == null)
+                    {
+                        Console.WriteLine("Removing : " + item.Key);
+                        entrantCharacteristics.Remove(item.Key);
+                    }
+                }
+                
                 foreach (var item in educationLineClusters)
                 {
                     if (!entrantCharacteristics.ContainsKey(item.Key))
@@ -414,7 +446,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 double normalizedEntrValue;
                 if (EntClusters.Values.Max() > 0) normalizedEntrValue = item.Value / EntClusters.Values.Max();
                 else normalizedEntrValue = 0;
-                double normalizedEdLineValue = educationLineClusters[item.Key] / maxEdLineClusterSum;
+                double normalizedEdLineValue;
+                if (maxEdLineClusterSum > 0) normalizedEdLineValue = educationLineClusters[item.Key] / maxEdLineClusterSum;
+                else normalizedEdLineValue = 0;
 
                 difference = +Math.Abs(normalizedEntrValue - normalizedEdLineValue);
 
@@ -443,7 +477,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int counter = 0;
 
-            foreach (Entrant entrant in context.Entrants)
+            foreach (Entrant entrant in _entrants)
             {
 
                 ThirdCriterionUnit user = new ThirdCriterionUnit();
@@ -527,7 +561,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == FirstCriterionContainer[i].databaseId).firstCriterionFinalPriority =
-                    FirstCriterionContainer[i].localPriority * _settings.firstCriterionPriority;
+                    FirstCriterionContainer[i].localPriority * _settings.FirstCriterionPriority;
             }
             //Потом тоже самое для 2 критерия
             for (int i = 0; i < SecondCriterionContainer.Count; i++)
@@ -544,7 +578,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == SecondCriterionContainer[i].databaseId).secondCriterionFinalPriority =
-                    SecondCriterionContainer[i].localPriority * _settings.secondCriterionPriority;
+                    SecondCriterionContainer[i].localPriority * _settings.SecondCriterionPriority;
             }
             //Потом тоже самое для 3 критерия
             for (int i = 0; i < ThirdCriterionContainer.Count; i++)
@@ -561,7 +595,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
 
                 AllCriterionContainer.Find(x => x.databaseId == ThirdCriterionContainer[i].databaseId).thirdCriterionFinalPriority =
-                    ThirdCriterionContainer[i].localPriority * _settings.thirdCriterionPriority;
+                    ThirdCriterionContainer[i].localPriority * _settings.ThirdCriterionPriority;
             }
 
 
@@ -582,8 +616,41 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     }
     public class AHPEdLineSettings
     {
+        #region Fields
+        OptimalEducationDbContext context = new OptimalEducationDbContext();
+
         public double firstCriterionPriority = 0.4;
         public double secondCriterionPriority = 0.35;
         public double thirdCriterionPriority = 0.25;
+
+        #endregion
+        
+
+        #region Properties
+        public double FirstCriterionPriority
+        {
+            get { return firstCriterionPriority; }
+        }
+        public double SecondCriterionPriority
+        {
+            get { return secondCriterionPriority; }
+        }
+        public double ThirdCriterionPriority
+        {
+            get { return thirdCriterionPriority; }
+        }
+        #endregion
+
+
+        public AHPEdLineSettings()
+        {
+        }
+
+        public AHPEdLineSettings(double firstPriority, double secondPriority, double thirdPriority)
+        {
+            firstCriterionPriority = firstPriority;
+            secondCriterionPriority = secondPriority;
+            thirdCriterionPriority = thirdPriority;
+        }
     }
 }
