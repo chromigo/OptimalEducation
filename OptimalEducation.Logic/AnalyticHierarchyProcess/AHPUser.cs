@@ -93,15 +93,23 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
 
         #region Переменные и классы для сложения критериев в конечную оценку
+        /// <summary>
+        /// Отсортированный список с резульатами работы МАИ
+        /// </summary>
         public List<TotalResultUnit> AllCriterionContainer = new List<TotalResultUnit>();
+        /// <summary>
+        /// Класс с результатами измерений
+        /// </summary>
         public class TotalResultUnit
         {
+            //Id направления/ученика в базе данных
             public int databaseId;
+            //Необязательные для отображения параметры
             public double firstCriterionFinalPriority = 0;
             public double secondCriterionFinalPriority = 0;
             public double thirdCriterionFinalPriority = 0;
             public double fourthCriterionFinalPriority = 0;
-
+            //Приоритет направления
             public double absolutePriority = 0;
         }
         #endregion

@@ -35,10 +35,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Info/
 		public async Task<ActionResult> Index()
 		{
-            //Отобразить характеристики текущего пользователя
 			var entrantId = await GetEntrantId();
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
+            var educationLines = await db.EducationLines
+                .Where(p => p.Actual == true && p.Name!="IDEAL")
+                .ToListAsync();
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();
@@ -46,9 +48,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
             //Рекомендации:
             //По методу сравнения расстояний мд характеристиками
-            var educationLines = await db.EducationLines
-                .Where(p => p.Actual == true && p.Name!="IDEAL")
-                .ToListAsync();
             ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
 
             //По методу многокритериального анализа
@@ -56,8 +55,15 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
 
             //По МАИ
-            //var AHPAnalyzer=new AHPUser(entrantId,)
-            //ViewBag.APHRecomendations = 
+            var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
+            var orderedList = AHPUserAnalyzer.AllCriterionContainer;
+            var tempAHPDict = new Dictionary<EducationLine,double>();
+            foreach (var item in orderedList)
+	        {
+		        var edLine = educationLines.Find(p=>p.Id==item.databaseId);
+                tempAHPDict.Add(edLine,item.absolutePriority);
+	        }
+            ViewBag.APHRecomendations = tempAHPDict;
 
             return View();
 		}
