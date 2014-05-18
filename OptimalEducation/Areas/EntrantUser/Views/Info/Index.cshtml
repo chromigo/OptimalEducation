@@ -1,4 +1,4 @@
-﻿@model Dictionary<string, double>
+﻿@*@model Dictionary<string, double>*@
 @{
     ViewBag.Title = "Index";
 }
@@ -8,7 +8,10 @@
 
 <div>
     <dl class="dl-horizontal">
-        @foreach (var characterisicRes in Model)
+        @{
+            var preferences = (ViewBag.Preferences as Dictionary<string, double>);
+        }
+        @foreach (var characterisicRes in preferences)
         {
             <dt>
                 @Html.DisplayFor(model => characterisicRes.Key)
@@ -23,7 +26,7 @@
 <h3>Метод сравнения расстояний(Евклидова метрика)</h3>
 <table class="table">
     @{
-        var recomendationForEntrant = (ViewBag.RecomendationForEntrant as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
+        var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
     }
     <tr>
         <th>
@@ -43,7 +46,7 @@
         <th></th>
     </tr>
 
-    @foreach (var recomendation in recomendationForEntrant)
+    @foreach (var recomendation in distanceRecomendations)
     {
         <tr>
             <td>

@@ -40,22 +40,26 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrant = await db.Entrants
 				.FindAsync(entrantId);
 
+            //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();
-            
-            //Отобразить рекомендуемые учебные направления
+            ViewBag.Preferences = entrantCharacteristics;
 
+            //Рекомендации:
             //По методу сравнения расстояний мд характеристиками
             var educationLines = await db.EducationLines
                 .Where(p => p.Actual == true && p.Name!="IDEAL")
                 .ToListAsync();
-            ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+            ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+
             //По методу многокритериального анализа
             var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
             ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
+
             //По МАИ
             //var AHPAnalyzer=new AHPUser(entrantId,)
             //ViewBag.APHRecomendations = 
-            return View(entrantCharacteristics);
+
+            return View();
 		}
 
 		private async Task<int> GetEntrantId()
