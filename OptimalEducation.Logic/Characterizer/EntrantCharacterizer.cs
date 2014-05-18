@@ -420,10 +420,18 @@ namespace OptimalEducation.Logic.Characterizer
     {
         static EntrantCalculationOptions _options;
         static List<string> _educationCharacterisiticNames;
+        static bool isNewOptions;
         //Задает/обновляет настройки статического класса.
         public static void SetUpSettings(EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
         {
-            _options = options;
+            if (_options == null)
+                _options = options;
+            else if (_options.IsCalculateUnateStateExam != options.IsCalculateUnateStateExam)
+            {
+                _options = options;
+                isNewOptions = true;
+            }
+
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -431,7 +439,7 @@ namespace OptimalEducation.Logic.Characterizer
         static Dictionary<string, double> simpleResult;
         public static Dictionary<string, double> GetSimpleResult()
         {
-            if (simpleResult == null)
+            if (simpleResult == null || isNewOptions)
             {
                 var db = new OptimalEducationDbContext();
                 var idealEntrant = db.Entrants
@@ -444,6 +452,7 @@ namespace OptimalEducation.Logic.Characterizer
                     .Where(e => e.Id == 2).Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 simpleResult = characterizer.CalculateSimpleSum();
+                isNewOptions = false;
             }
             return simpleResult;
         }
@@ -451,7 +460,7 @@ namespace OptimalEducation.Logic.Characterizer
         static Dictionary<string, double> complicatedResult;
         public static Dictionary<string, double> GetComplicatedResult()
         {
-            if (complicatedResult == null)
+            if (complicatedResult == null || isNewOptions)
             {
                 var db = new OptimalEducationDbContext();
                 var idealEntrant =db.Entrants
@@ -464,6 +473,7 @@ namespace OptimalEducation.Logic.Characterizer
                     .Where(e => e.Id == 2).Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 complicatedResult = characterizer.CalculateComplicatedSum();
+                isNewOptions = false;
             }
             return complicatedResult;
         }

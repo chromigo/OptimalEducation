@@ -207,10 +207,17 @@ namespace OptimalEducation.Logic.Characterizer
     {
         static EducationLineCalculationOptions _options;
         static List<string> _educationCharacterisiticNames;
-
+        static bool isNewOptions;
         public static void SetUpSettings(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
         {
-            _options = options;
+            if (_options == null)
+                _options = options;
+            else if(_options.IsCalculateUnateStateExam!=options.IsCalculateUnateStateExam)
+            {
+                _options = options;
+                isNewOptions = true;
+            }
+
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -218,7 +225,7 @@ namespace OptimalEducation.Logic.Characterizer
         static Dictionary<string, double> simpleResult;
         public static Dictionary<string, double> GetSimpleResult()
         {
-            if (simpleResult == null)
+            if (simpleResult == null||isNewOptions)
             {
                 var context = new OptimalEducationDbContext();
                 var idealEducationLine = context.EducationLines
@@ -227,6 +234,7 @@ namespace OptimalEducation.Logic.Characterizer
                     .Single();
                 var characterizer = new EducationLineSummator(idealEducationLine, _options, _educationCharacterisiticNames);
                 simpleResult = characterizer.CalculateSimpleSum();
+                isNewOptions = false;
             }
             return simpleResult;
         }
@@ -234,7 +242,7 @@ namespace OptimalEducation.Logic.Characterizer
         static Dictionary<string, double> complicatedResult;
         public static Dictionary<string, double> GetComplicatedResult()
         {
-            if (complicatedResult == null)
+            if (complicatedResult == null|| isNewOptions)
             {
                 var context = new OptimalEducationDbContext();
                 var idealEducationLine = context.EducationLines
@@ -243,6 +251,7 @@ namespace OptimalEducation.Logic.Characterizer
                     .Single();
                 var characterizer = new EducationLineSummator(idealEducationLine, _options, _educationCharacterisiticNames);
                 complicatedResult = characterizer.CalculateComplicatedSum();
+                isNewOptions = false;
             }
             return complicatedResult;
         } 
