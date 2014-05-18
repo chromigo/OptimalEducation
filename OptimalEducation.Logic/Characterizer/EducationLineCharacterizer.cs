@@ -10,16 +10,19 @@ namespace OptimalEducation.Logic.Characterizer
     public class EducationLineCharacterizer
     {
         EducationLineSummator educationLineCharacterizer;
-        List<string> educationCharacterisiticNames;
+        static List<string> educationCharacterisiticNames;
         Dictionary<string, double> totalCharacteristics;
 
         public EducationLineCharacterizer(EducationLine educationLine, EducationLineCalculationOptions options)
         {            
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+            if(educationCharacterisiticNames==null)
+            {
+                OptimalEducationDbContext context = new OptimalEducationDbContext();
+                educationCharacterisiticNames = context.Characteristics
+                    .Where(p => p.Type == CharacteristicType.Education)
+                    .Select(p => p.Name)
+                    .ToList();
+            }
 
             totalCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)

@@ -12,15 +12,20 @@ namespace OptimalEducation.Logic.Characterizer
     public class EntrantCharacterizer
     {
         EntrantSummator entrantSummator;
-        List<string> educationCharacterisiticNames;
+        static List<string> educationCharacterisiticNames;
         Dictionary<string, double> totalCharacteristics;
+
         public EntrantCharacterizer(Entrant entrant, EntrantCalculationOptions options)
         {
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+            if(educationCharacterisiticNames==null)
+            {
+                OptimalEducationDbContext context = new OptimalEducationDbContext();
+                educationCharacterisiticNames = context.Characteristics
+                    .Where(p => p.Type == CharacteristicType.Education)
+                    .Select(p => p.Name)
+                    .ToList();
+            }
+
 
             totalCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)

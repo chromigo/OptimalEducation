@@ -37,17 +37,18 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-            var entrant = db.Entrants
+            var entrant = await db.Entrants
                 .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
                 .Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
                 .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
                 .Include(e => e.Hobbies.Select(h => h.Weights))
                 .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
                 .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-                .Where(e => e.Id == entrantId).Single();
+                .Where(e => e.Id == entrantId).SingleAsync();
 
             var educationLines = await db.EducationLines
                 .Include(edl=>edl.EducationLinesRequirements.Select(edlReq=>edlReq.ExamDiscipline.Weights.Select(w=>w.Characterisic)))
+                .Include(edl => edl.Faculty.HigherEducationInstitution)
                 .Where(p => p.Actual == true && p.Name!="IDEAL")
                 .ToListAsync();
 
