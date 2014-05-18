@@ -111,7 +111,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			}
 			db.Entry(currentEntrant).State = EntityState.Modified;
 			await db.SaveChangesAsync();
-			return RedirectToAction("Index");
+            return RedirectToAction("Index", "Info");
 		}
         private async Task<int> GetEntrantId()
         {
