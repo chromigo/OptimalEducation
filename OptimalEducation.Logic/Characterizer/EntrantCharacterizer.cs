@@ -1,7 +1,9 @@
 ﻿using OptimalEducation.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,20 +12,30 @@ namespace OptimalEducation.Logic.Characterizer
     public class EntrantCharacterizer
     {
         EntrantSummator entrantSummator;
-        IdealEntrantResult idealEntrantResult;
-        List<string> educationCharacterisiticNames;
+        static List<string> educationCharacterisiticNames;
+        Dictionary<string, double> totalCharacteristics;
 
         public EntrantCharacterizer(Entrant entrant, EntrantCalculationOptions options)
         {
-            //характеристики для нашего направления
-            entrantSummator = new EntrantSummator(entrant, options);
-            idealEntrantResult = new IdealEntrantResult(options);
+            if(educationCharacterisiticNames==null)
+            {
+                OptimalEducationDbContext context = new OptimalEducationDbContext();
+                educationCharacterisiticNames = context.Characteristics
+                    .Where(p => p.Type == CharacteristicType.Education)
+                    .Select(p => p.Name)
+                    .ToList();
+            }
 
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+
+            totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //характеристики для нашего направления
+            entrantSummator = new EntrantSummator(entrant, options, educationCharacterisiticNames);
+            IdealEntrantResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode = false)
@@ -35,25 +47,20 @@ namespace OptimalEducation.Logic.Characterizer
             if (isComlicatedMode)
             {
                 sum = entrantSummator.CalculateComplicatedSum();
-                idealResult = idealEntrantResult.ComplicatedResult;
+                idealResult = IdealEntrantResult.GetComplicatedResult();
             }
             else
             {
                 sum = entrantSummator.CalculateSimpleSum();
-                idealResult = idealEntrantResult.SimpleResult;
+                idealResult = IdealEntrantResult.GetSimpleResult();
             }
-
-            var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
-            }
-
+            
             //Нормируем
             foreach (var item in sum)
             {
                 totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
+
             return totalCharacteristics;
         }
     }
@@ -64,20 +71,11 @@ namespace OptimalEducation.Logic.Characterizer
         EntrantCalculationOptions _options;
         List<string> educationCharacterisiticNames;
 
-        public EntrantSummator(Entrant entrant, EntrantCalculationOptions options)
+        public EntrantSummator(Entrant entrant, EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
         {
             _entrant = entrant;
             _options = options;
-            InitCharacterisitcs();
-        }
-        private void InitCharacterisitcs()
-        {
-            //Заполняем словарь всеми ключами по возможным весам
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+            this.educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
         #region Построение словарей с характеристиками
@@ -278,6 +276,7 @@ namespace OptimalEducation.Logic.Characterizer
             Dictionary<string, double> hobbieCharacteristics;
             Dictionary<string, double> schoolTypeCharacteristics;
 
+            
             if (_options.IsCalculateUnateStateExam)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
@@ -422,46 +421,66 @@ namespace OptimalEducation.Logic.Characterizer
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public class IdealEntrantResult
+    public static class IdealEntrantResult
     {
-        EntrantCalculationOptions _options;
-
-        public IdealEntrantResult(EntrantCalculationOptions options)
+        static EntrantCalculationOptions _options;
+        static List<string> _educationCharacterisiticNames;
+        static bool isNewOptions;
+        //Задает/обновляет настройки статического класса.
+        public static void SetUpSettings(EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
         {
-            _options = options;
+            if (_options == null)
+                _options = options;
+            else if (_options.IsCalculateUnateStateExam != options.IsCalculateUnateStateExam)
+            {
+                _options = options;
+                isNewOptions = true;
+            }
+
+            _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)
-        Dictionary<string, double> simpleResult;
-        public  Dictionary<string, double> SimpleResult
+        static Dictionary<string, double> simpleResult;
+        public static Dictionary<string, double> GetSimpleResult()
         {
-            get 
+            if (simpleResult == null || isNewOptions)
             {
-                if (simpleResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantSummator(idealEntrant, _options);
-                    simpleResult = characterizer.CalculateSimpleSum();
-                }
-                return simpleResult;
+                var db = new OptimalEducationDbContext();
+                var idealEntrant = db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse => pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
+                var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
+                simpleResult = characterizer.CalculateSimpleSum();
+                isNewOptions = false;
             }
+            return simpleResult;
         }
         //Для 2-го предположения(геом сложение+ нормир)
-        Dictionary<string, double> complicatedResult;
-        public  Dictionary<string, double> ComplicatedResult
+        static Dictionary<string, double> complicatedResult;
+        public static Dictionary<string, double> GetComplicatedResult()
         {
-            get
+            if (complicatedResult == null || isNewOptions)
             {
-                if (complicatedResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantSummator(idealEntrant, _options);
-                    complicatedResult = characterizer.CalculateComplicatedSum();
-                }
-                return complicatedResult;
+                var db = new OptimalEducationDbContext();
+                var idealEntrant =db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
+                var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
+                complicatedResult = characterizer.CalculateComplicatedSum();
+                isNewOptions = false;
             }
+            return complicatedResult;
         }
     }
 

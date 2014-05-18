@@ -12,6 +12,7 @@ using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.AnalyticHierarchyProcess;
 
 namespace OptimalEducation.Areas.FacultyUser.Controllers
 {
@@ -47,6 +48,8 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			//Отобразить характеристики текущего направления
+            var entrants = await db.Entrants.Where(p => p.FirstName != "IDEAL")
+                                .ToListAsync();
 			var facultyId = await GetFacultyId();
 			var educationline = await db.EducationLines
                 .Where(p => p.FacultyId == facultyId)
@@ -55,13 +58,26 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return HttpNotFound();
 			}
+            //Ориентация направления
             var educationLineCharacterizer = new EducationLineCharacterizer(educationline,new EducationLineCalculationOptions());
             ViewBag.CluserResults = educationLineCharacterizer.CalculateNormSum(false);
-			//Отобразить рекомендуемый список абитуриентов
-			
-			var entrants = await db.Entrants.Where(p=>p.FirstName != "IDEAL")
-				.ToListAsync();
+
+            //Рекомендации по подбору учеников:
+            //По методу расстояний
 			ViewBag.RecomendationForEducationLine= DistanceCharacterisiticRecomendator.GetRecomendationForEducationLine(educationline, entrants);
+
+            //По методу многокритериального анализа
+
+            //По методу МАИ
+            var AHPEducationLineAnalyzer = new AHPEducationLine(educationline, entrants,new AHPEdLineSettings());
+            var orderedList = AHPEducationLineAnalyzer.AllCriterionContainer;
+            var tempAHPDict = new Dictionary<Entrant, double>();
+            foreach (var item in orderedList)
+            {
+                var edLine = entrants.Find(p => p.Id == item.databaseId);
+                tempAHPDict.Add(edLine, item.absolutePriority);
+            }
+            ViewBag.APHRecomendations = tempAHPDict;
 
 			return View(educationline);
 		}

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 
 namespace OptimalEducation.Logic.Characterizer
@@ -9,20 +10,29 @@ namespace OptimalEducation.Logic.Characterizer
     public class EducationLineCharacterizer
     {
         EducationLineSummator educationLineCharacterizer;
-        IdealEducationLineResult idealEducationLineResult;
-        List<string> educationCharacterisiticNames;
+        static List<string> educationCharacterisiticNames;
+        Dictionary<string, double> totalCharacteristics;
 
         public EducationLineCharacterizer(EducationLine educationLine, EducationLineCalculationOptions options)
-        {
-            //характеристики для нашего направления
-            educationLineCharacterizer = new EducationLineSummator(educationLine, options);
-            idealEducationLineResult = new IdealEducationLineResult(options);
+        {            
+            if(educationCharacterisiticNames==null)
+            {
+                OptimalEducationDbContext context = new OptimalEducationDbContext();
+                educationCharacterisiticNames = context.Characteristics
+                    .Where(p => p.Type == CharacteristicType.Education)
+                    .Select(p => p.Name)
+                    .ToList();
+            }
 
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+            totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //характеристики для нашего направления
+            educationLineCharacterizer = new EducationLineSummator(educationLine, options, educationCharacterisiticNames);
+            IdealEducationLineResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode=false)
@@ -34,18 +44,12 @@ namespace OptimalEducation.Logic.Characterizer
             if(isComlicatedMode)
             {
                 sum = educationLineCharacterizer.CalculateComplicatedSum();
-                idealResult = idealEducationLineResult.ComplicatedResult;
+                idealResult = IdealEducationLineResult.GetComplicatedResult();
             }
             else
             {
                 sum = educationLineCharacterizer.CalculateSimpleSum();
-                idealResult = idealEducationLineResult.SimpleResult;
-            }
-
-            var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
+                idealResult = IdealEducationLineResult.GetSimpleResult();
             }
 
             //Нормируем
@@ -62,21 +66,13 @@ namespace OptimalEducation.Logic.Characterizer
         EducationLineCalculationOptions _options;
         List<string> educationCharacterisiticNames;
 
-        public EducationLineSummator(EducationLine educationLine, EducationLineCalculationOptions options)
+        public EducationLineSummator(EducationLine educationLine, EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
         {
             _educationLine = educationLine;
             _options = options;
-            InitCharacterisitcs();
+            this.educationCharacterisiticNames = educationCharacterisiticNames;
         }
-        void InitCharacterisitcs()
-        {
-            //Заполняем словарь всеми ключами по возможным весам
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
-        }
+
         #region Построение словарей с характеристиками
         Dictionary<string, double> Characterising(Action<Dictionary<string, List<double>>> partSumsMethod)
         {
@@ -210,46 +206,57 @@ namespace OptimalEducation.Logic.Characterizer
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public class IdealEducationLineResult
+    public static class IdealEducationLineResult
     {
-        EducationLineCalculationOptions _options;
-
-        public IdealEducationLineResult(EducationLineCalculationOptions options)
+        static EducationLineCalculationOptions _options;
+        static List<string> _educationCharacterisiticNames;
+        static bool isNewOptions;
+        public static void SetUpSettings(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
         {
-            _options = options;
+            if (_options == null)
+                _options = options;
+            else if(_options.IsCalculateUnateStateExam!=options.IsCalculateUnateStateExam)
+            {
+                _options = options;
+                isNewOptions = true;
+            }
+
+            _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)
-        Dictionary<string, double> simpleResult;
-        public Dictionary<string, double> SimpleResult
+        static Dictionary<string, double> simpleResult;
+        public static Dictionary<string, double> GetSimpleResult()
         {
-            get
+            if (simpleResult == null||isNewOptions)
             {
-                if (simpleResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEducationLine = context.EducationLines.Where(p => p.Name == "IDEAL").Single();
-                    var characterizer = new EducationLineSummator(idealEducationLine,_options);
-                    simpleResult = characterizer.CalculateSimpleSum();
-                }
-                return simpleResult;
+                var context = new OptimalEducationDbContext();
+                var idealEducationLine = context.EducationLines
+                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                    .Where(p => p.Name == "IDEAL")
+                    .Single();
+                var characterizer = new EducationLineSummator(idealEducationLine, _options, _educationCharacterisiticNames);
+                simpleResult = characterizer.CalculateSimpleSum();
+                isNewOptions = false;
             }
+            return simpleResult;
         }
         //Для 2-го предположения(геом сложение+ нормир)
-        Dictionary<string, double> complicatedResult;
-        public Dictionary<string, double> ComplicatedResult
+        static Dictionary<string, double> complicatedResult;
+        public static Dictionary<string, double> GetComplicatedResult()
         {
-            get
+            if (complicatedResult == null|| isNewOptions)
             {
-                if (complicatedResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEducationLine = context.EducationLines.Where(p => p.Name == "IDEAL").Single();
-                    var characterizer = new EducationLineSummator(idealEducationLine, _options);
-                    complicatedResult = characterizer.CalculateComplicatedSum();
-                }
-                return complicatedResult;
+                var context = new OptimalEducationDbContext();
+                var idealEducationLine = context.EducationLines
+                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                    .Where(p => p.Name == "IDEAL")
+                    .Single();
+                var characterizer = new EducationLineSummator(idealEducationLine, _options, _educationCharacterisiticNames);
+                complicatedResult = characterizer.CalculateComplicatedSum();
+                isNewOptions = false;
             }
+            return complicatedResult;
         } 
     }
 
