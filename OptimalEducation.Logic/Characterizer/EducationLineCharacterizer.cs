@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 
 namespace OptimalEducation.Logic.Characterizer
@@ -228,7 +229,10 @@ namespace OptimalEducation.Logic.Characterizer
                 if (simpleResult == null)
                 {
                     var context = new OptimalEducationDbContext();
-                    var idealEducationLine = context.EducationLines.Where(p => p.Name == "IDEAL").Single();
+                    var idealEducationLine = context.EducationLines
+                        .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                        .Where(p => p.Name == "IDEAL")
+                        .Single();
                     var characterizer = new EducationLineSummator(idealEducationLine,_options);
                     simpleResult = characterizer.CalculateSimpleSum();
                 }
@@ -244,7 +248,10 @@ namespace OptimalEducation.Logic.Characterizer
                 if (complicatedResult == null)
                 {
                     var context = new OptimalEducationDbContext();
-                    var idealEducationLine = context.EducationLines.Where(p => p.Name == "IDEAL").Single();
+                    var idealEducationLine = context.EducationLines
+                        .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                        .Where(p => p.Name == "IDEAL")
+                        .Single();
                     var characterizer = new EducationLineSummator(idealEducationLine, _options);
                     complicatedResult = characterizer.CalculateComplicatedSum();
                 }
