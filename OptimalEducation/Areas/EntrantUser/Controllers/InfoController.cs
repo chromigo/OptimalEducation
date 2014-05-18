@@ -52,30 +52,18 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
                 .ToListAsync();
 
             //Предпочтения пользователя по предметам и пр.
-            Stopwatch clock = new Stopwatch();
-
-            clock.Start();
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();
             ViewBag.Preferences = entrantCharacteristics;
-            clock.Stop();
-            var time1 = clock.Elapsed;
-            
+
             //Рекомендации:
             //По методу сравнения расстояний мд характеристиками
-            clock.Restart();
             ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
-            clock.Stop();
-            var time2 = clock.Elapsed;
             
             //По методу многокритериального анализа
-            clock.Restart();
             var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
             ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
-            clock.Stop();
-            var time3 = clock.Elapsed;
 
             //По МАИ
-            clock.Restart();
             var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
             var orderedList = AHPUserAnalyzer.AllCriterionContainer;
             var tempAHPDict = new Dictionary<EducationLine,double>();
@@ -85,8 +73,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
                 tempAHPDict.Add(edLine,item.absolutePriority);
 	        }
             ViewBag.APHRecomendations = tempAHPDict;
-            clock.Stop();
-            var time4 = clock.Elapsed;
             return View();
 		}
 

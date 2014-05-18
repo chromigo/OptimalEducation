@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -432,8 +433,15 @@ namespace OptimalEducation.Logic.Characterizer
         {
             if (simpleResult == null)
             {
-                var context = new OptimalEducationDbContext();
-                var idealEntrant = context.Entrants.Find(2);
+                var db = new OptimalEducationDbContext();
+                var idealEntrant = db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse => pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 simpleResult = characterizer.CalculateSimpleSum();
             }
@@ -445,8 +453,15 @@ namespace OptimalEducation.Logic.Characterizer
         {
             if (complicatedResult == null)
             {
-                var context = new OptimalEducationDbContext();
-                var idealEntrant = context.Entrants.Find(2);
+                var db = new OptimalEducationDbContext();
+                var idealEntrant =db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 complicatedResult = characterizer.CalculateComplicatedSum();
             }
