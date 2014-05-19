@@ -16,18 +16,27 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Optimal Education", "Index", "Info", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("Optimal Education", "Index", "Orientation", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Школы", "Index", "School")</li>
-                    <li>@Html.ActionLink("Школьные оценки", "Index", "SchoolMark")</li>
-                    <li>@Html.ActionLink("ЕГЭ", "Index", "UnitedStateExams")</li>
-                    <li>@Html.ActionLink("Олимпиады", "Index", "Olympiad")</li>
-                    <li>@Html.ActionLink("Секции", "Index", "Section")</li>
-                    <li>@Html.ActionLink("Хобби", "Index", "Hobbie")</li>
+                    <li> @Html.ActionLink("Ориентация", "Index", "Orientation")</li>
+                    <li >@Html.ActionLink("Рекомендации", "Index", "Recomendations")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown" >
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Данные абитуриента<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("ЕГЭ", "Index", "UnitedStateExams")</li>
+                            <li>@Html.ActionLink("Школьные оценки", "Index", "SchoolMark")</li>
+                            <li>@Html.ActionLink("Олимпиады", "Index", "Olympiad")</li>
+                            <li>@Html.ActionLink("Школы", "Index", "School")</li>
+                            <li>@Html.ActionLink("Секции", "Index", "Section")</li>
+                            <li>@Html.ActionLink("Хобби", "Index", "Hobbie")</li>
+                        </ul>
+                    </li>
+                    @Html.Partial("_LoginPartial")
+                </ul>
             </div>
         </div>
     </div>

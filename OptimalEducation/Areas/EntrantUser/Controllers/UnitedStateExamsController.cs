@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.DAL.Models;
 
+
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]

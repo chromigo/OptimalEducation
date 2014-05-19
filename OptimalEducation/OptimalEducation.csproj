@@ -181,7 +181,8 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
-    <Compile Include="Areas\EntrantUser\Controllers\InfoController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\OrientationController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\RecomendationsController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SchoolController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SectionController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OlympiadController.cs" />
@@ -234,7 +235,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Areas\EntrantUser\Views\_ViewStart.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\EntrantUser\Views\Info\Index.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Orientation\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\UnitedStateExams\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\SchoolMark\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Hobbie\Index.cshtml" />
@@ -266,6 +267,7 @@
     <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Details.cshtml" />
     <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Edit.cshtml" />
     <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Index.cshtml" />
+    <Content Include="Areas\EntrantUser\Views\Recomendations\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

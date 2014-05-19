@@ -36,16 +36,11 @@ namespace OptimalEducation.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "'Optimal Education' will help entrants to see optimal list of High Schools."
-            +" At other hand, this service will help universities to find the most talented students.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
-            //ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
