@@ -68,7 +68,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
                     db.Entry(exam).State = EntityState.Modified;
                 }
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index", "Info");
+                return RedirectToAction("Index");
             }
 
             return View(schoolMark);
