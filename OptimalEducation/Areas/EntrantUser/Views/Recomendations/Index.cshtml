@@ -10,22 +10,27 @@
         var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<EducationLine, double>);
     }
     <tr>
+        <th>№</th>
         <th>Название ВУЗ-а</th>
         <th>Название факультета</th>
         <th>Название направления</th>
         <th>Код направления</th>
-        <th>% Схожести</th>
+        <th>Близость (меньше-лучше, debug)</th>
         <th></th>
     </tr>
-
+    @{int count = 0;}
     @foreach (var recomendation in distanceRecomendations)
     {
+        count++;
+        var percentageValue = recomendation.Value * 100;
         <tr>
+            <td>@count</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
-            <td>@Html.DisplayFor(model => recomendation.Value)</td>
+            <td>@percentageValue.ToString("0.000", CultureInfo.InvariantCulture)</td>
+
         </tr>
     }
 
@@ -62,25 +67,29 @@
         var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<EducationLine, double>);
     }
     <tr>
+        <th>№</th>
         <th>Название ВУЗ-а</th>
         <th>Название факультета</th>
         <th>Название направления</th>
         <th>Код направления</th>
-        <th>% Схожести</th>
+        <th>% Схожести (debug)</th>
         <th></th>
     </tr>
 
+    @{count = 0;}
     @foreach (var recomendation in aphRecomendations)
     {
+        count++;
+        var percentageValue = recomendation.Value * 100;
         <tr>
+            <td>@count</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
-            <td>@Html.DisplayFor(model => recomendation.Value)</td>
+            <td>@percentageValue.ToString("0.0", CultureInfo.InvariantCulture)</td>
         </tr>
     }
-
 </table>
 
 

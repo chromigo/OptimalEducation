@@ -59,7 +59,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			
 			//По методу многокритериального анализа
 			var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
-			ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
+            var res = multicriterialAnalyzer.Calculate();
+            ViewBag.MulticriterialRecomendations = res;
 
 			//По МАИ
 			var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
