@@ -182,6 +182,7 @@
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\InfoController.cs" />
+    <Compile Include="Areas\EntrantUser\Controllers\RecomendationsController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SchoolController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\SectionController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OlympiadController.cs" />
@@ -668,6 +669,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\EntrantUser\Views\Recomendations\" />
     <Folder Include="Areas\FacultyUser\Models\" />
   </ItemGroup>
   <ItemGroup>

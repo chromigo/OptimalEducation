@@ -20,11 +20,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Ориентация", "Index", "Info")</li>
-                    <li>@Html.ActionLink("Рекомендации", "Index", "Recomendations")</li>
+                    <li> @Html.ActionLink("Ориентация", "Index", "Info", new { data_target = "calc_results" ,data_toggle="pill"})</li>
+                    <li >@Html.ActionLink("Рекомендации", "Index", "Recomendations", new { data_target = "calc_results", data_toggle = "pill" })</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
+                    <li class="dropdown" >
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Данные абитуриента<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("ЕГЭ", "Index", "UnitedStateExams")</li>
