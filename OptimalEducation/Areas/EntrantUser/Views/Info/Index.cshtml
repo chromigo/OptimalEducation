@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@using System.Globalization;
+@using OptimalEducation.DAL.Models;
 <h2>Вычисленные предпочтения пользователя</h2>
 <h3>По предметам</h3>
 
@@ -13,11 +14,16 @@
         }
         @foreach (var characterisicRes in preferences)
         {
+            var percentageValue = characterisicRes.Value * 100;
             <dt>
                 @Html.DisplayFor(model => characterisicRes.Key)
             </dt>
             <dd>
-                @Html.DisplayFor(model => characterisicRes.Value)
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percentageValue.ToString("0.0", CultureInfo.InvariantCulture)%;">
+                        @percentageValue.ToString("0.0", CultureInfo.InvariantCulture)%
+                    </div>
+                </div>
             </dd>
         }
     </dl>
@@ -26,7 +32,7 @@
 <h3>Метод сравнения расстояний(Евклидова метрика)</h3>
 <table class="table">
     @{
-        var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
+        var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<EducationLine, double>);
     }
     <tr>
         <th>
@@ -72,7 +78,7 @@
 <h3>Многокритериальный анализ</h3>
 <table class="table">
     @{
-        var multicriterialRecomendations = (ViewBag.MulticriterialRecomendations as List<OptimalEducation.DAL.Models.EducationLine>);
+        var multicriterialRecomendations = (ViewBag.MulticriterialRecomendations as List<EducationLine>);
     }
     <tr>
         <th>
@@ -114,7 +120,7 @@
 <h3>МАИ</h3>
 <table class="table">
     @{
-        var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<OptimalEducation.DAL.Models.EducationLine, double>);
+        var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<EducationLine, double>);
     }
     <tr>
         <th>
