@@ -37,7 +37,7 @@ namespace OptimalEducation.DAL.Migrations
                 var entrant = new Entrant()
                 {
                     Id = 1,
-                    FirstName = "Alice",
+                    FirstName = "Alice",                   
                     Gender = "Female",
                 };
                 //Добавляем ему результаты по ЕГЭ
@@ -124,9 +124,9 @@ namespace OptimalEducation.DAL.Migrations
                     Name = "IDEAL",
                     Actual = true,
                     RequiredSum = 300,
-                    Code = "666666666",
-                    FacultyId = db.Faculties.First().Id,
-                    GeneralEducationLineId = db.GeneralEducationLines.Single(p => p.Code == "1").Id,
+                    Code = "000000",
+                    FacultyId = db.Faculties.Single(p => p.Name == "default_department").Id,
+                    //GeneralEducationLineId = db.GeneralEducationLines.Single(p => p.Code == "1").Id,
                     EducationLinesRequirements = new List<EducationLineRequirement>
                     {
                         new EducationLineRequirement 
@@ -288,9 +288,9 @@ namespace OptimalEducation.DAL.Migrations
         {
             var generalEducationLines = new List<GeneralEducationLine>
             {
-                new GeneralEducationLine {Name = "Г Математика и информатика", Code="1"},
-                new GeneralEducationLine {Name = "Г Информатика", Code="2" },
-                new GeneralEducationLine {Name = "Г Физика", Code="3"}
+                //new GeneralEducationLine {Name = "Г Математика и информатика", Code="1"},
+                //new GeneralEducationLine {Name = "Г Информатика", Code="2" },
+                //new GeneralEducationLine {Name = "Г Физика", Code="3"}
             };
             foreach (var item in generalEducationLines)
             {
@@ -307,9 +307,10 @@ namespace OptimalEducation.DAL.Migrations
         {
             var faculties = new List<Faculty>
             {
-                new Faculty {Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
-                new Faculty {Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
-                new Faculty {Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
+                new Faculty {Name = "default_department", Prestige = 100, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="difault_univercity").Id},
+                //new Faculty {Name = "Кафедра МГУ1", Prestige = 90, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="МГУ").Id},
+                //new Faculty {Name = "Кафедра СПбГУ1", Prestige = 80, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="СПбГУ").Id },
+                //new Faculty {Name = "Кафедра УРГУ1", Prestige = 60, HigherEducationInstitutionId=higherEducationInstitutions.Single(p=>p.Name=="УРГУ").Id}
             };
             foreach (var item in faculties)
             {
@@ -326,9 +327,10 @@ namespace OptimalEducation.DAL.Migrations
         {
             var higherEducationInstitutions = new List<HigherEducationInstitution>
             {
-                new HigherEducationInstitution { Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
-                new HigherEducationInstitution { Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
-                new HigherEducationInstitution { Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
+                new HigherEducationInstitution { Name = "difault_univercity", Prestige = 100, CityId=cities.Single(p=>p.Name=="default_city").Id, Type=HigherEducationInstitutionType.University},
+                //new HigherEducationInstitution { Name = "МГУ", Prestige = 90, CityId=cities.Single(p=>p.Name=="Москва").Id, Type=HigherEducationInstitutionType.University},
+                //new HigherEducationInstitution { Name = "СПбГУ", Prestige = 80, CityId=cities.Single(p=>p.Name=="Санкт-Петербург").Id, Type=HigherEducationInstitutionType.University  },
+                //new HigherEducationInstitution { Name = "УРГУ", Prestige = 60, CityId=cities.Single(p=>p.Name=="Екатеринбург").Id, Type=HigherEducationInstitutionType.University }
             };
             foreach (var item in higherEducationInstitutions)
             {
@@ -346,9 +348,10 @@ namespace OptimalEducation.DAL.Migrations
         {
             var cities = new List<City>
             {
-                new City { Name = "Москва", Prestige = 90},
-                new City { Name = "Санкт-Петербург", Prestige = 80 },
-                new City { Name = "Екатеринбург", Prestige = 60 }
+                new City { Name = "default_city", Prestige = 100},
+                //new City { Name = "Москва", Prestige = 90},
+                //new City { Name = "Санкт-Петербург", Prestige = 80 },
+                //new City { Name = "Екатеринбург", Prestige = 60 }
             };
             foreach (var item in cities)
             {
@@ -366,138 +369,138 @@ namespace OptimalEducation.DAL.Migrations
         {
             var educationLines = new List<EducationLine>
             {
-                new EducationLine 
-                {
-                    Name = "Математика и информатика", 
-                    Actual=true,
-                    RequiredSum=260, 
-                    Code="1122",
-                    FacultyId=context.Faculties.First().Id,
-                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="1").Id,
-                    EducationLinesRequirements=new List<EducationLineRequirement>
-                    {
-                        new EducationLineRequirement 
-                        {
-                            Requirement=50, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=80, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=70, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
-                        },
-                    }
-                },
-                new EducationLine 
-                {
-                    Name = "Информатика", 
-                    Actual=true,
-                    RequiredSum=260, 
-                    Code="1123",
-                    FacultyId=context.Faculties.First().Id,
-                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="2").Id,
-                    EducationLinesRequirements=new List<EducationLineRequirement>
-                    {
-                        new EducationLineRequirement 
-                        {
-                            Requirement=50, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=65, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=85, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
-                        },
-                    }
-                },
-                new EducationLine 
-                {
-                    Name = "Физика",
-                    Actual=true,RequiredSum=220,
-                    Code="1124",
-                    FacultyId=context.Faculties.First().Id,
-                    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
-                    EducationLinesRequirements=new List<EducationLineRequirement>
-                    {
-                        new EducationLineRequirement 
-                        {
-                            Requirement=50, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=70, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=80, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Физика").Id
-                        },
-                    }
-                },
-                new EducationLine 
-                {
-                    Name = "Литературы и искуств",
-                    Actual=true,RequiredSum=220,
-                    Code="6665",
-                    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
-                    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
-                    EducationLinesRequirements=new List<EducationLineRequirement>
-                    {
-                        new EducationLineRequirement 
-                        {
-                            Requirement=70, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=50, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=80, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Литература").Id
-                        },
-                    }
-                },
-                new EducationLine 
-                {
-                    Name = "Исторический",
-                    Actual=true,RequiredSum=220,
-                    Code="6666",
-                    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
-                    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
-                    EducationLinesRequirements=new List<EducationLineRequirement>
-                    {
-                        new EducationLineRequirement 
-                        {
-                            Requirement=60, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=50, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
-                        },
-                        new EducationLineRequirement 
-                        {
-                            Requirement=80, 
-                            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="История").Id
-                        },
-                    }
-                }
+                //new EducationLine 
+                //{
+                //    Name = "Математика и информатика", 
+                //    Actual=true,
+                //    RequiredSum=260, 
+                //    Code="1122",
+                //    FacultyId=context.Faculties.First().Id,
+                //    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="1").Id,
+                //    EducationLinesRequirements=new List<EducationLineRequirement>
+                //    {
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=50, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=80, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=70, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                //        },
+                //    }
+                //},
+                //new EducationLine 
+                //{
+                //    Name = "Информатика", 
+                //    Actual=true,
+                //    RequiredSum=260, 
+                //    Code="1123",
+                //    FacultyId=context.Faculties.First().Id,
+                //    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="2").Id,
+                //    EducationLinesRequirements=new List<EducationLineRequirement>
+                //    {
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=50, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=65, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=85, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                //        },
+                //    }
+                //},
+                //new EducationLine 
+                //{
+                //    Name = "Физика",
+                //    Actual=true,RequiredSum=220,
+                //    Code="1124",
+                //    FacultyId=context.Faculties.First().Id,
+                //    GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                //    EducationLinesRequirements=new List<EducationLineRequirement>
+                //    {
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=50, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=70, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=80, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Физика").Id
+                //        },
+                //    }
+                //},
+                //new EducationLine 
+                //{
+                //    Name = "Литературы и искуств",
+                //    Actual=true,RequiredSum=220,
+                //    Code="6665",
+                //    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
+                //    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                //    EducationLinesRequirements=new List<EducationLineRequirement>
+                //    {
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=70, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=50, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=80, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Литература").Id
+                //        },
+                //    }
+                //},
+                //new EducationLine 
+                //{
+                //    Name = "Исторический",
+                //    Actual=true,RequiredSum=220,
+                //    Code="6666",
+                //    FacultyId=context.Faculties.Single(p=>p.Name=="Кафедра СПбГУ1").Id,
+                //    //GeneralEducationLineId=context.GeneralEducationLines.Single(p=>p.Code=="3").Id,
+                //    EducationLinesRequirements=new List<EducationLineRequirement>
+                //    {
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=60, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=50, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                //        },
+                //        new EducationLineRequirement 
+                //        {
+                //            Requirement=80, 
+                //            ExamDisciplineId=context.ExamDisciplines.Single(p=>p.Name=="История").Id
+                //        },
+                //    }
+                //}
             };
             foreach (var educationLine in educationLines)
             {
