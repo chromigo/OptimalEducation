@@ -63,7 +63,6 @@ namespace OptimalEducation.Migrations
         }
         private void CreateEntrantUsers()
         {
-
             var user = new ApplicationUser();
             user.UserName = "entrant";
             const string password = "entrant";
