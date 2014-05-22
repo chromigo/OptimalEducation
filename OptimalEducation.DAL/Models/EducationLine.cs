@@ -30,7 +30,7 @@ namespace OptimalEducation.DAL.Models
         /// Форма обучения (дневная, вечерная, заочная)
         /// </summary>
         [Display(Name = "Форма обучения")]
-        public string EducationForm { get; set; }
+        public EducationFormType? EducationForm { get; set; }
         /// <summary>
         /// Название направления
         /// </summary>
@@ -70,4 +70,16 @@ namespace OptimalEducation.DAL.Models
 
     }
 
+        
+    /// <summary>
+    /// Типы обучения на направлении
+    /// </summary>
+    public enum EducationFormType
+	{
+        InternalBachelor,
+        InternalSpecialist,
+        ExtramuralBachelor,
+        ExtramuralSpecialist,
+        Etc
+	}
 }
