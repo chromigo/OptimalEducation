@@ -116,12 +116,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
-    <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
-    <Content Include="SQLScripts\dbo.Entrants.data.sql" />
-    <Content Include="SQLScripts\dbo.UnitedStateExams.data.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201404191749513_Initialize.resx">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +134,15 @@
     <EmbeddedResource Include="Migrations\201405220909274_EducationFormEnum.resx">
       <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SQLScripts\create_db.sql" />
+    <Content Include="SQLScripts\dbo.Cities.data.sql" />
+    <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
+    <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
+    <Content Include="SQLScripts\dbo.Faculties.data.sql" />
+    <Content Include="SQLScripts\dbo.GeneralEducationLines.data.sql" />
+    <Content Include="SQLScripts\dbo.HigherEducationInstitutions.data.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
