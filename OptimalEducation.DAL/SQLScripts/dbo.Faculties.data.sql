@@ -51,6 +51,6 @@ INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitu
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (51, N'ФАКУЛЬТЕТ ПРЕДПРИНИМАТЕЛЬСТВА И ФИНАНСОВ', 75, 21)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (52, N'ГУМАНИТАРНЫЙ ФАКУЛЬТЕТ', 70, 21)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (53, N'ФАКУЛЬТЕТ ПРАВА И ЭКОНОМИЧЕСКОЙ БЕЗОПАСНОСТИ', 60, 21)
-INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (54, N'Исскуств', 70, 3)
+INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (54, N'Искусств ', 70, 3)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (55, N'Институт истории', 70, 3)
 SET IDENTITY_INSERT [dbo].[Faculties] OFF
