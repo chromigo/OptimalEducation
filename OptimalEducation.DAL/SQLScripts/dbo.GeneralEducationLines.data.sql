@@ -1,0 +1,16 @@
+SET IDENTITY_INSERT [dbo].[GeneralEducationLines] ON
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (1, N'010000', N'ЕСТЕСТВЕННО-НАУЧНЫЕ СПЕЦИАЛЬНОСТИ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (2, N'020000', N'ГУМАНИТАРНО-СОЦИАЛЬНЫЕ СПЕЦИАЛЬНОСТИ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (3, N'030000', N'ОБРАЗОВАНИЕ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (4, N'040000', N'ЗДРОВООХРАНЕНИЕ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (5, N'050000', N'КУЛЬТУРА И ИСКУССТВО')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (6, N'060000', N'ЭКОНОМИКА И УПРАВЛЕНИЕ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (7, N'070000', N'МЕЖДИСЦИПЛИНАРНЫЕ ЕСТЕСТВЕННО-ТЕХНИЧЕСКИЕ СПЕЦИАЛЬНОСТИ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (8, N'080000', N'ГЕОЛОГИЯ И РАЗВЕДКА ПОЛЕЗНЫХ ИСКОПАЕМЫХ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (9, N'090000', N'РАЗРАБОТКА ПОЛЕЗНЫХ ИСКОПАЕМЫХ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (10, N'100000', N'ЭНЕРГЕТИКА И ЭНЕРГОМАШИНОСТРОЕНИЕ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (11, N'110000', N'МЕТАЛЛУРГИЯ')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (12, N'120000', N'МАШИНОСТРОЕНИЕ И МАТЕРИАЛООБРАБОТКА')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (13, N'130000', N'АВИАЦИОННАЯ И РАКЕТНО-КОСМИЧЕСКАЯ ТЕХНИКА')
+INSERT INTO [dbo].[GeneralEducationLines] ([Id], [Code], [Name]) VALUES (14, N'140000', N'МОРСКАЯ ТЕХНИКА')
+SET IDENTITY_INSERT [dbo].[GeneralEducationLines] OFF
