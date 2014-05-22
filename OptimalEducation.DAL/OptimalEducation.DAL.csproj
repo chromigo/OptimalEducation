@@ -72,6 +72,10 @@
     <Compile Include="Migrations\201405202226447_HEIFullName.Designer.cs">
       <DependentUpon>201405202226447_HEIFullName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405220909274_EducationFormEnum.cs" />
+    <Compile Include="Migrations\201405220909274_EducationFormEnum.Designer.cs">
+      <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -132,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405202226447_HEIFullName.resx">
       <DependentUpon>201405202226447_HEIFullName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405220909274_EducationFormEnum.resx">
+      <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
