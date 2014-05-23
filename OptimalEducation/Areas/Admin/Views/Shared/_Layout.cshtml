@@ -20,7 +20,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("City", "Index", "City")</li>
+                    <li>@Html.ActionLink("Учебные направления", "Index", "City")</li>
+                    <li>@Html.ActionLink("Города", "Index", "EducationLines")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
