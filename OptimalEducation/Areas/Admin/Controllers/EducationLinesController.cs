@@ -42,10 +42,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
         // GET: Admin/EducationLines/Create
         public ActionResult Create()
         {
-            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
-                              select new { Id = faculty.Id, Name =faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
-            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
+            SelectedListShow();
             return View();
         }
 
@@ -63,8 +60,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name", educationLine.FacultyId);
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationLine.GeneralEducationLineId);
+            SelectedListShow();
+
             return View(educationLine);
         }
 
@@ -80,9 +77,18 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name", educationLine.FacultyId);
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationLine.GeneralEducationLineId);
+
+            SelectedListShow();
+
             return View(educationLine);
+        }
+
+        private void SelectedListShow()
+        {
+            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+                              select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
+            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
+            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
         }
 
         // POST: Admin/EducationLines/Edit/5
@@ -98,8 +104,9 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name", educationLine.FacultyId);
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code", educationLine.GeneralEducationLineId);
+
+            SelectedListShow();
+
             return View(educationLine);
         }
 
