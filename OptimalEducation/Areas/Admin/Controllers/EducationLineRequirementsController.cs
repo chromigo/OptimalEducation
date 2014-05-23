@@ -18,31 +18,20 @@ namespace OptimalEducation.Areas.Admin.Controllers
         private OptimalEducationDbContext db = new OptimalEducationDbContext();
 
         // GET: Admin/EducationLineRequirements
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int id)
         {
-            var educationLineRequirements = db.EducationLineRequirements.Include(e => e.EducationLine).Include(e => e.ExamDiscipline);
+            var educationLineRequirements = db.EducationLineRequirements
+                .Include(e => e.EducationLine)
+                .Include(e => e.ExamDiscipline)
+                .Where(p=>p.EducationLine.Id==id);
+            ViewBag.EducationLineId = id;
             return View(await educationLineRequirements.ToListAsync());
         }
 
-        // GET: Admin/EducationLineRequirements/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            EducationLineRequirement educationLineRequirement = await db.EducationLineRequirements.FindAsync(id);
-            if (educationLineRequirement == null)
-            {
-                return HttpNotFound();
-            }
-            return View(educationLineRequirement);
-        }
-
         // GET: Admin/EducationLineRequirements/Create
-        public ActionResult Create()
+        public ActionResult Create(int educationLineId)
         {
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code");
+            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code",educationLineId );
             ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name");
             return View();
         }
@@ -61,42 +50,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code", educationLineRequirement.EducationLineId);
-            ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationLineRequirement.ExamDisciplineId);
-            return View(educationLineRequirement);
-        }
-
-        // GET: Admin/EducationLineRequirements/Edit/5
-        public async Task<ActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            EducationLineRequirement educationLineRequirement = await db.EducationLineRequirements.FindAsync(id);
-            if (educationLineRequirement == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code", educationLineRequirement.EducationLineId);
-            ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationLineRequirement.ExamDisciplineId);
-            return View(educationLineRequirement);
-        }
-
-        // POST: Admin/EducationLineRequirements/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Requirement,EducationLineId,ExamDisciplineId")] EducationLineRequirement educationLineRequirement)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(educationLineRequirement).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code", educationLineRequirement.EducationLineId);
+            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Name", educationLineRequirement.EducationLineId);
             ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationLineRequirement.ExamDisciplineId);
             return View(educationLineRequirement);
         }

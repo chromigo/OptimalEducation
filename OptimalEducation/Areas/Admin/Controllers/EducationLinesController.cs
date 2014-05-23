@@ -60,7 +60,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            SelectedListShow();
+            SelecedListShow(educationLine);
 
             return View(educationLine);
         }
@@ -83,14 +83,6 @@ namespace OptimalEducation.Areas.Admin.Controllers
             return View(educationLine);
         }
 
-        private void SelectedListShow()
-        {
-            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
-                              select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
-            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
-        }
-
         // POST: Admin/EducationLines/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -105,7 +97,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            SelectedListShow();
+            SelecedListShow(educationLine);
 
             return View(educationLine);
         }
@@ -143,6 +135,22 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        private void SelectedListShow()
+        {
+            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+                              select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
+            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
+            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
+        }
+        private void SelecedListShow(EducationLine educationLine)
+        {
+            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+                              select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
+            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name", educationLine.FacultyId);
+            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationLine.GeneralEducationLineId);//select here id or code, or Name
         }
     }
 }

@@ -277,8 +277,6 @@
     <Content Include="Areas\Admin\Views\EducationLines\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EducationLineRequirements\Create.cshtml" />
     <Content Include="Areas\Admin\Views\EducationLineRequirements\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLineRequirements\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLineRequirements\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\EducationLineRequirements\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
