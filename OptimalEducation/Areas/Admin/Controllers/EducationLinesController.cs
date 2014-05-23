@@ -42,7 +42,9 @@ namespace OptimalEducation.Areas.Admin.Controllers
         // GET: Admin/EducationLines/Create
         public ActionResult Create()
         {
-            ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name");
+            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+                              select new { Id = faculty.Id, Name =faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
+            ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
             ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
             return View();
         }
