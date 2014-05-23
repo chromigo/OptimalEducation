@@ -25,6 +25,14 @@ namespace OptimalEducation.Areas.Admin.Controllers
                 .Include(e => e.ExamDiscipline)
                 .Where(p=>p.EducationLine.Id==id);
             ViewBag.EducationLineId = id;
+
+            int sum=0;
+            foreach (var item in educationLineRequirements)
+	        {
+		         sum+= item.Requirement;
+	        }
+            ViewBag.AvaliableSum = db.EducationLines.Find(id).RequiredSum.Value - sum;
+
             return View(await educationLineRequirements.ToListAsync());
         }
 
@@ -33,6 +41,16 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code",educationLineId );
             ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name");
+
+            var educationLineRequirements = db.EducationLineRequirements
+                .Where(p => p.EducationLine.Id == educationLineId);
+            int sum = 0;
+            foreach (var item in educationLineRequirements)
+            {
+                sum += item.Requirement;
+            }
+            ViewBag.AvaliableSum = db.EducationLines.Find(educationLineId).RequiredSum.Value - sum;
+
             return View();
         }
 
