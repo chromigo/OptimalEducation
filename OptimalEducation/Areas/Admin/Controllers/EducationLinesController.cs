@@ -8,9 +8,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Areas.Admin.Controllers
 {
+    [Authorize(Roles = Role.Admin)]
     public class EducationLinesController : Controller
     {
         private OptimalEducationDbContext db = new OptimalEducationDbContext();
@@ -41,7 +43,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
         public ActionResult Create()
         {
             ViewBag.FacultyId = new SelectList(db.Faculties, "Id", "Name");
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Code");
+            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
             return View();
         }
 

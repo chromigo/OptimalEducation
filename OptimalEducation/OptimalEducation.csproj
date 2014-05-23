@@ -180,6 +180,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\CityController.cs" />
+    <Compile Include="Areas\Admin\Controllers\EducationLineRequirementsController.cs" />
     <Compile Include="Areas\Admin\Controllers\EducationLinesController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OrientationController.cs" />
@@ -274,6 +275,11 @@
     <Content Include="Areas\Admin\Views\EducationLines\Details.cshtml" />
     <Content Include="Areas\Admin\Views\EducationLines\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\EducationLines\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\EducationLineRequirements\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\EducationLineRequirements\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\EducationLineRequirements\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\EducationLineRequirements\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\EducationLineRequirements\Index.cshtml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
