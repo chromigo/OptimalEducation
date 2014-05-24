@@ -193,6 +193,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 //Console.WriteLine(EdLine.Name + " REQUARES " + EdLine.RequiredSum.ToString());
                 foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
                 {
+                    if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                    {
+                        break;
+                    }
+
                     bool foundResult = false;
                     //Console.WriteLine("****** " + EdLineReq.ExamDiscipline.Name);
                     foreach (UnitedStateExam EntrExam in _entrant.UnitedStateExams)
@@ -221,6 +226,13 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.firstCriterionAcceptable = false;
                     EducationLine.requiredSum = Convert.ToInt32(EdLine.RequiredSum);
+                    foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
+                    {
+                        if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                        {
+                            EducationLine.requiredSum = EducationLine.requiredSum - Convert.ToInt32(EdLineReq.Requirement);
+                        }
+                    }
                     EducationLine.localPriority = 0;
 
                     FirstCriterionContainer.Add(EducationLine);
@@ -235,6 +247,13 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     EducationLine.firstCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
                     EducationLine.requiredSum = Convert.ToInt32(EdLine.RequiredSum);
+                    foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
+                    {
+                        if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                        {
+                            EducationLine.requiredSum = EducationLine.requiredSum - Convert.ToInt32(EdLineReq.Requirement);
+                        }
+                    }
                     EducationLine.entrantSum = entrExamSum;
                     EducationLine.weakenedDifficulty = WeakenedDifficultyResult(entrExamSum, Convert.ToInt32(EdLine.RequiredSum));
                     EducationLine.localPriority = 0;
