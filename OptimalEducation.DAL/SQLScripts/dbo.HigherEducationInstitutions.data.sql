@@ -12,7 +12,7 @@ INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [City
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (12, N'СФУ', 88, 7, 0, N'Сибирский федеральный университет')
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (13, N'РГУНиГ', 87, 2, 0, N'Российский государственный университет нефти и газа')
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (14, N'Финуниверситет', 86, 2, 0, N'Финансовый университет при Правительстве РФ')
-INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (15, N'ТГУ', 85, 8, 0, N'Томский государственный университет')
+INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (15, N'ТГУ', 85, 5, 0, N'Томский государственный университет')
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (16, N'КФУ', 84, 9, 0, N'Казанский (Приволжский) федеральный университет')
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (17, N'УРГУ', 81, 4, 0, N'Уральский федеральный университет ')
 INSERT INTO [dbo].[HigherEducationInstitutions] ([Id], [Name], [Prestige], [CityId], [Type], [FullName]) VALUES (18, N'ИТМО', 77, 3, 0, N'Санкт-Петербургский государственный университет информационных технологий, механики и оптики')
