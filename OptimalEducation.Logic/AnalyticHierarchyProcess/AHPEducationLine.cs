@@ -119,9 +119,18 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
         void CalculateAll()
         {
+            //foreach (EducationLineRequirement EdLineReq in _educationLine.EducationLinesRequirements)
+            //{
+            //    edLineRequiredSum += Convert.ToInt32(EdLineReq.Requirement);
+            //}
+
+            edLineRequiredSum = Convert.ToInt32(_educationLine.RequiredSum);
             foreach (EducationLineRequirement EdLineReq in _educationLine.EducationLinesRequirements)
             {
-                edLineRequiredSum += Convert.ToInt32(EdLineReq.Requirement);
+                if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                {
+                    edLineRequiredSum = edLineRequiredSum - Convert.ToInt32(EdLineReq.Requirement);
+                }
             }
 
             //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
@@ -161,6 +170,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 foreach (EducationLineRequirement EdLineReq in _educationLine.EducationLinesRequirements)
                 {
+                    if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                    {
+                        break;
+                    }
+
                     bool foundResult = false;
 
                     foreach (UnitedStateExam EntrExam in entrant.UnitedStateExams)

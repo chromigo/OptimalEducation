@@ -28,10 +28,26 @@ namespace OptimalEducation.DAL.Models
 
         public virtual ICollection<UnitedStateExam> UnitedStateExams { get; set; }
 
+        /// <summary>
+        /// Тип экзамена
+        /// </summary>
+        public ExamType ExamType { get; set; }
+        
         public virtual ICollection<EducationLineRequirement> EducationLineRequirements { get; set; }
 
         public virtual ICollection<Weight> Weights { get; set; }
 
+    }
+
+    /// <summary>
+    /// Типы экзаменов
+    /// </summary>
+    public enum ExamType
+    {
+        UnitedStateExam,
+        CustomWrittenExam,
+        CustomOralExam,
+        CustomExamOther
     }
 
 }

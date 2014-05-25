@@ -76,6 +76,18 @@
     <Compile Include="Migrations\201405220909274_EducationFormEnum.Designer.cs">
       <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405241923460_ExamType1.cs" />
+    <Compile Include="Migrations\201405241923460_ExamType1.Designer.cs">
+      <DependentUpon>201405241923460_ExamType1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241925208_ExamType2.cs" />
+    <Compile Include="Migrations\201405241925208_ExamType2.Designer.cs">
+      <DependentUpon>201405241925208_ExamType2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241931275_ExamType3.cs" />
+    <Compile Include="Migrations\201405241931275_ExamType3.Designer.cs">
+      <DependentUpon>201405241931275_ExamType3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -133,6 +145,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201405220909274_EducationFormEnum.resx">
       <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241923460_ExamType1.resx">
+      <DependentUpon>201405241923460_ExamType1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241925208_ExamType2.resx">
+      <DependentUpon>201405241925208_ExamType2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241931275_ExamType3.resx">
+      <DependentUpon>201405241931275_ExamType3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
