@@ -1,5 +1,4 @@
 ﻿SET IDENTITY_INSERT [dbo].[Faculties] ON
-INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (1, N'default_department', 100, 1)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (2, N'ПМ-ПУ', 70, 3)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (3, N'МАТМЕХ', 85, 3)
 INSERT INTO [dbo].[Faculties] ([Id], [Name], [Prestige], [HigherEducationInstitutionId]) VALUES (4, N'Филологический', 75, 3)

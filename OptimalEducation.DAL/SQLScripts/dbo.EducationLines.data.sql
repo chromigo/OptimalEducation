@@ -1,5 +1,4 @@
 ﻿SET IDENTITY_INSERT [dbo].[EducationLines] ON
-INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (1, NULL, 1, N'000000', NULL, N'IDEAL', 300, 1, 0, 0, 0)
 INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (2, 1, 2, N'010400', 1, N'Информационные технологии', 245, 1, 0, 10, 30)
 INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (3, 1, 2, N'010200', 1, N'Прикладная математика и информатика', 216, 1, 0, 1, 165)
 INSERT INTO [dbo].[EducationLines] ([Id], [GeneralEducationLineId], [FacultyId], [Code], [EducationForm], [Name], [RequiredSum], [Actual], [Price], [PaidPlacesNumber], [FreePlacesNumber]) VALUES (4, 1, 2, N'010501', 2, N'Прикладная математика и информатика', 231, 0, 0, 0, 0)
