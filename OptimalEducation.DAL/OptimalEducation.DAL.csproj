@@ -161,6 +161,7 @@
     <Content Include="SQLScripts\dbo.Cities.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
+    <Content Include="SQLScripts\dbo.ExamDisciplines.data.sql" />
     <Content Include="SQLScripts\dbo.Faculties.data.sql" />
     <Content Include="SQLScripts\dbo.GeneralEducationLines.data.sql" />
     <Content Include="SQLScripts\dbo.HigherEducationInstitutions.data.sql" />
