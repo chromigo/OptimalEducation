@@ -111,7 +111,14 @@ namespace OptimalEducation.Logic.Characterizer
         }
         void CreateUnatedStateExamPartSums(Dictionary<string, List<double>> unatedStateExamCharactericAddItems)
         {
-            foreach (var requirement in _educationLine.EducationLinesRequirements)
+            //Временная заглушка: если встречаем требование не по егэ(доп исптыание, например письм. экзамен по математика), то пропускаем его
+            var educationLineReq = _educationLine.EducationLinesRequirements.Where(p => p.ExamDiscipline.ExamType == ExamType.UnitedStateExam);
+
+            var test=_educationLine.EducationLinesRequirements.Where(p=>p.ExamDiscipline.ExamType!=ExamType.UnitedStateExam);
+            var t = 1;
+            if (test.Count() > 0)
+                t = 2;
+            foreach (var requirement in educationLineReq)
             {
                 var result = requirement.Requirement / 100.0;
                 var discipline = requirement.ExamDiscipline;
