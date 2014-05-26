@@ -35,8 +35,9 @@ namespace OptimalEducation.Logic.Characterizer
             IdealEducationLineResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
-        public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode=false)
+        public Dictionary<string, double> CalculateNormSum()
         {
+            bool isComlicatedMode = true;//TODO: Вынести куда-нибудь наружу
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
 

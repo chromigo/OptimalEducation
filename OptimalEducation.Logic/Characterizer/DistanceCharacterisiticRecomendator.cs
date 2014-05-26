@@ -18,11 +18,11 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-            var entratnCharacteristic = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum(true);//add true for complicated method
+            var entratnCharacteristic = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
-                var educationLineCharacterisic = new EducationLineCharacterizer(edLine, new EducationLineCalculationOptions()).CalculateNormSum(true);//add true for complicated method
+                var educationLineCharacterisic = new EducationLineCharacterizer(edLine, new EducationLineCalculationOptions()).CalculateNormSum();
 				//Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
                 //var v2 = CharacteristicDistance.GetChebishevDistance(entratnCharacteristic, educationLineCharacterisic);
@@ -54,7 +54,7 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<Entrant, double> GetRecomendationForEducationLine(EducationLine educationLine, List<Entrant> entrants)
 		{
 			//Вычисляем кластеры для направления и абитуриентов
-			var educationLineCharacterisic = new EducationLineCharacterizer(educationLine, new EducationLineCalculationOptions()).CalculateNormSum(false);
+			var educationLineCharacterisic = new EducationLineCharacterizer(educationLine, new EducationLineCalculationOptions()).CalculateNormSum();
 			var results = new Dictionary<Entrant, double>();
 			foreach (var entrant in entrants)
 			{

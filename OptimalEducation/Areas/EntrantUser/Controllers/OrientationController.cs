@@ -47,7 +47,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				.Where(e => e.Id == entrantId).SingleAsync();
 
             //Предпочтения пользователя по предметам и пр.
-            var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum(true);//add true for complicated method
+            var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
 			return View();
