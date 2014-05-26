@@ -30,7 +30,14 @@ namespace OptimalEducation.Logic.Characterizer
 					results.Add(edLine, compareResult.Value);
 				}
 			}
-			return results;
+
+            var sortedRes = new Dictionary<EducationLine, double>();
+            var orderdRes = results.OrderBy(p=>p.Value);
+            foreach (var item in orderdRes)
+            {
+                sortedRes.Add(item.Key, item.Value);
+            }
+            return sortedRes;
 		}
 		/// <summary>
 		/// Вычисляет рекомендации по абитуриентам для конкретного учебного направления
@@ -53,7 +60,14 @@ namespace OptimalEducation.Logic.Characterizer
 					results.Add(entrant, compareResult.Value);
 				}
 			}
-			return results;
+
+            var sortedRes = new Dictionary<Entrant, double>();
+            var orderdRes = results.OrderBy(p => p.Value);
+            foreach (var item in orderdRes)
+            {
+                sortedRes.Add(item.Key, item.Value);
+            }
+            return sortedRes;
 		}
 	}
 }

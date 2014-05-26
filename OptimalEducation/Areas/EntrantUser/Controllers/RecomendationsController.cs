@@ -55,7 +55,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			//Рекомендации:
 			//По методу сравнения расстояний мд характеристиками
-			ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+            ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
 			
 			//По методу многокритериального анализа
 			var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
