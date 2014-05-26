@@ -133,9 +133,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
             }
 
-            //Console.WriteLine("Total summ: " + edLineRequiredSum.ToString());
-
-
             if (_settings.FirstCriterionPriority > 0)
             {
                 InitialiseFirstCriterion();
@@ -181,7 +178,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     {
                         if (EntrExam.ExamDisciplineId == EdLineReq.ExamDisciplineId)
                         {
-                            //Console.WriteLine("****** Entrant has " + EntrExam.Result.ToString());
                             foundResult = true;
                             entrExamSum = entrExamSum + Convert.ToInt32(EntrExam.Result);
                             break;
@@ -191,14 +187,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     if (foundResult == false)
                     {
                         edLineAcceptable = false;
-                        //Console.WriteLine("****** Entrant has no such exam");
                         break;
                     }
                 }
                 if (edLineAcceptable == false)
                 {
-                    //Console.WriteLine("====== NOT ACCEPTABLE EXAMS");
-
                     FirstCriterionUnit User = new FirstCriterionUnit();
                     User.databaseId = Convert.ToInt32(entrant.Id);
                     User.localPriority = 0;
@@ -207,15 +200,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
                 else
                 {
-                    //Console.WriteLine("====== ENTRANT HAS TOTAL OF " + entrExamSum.ToString());
-
                     FirstCriterionUnit User = new FirstCriterionUnit();
                     User.databaseId = Convert.ToInt32(entrant.Id);
                     User.matrixId = counter;
                     User.entrantSum = entrExamSum;
                     User.localPriority = 0;
-
-                    //Console.WriteLine(">>>>>>>> USER RESULT: " + User.entrantSum);
 
                     counter++;
 
@@ -224,8 +213,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             }
 
             firstCriterionMatrixSize = counter;
-            //Console.WriteLine("TOTAL USERS TO GO: " + counter.ToString());
-            //Console.WriteLine("TOTAL USERS IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
         }
         
 
@@ -241,25 +228,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 {
                     int a = CalculatedDifficultyResult(FirstCriterionContainer.Find(x => x.matrixId == i).entrantSum);
                     int b = CalculatedDifficultyResult(FirstCriterionContainer.Find(y => y.matrixId == j).entrantSum);
-
-                    //Console.Write("    Pair is " + a.ToString());
-                    //Console.WriteLine(" - " + b.ToString());
-
+                    
                     pairwiseComparisonMatrix[i, j] = FirstCriterionCompare(a, b);
                 }
             }
 
             double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, firstCriterionMatrixSize);
 
-            //Console.WriteLine();
-
             for (int i = 0; i < firstCriterionMatrixSize; i++)
             {
                 FirstCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
-
             }
-            //Первый критерий закончил рачет приоритетов (локальных)
 
+            //Первый критерий закончил рачет приоритетов (локальных)
         }
 
 
@@ -307,11 +288,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 vectorCompSum = vectorCompSum + resultVector[i];
             }
-            //Console.WriteLine("> Eigenvector:");
             for (int i = 0; i < martixSize; i++)
             {
                 resultVector[i] = resultVector[i] / vectorCompSum;
-                //Console.WriteLine(resultVector[i].ToString());
             }
             return resultVector;
         }
@@ -326,43 +305,31 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             educationLineClusters = edLineClusterizer.CalculateNormSum();
             maxEdLineClusterSum = educationLineClusters.Values.Max();
 
-            foreach (var item in educationLineClusters)
-            {
-                if (item.Value == null)
-                {
-                    Console.WriteLine("Removing : " + item.Key);
-                    educationLineClusters.Remove(item.Key);
-                }
-            }
-
-            //foreach (var item in EdLineClusterizer.Characterisic)
+            //foreach (var item in educationLineClusters)
             //{
-            //    Console.WriteLine(item.Key.ToString());
+            //    if (item.Value == null)
+            //    {
+            //        Console.WriteLine("Removing : " + item.Key);
+            //        educationLineClusters.Remove(item.Key);
+            //    }
             //}
-            //Console.WriteLine("++++++++++++++++++++++++++");
-
 
             foreach (Entrant entrant in _entrants)
             {
                 bool userAcceptable = true;
 
-                var entrantCharacteristics = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
+                EntrantCalculationOptions entrClassOpt = new EntrantCalculationOptions(false, true, true, true, true, true);
+                var entrantCharacteristics = new EntrantCharacterizer(entrant, entrClassOpt).CalculateNormSum();
                 if (entrantCharacteristics.Count() <= 0) userAcceptable = false;
-
-                //Console.WriteLine(">>>>>entrant " + entrant.Id.ToString());
-                //foreach (var item in EntrClusterizer.Characterisic)
+                
+                //foreach (var item in entrantCharacteristics)
                 //{
-                //    Console.WriteLine(item.Key.ToString());
+                //    if (item.Value == null)
+                //    {
+                //        Console.WriteLine("Removing : " + item.Key);
+                //        entrantCharacteristics.Remove(item.Key);
+                //    }
                 //}
-
-                foreach (var item in entrantCharacteristics)
-                {
-                    if (item.Value == null)
-                    {
-                        Console.WriteLine("Removing : " + item.Key);
-                        entrantCharacteristics.Remove(item.Key);
-                    }
-                }
                 
                 foreach (var item in educationLineClusters)
                 {
@@ -374,44 +341,28 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 if (userAcceptable == false)
                 {
-                    //Console.WriteLine("====== NOT ACCEPTABLE CLUSTERS");
-
                     SecondCriterionUnit Entant = new SecondCriterionUnit();
                     Entant.databaseId = Convert.ToInt32(entrant.Id);
                     Entant.secondCriterionAcceptable = false;
                     Entant.localPriority = 0;
 
                     SecondCriterionContainer.Add(Entant);
-                    //Console.WriteLine(">>>>>entrant failed!");
-                    //Console.WriteLine("++++++++++++++++++++++++++");
                 }
                 else
                 {
-                    //Console.WriteLine("====== ENTRANT HAS THIS CLUSTERS");
-
                     SecondCriterionUnit Entant = new SecondCriterionUnit();
                     Entant.databaseId = Convert.ToInt32(entrant.Id);
                     Entant.secondCriterionAcceptable = true;
                     Entant.matrixId = totalAvailLines;
                     Entant.entrantClusters = entrantCharacteristics;
                     Entant.localPriority = 0;
-                    //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
                     totalAvailLines++;
 
                     SecondCriterionContainer.Add(Entant);
-                    //Console.WriteLine(">>>>>entrant SUCCES!");
-                    //Console.WriteLine("++++++++++++++++++++++++++");
                 }
             }
             secondCriterionMatrixSize = totalAvailLines;
-
-            //Console.WriteLine("MAX ENTRUNT CLUSTER SUM: " + maxEntrantClusterSum.ToString());
-
-            //Console.WriteLine("TOTAL LINES TO GO: " + totalAvailLines.ToString());
-            //Console.WriteLine("TOTAL LINES IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
-
-            //if (SecondCriterionContainer.Count > totalEducationLines) totalEducationLines = SecondCriterionContainer.Count;
         }
 
 
@@ -428,15 +379,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     double a = GetSecondCriterionEntruntValue(SecondCriterionContainer.Find(x => x.matrixId == i).entrantClusters);
                     double b = GetSecondCriterionEntruntValue(SecondCriterionContainer.Find(y => y.matrixId == j).entrantClusters);
                     pairwiseComparisonMatrix[i, j] = SecondCriterionCompare(a, b);
-
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
                 }
             }
             
             double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, secondCriterionMatrixSize);
-
-            //Console.WriteLine();
-
+            
             for (int i = 0; i < secondCriterionMatrixSize; i++)
             {
                 SecondCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
@@ -452,7 +399,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             double difference = 0;
             int clustersCount = 0;
 
-            //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EntClusters)
             {
                 if (!educationLineClusters.ContainsKey(item.Key)) continue;
@@ -466,11 +412,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 difference = +Math.Abs(normalizedEntrValue - normalizedEdLineValue);
 
-                //Console.WriteLine("EDLINE: " + normalizedEdLineValue.ToString());
-                //Console.WriteLine("ENTRANT " + normalizedEntrantValuse.ToString());
                 clustersCount++;
             }
-            //Console.WriteLine("++++++++++++++++++++++");
 
             return Math.Abs((Convert.ToDouble(clustersCount) - difference)) / Convert.ToDouble(clustersCount);
         }
@@ -502,12 +445,10 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 if ((entrant.City != null) && (entrant.City.Id == _educationLine.Faculty.HigherEducationInstitution.City.Id))
                 {
                     user.localUser = true;
-                    //Console.WriteLine(entrant.Id.ToString() + " is LOCAL");
                 }
                 else
                 {
                     user.localUser = false;
-                    //Console.WriteLine(entrant.Id.ToString() + " is NOT");
                 }
                 
                 counter++;
@@ -533,23 +474,17 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                     if (a == b) pairwiseComparisonMatrix[i, j] = 1.0;
                     else if (a == true) pairwiseComparisonMatrix[i, j] = 9.0;
-                    else pairwiseComparisonMatrix[i, j]  = 1.0/9.0;
-                    
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
+                    else pairwiseComparisonMatrix[i, j]  = 1.0/9.0;                    
                 }
             }
 
             double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, thirdCriterionMatrixSize);
 
-            //Console.WriteLine();
-
             for (int i = 0; i < thirdCriterionMatrixSize; i++)
             {
                 ThirdCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
             }
-
-            //Тертий критерий закончил рачет приоритетов (локальных)
-
+            //Третий критерий закончил рачет приоритетов (локальных)
         }
 
 
