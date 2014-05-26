@@ -76,6 +76,7 @@ namespace OptimalEducation.DAL.Migrations
                 {
                     Id = 2,
                     FirstName = "IDEAL",
+                    LastName="ЕРОХИН",
                     Gender = "Male",
                 };
                 //Добавляем ему результаты по ЕГЭ
@@ -101,15 +102,18 @@ namespace OptimalEducation.DAL.Migrations
                         });
                 }
                 //Добавляем ему результаты по олимпиадам(по всем???)
-                foreach (var olympiad in db.Olympiads)
+                for (int i = 0; i < 3; i++)
                 {
-                    entrant.ParticipationInOlympiads.Add(
-                        new ParticipationInOlympiad()
-                        {
-                            Entrant = entrant,
-                            Result = OlypmpiadResult.FirstPlace,
-                            Olympiad = olympiad
-                        });
+                    foreach (var olympiad in db.Olympiads)
+                    {
+                        entrant.ParticipationInOlympiads.Add(
+                            new ParticipationInOlympiad()
+                            {
+                                Entrant = entrant,
+                                Result = OlypmpiadResult.FirstPlace,
+                                Olympiad = olympiad
+                            });
+                    }
                 }
                 db.Entrants.Add(entrant);
                 db.SaveChanges();
@@ -691,13 +695,62 @@ namespace OptimalEducation.DAL.Migrations
                 {
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
+                new Olympiad {Name = "Биология", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "География", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
+                }},
+
+                new Olympiad {Name = "Обществознание", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "История", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Литература", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                }},
+
                 new Olympiad {Name = "Английский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.1},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.1},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Немецкий язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Французский язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Испанский язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
             };
             foreach (var olympiad in olympiads)

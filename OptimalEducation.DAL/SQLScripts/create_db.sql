@@ -4,7 +4,7 @@ PRINT ''
 
 :On Error exit
 
-USE DefaultConnection
+USE OptimalEducationDataBase
 
 PRINT 'FILLING DATABASE'
 
