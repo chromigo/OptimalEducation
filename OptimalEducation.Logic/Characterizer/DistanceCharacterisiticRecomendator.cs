@@ -24,13 +24,7 @@ namespace OptimalEducation.Logic.Characterizer
 			{
                 var educationLineCharacterisic = new EducationLineCharacterizer(edLine, new EducationLineCalculationOptions()).CalculateNormSum();
 				//Выполняем сравнение
-                var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
-                //var v2 = CharacteristicDistance.GetChebishevDistance(entratnCharacteristic, educationLineCharacterisic);
-                //var v3 = CharacteristicDistance.GetCityBlockDistance(entratnCharacteristic, educationLineCharacterisic);
-                
-                //var v5 = CharacteristicDistance.GetSquareEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
-
-                //var v4 = CharacteristicDistance.GetPowerDistance(entratnCharacteristic, educationLineCharacterisic,);
+                var compareResult = CharacteristicDistance.GetDistance(entratnCharacteristic, educationLineCharacterisic);
 				if(compareResult.HasValue)
 				{
 					results.Add(edLine, compareResult.Value);
@@ -60,7 +54,7 @@ namespace OptimalEducation.Logic.Characterizer
 			{
 				var entratnCharacterisic = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
 				//Выполняем сравнение
-				var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacterisic, educationLineCharacterisic);
+                var compareResult = CharacteristicDistance.GetDistance(entratnCharacterisic, educationLineCharacterisic);
 				if (compareResult.HasValue)
 				{
 					results.Add(entrant, compareResult.Value);
