@@ -10,6 +10,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
     public class PreferenceRelationCalculator
     {
         //SeparateCharacterisicsToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
+        const double diff = 0.05;
         //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
 
         Dictionary<string, double> _userCharacteristics;
@@ -19,14 +20,6 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
 
         public PreferenceRelationCalculator(Dictionary<string, double> userCharacteristics)
         {
-            //Временно: на данный момент не определисиь с конечной логикой сложения частных характеристик пользователя в общую
-            //Поэтому пока будет использовать нормирование по макс хар-ке
-            //var maxCharacteristic = GetMaxValue(userCharacteristics);
-            //foreach (var item in userCharacteristics)
-            //{
-            //    _userCharacteristics.Add(item.Key, item.Value / maxCharacteristic);
-            //}
-
             _userCharacteristics = userCharacteristics;
             SeparateCharacterisicsToImprotantAnd_Unimportant();
         }
@@ -71,11 +64,11 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             //При предположении что все значения у нас от 0 до 1
             //находим близкие по значению критерии - с разницей до -0,1
             _importantCharacterisics = (from characteristic in _userCharacteristics
-                                  where (characteristic.Value >= (maxCharacteristic - 0.101))
+                                        where (characteristic.Value >= (maxCharacteristic - diff))
                                   select characteristic).ToDictionary(p => p.Key, el => el.Value);
 
             _unImportantCharacterisics = (from characteristic in _userCharacteristics
-                                    where (characteristic.Value < (maxCharacteristic - 0.101))
+                                          where (characteristic.Value < (maxCharacteristic - diff))
                                     select characteristic).ToDictionary(p => p.Key, el => el.Value);
         }
         /// <summary>
