@@ -159,6 +159,46 @@
         }
 
     </table>
+
+    <h3>МАИ</h3>
+    <table class="table">
+        @{
+            var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<OptimalEducation.DAL.Models.Entrant, double>);
+        }
+        <tr>
+            <th>
+                Сходство
+            <th>
+                ФИО
+            </th>
+            <th>
+                Средная оценка
+            </th>
+            <th>
+                Город (откуда)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var recomendation in aphRecomendations)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Value)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.FirstName) @Html.DisplayFor(model => recomendation.Key.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.AverageMark)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => recomendation.Key.Citizenship)
+                </td>
+            </tr>
+        }
+
+    </table>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

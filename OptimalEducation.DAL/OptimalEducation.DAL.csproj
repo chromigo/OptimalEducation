@@ -68,6 +68,26 @@
     <Compile Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.Designer.cs">
       <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201405202226447_HEIFullName.cs" />
+    <Compile Include="Migrations\201405202226447_HEIFullName.Designer.cs">
+      <DependentUpon>201405202226447_HEIFullName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405220909274_EducationFormEnum.cs" />
+    <Compile Include="Migrations\201405220909274_EducationFormEnum.Designer.cs">
+      <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241923460_ExamType1.cs" />
+    <Compile Include="Migrations\201405241923460_ExamType1.Designer.cs">
+      <DependentUpon>201405241923460_ExamType1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241925208_ExamType2.cs" />
+    <Compile Include="Migrations\201405241925208_ExamType2.Designer.cs">
+      <DependentUpon>201405241925208_ExamType2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201405241931275_ExamType3.cs" />
+    <Compile Include="Migrations\201405241931275_ExamType3.Designer.cs">
+      <DependentUpon>201405241931275_ExamType3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParticipationInSchool.cs" />
     <Compile Include="OptimalEducationDbContext.cs" />
@@ -108,12 +128,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
-    <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
-    <Content Include="SQLScripts\dbo.Entrants.data.sql" />
-    <Content Include="SQLScripts\dbo.UnitedStateExams.data.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201404191749513_Initialize.resx">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
     </EmbeddedResource>
@@ -126,6 +140,31 @@
     <EmbeddedResource Include="Migrations\201404221055052_AddCharacteristicEnum_Into_Characteristics.resx">
       <DependentUpon>201404221055052_AddCharacteristicEnum_Into_Characteristics.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405202226447_HEIFullName.resx">
+      <DependentUpon>201405202226447_HEIFullName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405220909274_EducationFormEnum.resx">
+      <DependentUpon>201405220909274_EducationFormEnum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241923460_ExamType1.resx">
+      <DependentUpon>201405241923460_ExamType1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241925208_ExamType2.resx">
+      <DependentUpon>201405241925208_ExamType2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201405241931275_ExamType3.resx">
+      <DependentUpon>201405241931275_ExamType3.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SQLScripts\create_db.sql" />
+    <Content Include="SQLScripts\dbo.Cities.data.sql" />
+    <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
+    <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
+    <Content Include="SQLScripts\dbo.ExamDisciplines.data.sql" />
+    <Content Include="SQLScripts\dbo.Faculties.data.sql" />
+    <Content Include="SQLScripts\dbo.GeneralEducationLines.data.sql" />
+    <Content Include="SQLScripts\dbo.HigherEducationInstitutions.data.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -14,6 +14,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
     public class AHPUser
     {
         Entrant _entrant;
+        List<EducationLine> _educationLines = new List<EducationLine>();
+
         OptimalEducationDbContext context = new OptimalEducationDbContext();
         int totalEducationLines = 0;
 
@@ -91,15 +93,23 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
 
         #region Переменные и классы для сложения критериев в конечную оценку
+        /// <summary>
+        /// Отсортированный список с резульатами работы МАИ
+        /// </summary>
         public List<TotalResultUnit> AllCriterionContainer = new List<TotalResultUnit>();
+        /// <summary>
+        /// Класс с результатами измерений
+        /// </summary>
         public class TotalResultUnit
         {
+            //Id направления/ученика в базе данных
             public int databaseId;
+            //Необязательные для отображения параметры
             public double firstCriterionFinalPriority = 0;
             public double secondCriterionFinalPriority = 0;
             public double thirdCriterionFinalPriority = 0;
             public double fourthCriterionFinalPriority = 0;
-
+            //Приоритет направления
             public double absolutePriority = 0;
         }
         #endregion
@@ -108,10 +118,19 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         //Общие настройки метода и приоритеты критериев
         AHPUserSettings _settings;
 
-        public AHPUser(int userID, AHPUserSettings settings)
+        public AHPUser(Entrant entrantGiven, List<EducationLine> educationLinesGiven, AHPUserSettings settings)
         {
-            _entrant = context.Entrants.Find(userID);
+            _entrant = entrantGiven;
+            _educationLines = educationLinesGiven;
             _settings = settings;
+
+            CalculateAll();
+        }
+        public AHPUser(Entrant entrantGiven, List<EducationLine> educationLinesGiven)
+        {
+            _entrant = entrantGiven;
+            _educationLines = educationLinesGiven;
+            _settings = new AHPUserSettings();
 
             CalculateAll();
         }
@@ -119,9 +138,12 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         public AHPUser(int userID)
         {
             _entrant = context.Entrants.Find(userID);
+            foreach (var edLineInDB in context.EducationLines)
+            {
+                _educationLines.Add(edLineInDB);
+            }
             _settings = new AHPUserSettings();
 
-            //Console.WriteLine(_entrant.FirstName + " " + _entrant.LastName);
             CalculateAll();
         }
 
@@ -162,22 +184,24 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
                 int reqExamSum = 0;
                 int entrExamSum = 0;
                 bool edLineAcceptable = true;
 
-                //Console.WriteLine(EdLine.Name + " REQUARES " + EdLine.RequiredSum.ToString());
                 foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
                 {
+                    if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                    {
+                        break;
+                    }
+
                     bool foundResult = false;
-                    //Console.WriteLine("****** " + EdLineReq.ExamDiscipline.Name);
                     foreach (UnitedStateExam EntrExam in _entrant.UnitedStateExams)
                     {
                         if (EntrExam.ExamDisciplineId == EdLineReq.ExamDisciplineId)
                         {
-                            //Console.WriteLine("****** Entrant has " + EntrExam.Result.ToString());
                             foundResult = true;
                             entrExamSum = entrExamSum + Convert.ToInt32(EntrExam.Result);
                             break;
@@ -187,18 +211,23 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     if (foundResult == false)
                     {
                         edLineAcceptable = false;
-                        //Console.WriteLine("****** Entrant has no such exam");
                         break;
                     }
                 }
                 if (edLineAcceptable == false)
                 {
-                    //Console.WriteLine("====== NOT ACCEPTABLE EXAMS");
 
                     FirstCriterionUnit EducationLine = new FirstCriterionUnit();
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.firstCriterionAcceptable = false;
                     EducationLine.requiredSum = Convert.ToInt32(EdLine.RequiredSum);
+                    foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
+                    {
+                        if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                        {
+                            EducationLine.requiredSum = EducationLine.requiredSum - Convert.ToInt32(EdLineReq.Requirement);
+                        }
+                    }
                     EducationLine.localPriority = 0;
 
                     FirstCriterionContainer.Add(EducationLine);
@@ -206,27 +235,29 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 else
                 {
                     reqExamSum = Convert.ToInt32(EdLine.RequiredSum);
-                    //Console.WriteLine("====== ENTRANT HAS TOTAL OF " + entrExamSum.ToString());
 
                     FirstCriterionUnit EducationLine = new FirstCriterionUnit();
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.firstCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
                     EducationLine.requiredSum = Convert.ToInt32(EdLine.RequiredSum);
+                    foreach (EducationLineRequirement EdLineReq in EdLine.EducationLinesRequirements)
+                    {
+                        if (EdLineReq.ExamDiscipline.ExamType != ExamType.UnitedStateExam)
+                        {
+                            EducationLine.requiredSum = EducationLine.requiredSum - Convert.ToInt32(EdLineReq.Requirement);
+                        }
+                    }
                     EducationLine.entrantSum = entrExamSum;
                     EducationLine.weakenedDifficulty = WeakenedDifficultyResult(entrExamSum, Convert.ToInt32(EdLine.RequiredSum));
                     EducationLine.localPriority = 0;
-
-                    //Console.WriteLine(">>>>>>>> WEAK DIFF: " + EducationLine.weakenedDifficulty);
-
+                    
                     totalAvailLines++;
 
                     FirstCriterionContainer.Add(EducationLine);
                 }
             }
             firstCriterionMatrixSize = totalAvailLines;
-            //Console.WriteLine("TOTAL LINES TO GO: " + totalAvailLines.ToString());
-            //Console.WriteLine("TOTAL LINES IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
             if (FirstCriterionContainer.Count > totalEducationLines) totalEducationLines = FirstCriterionContainer.Count;
         }
 
@@ -234,11 +265,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         //Критерий трудности по ЕГЭ - расчеты приоритетов для всех подхолдящий направлений
         private void CalculateFirstCriterion()
         {
-            //Console.WriteLine();
-            //Console.WriteLine("======================================================================");
-            //Console.WriteLine("======================================================================");
-            //Console.WriteLine();
-
             double[,] pairwiseComparisonMatrix = new double[firstCriterionMatrixSize, firstCriterionMatrixSize];
 
             for (int i = 0; i < firstCriterionMatrixSize; i++)
@@ -250,26 +276,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     pairwiseComparisonMatrix[i, j] = FirstCriterionCompare(a, b);
                 }
             }
-            //Console.WriteLine();
-            //Console.WriteLine("Matrix size: " + firstCriterionMatrixSize);
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[0, 0].ToString() + "          " + pairwiseComparisonMatrix[0, 1].ToString() + "          " + pairwiseComparisonMatrix[0, 2].ToString() + "          " + pairwiseComparisonMatrix[0, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[1, 0].ToString() + "          " + pairwiseComparisonMatrix[1, 1].ToString() + "          " + pairwiseComparisonMatrix[1, 2].ToString() + "          " + pairwiseComparisonMatrix[1, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[2, 0].ToString() + "          " + pairwiseComparisonMatrix[2, 1].ToString() + "          " + pairwiseComparisonMatrix[2, 2].ToString() + "          " + pairwiseComparisonMatrix[2, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[3, 0].ToString() + "          " + pairwiseComparisonMatrix[3, 1].ToString() + "          " + pairwiseComparisonMatrix[3, 2].ToString() + "          " + pairwiseComparisonMatrix[3, 3].ToString());
-
-            //Console.WriteLine();
 
             double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, firstCriterionMatrixSize);
 
-            //Console.WriteLine();
 
             for (int i = 0; i < firstCriterionMatrixSize; i++)
             {
@@ -322,11 +331,9 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             {
                 vectorCompSum = vectorCompSum + resultVector[i];
             }
-            //Console.WriteLine("> Eigenvector:");
             for (int i = 0; i < martixSize; i++)
             {
                 resultVector[i] = resultVector[i] / vectorCompSum;
-                //Console.WriteLine(resultVector[i].ToString());
             }
             return resultVector;
         }
@@ -337,24 +344,40 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            entrantCharacteristics = new EntrantCharacterizer(_entrant).CalculateNormSum();
+            EntrantCalculationOptions entrClassOpt = new EntrantCalculationOptions(false, true, true, true, true, true);
+            entrantCharacteristics = new EntrantCharacterizer(_entrant, entrClassOpt).CalculateNormSum();
+            
+            //foreach (var item in entrantCharacteristics)
+            //{
+            //    if (item.Value == null)
+            //    {
+            //        Console.WriteLine("Removing : " + item.Key);
+            //        entrantCharacteristics.Remove(item.Key);
+            //    }
+            //}
+            
             maxEntrantClusterSum = entrantCharacteristics.Values.Max();
             
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
                 bool edLineAcceptable = true;
 
-                var edLineClusterizer = new EducationLineCharacterizer(EdLine);
+                var edLineClusterizer = new EducationLineCharacterizer(EdLine, new EducationLineCalculationOptions());
                 var edLineResult = edLineClusterizer.CalculateNormSum();
 
                 if (edLineResult.Count() <= 0) edLineAcceptable = false;
 
+                //foreach (var item in edLineResult)
+                //{
+                //    if (item.Value == null)
+                //    {
+                //        Console.WriteLine("Removing : " + item.Key);
+                //        edLineResult.Remove(item.Key);
+                //    }
+                //}
 
-                //Console.WriteLine(">EDLINE: " + EdLine.Name.ToString());
                 foreach (var item in edLineResult) 
                 {
-
-                    //Console.WriteLine("cluster " + item.Key.ToString() + " has " + item.Value.ToString());
                     if (!entrantCharacteristics.ContainsKey(item.Key))
                     {
                         edLineAcceptable = false;
@@ -363,8 +386,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 if (edLineAcceptable == false)
                 {
-                    //Console.WriteLine("====== NOT ACCEPTABLE CLUSTERS");
-
                     SecondCriterionUnit EducationLine = new SecondCriterionUnit();
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = false;
@@ -374,15 +395,12 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 }
                 else
                 {
-                    //Console.WriteLine("====== ENTRANT HAS THIS CLUSTERS");
-
                     SecondCriterionUnit EducationLine = new SecondCriterionUnit();
                     EducationLine.databaseId = Convert.ToInt32(EdLine.Id);
                     EducationLine.secondCriterionAcceptable = true;
                     EducationLine.matrixId = totalAvailLines;
                     EducationLine.educationLineClusters = edLineResult;
                     EducationLine.localPriority = 0;
-                    //Console.WriteLine("====== MAX EDLINE CLUSTER SUM: " + EdLineClusterizer.Characterisic.Values.Max());
 
                     totalAvailLines++;
 
@@ -391,11 +409,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             }
             secondCriterionMatrixSize = totalAvailLines;
 
-            //Console.WriteLine("MAX ENTRUNT CLUSTER SUM: " + maxEntrantClusterSum.ToString());
-
-            //Console.WriteLine("TOTAL LINES TO GO: " + totalAvailLines.ToString());
-            //Console.WriteLine("TOTAL LINES IN CONTAINER: " + FirstCriterionContainer.Count.ToString());
-
             if (SecondCriterionContainer.Count > totalEducationLines) totalEducationLines = SecondCriterionContainer.Count;
         }
 
@@ -403,11 +416,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         //Критерий совпадения кластеров - расчеты приоритетов для всех подхолдящий направлений
         private void CalculateSecondCriterion()
         {
-            //Console.WriteLine();
-            //Console.WriteLine("======================================================================");
-            //Console.WriteLine("======================================================================");
-            //Console.WriteLine();
-
             double[,] pairwiseComparisonMatrix = new double[secondCriterionMatrixSize, secondCriterionMatrixSize];
 
             for (int i = 0; i < secondCriterionMatrixSize; i++)
@@ -418,30 +426,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     double b = GetSecondCriterionEdLineValue(SecondCriterionContainer.Find(y => y.matrixId == j).educationLineClusters);
                     pairwiseComparisonMatrix[i, j] = SecondCriterionCompare(a, b);
 
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
                 }
             }
-            //Console.WriteLine();
-            //Console.WriteLine("Matrix size: " + secondCriterionMatrixSize);
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[0, 0].ToString() + "          " + pairwiseComparisonMatrix[0, 1].ToString() + "          " + pairwiseComparisonMatrix[0, 2].ToString() + "          " + pairwiseComparisonMatrix[0, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[1, 0].ToString() + "          " + pairwiseComparisonMatrix[1, 1].ToString() + "          " + pairwiseComparisonMatrix[1, 2].ToString() + "          " + pairwiseComparisonMatrix[1, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[2, 0].ToString() + "          " + pairwiseComparisonMatrix[2, 1].ToString() + "          " + pairwiseComparisonMatrix[2, 2].ToString() + "          " + pairwiseComparisonMatrix[2, 3].ToString());
-
-            //Console.WriteLine();
-            //Console.Write(pairwiseComparisonMatrix[3, 0].ToString() + "          " + pairwiseComparisonMatrix[3, 1].ToString() + "          " + pairwiseComparisonMatrix[3, 2].ToString() + "          " + pairwiseComparisonMatrix[3, 3].ToString());
-
-            //Console.WriteLine();
 
             double[] resultVector = CalcEigenvectors(pairwiseComparisonMatrix, secondCriterionMatrixSize);
-
-            //Console.WriteLine();
-
+            
             for (int i = 0; i < secondCriterionMatrixSize; i++)
             {
                 SecondCriterionContainer.Find(x => x.matrixId == i).localPriority = resultVector[i];
@@ -457,7 +446,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             double difference = 0;
             int clustersCount = 0;
 
-            //Console.WriteLine("++++++++++++++++++++++");
             foreach (var item in EdLineClusters)
             {
                 if (!entrantCharacteristics.ContainsKey(item.Key)) continue;
@@ -469,12 +457,8 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                 difference =+ Math.Abs(normalizedEdLineValue - normalizedEntrantValuse);
 
-                //Console.WriteLine("EDLINE: " + normalizedEdLineValue.ToString());
-                //Console.WriteLine("ENTRANT " + normalizedEntrantValuse.ToString());
                 clustersCount++;
             }
-            //Console.WriteLine("++++++++++++++++++++++");
-
             return Math.Abs((Convert.ToDouble(clustersCount) - difference)) / Convert.ToDouble(clustersCount);
         }
 
@@ -494,7 +478,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int counter = 0;
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
 
                 ThirdCriterionUnit EducationLine = new ThirdCriterionUnit();
@@ -532,8 +516,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                     double b = GetThirdCriterionEdLineValue(ThirdCriterionContainer.Find(y => y.matrixId == j).facultyPrestige);
                     
                     pairwiseComparisonMatrix[i, j] = a/b;
-
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
                 }
             }
 
@@ -553,7 +535,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                     pairwiseComparisonMatrix[i, j] = a / b;
 
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
                 }
             }
 
@@ -584,7 +565,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
             Console.WriteLine(_settings.FourthCriterionExactLocation.ToString());
 
-            foreach (EducationLine EdLine in context.EducationLines)
+            foreach (EducationLine EdLine in _educationLines)
             {
 
                 if (_settings.FourthCriterionExactLocation == true)
@@ -656,7 +637,6 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
 
                     pairwiseComparisonMatrix[i, j] = FourthCriterionCompare(a, b);
                     
-                    //Console.WriteLine("???? compare result: " + pairwiseComparisonMatrix[i, j].ToString());
                 }
             }
 
@@ -835,5 +815,34 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
                 else fourthCriterionPriority = 0;
             }
         }
+
+        public AHPUserSettings(double firstPriority, double secondPriority, double thirdPriority, double fourthPriority,
+                            int lazyGap, bool exactLocation, int cityId)
+        {
+            firstCriterionPriority = firstPriority;
+            secondCriterionPriority = secondPriority;
+            thirdCriterionPriority = thirdPriority;
+            fourthCriterionPriority = fourthPriority;
+
+            firstCriterionLazyGap = lazyGap;
+            fourthCriterionExactLocation = exactLocation;
+            fourthCriterionCityID = cityId;
+
+
+            if (fourthCriterionPriority > 0)
+            {
+                if (fourthCriterionCityID != 0)
+                {
+                    //Лучше без контекста(убрать вообще проверку, принять что у всех городов есть координаты)
+                    if (context.Cities.Find(fourthCriterionCityID).Location == null)
+                    {
+                        fourthCriterionExactLocation = true;
+                    }
+                }
+                else fourthCriterionPriority = 0;
+            }
+        }
+
+
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.DAL.Models;
 
+
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]
@@ -70,7 +71,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 					db.Entry(exam).State = EntityState.Modified;
 				}
 				await db.SaveChangesAsync();
-				return RedirectToAction("Index");
+                return RedirectToAction("Index");
 			}
 
 			return View(unitedStateExams);

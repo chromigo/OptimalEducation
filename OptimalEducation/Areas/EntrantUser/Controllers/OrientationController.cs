@@ -12,22 +12,23 @@ using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Logic.MulticriterialAnalysis;
 using OptimalEducation.Logic.AnalyticHierarchyProcess;
+using System.Diagnostics;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]
-	public class InfoController : Controller
+	public class OrientationController : Controller
 	{
 		private OptimalEducationDbContext db = new OptimalEducationDbContext();
 		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
 
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
-		public InfoController()
+		public OrientationController()
 		{
 			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
 		}
-		public InfoController(UserManager<ApplicationUser> userManager)
+		public OrientationController(UserManager<ApplicationUser> userManager)
 		{
 			UserManager = userManager;
 		}
@@ -35,27 +36,21 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Info/
 		public async Task<ActionResult> Index()
 		{
-            //Отобразить характеристики текущего пользователя
 			var entrantId = await GetEntrantId();
 			var entrant = await db.Entrants
-				.FindAsync(entrantId);
+				.Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+				.Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
+				.Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+				.Include(e => e.Hobbies.Select(h => h.Weights))
+				.Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+				.Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+				.Where(e => e.Id == entrantId).SingleAsync();
 
-            var entrantCharacteristics = new EntrantCharacterizer(entrant).CalculateNormSum();
-            
-            //Отобразить рекомендуемые учебные направления
+            //Предпочтения пользователя по предметам и пр.
+            var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
+            ViewBag.Preferences = entrantCharacteristics;
 
-            //По методу сравнения расстояний мд характеристиками
-            var educationLines = await db.EducationLines
-                .Where(p => p.Actual == true)
-                .ToListAsync();
-            ViewBag.RecomendationForEntrant = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
-            //По методу многокритериального анализа
-            var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
-            ViewBag.MulticriterialRecomendations = multicriterialAnalyzer.Calculate();
-            //По МАИ
-            //var AHPAnalyzer=new AHPUser(entrantId,)
-            //ViewBag.APHRecomendations = 
-            return View(entrantCharacteristics);
+			return View();
 		}
 
 		private async Task<int> GetEntrantId()

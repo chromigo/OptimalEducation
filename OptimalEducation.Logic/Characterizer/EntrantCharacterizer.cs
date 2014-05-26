@@ -1,7 +1,9 @@
 ﻿using OptimalEducation.DAL.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,50 +11,58 @@ namespace OptimalEducation.Logic.Characterizer
 {
     public class EntrantCharacterizer
     {
-        EntrantSummator entrantCharacterizer;
-        List<string> educationCharacterisiticNames;
+        EntrantSummator entrantSummator;
+        static List<string> educationCharacterisiticNames;
+        Dictionary<string, double> totalCharacteristics;
 
-        public EntrantCharacterizer(Entrant entrant)
+        public EntrantCharacterizer(Entrant entrant, EntrantCalculationOptions options)
         {
-            //характеристики для нашего направления
-            entrantCharacterizer = new EntrantSummator(entrant);
-            //(характеристики для идеального направления вычисляются в статическом классе)
+            if(educationCharacterisiticNames==null)
+            {
+                OptimalEducationDbContext context = new OptimalEducationDbContext();
+                educationCharacterisiticNames = context.Characteristics
+                    .Where(p => p.Type == CharacteristicType.Education)
+                    .Select(p => p.Name)
+                    .ToList();
+            }
 
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+
+            totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
+
+            //характеристики для нашего направления
+            entrantSummator = new EntrantSummator(entrant, options, educationCharacterisiticNames);
+            IdealEntrantResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
-        public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode = false)
+        public Dictionary<string, double> CalculateNormSum()
         {
+            bool isComlicatedMode = true;//TODO: задать где-нибудь снаружи...
+
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
 
             //Здесь выбираем метод которым формируем результат
             if (isComlicatedMode)
             {
-                sum = entrantCharacterizer.CalculateComplicatedSum();
-                idealResult = IdealEntrantResult.ComplicatedResult;
+                sum = entrantSummator.CalculateComplicatedSum();
+                idealResult = IdealEntrantResult.GetComplicatedResult();
             }
             else
             {
-                sum = entrantCharacterizer.CalculateSimpleSum();
-                idealResult = IdealEntrantResult.SimpleResult;
+                sum = entrantSummator.CalculateSimpleSum();
+                idealResult = IdealEntrantResult.GetSimpleResult();
             }
-
-            var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
-            }
-
+            
             //Нормируем
             foreach (var item in sum)
             {
                 totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
+
             return totalCharacteristics;
         }
     }
@@ -60,21 +70,14 @@ namespace OptimalEducation.Logic.Characterizer
     public class EntrantSummator
     {
         Entrant _entrant;
+        EntrantCalculationOptions _options;
         List<string> educationCharacterisiticNames;
 
-        public EntrantSummator(Entrant entrant)
+        public EntrantSummator(Entrant entrant, EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
         {
             _entrant = entrant;
-            InitCharacterisitcs();
-        }
-        private void InitCharacterisitcs()
-        {
-            //Заполняем словарь всеми ключами по возможным весам
-            OptimalEducationDbContext context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
-                .Where(p => p.Type == CharacteristicType.Education)
-                .Select(p => p.Name)
-                .ToList();
+            _options = options;
+            this.educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
         #region Построение словарей с характеристиками
@@ -183,16 +186,8 @@ namespace OptimalEducation.Logic.Characterizer
             }
         }
 
-        private Dictionary<string, double> SectionCharacterising()
+        private void CreateSectionPartSums(Dictionary<string, List<double>> sectionCharacteristicAddItems)
         {
-            Dictionary<string, List<double>> sectionCharactericAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                sectionCharactericAddItems.Add(name, new List<double>());
-                resultCharacteristics.Add(name, 0);
-            }
-
             foreach (var sectionResult in _entrant.ParticipationInSections)
             {
                 double result = 0;
@@ -212,34 +207,13 @@ namespace OptimalEducation.Logic.Characterizer
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = result * coeff;
 
-                    sectionCharactericAddItems[characteristicName].Add(characteristicResult);
+                    sectionCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in sectionCharactericAddItems)
-            {
-                var itemList = (from elem in item.Value
-                                orderby elem descending
-                                select elem).ToList();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
 
-        private Dictionary<string, double> HobbieCharacterising()
+        private void CreateHobbiePartSums(Dictionary<string, List<double>> hobbieCharacteristicAddItems)
         {
-            Dictionary<string, List<double>> hobbieCharactericAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                hobbieCharactericAddItems.Add(name, new List<double>());
-                resultCharacteristics.Add(name, 0);
-            }
-
             foreach (var hobbieResult in _entrant.Hobbies)
             {
                 foreach (var weight in hobbieResult.Weights)
@@ -252,34 +226,13 @@ namespace OptimalEducation.Logic.Characterizer
                     double someValue = 1;
                     double characteristicResult = someValue * coeff;
 
-                    hobbieCharactericAddItems[characteristicName].Add(characteristicResult);
+                    hobbieCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in hobbieCharactericAddItems)
-            {
-                var itemList = (from elem in item.Value
-                                orderby elem descending
-                                select elem).ToList();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
 
-        private Dictionary<string, double> SchoolTypeCharacterising()
+        private void CreateSchoolTypePartSums(Dictionary<string, List<double>> schoolTypeCharacteristicAddItems)
         {
-            Dictionary<string, List<double>> schoolTypeCharactericAddItems = new Dictionary<string, List<double>>();
-            Dictionary<string, double> resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                schoolTypeCharactericAddItems.Add(name, new List<double>());
-                resultCharacteristics.Add(name, 0);
-            }
-
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
             var lastParticipationInSchool = _entrant.ParticipationInSchools.LastOrDefault();
@@ -296,22 +249,9 @@ namespace OptimalEducation.Logic.Characterizer
                     //TODO: Реализовать особую логику учета данных?
                     double characteristicResult = quality * coeff;
 
-                    schoolTypeCharactericAddItems[characteristicName].Add(characteristicResult);
+                    schoolTypeCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
-
-            //TODO: Логика суммирования
-            foreach (var item in schoolTypeCharactericAddItems)
-            {
-                var itemList = (from elem in item.Value
-                                orderby elem descending
-                                select elem).ToList();
-                //Складываем
-                double sum = 0;
-                //TODO: сложить по правилу
-                resultCharacteristics[item.Key] = sum;
-            }
-            return resultCharacteristics;
         }
         #endregion
 
@@ -323,58 +263,141 @@ namespace OptimalEducation.Logic.Characterizer
         /// <returns></returns>
         public Dictionary<string, double> CalculateSimpleSum()
         {
-            //Вычисляем частичные характеристики
-            //в результатер работы каждой функции получается новая таблица характеристик
-            var unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
-            var schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
-            var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
-            //TODO: Остальные методы(хобби, секции и пр)
-
-
             var totalCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)
             {
                 totalCharacteristics.Add(name, 0);
             }
-            //Просто складываем и делим на норм. число
-            //(Или складываем по аналогии с геом. прогрессией и делим на норм число?)
-            foreach (var item in unatedStateExamCharacteristics)
+
+            //Вычисляем частичные характеристики
+            //в результатер работы каждой функции получается новая таблица характеристик
+            Dictionary<string, double> unatedStateExamCharacteristics;
+            Dictionary<string, double> schoolMarkCharacteristics;
+            Dictionary<string, double> olympiadCharacteristics;
+            Dictionary<string, double> sectionCharacteristics;
+            Dictionary<string, double> hobbieCharacteristics;
+            Dictionary<string, double> schoolTypeCharacteristics;
+
+            
+            if (_options.IsCalculateUnateStateExam)
             {
-                totalCharacteristics[item.Key] += item.Value;
+                unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
+                foreach (var item in unatedStateExamCharacteristics)
+                {
+                    totalCharacteristics[item.Key] += item.Value;
+                }
             }
-            foreach (var item in schoolMarkCharacteristics)
+            if (_options.IsCalculateSchoolMark)
             {
-                totalCharacteristics[item.Key] += item.Value;
+                schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
+                foreach (var item in schoolMarkCharacteristics)
+                {
+                    totalCharacteristics[item.Key] += item.Value;
+                }
             }
-            foreach (var item in olympiadCharacteristics)
+            if (_options.IsCalculateOlympiad)
             {
-                totalCharacteristics[item.Key] += item.Value;
+                olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
+                foreach (var item in olympiadCharacteristics)
+                {
+                    totalCharacteristics[item.Key] += item.Value;
+                }
             }
+            //if (_options.IsCalculateSection)
+            //{
+            //    sectionCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var item in sectionCharacteristics)
+            //    {
+            //        totalCharacteristics[item.Key] += item.Value;
+            //    }
+            //}
+            //if (_options.IsCalculateHobbie)
+            //{
+            //    hobbieCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var item in hobbieCharacteristics)
+            //    {
+            //        totalCharacteristics[item.Key] += item.Value;
+            //    }
+            //}
+            //if (_options.IsCalculateSchoolMark)
+            //{
+            //    schoolTypeCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var item in schoolTypeCharacteristics)
+            //    {
+            //        totalCharacteristics[item.Key] += item.Value;
+            //    }
+            //}
 
             return totalCharacteristics;
         }
         public Dictionary<string, double> CalculateComplicatedSum()
-        {
-            //Вычисляем частичные характеристики
-            //в результатер работы каждой функции получается новая таблица характеристик
-            var unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
-            var schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
-            var olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
-            //TODO: Остальные методы(хобби, секции и пр)
-
-            //Cкладываем по аналогии с геом. прогрессией и делим на норм число
+        {   
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
             foreach (var name in educationCharacterisiticNames)
             {
-                characteristicAddItems.Add(name, new List<double>()
-                    {
-                        unatedStateExamCharacteristics[name],
-                        schoolMarkCharacteristics[name],
-                        olympiadCharacteristics[name]
-                    });
+                characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
             }
+
+            Dictionary<string, double> unatedStateExamCharacteristics;
+            Dictionary<string, double> schoolMarkCharacteristics;
+            Dictionary<string, double> olympiadCharacteristics;
+            Dictionary<string, double> sectionCharacteristics;
+            Dictionary<string, double> hobbieCharacteristics;
+            Dictionary<string, double> schoolTypeCharacteristics;
+            //Вычисляем частичные характеристики
+            //в результатер работы каждой функции получается новая таблица характеристик, которую мы добавляем в общий список
+            if (_options.IsCalculateUnateStateExam)
+            {
+                unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums);
+                foreach (var name in educationCharacterisiticNames)
+                {
+                    characteristicAddItems[name].Add(unatedStateExamCharacteristics[name]);
+                }
+            }
+            if (_options.IsCalculateSchoolMark)
+            {
+                schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums);
+                foreach (var name in educationCharacterisiticNames)
+                {
+                    characteristicAddItems[name].Add(schoolMarkCharacteristics[name]);
+                }
+            }
+            if (_options.IsCalculateOlympiad)
+            {
+                olympiadCharacteristics = Characterising(CreateOlympiadPartSums);
+                foreach (var name in educationCharacterisiticNames)
+                {
+                    characteristicAddItems[name].Add(olympiadCharacteristics[name]);
+                }
+            }
+            //if (_options.IsCalculateSection)
+            //{
+            //    sectionCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(sectionCharacteristics[name]);
+            //    }
+            //}
+            //if (_options.IsCalculateHobbie)
+            //{
+            //    hobbieCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(hobbieCharacteristics[name]);
+            //    }
+            //}
+            //if (_options.IsCalculateSchoolType)
+            //{
+            //    schoolTypeCharacteristics = Characterising(CreateOlympiadPartSums);
+            //    foreach (var name in educationCharacterisiticNames)
+            //    {
+            //        characteristicAddItems[name].Add(schoolTypeCharacteristics[name]);
+            //    }
+            //}
+
+            //Cкладываем по аналогии с геом. прогрессией и делим на норм число
             foreach (var item in characteristicAddItems)
             {
                 var itemList = (from elem in  item.Value
@@ -397,42 +420,109 @@ namespace OptimalEducation.Logic.Characterizer
     }
 
     /// <summary>
-    /// Статичный класс для вычислений 1 раз и получения в дальнейшем идеального результата(для абитуриента).
+    /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
     public static class IdealEntrantResult
     {
+        static EntrantCalculationOptions _options;
+        static List<string> _educationCharacterisiticNames;
+        static bool isNewOptions;
+        //Задает/обновляет настройки статического класса.
+        public static void SetUpSettings(EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
+        {
+            if (_options == null)
+                _options = options;
+            else if (_options.IsCalculateUnateStateExam != options.IsCalculateUnateStateExam)
+            {
+                _options = options;
+                isNewOptions = true;
+            }
+
+            _educationCharacterisiticNames = educationCharacterisiticNames;
+        }
+
         //Для 1-го предположения(простое сложение+ нормир)
         static Dictionary<string, double> simpleResult;
-        public static Dictionary<string, double> SimpleResult
+        public static Dictionary<string, double> GetSimpleResult()
         {
-            get 
+            if (simpleResult == null || isNewOptions)
             {
-                if (simpleResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantSummator(idealEntrant);
-                    simpleResult = characterizer.CalculateSimpleSum();
-                }
-                return simpleResult;
+                var db = new OptimalEducationDbContext();
+                var idealEntrant = db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse => pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
+                var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
+                simpleResult = characterizer.CalculateSimpleSum();
+                isNewOptions = false;
             }
+            return simpleResult;
         }
         //Для 2-го предположения(геом сложение+ нормир)
         static Dictionary<string, double> complicatedResult;
-        public static Dictionary<string, double> ComplicatedResult
+        public static Dictionary<string, double> GetComplicatedResult()
         {
-            get
+            if (complicatedResult == null || isNewOptions)
             {
-                if (complicatedResult == null)
-                {
-                    var context = new OptimalEducationDbContext();
-                    var idealEntrant = context.Entrants.Find(2);
-                    var characterizer = new EntrantSummator(idealEntrant);
-                    complicatedResult = characterizer.CalculateComplicatedSum();
-                }
-                return complicatedResult;
+                var db = new OptimalEducationDbContext();
+                var idealEntrant =db.Entrants
+                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
+                    .Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
+                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
+                    .Include(e => e.Hobbies.Select(h => h.Weights))
+                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
+                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .Where(e => e.Id == 2).Single();
+                var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
+                complicatedResult = characterizer.CalculateComplicatedSum();
+                isNewOptions = false;
             }
+            return complicatedResult;
+        }
+    }
+
+    /// <summary>
+    /// Насктройки, в которых указывается, какие данные пользователя учитывать.
+    /// Стандартный конструкор без параметров - вычислять все.
+    /// </summary>
+    public class EntrantCalculationOptions
+    {
+        public bool IsCalculateUnateStateExam { get; private set; }
+        public bool IsCalculateSchoolMark { get; private set; }
+        public bool IsCalculateOlympiad { get; private set; }
+        public bool IsCalculateSection { get; private set; }
+        public bool IsCalculateHobbie { get; private set; }
+        public bool IsCalculateSchoolType { get; private set; }
+
+        public EntrantCalculationOptions(
+            bool IsCalculateUnateStateExam,
+            bool IsCalculateSchoolMark,
+            bool IsCalculateOlympiad,
+            bool IsCalculateSection,
+            bool IsCalculateHobbie,
+            bool IsCalculateSchoolType)
+        {
+            this.IsCalculateUnateStateExam = IsCalculateUnateStateExam;
+            this.IsCalculateSchoolMark = IsCalculateSchoolMark;
+            this.IsCalculateOlympiad = IsCalculateOlympiad;
+            this.IsCalculateSection = IsCalculateSection;
+            this.IsCalculateHobbie = IsCalculateHobbie;
+            this.IsCalculateSchoolType = IsCalculateSchoolType;
+        }
+
+        public EntrantCalculationOptions()
+        {
+            this.IsCalculateUnateStateExam = true;
+            this.IsCalculateSchoolMark = true;
+            this.IsCalculateOlympiad = true;
+            this.IsCalculateSection = true;
+            this.IsCalculateHobbie = true;
+            this.IsCalculateSchoolType = true;
         }
     }
 }

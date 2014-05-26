@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using System.Globalization;
+@using OptimalEducation.DAL.Models;
+
+<h3>Метод сравнения расстояний(Евклидова метрика)</h3>
+<table class="table">
+    @{
+        var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<EducationLine, double>);
+    }
+    <tr>
+        <th>№</th>
+        <th>Название ВУЗ-а</th>
+        <th>Название факультета</th>
+        <th>Название направления</th>
+        <th>Код направления</th>
+        <th>Близость (меньше-лучше, debug)</th>
+        <th></th>
+    </tr>
+    @{int count = 0;}
+    @foreach (var recomendation in distanceRecomendations)
+    {
+        count++;
+        var percentageValue = recomendation.Value * 100;
+        <tr>
+            <td>@count</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
+            <td>@percentageValue.ToString("0.000", CultureInfo.InvariantCulture)</td>
+
+        </tr>
+    }
+
+</table>
+
+<h3>Многокритериальный анализ</h3>
+<table class="table">
+    @{
+        var multicriterialRecomendations = (ViewBag.MulticriterialRecomendations as List<EducationLine>);
+    }
+    <tr>
+        <th>Название ВУЗ-а</th>
+        <th>Название факультета</th>
+        <th>Название направления</th>
+        <th>Код направления</th>
+        <th></th>
+    </tr>
+
+    @foreach (var recomendation in multicriterialRecomendations)
+    {
+        <tr>
+            <td>@Html.DisplayFor(model => recomendation.Faculty.HigherEducationInstitution.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Faculty.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Code)</td>
+        </tr>
+    }
+
+</table>
+
+<h3>МАИ</h3>
+<table class="table">
+    @{
+        var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<EducationLine, double>);
+    }
+    <tr>
+        <th>№</th>
+        <th>Название ВУЗ-а</th>
+        <th>Название факультета</th>
+        <th>Название направления</th>
+        <th>Код направления</th>
+        <th>% Схожести (debug)</th>
+        <th></th>
+    </tr>
+
+    @{count = 0;}
+    @foreach (var recomendation in aphRecomendations)
+    {
+        count++;
+        var percentageValue = recomendation.Value * 100;
+        <tr>
+            <td>@count</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
+            <td>@percentageValue.ToString("0.0", CultureInfo.InvariantCulture)</td>
+        </tr>
+    }
+</table>
+
+
+
+

@@ -31,6 +31,8 @@ namespace OptimalEducation.DAL.Models
 
         public string Name { get; set; }
 
+        public string FullName { get; set; }
+
         public int Prestige { get; set; }
 
         public int CityId { get; set; }
