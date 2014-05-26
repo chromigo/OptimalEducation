@@ -180,4 +180,11 @@ INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLi
 INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (220, 100, 109, 9)
 INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (221, 98, 109, 8)
 INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (222, 80, 109, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (223, 66, 30, 17)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (224, 79, 16, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (225, 86, 16, 9)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (226, 85, 16, 8)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (227, 81, 18, 1)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (228, 88, 18, 9)
+INSERT INTO [dbo].[EducationLineRequirements] ([Id], [Requirement], [EducationLineId], [ExamDisciplineId]) VALUES (229, 86, 18, 8)
 SET IDENTITY_INSERT [dbo].[EducationLineRequirements] OFF
