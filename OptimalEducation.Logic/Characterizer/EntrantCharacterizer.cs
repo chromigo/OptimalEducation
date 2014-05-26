@@ -38,8 +38,10 @@ namespace OptimalEducation.Logic.Characterizer
             IdealEntrantResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
-        public Dictionary<string, double> CalculateNormSum(bool isComlicatedMode = false)
+        public Dictionary<string, double> CalculateNormSum()
         {
+            bool isComlicatedMode = true;//TODO: задать где-нибудь снаружи...
+
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
 

@@ -60,7 +60,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			}
             //Ориентация направления
             var educationLineCharacterizer = new EducationLineCharacterizer(educationline,new EducationLineCalculationOptions());
-            ViewBag.CluserResults = educationLineCharacterizer.CalculateNormSum(false);
+            ViewBag.CluserResults = educationLineCharacterizer.CalculateNormSum();
 
             //Рекомендации по подбору учеников:
             //По методу расстояний
