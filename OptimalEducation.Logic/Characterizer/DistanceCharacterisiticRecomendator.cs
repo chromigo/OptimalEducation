@@ -18,13 +18,19 @@ namespace OptimalEducation.Logic.Characterizer
 		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
-			var entratnCharacteristic = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum();
+            var entratnCharacteristic = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum(true);//add true for complicated method
 			var results = new Dictionary<EducationLine, double>();
 			foreach (var edLine in educationLines)
 			{
-				var educationLineCharacterisic = new EducationLineCharacterizer(edLine,new EducationLineCalculationOptions()).CalculateNormSum(false);
+                var educationLineCharacterisic = new EducationLineCharacterizer(edLine, new EducationLineCalculationOptions()).CalculateNormSum(true);//add true for complicated method
 				//Выполняем сравнение
-				var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
+                var compareResult = CharacteristicDistance.GetEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
+                //var v2 = CharacteristicDistance.GetChebishevDistance(entratnCharacteristic, educationLineCharacterisic);
+                //var v3 = CharacteristicDistance.GetCityBlockDistance(entratnCharacteristic, educationLineCharacterisic);
+                
+                //var v5 = CharacteristicDistance.GetSquareEuclidDistance(entratnCharacteristic, educationLineCharacterisic);
+
+                //var v4 = CharacteristicDistance.GetPowerDistance(entratnCharacteristic, educationLineCharacterisic,);
 				if(compareResult.HasValue)
 				{
 					results.Add(edLine, compareResult.Value);
