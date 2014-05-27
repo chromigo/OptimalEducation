@@ -5,7 +5,7 @@
 @using OptimalEducation.DAL.Models;
 
 <h3>Метод сравнения расстояний(Евклидова метрика)</h3>
-<table class="table">
+<table class="table table-bordered table-striped">
     @{
         var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<EducationLine, double>);
     }
@@ -16,7 +16,6 @@
         <th>Название направления</th>
         <th>Код направления</th>
         <th>Близость (меньше-лучше, debug)</th>
-        <th></th>
     </tr>
     @{int count = 0;}
     @foreach (var recomendation in distanceRecomendations)
@@ -30,14 +29,13 @@
             <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
             <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
             <td>@percentageValue.ToString("0.000", CultureInfo.InvariantCulture)</td>
-
         </tr>
     }
 
 </table>
 
 <h3>Многокритериальный анализ</h3>
-<table class="table">
+<table class="table table-bordered table-striped">
     @{
         var multicriterialRecomendations = (ViewBag.MulticriterialRecomendations as List<EducationLine>);
     }
@@ -46,7 +44,6 @@
         <th>Название факультета</th>
         <th>Название направления</th>
         <th>Код направления</th>
-        <th></th>
     </tr>
 
     @foreach (var recomendation in multicriterialRecomendations)
@@ -62,7 +59,7 @@
 </table>
 
 <h3>МАИ</h3>
-<table class="table">
+<table class="table table-bordered table-striped">
     @{
         var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<EducationLine, double>);
     }
@@ -73,7 +70,6 @@
         <th>Название направления</th>
         <th>Код направления</th>
         <th>% Схожести (debug)</th>
-        <th></th>
     </tr>
 
     @{count = 0;}
