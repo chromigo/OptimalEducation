@@ -42,10 +42,11 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Optimal Education</p>
-        </footer>
+    </div>
+    <div id="footer">
+        <div class="container">
+            <p class="text-muted">&copy; @DateTime.Now.Year - Optimal Education</p>
+        </div>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
