@@ -24,11 +24,11 @@ namespace OptimalEducation.Controllers
                 {
                     var userRoles = await UserManager.GetRolesAsync(userId);
                     if (userRoles.Any(role => role == Role.Admin))
-                        return RedirectToLocal("/Admin/Entrant/");
+                        return RedirectToAction("Index", "EducationLines", new { area = "Admin" }); 
                     if (userRoles.Any(role => role == Role.Entrant))
-                        return RedirectToLocal("/EntrantUser/Info/");
+                        return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
                     if (userRoles.Any(role => role == Role.Faculty))
-                        return RedirectToLocal("/FacultyUser/Info/");
+                        return RedirectToAction("Index", "Info", new { area = "FacultyUser" });
                 }
             }
             return View();

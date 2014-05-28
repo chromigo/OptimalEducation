@@ -33,7 +33,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			UserManager = userManager;
 		}
 
-		// GET: /EntrantUser/Info/
+		// GET: /EntrantUser/Orientation/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
