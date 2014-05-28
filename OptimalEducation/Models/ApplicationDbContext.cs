@@ -23,7 +23,7 @@ namespace OptimalEducation.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("OptimalEducationDataBase")
+            : base("OptimalEducationDB")
         {
         }
     }

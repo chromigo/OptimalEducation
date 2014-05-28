@@ -17,7 +17,7 @@ PRINT ''
 --:r SQLScripts\Init\dalInit.sql
 --GO
 
-USE OptimalEducationDataBase
+USE OptimalEducationDB
 
 --FILLING DATABASE
 PRINT 'FILLING DATABASE'
