@@ -38,7 +38,7 @@ namespace OptimalEducation.DAL.Migrations
             if(context.Cities.Count()==1)//пока ничего лучше не придумал в качестве проверки
             {
                 var baseDir = AppDomain.CurrentDomain.BaseDirectory + "\\..\\..\\SQLScripts";
-
+                //Порядок важен!
                 context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.Cities.data.sql"));
                 context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.ExamDisciplines.data.sql"));
                 context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.HigherEducationInstitutions.data.sql"));
