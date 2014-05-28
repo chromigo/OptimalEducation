@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using OptimalEducation.Models;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Builders;
 
 namespace OptimalEducation.Controllers
 {
@@ -110,15 +111,10 @@ namespace OptimalEducation.Controllers
         /// <param name="user"></param>
         private void CreateUserEntrant(ApplicationUser user)
         {
-            using (var context = new OptimalEducationDbContext())
-            {
-                var entrant = new Entrant();
-                context.Entrants.Add(entrant);
-                context.SaveChanges();
+            var entrant = EntrantBuilder.Create(user.UserName);
 
-                UserManager.AddClaim(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
-                UserManager.AddToRole(user.Id, Role.Entrant);
-            }
+            UserManager.AddClaim(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
+            UserManager.AddToRole(user.Id, Role.Entrant);
         }
 
         //
