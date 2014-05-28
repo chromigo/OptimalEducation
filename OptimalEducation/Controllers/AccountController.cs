@@ -54,11 +54,11 @@ namespace OptimalEducation.Controllers
 
                     var userRoles =await  UserManager.GetRolesAsync(user.Id);
                     if (userRoles.Any(role => role == Role.Admin))
-                        return RedirectToLocal("/Admin/EducationLines/");
+                        return RedirectToAction("Index", "EducationLines", new { area = "Admin" });
                     if (userRoles.Any(role => role == Role.Entrant))
-                        return RedirectToLocal("/EntrantUser/Orientation/");
+                        return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
                     if (userRoles.Any(role => role == Role.Faculty))
-                        return RedirectToLocal("/FacultyUser/Info/");
+                        return RedirectToAction("Index", "Info", new { area = "FacultyUser" });
                 }
                 else
                 {
@@ -91,7 +91,7 @@ namespace OptimalEducation.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    CreateUserEntrant(user);
+                    await CreateUserEntrant(user);
 
                     await SignInAsync(user, isPersistent: false);
                     return RedirectToLocal("/EntrantUser/Orientation/");
@@ -104,17 +104,6 @@ namespace OptimalEducation.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-        }
-        /// <summary>
-        /// Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
-        /// </summary>
-        /// <param name="user"></param>
-        private void CreateUserEntrant(ApplicationUser user)
-        {
-            var entrant = EntrantBuilder.Create(user.UserName);
-
-            UserManager.AddClaim(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
-            UserManager.AddToRole(user.Id, Role.Entrant);
         }
 
         //
@@ -294,6 +283,7 @@ namespace OptimalEducation.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        await CreateUserEntrant(user);
                         await SignInAsync(user, isPersistent: false);
                         return RedirectToLocal(returnUrl);
                     }
@@ -339,6 +329,18 @@ namespace OptimalEducation.Controllers
                 UserManager = null;
             }
             base.Dispose(disposing);
+        }
+
+        /// <summary>
+        /// Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
+        /// </summary>
+        /// <param name="user"></param>
+        private async Task CreateUserEntrant(ApplicationUser user)
+        {
+            var entrant = EntrantBuilder.Create(user.UserName);
+
+            await UserManager.AddClaimAsync(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
+            await UserManager.AddToRoleAsync(user.Id, Role.Entrant);
         }
 
         #region Helpers

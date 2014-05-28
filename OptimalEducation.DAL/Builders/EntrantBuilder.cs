@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.DAL.Builders
 {
+    //TODO: add async?
     public static class EntrantBuilder
     {
         public static Entrant Create(string name, int id=-1)
