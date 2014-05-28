@@ -26,7 +26,8 @@ namespace OptimalEducation
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/sticky-footer.css"));
+                      "~/Content/sticky-footer.css",
+                      "~/Content/zocial.css"));//social buttons http://www.beabigrockstar.com/blog/pretty-social-login-buttons-for-asp-net-mvc-5/
         }
     }
 }
