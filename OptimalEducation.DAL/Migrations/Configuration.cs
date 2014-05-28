@@ -6,6 +6,7 @@ namespace OptimalEducation.DAL.Migrations
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.IO;
     using System.Linq;
 
     public sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
@@ -28,6 +29,24 @@ namespace OptimalEducation.DAL.Migrations
             //Идеальный ученик(все на максимум, нужен для нормирования результатов)
             CreateIdealEntrant();
             CreateIdealEducationLine();
+
+            RunSqlSqripts(context);
+        }
+
+        private void RunSqlSqripts(OptimalEducationDbContext context)
+        {
+            if(context.Cities.Count()==1)//пока ничего лучше не придумал в качестве проверки
+            {
+                var baseDir = AppDomain.CurrentDomain.BaseDirectory + "\\..\\..\\SQLScripts";
+
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.Cities.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.ExamDisciplines.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.HigherEducationInstitutions.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.Faculties.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.GeneralEducationLines.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.EducationLines.data.sql"));
+                context.Database.ExecuteSqlCommand(File.ReadAllText(baseDir + "\\dbo.EducationLineRequirements.data.sql"));
+            }
         }
 
         private void CreateCommonEntrant()
