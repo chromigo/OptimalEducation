@@ -93,7 +93,7 @@ namespace OptimalEducation.Controllers
                     CreateUserEntrant(user);
 
                     await SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToLocal("/EntrantUser/Orientation/");
                 }
                 else
                 {
@@ -117,6 +117,7 @@ namespace OptimalEducation.Controllers
                 context.SaveChanges();
 
                 UserManager.AddClaim(user.Id, new Claim(MyClaimTypes.EntityUserId, entrant.Id.ToString()));
+                UserManager.AddToRole(user.Id, Role.Entrant);
             }
         }
 
