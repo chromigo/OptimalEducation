@@ -4,18 +4,18 @@ PRINT ''
 
 :On Error exit
 
---INIT
-PRINT 'Initialize DB + Seed Method'
+----INIT
+--PRINT 'Initialize DB + Seed Method'
 
-PRINT 'FILLING OptimalEducation:'
---Update-Database -ProjectName:OptimalEducation -Script -SourceMigration: $InitialDatabase
-:r SQLScripts\Init\aspIdentity.sql
-GO
+--PRINT 'FILLING OptimalEducation:'
+----Update-Database -ProjectName:OptimalEducation -Script -SourceMigration: $InitialDatabase
+--:r SQLScripts\Init\aspIdentity.sql
+--GO
 
-PRINT 'FILLING OptimalEducation.DAL:'
---Update-Database -ProjectName:OptimalEducation.DAL -Script -SourceMigration: $InitialDatabase
-:r SQLScripts\Init\dalInit.sql
-GO
+--PRINT 'FILLING OptimalEducation.DAL:'
+----Update-Database -ProjectName:OptimalEducation.DAL -Script -SourceMigration: $InitialDatabase
+--:r SQLScripts\Init\dalInit.sql
+--GO
 
 USE OptimalEducationDataBase
 
