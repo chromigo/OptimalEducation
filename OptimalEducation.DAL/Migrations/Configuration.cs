@@ -1,5 +1,6 @@
 namespace OptimalEducation.DAL.Migrations
 {
+    using OptimalEducation.DAL.Builders;
     using OptimalEducation.DAL.Models;
     using System;
     using System.Collections.Generic;
@@ -7,7 +8,7 @@ namespace OptimalEducation.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
     {
         OptimalEducationDbContext db = new OptimalEducationDbContext();
         public Configuration()
@@ -33,37 +34,7 @@ namespace OptimalEducation.DAL.Migrations
         {
             if(db.Entrants.SingleOrDefault(p=>p.Id==1)==null)
             {
-                //Создаем абитуриента с базовой информацией
-                var entrant = new Entrant()
-                {
-                    Id = 1,
-                    FirstName = "Alice",                   
-                    Gender = "Female",
-                };
-                //Добавляем ему результаты по ЕГЭ
-                foreach (var discipline in db.ExamDisciplines)
-                {
-                    entrant.UnitedStateExams.Add(
-                        new UnitedStateExam
-                        {
-                            Discipline = discipline,
-                            Entrant = entrant,
-                            Result = 50,
-                        });
-                }
-                //Добавляем ему результаты по школьным предметам
-                foreach (var schoolDisc in db.SchoolDisciplines)
-                {
-                    entrant.SchoolMarks.Add(
-                        new SchoolMark
-                        {
-                            SchoolDiscipline = schoolDisc,
-                            Entrant = entrant,
-                            Result = 4,
-                        });
-                }
-                db.Entrants.Add(entrant);
-                db.SaveChanges();
+                EntrantBuilder.Create("Alice", 1);
             }
         }
 
@@ -71,48 +42,7 @@ namespace OptimalEducation.DAL.Migrations
         {
             if (db.Entrants.SingleOrDefault(p => p.Id == 2) == null)
             {
-                //Создаем абитуриента с базовой информацией
-                var entrant = new Entrant()
-                {
-                    Id = 2,
-                    FirstName = "IDEAL",
-                    Gender = "Male",
-                };
-                //Добавляем ему результаты по ЕГЭ
-                foreach (var discipline in db.ExamDisciplines)
-                {
-                    entrant.UnitedStateExams.Add(
-                        new UnitedStateExam
-                        {
-                            Discipline = discipline,
-                            Entrant = entrant,
-                            Result = 100,
-                        });
-                }
-                //Добавляем ему результаты по школьным предметам
-                foreach (var schoolDisc in db.SchoolDisciplines)
-                {
-                    entrant.SchoolMarks.Add(
-                        new SchoolMark
-                        {
-                            SchoolDiscipline = schoolDisc,
-                            Entrant = entrant,
-                            Result = 5,
-                        });
-                }
-                //Добавляем ему результаты по олимпиадам(по всем???)
-                foreach (var olympiad in db.Olympiads)
-                {
-                    entrant.ParticipationInOlympiads.Add(
-                        new ParticipationInOlympiad()
-                        {
-                            Entrant = entrant,
-                            Result = OlypmpiadResult.FirstPlace,
-                            Olympiad = olympiad
-                        });
-                }
-                db.Entrants.Add(entrant);
-                db.SaveChanges();
+                IdealEntrantBuilder.Create();
             }
         }
         private void CreateIdealEducationLine()
@@ -691,13 +621,62 @@ namespace OptimalEducation.DAL.Migrations
                 {
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
                     new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
+                new Olympiad {Name = "Биология", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "География", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
+                }},
+
+                new Olympiad {Name = "Обществознание", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "История", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Литература", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                }},
+
                 new Olympiad {Name = "Английский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.1},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.1},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Немецкий язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Французский язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                }},
+                new Olympiad {Name = "Испанский язык", Weights=new List<Weight>()
+                {
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
             };
             foreach (var olympiad in olympiads)

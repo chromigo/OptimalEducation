@@ -109,7 +109,7 @@ namespace OptimalEducation.Logic.Characterizer
                 for (int i = 0; i < itemList.Count; i++)
                 {
                     sum += itemList[i] * b;
-                    b = b / 2;
+                    b = b / 4;
                 }
 
                 resultCharacteristics[item.Key] = sum;
@@ -408,7 +408,7 @@ namespace OptimalEducation.Logic.Characterizer
                 for (int i = 0; i < itemList.Count; i++)
                 {
                     sum += itemList[i] * b;
-                    b = b / 2;
+                    b = b / 4;
                 }
 
                 resultCharacteristics[item.Key] = sum;

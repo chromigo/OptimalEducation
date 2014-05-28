@@ -8,7 +8,7 @@
 
 <h3>Естественно-научные, технические</h3>
 <div class="row">
-    <dl class="dl-horizontal">
+    <dl class="dl-horizontal col-md-4">
         @{
             var preferences = (ViewBag.Preferences as Dictionary<string, double>);
         }
@@ -24,7 +24,7 @@
             <dt>
                 @Html.DisplayFor(model => characterisicRes.Key)
             </dt>
-            <dd style="width:200px">
+            <dd>
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percentageValue.ToString("0.0", CultureInfo.InvariantCulture)%;">
                         @percentageValue.ToString("0.0", CultureInfo.InvariantCulture)%

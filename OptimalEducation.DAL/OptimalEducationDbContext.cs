@@ -5,7 +5,7 @@ namespace OptimalEducation.DAL.Models
     public class OptimalEducationDbContext : DbContext
     {
         public OptimalEducationDbContext()
-            : base("DefaultConnection")
+            : base("OptimalEducationDB")
         {
         }
 

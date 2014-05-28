@@ -10,14 +10,14 @@ namespace OptimalEducation.Migrations
     using System.Linq;
     using System.Security.Claims;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducation.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
         UserManager<ApplicationUser> UserManager;
-        protected override void Seed(OptimalEducation.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             CreateRoles(context);
 
