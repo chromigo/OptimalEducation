@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace OptimalEducation.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         public async Task<ActionResult> Index()
