@@ -15,18 +15,18 @@ namespace OptimalEducation
         {
             ConfigureAuth(app);
 
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<OptimalEducationDbContext, OptimalEducation.DAL.Migrations.Configuration>()); 
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<OptimalEducationDbContext, OptimalEducation.DAL.Migrations.Configuration>());
 
-            ////Обратимся к бд, чтобы проинициализировать
-            //using (var apContext =new ApplicationDbContext())
-            //{
-            //    var t = apContext.Users.SingleOrDefault();
-            //}
-            //using (var apContext = new OptimalEducationDbContext())
-            //{
-            //    var t = apContext.Entrants.SingleOrDefault();
-            //}
+            //Обратимся к бд, чтобы проинициализировать
+            using (var apContext = new ApplicationDbContext())
+            {
+                var t = apContext.Users.Count();
+            }
+            using (var apContext = new OptimalEducationDbContext())
+            {
+                var t = apContext.Entrants.Count();
+            }
         }
     }
 }
