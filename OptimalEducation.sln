@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.DAL", "Opt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic", "OptimalEducation.Logic\OptimalEducation.Logic.csproj", "{8E374DA9-E7D9-4453-8493-4F5010C71AD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AHPDebug", "AHPDebug\AHPDebug.csproj", "{D800C181-EFFA-449D-BB47-C59B697D40F2}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +40,6 @@ Global
 		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D800C181-EFFA-449D-BB47-C59B697D40F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D800C181-EFFA-449D-BB47-C59B697D40F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D800C181-EFFA-449D-BB47-C59B697D40F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D800C181-EFFA-449D-BB47-C59B697D40F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
