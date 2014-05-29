@@ -9,7 +9,7 @@ namespace OptimalEducation.DAL.Migrations
     using System.IO;
     using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
     {
         OptimalEducationDbContext db = new OptimalEducationDbContext();
         public Configuration()
