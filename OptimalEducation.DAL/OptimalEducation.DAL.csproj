@@ -159,7 +159,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQLScripts\create_db.sql" />
     <Content Include="SQLScripts\dbo.Cities.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLines.data.sql" />
