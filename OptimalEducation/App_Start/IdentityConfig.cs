@@ -4,6 +4,10 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using OptimalEducation.Models;
+using System.Net;
+using System.Net.Mail;
+using SendGrid;
+using System.Configuration;
 
 namespace OptimalEducation
 {
@@ -58,10 +62,27 @@ namespace OptimalEducation
 
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            //create message
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(message.Destination);
+            myMessage.From = new System.Net.Mail.MailAddress("optimaleducation@gmail.com");
+            myMessage.Subject = message.Subject;
+            //myMessage.Text = message.Body;
+            myMessage.Html = message.Body;
+
+            // Create credentials, specifying your user name and password.
+            var credentials = new NetworkCredential(
+                ConfigurationManager.AppSettings["SendGrid_Login"],
+                ConfigurationManager.AppSettings["SendGrid_Password"]);
+
+            // Create a Web transport for sending email.
+            var transportWeb = new Web(credentials);
+
+            // Send the email.
+            if (transportWeb != null)
+                await transportWeb.DeliverAsync(myMessage);
         }
     }
 

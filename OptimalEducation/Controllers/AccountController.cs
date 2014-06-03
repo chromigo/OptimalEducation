@@ -112,9 +112,16 @@ namespace OptimalEducation.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(
+                        user.Id,
+                        "Confirm your account",
+                        "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
                 }
@@ -138,7 +145,17 @@ namespace OptimalEducation.Controllers
                 return View("Error");
             }
 
-            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, code);
+            IdentityResult result;
+            try
+            {
+                result = await UserManager.ConfirmEmailAsync(userId, code);
+            }
+            catch (Exception)
+            {
+              // ConfirmEmailAsync throws when the userId is not found.
+              return View("Error");
+            }
+
             if (result.Succeeded)
             {
                 return View("ConfirmEmail");
@@ -176,10 +193,17 @@ namespace OptimalEducation.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action(
+                    "ResetPassword", 
+                    "Account", 
+                    new { userId = user.Id, code = code },
+                    protocol: Request.Url.Scheme);		
+                await UserManager.SendEmailAsync(
+                    user.Id,
+                    "Reset Password",
+                    "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -197,7 +221,7 @@ namespace OptimalEducation.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string userId,string code)
         {
             if (code == null)
             {
@@ -215,6 +239,7 @@ namespace OptimalEducation.Controllers
         {
             if (ModelState.IsValid)
             {
+                //Возможно стоит убрать ввод поля пользователя(просто сразу менять пароль)
                 var user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null)
                 {
