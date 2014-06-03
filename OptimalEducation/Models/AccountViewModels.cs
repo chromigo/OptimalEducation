@@ -5,15 +5,22 @@ namespace OptimalEducation.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Имя пользователя")]
-        public string UserName { get; set; }
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+    }
+
+    public class ExternalLoginListViewModel
+    {
+        public string Action { get; set; }
+        public string ReturnUrl { get; set; }
     }
 
     public class ManageUserViewModel
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
+        [Display(Name = "Старый пароль")]
         public string OldPassword { get; set; }
 
         [Required]
@@ -32,7 +39,7 @@ namespace OptimalEducation.Models
     {
         [Required]
         [Display(Name = "Имя пользователя")]
-        public string UserName { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -46,8 +53,9 @@ namespace OptimalEducation.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Имя пользователя")]
-        public string UserName { get; set; }
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} должен быть не меньше {2} знаков.", MinimumLength = 6)]
@@ -59,5 +67,34 @@ namespace OptimalEducation.Models
         [Display(Name = "Подтвердите пароль")]
         [Compare("Password", ErrorMessage = "Стандартный и подтверждающий пароли не совпадают")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ResetPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Текущий Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Новый пароль")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Подтвердить новый пароль")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+
+        public string Code { get; set; }
+    }
+
+    public class ForgotPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }

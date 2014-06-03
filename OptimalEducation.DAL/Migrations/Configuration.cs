@@ -759,9 +759,9 @@ namespace OptimalEducation.DAL.Migrations
 
                 new SchoolDiscipline {Name = "История", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Обществознание", Weights=new List<Weight>()
                 {
