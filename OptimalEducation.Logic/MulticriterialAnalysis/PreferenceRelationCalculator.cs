@@ -43,7 +43,8 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                     //var teta = TetaMethod();
 
                     //2. Другой вариант - тупо попробовать использовать не формулу, а (1-значение значимости неважного коэффициента)
-                    var teta = 1 - unImpCharacteristic.Value;
+                    //или значение важного - значение неважного
+                    var teta = impCharacteristic.Value - unImpCharacteristic.Value;
 
                     //3. Etc
                     //var teta = Wizzard.SuperMathFormula_Magic();
