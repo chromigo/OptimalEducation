@@ -39,15 +39,10 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                 {
                     //TODO: Определеить более клевую логику по выбору коэффициентов относительной важности
 
-                    //1. Через формулу относительной важности
-                    //var teta = TetaMethod();
-
-                    //2. Другой вариант - тупо попробовать использовать не формулу, а (1-значение значимости неважного коэффициента)
-                    //или значение важного - значение неважного
-                    var teta = impCharacteristic.Value - unImpCharacteristic.Value;
-
-                    //3. Etc
-                    //var teta = Wizzard.SuperMathFormula_Magic();
+                    //1. Через формулу относительной важности с небольшими модификациями
+                    //значение важного - значение неважного
+                    var diff = impCharacteristic.Value - unImpCharacteristic.Value;
+                    var teta = TetaMethod(0.1, diff);//на данный момент задается просто константой
 
                     preferenceRelation.Tetas.Add(unImpCharacteristic.Key, teta);
                 }
@@ -78,7 +73,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         /// <param name="w_i">сколько хотим получить(по значимому коэф-ту)</param>
         /// <param name="w_j">сколько готовы пожертвовать(по незначимому коэф-ту)</param>
         /// <returns></returns>
-        double TetaMethod(double w_i = 0.2, double w_j = 0.1)
+        double TetaMethod(double w_i, double w_j)
         {
             //На данный момент строятся одинаковые предпочтения для всех важных/неважных критериев
             var teta = w_j / (w_j + w_i);//Коэффициент относительной важности
