@@ -24,7 +24,7 @@ namespace OptimalEducation.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} должен быть не меньше {2} знаков.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Новый пароль")]
         public string NewPassword { get; set; }
@@ -65,7 +65,7 @@ namespace OptimalEducation.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердите пароль")]
-        [Compare("Password", ErrorMessage = "Стандартный и подтверждающий пароли не совпадают")]
+        [Compare("Password", ErrorMessage = "Стандартный и подтверждающий пароли не совпадают.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -77,14 +77,14 @@ namespace OptimalEducation.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} должен быть не меньше {2} знаков.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Новый пароль")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Подтвердить новый пароль")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "Стандартный и подтверждающий пароли не совпадают.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

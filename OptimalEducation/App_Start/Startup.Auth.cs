@@ -46,7 +46,7 @@ namespace OptimalEducation
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication();//old
+            app.UseGoogleAuthentication();//old
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
             //    ClientId = "",
