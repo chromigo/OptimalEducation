@@ -21,7 +21,7 @@ namespace OptimalEducation.DAL.Builders
             using(var context = new OptimalEducationDbContext())
 	        {
                 //Добавляем ему результаты по ЕГЭ
-                foreach (var discipline in context.ExamDisciplines)
+                foreach (var discipline in context.ExamDisciplines.Where(p=>p.ExamType==ExamType.UnitedStateExam))
                 {
                     entrant.UnitedStateExams.Add(
                         new UnitedStateExam
