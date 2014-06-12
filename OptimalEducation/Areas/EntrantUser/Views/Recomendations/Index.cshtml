@@ -4,7 +4,7 @@
 @using System.Globalization;
 @using OptimalEducation.DAL.Models;
 
-<h3>Метод сравнения расстояний(Евклидова метрика)</h3>
+<h3>Метод классификации</h3>
 <table class="table table-bordered table-striped">
     @{
         var distanceRecomendations = (ViewBag.DistanceRecomendations as Dictionary<EducationLine, double>);
@@ -15,7 +15,7 @@
         <th>Название факультета</th>
         <th>Название направления</th>
         <th>Код направления</th>
-        <th>Близость (меньше-лучше, debug)</th>
+        <th>Близость (меньше-лучше)</th>
     </tr>
     @{int count = 0;}
     @foreach (var recomendation in distanceRecomendations)

@@ -109,3 +109,7 @@ UpgradeLog*.XML
 
 # DataBase local files
 App_Data
+
+#Private config files
+EmailNotificationsCredentials.config
+DatabaseCredentials.config
