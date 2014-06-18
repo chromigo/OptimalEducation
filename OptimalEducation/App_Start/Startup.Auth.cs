@@ -36,14 +36,15 @@ namespace OptimalEducation
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            //Смотри http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-register-microsoft-authentication/
+            app.UseMicrosoftAccountAuthentication(
+                clientId: ConfigurationManager.AppSettings["Microsoft_ClientId"],
+                clientSecret: ConfigurationManager.AppSettings["Microsoft_ClientSecret"]);
 
             //https://dev.twitter.com/
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            app.UseTwitterAuthentication(
+               consumerKey: ConfigurationManager.AppSettings["Twitter_ClientId"],
+               consumerSecret: ConfigurationManager.AppSettings["Twitter_ClientSecret"]);
 
             //https://developers.facebook.com
             app.UseFacebookAuthentication(
