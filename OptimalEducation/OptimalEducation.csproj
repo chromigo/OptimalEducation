@@ -659,7 +659,7 @@
     <Content Include="fonts\zocial-regular-webfont.eot" />
     <Content Include="fonts\zocial-regular-webfont.ttf" />
     <Content Include="fonts\zocial-regular-webfont.woff" />
-    <Content Include="EmailNotificationsCredentials.config" />
+    <Content Include="Credentials.config" />
     <Content Include="DatabaseCredentials.config" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
