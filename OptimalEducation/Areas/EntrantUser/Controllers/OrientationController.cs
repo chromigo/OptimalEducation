@@ -50,14 +50,5 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
 		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-                //dbContext.Dispose();
-                //UserManager.Dispose();
-			}
-			base.Dispose(disposing);
-		}
 	}
 }

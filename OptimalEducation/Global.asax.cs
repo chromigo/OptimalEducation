@@ -22,7 +22,11 @@ namespace OptimalEducation
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //http://www.lightinject.net/ используемый ioc контейнер с руководством по использованию
             RegisterIoC();
+
+            //другой вариант для работы с ioc контейнерами. создать класс-адаптер для конкретного ioc контейнера
+            //ControllerBuilder.Current.SetControllerFactory(new LightInjectControllerFactory()); 
         }
 
         private void RegisterIoC()
@@ -30,9 +34,11 @@ namespace OptimalEducation
             var container = new ServiceContainer();
             container.RegisterControllers();
             //register other services
+
+            //contexts
             container.Register<OptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
             container.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
-
+            //userManager classes
             container.Register<IUserStore<ApplicationUser>>(
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
             container.Register<UserManager<ApplicationUser>, UserManager<ApplicationUser>>(new PerRequestLifeTime());
