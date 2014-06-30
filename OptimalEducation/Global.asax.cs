@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using LightInject;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.Models;
 
 namespace OptimalEducation
 {
@@ -26,6 +28,8 @@ namespace OptimalEducation
             var container = new ServiceContainer();
             container.RegisterControllers();
             //register other services
+            container.Register<OptimalEducationDbContext, OptimalEducationDbContext>();
+            container.Register<ApplicationDbContext, ApplicationDbContext>();
 
             container.EnableMvc();
         }

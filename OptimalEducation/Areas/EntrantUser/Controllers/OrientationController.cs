@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Queries;
 using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.Models;
 using System;
@@ -19,32 +20,24 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+	    private readonly OptimalEducationDbContext dbContext;
+	    private readonly ApplicationDbContext dbIdentity;
 
 		public UserManager<ApplicationUser> UserManager { get; private set; }
 
-		public OrientationController()
+		public OrientationController(OptimalEducationDbContext dbContext, ApplicationDbContext dbIdentity)
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public OrientationController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+		    this.dbContext = dbContext;
+		    this.dbIdentity = dbIdentity;
+		    UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
 		}
 
-		// GET: /EntrantUser/Orientation/
+	    // GET: /EntrantUser/Orientation/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var entrant = await db.Entrants
-				.Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
-				.Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
-				.Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
-				.Include(e => e.Hobbies.Select(h => h.Weights))
-				.Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
-				.Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-				.Where(e => e.Id == entrantId).SingleAsync();
+		    var query = new GetEntrantForCharacterizerByIdQuery(entrantId, dbContext);
+		    var entrant = await query.Execute();
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
@@ -64,7 +57,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			if (disposing)
 			{
-				db.Dispose();
+                dbContext.Dispose();
 				dbIdentity.Dispose();
 			}
 			base.Dispose(disposing);

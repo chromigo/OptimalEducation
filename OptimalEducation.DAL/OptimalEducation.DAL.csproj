@@ -118,6 +118,7 @@
     <Compile Include="Models\UnitedStateExam.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetEntrantForCharacterizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="OptimalEducationDbContext.edmx">
