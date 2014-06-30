@@ -20,23 +20,20 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-	    private readonly OptimalEducationDbContext dbContext;
-	    private readonly ApplicationDbContext dbIdentity;
+	    private readonly OptimalEducationDbContext _dbContext;
+	    private readonly UserManager<ApplicationUser> _userManager;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public OrientationController(OptimalEducationDbContext dbContext, ApplicationDbContext dbIdentity)
+		public OrientationController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
 		{
-		    this.dbContext = dbContext;
-		    this.dbIdentity = dbIdentity;
-		    UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
+		    _dbContext = dbContext;
+		    _userManager = userManager;
 		}
 
 	    // GET: /EntrantUser/Orientation/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-		    var query = new GetEntrantForCharacterizerByIdQuery(entrantId, dbContext);
+		    var query = new GetEntrantForCharacterizerByIdQuery(entrantId, _dbContext);
 		    var entrant = await query.Execute();
 
             //Предпочтения пользователя по предметам и пр.
@@ -48,7 +45,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 		private async Task<int> GetEntrantId()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
 			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
@@ -57,8 +54,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			if (disposing)
 			{
-                dbContext.Dispose();
-				dbIdentity.Dispose();
+                //dbContext.Dispose();
+                //UserManager.Dispose();
 			}
 			base.Dispose(disposing);
 		}

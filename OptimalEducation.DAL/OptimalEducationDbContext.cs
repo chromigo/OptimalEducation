@@ -45,6 +45,5 @@ namespace OptimalEducation.DAL.Models
         public virtual DbSet<SchoolDiscipline> SchoolDisciplines { get; set; }
 
         public virtual DbSet<Weight> Weights { get; set; }
-
     }
 }
