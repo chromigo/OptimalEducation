@@ -111,5 +111,6 @@ UpgradeLog*.XML
 App_Data
 
 #Private config files
-EmailNotificationsCredentials.config
+Credentials.config
 DatabaseCredentials.config
+*.pubxml

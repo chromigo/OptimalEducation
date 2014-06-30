@@ -659,8 +659,9 @@
     <Content Include="fonts\zocial-regular-webfont.eot" />
     <Content Include="fonts\zocial-regular-webfont.ttf" />
     <Content Include="fonts\zocial-regular-webfont.woff" />
-    <Content Include="EmailNotificationsCredentials.config" />
+    <Content Include="Credentials.config" />
     <Content Include="DatabaseCredentials.config" />
+    <None Include="Properties\PublishProfiles\OptimalEducation.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -713,7 +714,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\FacultyUser\Models\" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
