@@ -15,12 +15,16 @@ namespace OptimalEducation.Areas.Admin.Controllers
     [Authorize(Roles = Role.Admin)]
     public class EducationLinesController : Controller
     {
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private readonly OptimalEducationDbContext _dbContext;
+        public EducationLinesController(OptimalEducationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         // GET: Admin/EducationLines
         public async Task<ActionResult> Index()
         {
-            var educationLines = db.EducationLines.Include(e => e.Faculty).Include(e => e.GeneralEducationLine);
+            var educationLines = _dbContext.EducationLines.Include(e => e.Faculty).Include(e => e.GeneralEducationLine);
             return View(await educationLines.ToListAsync());
         }
 
@@ -31,7 +35,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EducationLine educationLine = await db.EducationLines.FindAsync(id);
+            EducationLine educationLine = await _dbContext.EducationLines.FindAsync(id);
             if (educationLine == null)
             {
                 return HttpNotFound();
@@ -55,8 +59,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.EducationLines.Add(educationLine);
-                await db.SaveChangesAsync();
+                _dbContext.EducationLines.Add(educationLine);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -72,7 +76,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EducationLine educationLine = await db.EducationLines.FindAsync(id);
+            EducationLine educationLine = await _dbContext.EducationLines.FindAsync(id);
             if (educationLine == null)
             {
                 return HttpNotFound();
@@ -92,8 +96,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(educationLine).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _dbContext.Entry(educationLine).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -109,7 +113,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EducationLine educationLine = await db.EducationLines.FindAsync(id);
+            EducationLine educationLine = await _dbContext.EducationLines.FindAsync(id);
             if (educationLine == null)
             {
                 return HttpNotFound();
@@ -122,35 +126,25 @@ namespace OptimalEducation.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            EducationLine educationLine = await db.EducationLines.FindAsync(id);
-            db.EducationLines.Remove(educationLine);
-            await db.SaveChangesAsync();
+            EducationLine educationLine = await _dbContext.EducationLines.FindAsync(id);
+            _dbContext.EducationLines.Remove(educationLine);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-
         private void SelectedListShow()
         {
-            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+            var facultyList = from faculty in _dbContext.Faculties.Include(p => p.HigherEducationInstitution)
                               select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
             ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name");
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
+            ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name");//select here id or code, or Name
         }
         private void SelecedListShow(EducationLine educationLine)
         {
-            var facultyList = from faculty in db.Faculties.Include(p => p.HigherEducationInstitution)
+            var facultyList = from faculty in _dbContext.Faculties.Include(p => p.HigherEducationInstitution)
                               select new { Id = faculty.Id, Name = faculty.HigherEducationInstitution.Name + " - " + faculty.Name };
             ViewBag.FacultyId = new SelectList(facultyList, "Id", "Name", educationLine.FacultyId);
-            ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationLine.GeneralEducationLineId);//select here id or code, or Name
+            ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name", educationLine.GeneralEducationLineId);//select here id or code, or Name
         }
     }
 }

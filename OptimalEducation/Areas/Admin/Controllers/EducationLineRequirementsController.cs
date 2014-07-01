@@ -15,12 +15,16 @@ namespace OptimalEducation.Areas.Admin.Controllers
     [Authorize(Roles = Role.Admin)]
     public class EducationLineRequirementsController : Controller
     {
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private readonly OptimalEducationDbContext _dbContext;
+        public EducationLineRequirementsController(OptimalEducationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         // GET: Admin/EducationLineRequirements
         public async Task<ActionResult> Index(int id)
         {
-            var educationLineRequirements = db.EducationLineRequirements
+            var educationLineRequirements = _dbContext.EducationLineRequirements
                 .Include(e => e.EducationLine)
                 .Include(e => e.ExamDiscipline)
                 .Where(p=>p.EducationLine.Id==id);
@@ -31,7 +35,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
 	        {
 		         sum+= item.Requirement;
 	        }
-            ViewBag.AvaliableSum = db.EducationLines.Find(id).RequiredSum.Value - sum;
+            ViewBag.AvaliableSum = _dbContext.EducationLines.Find(id).RequiredSum.Value - sum;
 
             return View(await educationLineRequirements.ToListAsync());
         }
@@ -39,17 +43,17 @@ namespace OptimalEducation.Areas.Admin.Controllers
         // GET: Admin/EducationLineRequirements/Create
         public ActionResult Create(int educationLineId)
         {
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Code",educationLineId );
-            ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name");
+            ViewBag.EducationLineId = new SelectList(_dbContext.EducationLines, "Id", "Code",educationLineId );
+            ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name");
 
-            var educationLineRequirements = db.EducationLineRequirements
+            var educationLineRequirements = _dbContext.EducationLineRequirements
                 .Where(p => p.EducationLine.Id == educationLineId);
             int sum = 0;
             foreach (var item in educationLineRequirements)
             {
                 sum += item.Requirement;
             }
-            ViewBag.AvaliableSum = db.EducationLines.Find(educationLineId).RequiredSum.Value - sum;
+            ViewBag.AvaliableSum = _dbContext.EducationLines.Find(educationLineId).RequiredSum.Value - sum;
 
             return View();
         }
@@ -63,13 +67,13 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.EducationLineRequirements.Add(educationLineRequirement);
-                await db.SaveChangesAsync();
+                _dbContext.EducationLineRequirements.Add(educationLineRequirement);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.EducationLineId = new SelectList(db.EducationLines, "Id", "Name", educationLineRequirement.EducationLineId);
-            ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationLineRequirement.ExamDisciplineId);
+            ViewBag.EducationLineId = new SelectList(_dbContext.EducationLines, "Id", "Name", educationLineRequirement.EducationLineId);
+            ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name", educationLineRequirement.ExamDisciplineId);
             return View(educationLineRequirement);
         }
 
@@ -80,7 +84,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EducationLineRequirement educationLineRequirement = await db.EducationLineRequirements.FindAsync(id);
+            EducationLineRequirement educationLineRequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
             if (educationLineRequirement == null)
             {
                 return HttpNotFound();
@@ -93,19 +97,10 @@ namespace OptimalEducation.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            EducationLineRequirement educationLineRequirement = await db.EducationLineRequirements.FindAsync(id);
-            db.EducationLineRequirements.Remove(educationLineRequirement);
-            await db.SaveChangesAsync();
+            EducationLineRequirement educationLineRequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
+            _dbContext.EducationLineRequirements.Remove(educationLineRequirement);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

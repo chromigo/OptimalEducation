@@ -19,22 +19,19 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 	[Authorize(Roles=Role.Faculty)]
 	public class EducationLineController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-		public EducationLineController()
-		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public EducationLineController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+        private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public EducationLineController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 		// GET: /FacultyUser/EducationLine/
 		public async Task<ActionResult> Index()
 		{
 			var facultyId = await GetFacultyId();
-			var educationlines = db.EducationLines
+			var educationlines = _dbContext.EducationLines
 				.Include(e => e.Faculty)
 				.Where(e=>e.FacultyId==facultyId);
 			return View(await educationlines.ToListAsync());
@@ -48,10 +45,10 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			//Отобразить характеристики текущего направления
-            var entrants = await db.Entrants.Where(p => p.FirstName != "IDEAL")
+            var entrants = await _dbContext.Entrants.Where(p => p.FirstName != "IDEAL")
                                 .ToListAsync();
 			var facultyId = await GetFacultyId();
-			var educationline = await db.EducationLines
+			var educationline = await _dbContext.EducationLines
                 .Where(p => p.FacultyId == facultyId)
 				.FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
@@ -85,7 +82,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// GET: /FacultyUser/EducationLine/Create
 		public ActionResult Create()
 		{
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name");
+			ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name");
 			return View();
 		}
 
@@ -99,12 +96,12 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			educationline.FacultyId = await GetFacultyId();
 			if (ModelState.IsValid)
 			{
-				db.EducationLines.Add(educationline);
-				await db.SaveChangesAsync();
+				_dbContext.EducationLines.Add(educationline);
+				await _dbContext.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
+			ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -116,7 +113,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var facultyId = await GetFacultyId();
-			var educationline = await db.EducationLines
+			var educationline = await _dbContext.EducationLines
 				.Where(p => p.FacultyId == facultyId)
 				.FirstOrDefaultAsync(p => p.Id == id);
 			if (educationline == null)
@@ -124,7 +121,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return HttpNotFound();
 			}
 
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
+			ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -140,12 +137,12 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				var facultyId = await GetFacultyId();
 				if (educationline.FacultyId==facultyId)
 				{
-					db.Entry(educationline).State = EntityState.Modified;
-					await db.SaveChangesAsync();
+					_dbContext.Entry(educationline).State = EntityState.Modified;
+					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index");
 				}
 			}
-			ViewBag.GeneralEducationLineId = new SelectList(db.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
+			ViewBag.GeneralEducationLineId = new SelectList(_dbContext.GeneralEducationLines, "Id", "Name", educationline.GeneralEducationLineId);
 			return View(educationline);
 		}
 
@@ -157,7 +154,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var facultyId = await GetFacultyId();
-			var educationLinesFromDb = await db.EducationLines
+			var educationLinesFromDb = await _dbContext.EducationLines
 				.Where(p => p.FacultyId == facultyId && p.Id == id)
 				.SingleOrDefaultAsync();
 			if (educationLinesFromDb == null)
@@ -173,30 +170,20 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
 			var facultyId = await GetFacultyId();
-			var educationLinesFromDb = await db.EducationLines
+			var educationLinesFromDb = await _dbContext.EducationLines
 				.Where(p => p.FacultyId == facultyId && p.Id == id)
 				.SingleOrDefaultAsync();
-			db.EducationLines.Remove(educationLinesFromDb);
-			await db.SaveChangesAsync();
+			_dbContext.EducationLines.Remove(educationLinesFromDb);
+			await _dbContext.SaveChangesAsync();
 			return RedirectToAction("Index");
 		}
 
 		private async Task<int> GetFacultyId()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
 			var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

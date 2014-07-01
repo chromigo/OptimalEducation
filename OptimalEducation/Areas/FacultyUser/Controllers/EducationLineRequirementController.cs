@@ -17,22 +17,19 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 	[Authorize(Roles = Role.Faculty)]
 	public class EducationLineRequirementController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-		public EducationLineRequirementController()
-		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public EducationLineRequirementController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+		private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public EducationLineRequirementController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 		// GET: /FacultyUser/EducationLineRequirement/
 		public async Task<ActionResult> Index(int id)
 		{
 			var facultyId = await GetFacultyId();
-			var educationlinerequirements = db.EducationLineRequirements
+			var educationlinerequirements = _dbContext.EducationLineRequirements
 				.Include(e => e.ExamDiscipline)
 				.Where(e => e.EducationLineId == id && e.EducationLine.FacultyId==facultyId);
 			ViewBag.EducationLineId = id;
@@ -47,7 +44,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			
-			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
+			EducationLineRequirement educationlinerequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
 			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
@@ -64,7 +61,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		// GET: /FacultyUser/EducationLineRequirement/Create
 		public ActionResult Create(int educationLineId)
 		{
-			ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name");
+			ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name");
 			ViewBag.EducationLineId = educationLineId;
 			return View();
 		}
@@ -80,18 +77,18 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			if (ModelState.IsValid)
 			{
 				var facultyId = await GetFacultyId();
-				var educationLine= await db.EducationLines.FindAsync(educationlinerequirement.EducationLineId);
+				var educationLine= await _dbContext.EducationLines.FindAsync(educationlinerequirement.EducationLineId);
 
 				if (educationLine.FacultyId == facultyId)
 				{
-					db.EducationLineRequirements.Add(educationlinerequirement);
-					await db.SaveChangesAsync();
+					_dbContext.EducationLineRequirements.Add(educationlinerequirement);
+					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 				}
 				else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 
-			ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
+			ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
 			return View(educationlinerequirement);
 		}
 
@@ -102,7 +99,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
+			EducationLineRequirement educationlinerequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
 			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
@@ -111,7 +108,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			var facultyId = await GetFacultyId();
 			if (educationlinerequirement.EducationLine.FacultyId == facultyId)
 			{
-				ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
+				ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
 				return View(educationlinerequirement);
 			}
 			else return HttpNotFound();
@@ -128,16 +125,16 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			if (ModelState.IsValid)
 			{
 				var facultyId = await GetFacultyId();
-				var educationLine = await db.EducationLines.FindAsync(educationlinerequirement.EducationLineId);
+				var educationLine = await _dbContext.EducationLines.FindAsync(educationlinerequirement.EducationLineId);
 				if (educationLine.FacultyId==facultyId)
 				{
-					db.Entry(educationlinerequirement).State = EntityState.Modified;
-					await db.SaveChangesAsync();
+					_dbContext.Entry(educationlinerequirement).State = EntityState.Modified;
+					await _dbContext.SaveChangesAsync();
 					return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 				}
 				else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			ViewBag.ExamDisciplineId = new SelectList(db.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
+			ViewBag.ExamDisciplineId = new SelectList(_dbContext.ExamDisciplines, "Id", "Name", educationlinerequirement.ExamDisciplineId);
 			return View(educationlinerequirement);
 		}
 
@@ -148,7 +145,7 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
+			EducationLineRequirement educationlinerequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
 			ViewBag.EducationLineId = educationlinerequirement.EducationLineId;
 			if (educationlinerequirement == null)
 			{
@@ -167,32 +164,23 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-			EducationLineRequirement educationlinerequirement = await db.EducationLineRequirements.FindAsync(id);
+			EducationLineRequirement educationlinerequirement = await _dbContext.EducationLineRequirements.FindAsync(id);
 
 			var facultyId = await GetFacultyId();
 			if (educationlinerequirement.EducationLine.FacultyId == facultyId)
 			{
-				db.EducationLineRequirements.Remove(educationlinerequirement);
-				await db.SaveChangesAsync();
+				_dbContext.EducationLineRequirements.Remove(educationlinerequirement);
+				await _dbContext.SaveChangesAsync();
 				return RedirectToAction("Index", new { id = educationlinerequirement.EducationLineId });
 			}
 			else return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		}
 		private async Task<int> GetFacultyId()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
 			var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

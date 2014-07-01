@@ -15,12 +15,16 @@ namespace OptimalEducation.Areas.Admin.Controllers
     [Authorize(Roles = Role.Admin)]
     public class CityController : Controller
     {
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
+        private readonly OptimalEducationDbContext _dbContext;
 
+        public CityController(OptimalEducationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         // GET: /Admin/City/
         public async Task<ActionResult> Index()
         {
-            return View(await db.Cities.ToListAsync());
+            return View(await _dbContext.Cities.ToListAsync());
         }
 
         // GET: /Admin/City/Details/5
@@ -30,7 +34,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = await db.Cities.FindAsync(id);
+            City city = await _dbContext.Cities.FindAsync(id);
             if (city == null)
             {
                 return HttpNotFound();
@@ -53,8 +57,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Cities.Add(city);
-                await db.SaveChangesAsync();
+                _dbContext.Cities.Add(city);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +72,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = await db.Cities.FindAsync(id);
+            City city = await _dbContext.Cities.FindAsync(id);
             if (city == null)
             {
                 return HttpNotFound();
@@ -85,8 +89,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(city).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _dbContext.Entry(city).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(city);
@@ -99,7 +103,7 @@ namespace OptimalEducation.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = await db.Cities.FindAsync(id);
+            City city = await _dbContext.Cities.FindAsync(id);
             if (city == null)
             {
                 return HttpNotFound();
@@ -112,19 +116,10 @@ namespace OptimalEducation.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            City city = await db.Cities.FindAsync(id);
-            db.Cities.Remove(city);
-            await db.SaveChangesAsync();
+            City city = await _dbContext.Cities.FindAsync(id);
+            _dbContext.Cities.Remove(city);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
