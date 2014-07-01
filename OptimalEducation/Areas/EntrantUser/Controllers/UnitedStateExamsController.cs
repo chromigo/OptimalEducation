@@ -19,19 +19,14 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class UnitedStateExamsController : Controller
 	{
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
-        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
-		public UserManager<ApplicationUser> UserManager { get; private set; }
+        private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-		public UnitedStateExamsController()
-		{
-            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-
-		public UnitedStateExamsController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+        public UnitedStateExamsController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 		// GET: /EntrantUser/UnitedStateExams/
 		public async Task<ActionResult> Index()
 		{
@@ -42,7 +37,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private async Task<List<UnitedStateExam>> GetUserExamsAsync()
 		{
             var entrantId = await GetEntrantId();
-			var unitedstateexams = db.UnitedStateExams
+			var unitedstateexams = _dbContext.UnitedStateExams
 				.Include(u => u.Discipline)
 				.Include(u => u.Entrant)
                 .Where(p => p.EntrantId == entrantId);
@@ -68,9 +63,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				foreach (var exam in unitedStateExams)
 				{
-					db.Entry(exam).State = EntityState.Modified;
+					_dbContext.Entry(exam).State = EntityState.Modified;
 				}
-				await db.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
 			}
 
@@ -78,19 +73,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		}
         private async Task<int> GetEntrantId()
         {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
             var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
             var entrantId = int.Parse(entrantClaim.ClaimValue);
             return entrantId;
         }
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-                dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
-		}
 	}
 }

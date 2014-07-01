@@ -17,19 +17,14 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
     [Authorize(Roles = Role.Entrant)]
 	public class SchoolMarkController : Controller
 	{
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
-        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+        private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public SchoolMarkController()
-		{
-            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public SchoolMarkController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+        public SchoolMarkController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 		// GET: /EntrantUser/SchoolMark/
 		public async Task<ActionResult> Index()
 		{
@@ -39,7 +34,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
         private async Task<List<SchoolMark>> GetUserSchoolMarkAsync()
         {
             var entrantId = await GetEntrantId();
-            var schoolMarks = db.SchoolMarks
+            var schoolMarks = _dbContext.SchoolMarks
                 .Include(u => u.SchoolDiscipline)
                 .Include(u => u.Entrant)
                 .Where(p => p.EntrantId == entrantId);
@@ -65,9 +60,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             {
                 foreach (var exam in schoolMark)
                 {
-                    db.Entry(exam).State = EntityState.Modified;
+                    _dbContext.Entry(exam).State = EntityState.Modified;
                 }
-                await db.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
@@ -77,19 +72,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
         private async Task<int> GetEntrantId()
         {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
             var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
             var entrantId = int.Parse(entrantClaim.ClaimValue);
             return entrantId;
         }
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-                dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
-		}
 	}
 }

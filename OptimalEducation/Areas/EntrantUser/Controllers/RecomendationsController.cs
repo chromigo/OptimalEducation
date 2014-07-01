@@ -19,25 +19,20 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class RecomendationsController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+	    private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public RecomendationsController()
+        public RecomendationsController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public RecomendationsController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+            _dbContext = dbContext;
+            _userManager = userManager;
 		}
 
 		// GET: EntrantUser/Recomendations
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var entrant = await db.Entrants
+			var entrant = await _dbContext.Entrants
 				.Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
 				.Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
 				.Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
@@ -46,7 +41,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				.Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
 				.Where(e => e.Id == entrantId).SingleAsync();
 
-			var educationLines = await db.EducationLines
+			var educationLines = await _dbContext.EducationLines
 				.Include(edl=>edl.EducationLinesRequirements.Select(edlReq=>edlReq.ExamDiscipline.Weights.Select(w=>w.Characterisic)))
 				.Include(edl => edl.Faculty.HigherEducationInstitution)
 				.Where(p => p.Actual == true && p.Name!="IDEAL")
@@ -77,19 +72,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 		private async Task<int> GetEntrantId()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
 			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

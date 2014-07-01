@@ -18,18 +18,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class HobbieController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+		private readonly OptimalEducationDbContext _dbContext;
+	    private readonly UserManager<ApplicationUser> _userManager;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public HobbieController()
+        public HobbieController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public HobbieController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+            _dbContext = dbContext;
+            _userManager = userManager;
 		}
 		// GET: /EntrantUser/Hobbie/
 		public async Task<ActionResult> Index()
@@ -43,13 +38,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				var entrantId = await GetEntrantId();
 
-				var userHobbieIdsQuery = (from entrant in db.Entrants.Include(p=>p.Hobbies)
+				var userHobbieIdsQuery = (from entrant in _dbContext.Entrants.Include(p=>p.Hobbies)
 						where entrant.Id==entrantId
 						from hobbie in entrant.Hobbies
 						select hobbie.Id);
 
 				var userHobbieIds = new HashSet<int>(userHobbieIdsQuery);
-				var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
+				var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
 
 				var viewModel = new List<AssignedHobbie>();
 				foreach (var hobbie in allHobbies)
@@ -75,8 +70,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index(string[] selectedHobbies)
 		{
 			var entrantId = await GetEntrantId();
-			var currentEntrant =  await db.Entrants.SingleAsync(p => p.Id == entrantId);
-			var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
+			var currentEntrant =  await _dbContext.Entrants.SingleAsync(p => p.Id == entrantId);
+			var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
 			if (selectedHobbies == null)
 			{
 				foreach (var hobbie in allHobbies)
@@ -109,25 +104,16 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 					}
 				}
 			}
-			db.Entry(currentEntrant).State = EntityState.Modified;
-			await db.SaveChangesAsync();
+			_dbContext.Entry(currentEntrant).State = EntityState.Modified;
+			await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
 		}
         private async Task<int> GetEntrantId()
         {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
             var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
             var entrantId = int.Parse(entrantClaim.ClaimValue);
             return entrantId;
         }
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
-		}
 	}
 }

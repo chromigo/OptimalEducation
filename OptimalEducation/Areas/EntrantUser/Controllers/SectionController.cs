@@ -17,22 +17,19 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class SectionController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-		public SectionController()
-		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public SectionController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+        private readonly OptimalEducationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public SectionController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
 		// GET: /EntrantUser/Section/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var participationinSections = db.ParticipationInSections
+			var participationinSections = _dbContext.ParticipationInSections
 				.Include(p => p.Entrants)
 				.Include(p => p.Section)
 				.Where(p => p.EntrantsId == entrantId);
@@ -47,7 +44,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await db.ParticipationInSections
+			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
                 .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
@@ -60,7 +57,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Section/Create
 		public ActionResult Create()
 		{
-			ViewBag.SectionId = new SelectList(db.Sections, "Id", "Name");
+			ViewBag.SectionId = new SelectList(_dbContext.Sections, "Id", "Name");
 			return View();
 		}
 
@@ -74,12 +71,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			participationinSection.EntrantsId = await GetEntrantId();
 			if (ModelState.IsValid)
 			{
-				db.ParticipationInSections.Add(participationinSection);
-				await db.SaveChangesAsync();
+				_dbContext.ParticipationInSections.Add(participationinSection);
+				await _dbContext.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.SectionId = new SelectList(db.Sections, "Id", "Name", participationinSection.SectionId);
+			ViewBag.SectionId = new SelectList(_dbContext.Sections, "Id", "Name", participationinSection.SectionId);
 			return View(participationinSection);
 		}
 
@@ -91,7 +88,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await db.ParticipationInSections
+			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
 				.Where(p=>p.EntrantsId==entrantId)
                 .SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
@@ -113,9 +110,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			if (ModelState.IsValid)
 			{
-				var dbPartOlymp = await db.ParticipationInSections.FindAsync(participationinSection.Id);
+				var dbPartOlymp = await _dbContext.ParticipationInSections.FindAsync(participationinSection.Id);
 				dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
-				await db.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
 			return View(participationinSection);
@@ -129,7 +126,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await db.ParticipationInSections
+			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
 				.SingleOrDefaultAsync(p => p.Id == id);
 			if (participationinSection == null)
@@ -145,29 +142,20 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await db.ParticipationInSections
+			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
 				.Where(p => p.EntrantsId == entrantId)
                 .SingleOrDefaultAsync(p => p.Id == id);
-			db.ParticipationInSections.Remove(participationinSection);
-			await db.SaveChangesAsync();
+			_dbContext.ParticipationInSections.Remove(participationinSection);
+			await _dbContext.SaveChangesAsync();
 			return RedirectToAction("Index");
 		}
 
 		private async Task<int> GetEntrantId()
 		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
             var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 			var entrantId = int.Parse(entrantClaim.ClaimValue);
 			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

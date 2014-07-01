@@ -32,6 +32,7 @@ namespace OptimalEducation
         private void RegisterIoC()
         {
             var container = new ServiceContainer();
+            container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
             container.RegisterControllers();
             //register other services
 

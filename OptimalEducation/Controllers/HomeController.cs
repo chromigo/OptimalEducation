@@ -20,7 +20,7 @@ namespace OptimalEducation.Controllers
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
                 var userId = User.Identity.GetUserId();
-                
+
                 if(UserManager.Users.SingleOrDefault(p => p.Id == userId)!=null)
                 {
                     var userRoles = await UserManager.GetRolesAsync(userId);
