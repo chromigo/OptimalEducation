@@ -8,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Queries;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -30,29 +31,31 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var participationinolympiads = _dbContext.ParticipationInOlympiads
-				.Include(p => p.Entrant)
-				.Include(p => p.Olympiad)
-				.Where(p => p.EntrantId == entrantId);
-			return View(await participationinolympiads.ToListAsync());
+		    var query = new GetAllParticipationInOlympiadOfEntrantQuery(_dbContext);
+		    var participationinolympiads = await query.Execute(entrantId);
+            return View(participationinolympiads);
 		}
 
 		// GET: /EntrantUser/Olympiad/Details/5
 		public async Task<ActionResult> Details(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await _dbContext.ParticipationInOlympiads
-				.Where(p => p.EntrantId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
-			if (participationinolympiad == null)
+			else
 			{
-				return HttpNotFound();
+			    var poId = id.Value;
+                var entrantId = await GetEntrantId();
+                var query = new GetParticipationInOlympiadQuery(_dbContext);
+                var participationInOlympiad = await query.Execute(entrantId, poId);
+
+                if (participationInOlympiad == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(participationInOlympiad);
 			}
-			return View(participationinolympiad);
 		}
 
 		// GET: /EntrantUser/Olympiad/Create
@@ -89,9 +92,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await _dbContext.ParticipationInOlympiads
-				.Where(p=>p.EntrantId==entrantId)
-				.FirstOrDefaultAsync(p=>p.Id==id);
+		    var participationinolympiad = await _dbContext.ParticipationInOlympiads
+		        .AsNoTracking()
+		        .SingleOrDefaultAsync(p => p.Id == id && p.EntrantId == entrantId);
 			if (participationinolympiad == null)
 			{
 				return HttpNotFound();

@@ -33,8 +33,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-		    var query = new GetEntrantForCharacterizerByIdQuery(entrantId, _dbContext);
-		    var entrant = await query.Execute();
+		    var query = new GetEntrantForCharacterizerQuery(_dbContext);
+		    var entrant = await query.Execute(entrantId);
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method

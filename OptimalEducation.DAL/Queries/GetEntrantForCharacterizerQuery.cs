@@ -8,18 +8,16 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetEntrantForCharacterizerByIdQuery
+    public class GetEntrantForCharacterizerQuery
     {
-        private readonly int _entrantId;
         private readonly OptimalEducationDbContext _dbContext;
 
-        public GetEntrantForCharacterizerByIdQuery(int entrantId, OptimalEducationDbContext dbContext)
+        public GetEntrantForCharacterizerQuery(OptimalEducationDbContext dbContext)
         {
-            _entrantId = entrantId;
             _dbContext = dbContext;
         }
 
-        public async Task<Entrant> Execute()
+        public async Task<Entrant> Execute(int entrantId)
         {
             var entrant = await _dbContext.Entrants
                 .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
@@ -28,7 +26,7 @@ namespace OptimalEducation.DAL.Queries
                 .Include(e => e.Hobbies.Select(h => h.Weights))
                 .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
                 .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-                .Where(e => e.Id == _entrantId)
+                .Where(e => e.Id == entrantId)
                 .AsNoTracking()
                 .SingleAsync();
             return entrant;

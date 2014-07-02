@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using OptimalEducation.DAL.Folder;
 using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -38,13 +39,14 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				var entrantId = await GetEntrantId();
 
-				var userHobbieIdsQuery = (from entrant in _dbContext.Entrants.Include(p=>p.Hobbies)
-						where entrant.Id==entrantId
-						from hobbie in entrant.Hobbies
-						select hobbie.Id);
+				var userHobbieIdsQuery = 
+                    from entrant in _dbContext.Entrants.Include(p=>p.Hobbies).AsNoTracking()
+					where entrant.Id==entrantId
+					from hobbie in entrant.Hobbies
+					select hobbie.Id;
 
 				var userHobbieIds = new HashSet<int>(userHobbieIdsQuery);
-				var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
+				var allHobbies = await _dbContext.Hobbies.AsNoTracking().ToListAsync<Hobbie>();
 
 				var viewModel = new List<AssignedHobbie>();
 				foreach (var hobbie in allHobbies)
@@ -70,42 +72,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index(string[] selectedHobbies)
 		{
 			var entrantId = await GetEntrantId();
-			var currentEntrant =  await _dbContext.Entrants.SingleAsync(p => p.Id == entrantId);
-			var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
-			if (selectedHobbies == null)
-			{
-				foreach (var hobbie in allHobbies)
-				{
-					currentEntrant.Hobbies.Remove(hobbie);
-				}
-			}
-			else
-			{
-				var selectedHobbiesList = new List<int>();
-				foreach (var hobbie in selectedHobbies)
-				{
-					selectedHobbiesList.Add(int.Parse(hobbie));
-				}
-
-				var lastUserHobbieIds = currentEntrant.Hobbies.Select(h=>h.Id);
-				foreach (var hobbie in allHobbies)
-				{
-					if (selectedHobbiesList.Contains(hobbie.Id))
-					{
-						//Если не было - добавляем
-						if (!lastUserHobbieIds.Contains(hobbie.Id))
-							currentEntrant.Hobbies.Add(hobbie);
-					}
-					else//не выбранное хобби
-					{
-						//Если было - удаляем
-						if (lastUserHobbieIds.Contains(hobbie.Id))
-							currentEntrant.Hobbies.Remove(hobbie);
-					}
-				}
-			}
-			_dbContext.Entry(currentEntrant).State = EntityState.Modified;
-			await _dbContext.SaveChangesAsync();
+		    var command = new UpdateEntrantHobbieCommand(_dbContext);
+            await command.Execute(entrantId, selectedHobbies);
             return RedirectToAction("Index");
 		}
         private async Task<int> GetEntrantId()
