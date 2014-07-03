@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using CQRS;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
@@ -22,11 +23,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
         private readonly IOptimalEducationDbContext _dbContext;
 	    private readonly IApplicationUserManager _userManager;
-
-        public OrientationController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public IQueryBuilder Query { get; set; }
+        public OrientationController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager,IQueryBuilder queryBuilder)
 		{
 		    _dbContext = dbContext;
 		    _userManager = userManager;
+            Query = queryBuilder;
 		}
 
 	    // GET: /EntrantUser/Orientation/
@@ -41,6 +43,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
+
+            var account = Query.For<IEnumerable<ParticipationInOlympiad>>().With(new TestCriteria(){Id = 1});
 			return View();
 		}
 

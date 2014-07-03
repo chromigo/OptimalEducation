@@ -11,7 +11,7 @@ namespace CQRS
     /// </summary>
     public interface ICriterion { }
 
-    public interface IQuery<in TCriterion, out TResult>
+    public interface IQuery<in TCriterion,out TResult>
       where TCriterion : ICriterion
     {
         TResult Ask(TCriterion criterion);

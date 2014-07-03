@@ -6,15 +6,20 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using LightInject;
+using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Queries;
 using OptimalEducation.Models;
+using CQRS;
 
 namespace OptimalEducation
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        private readonly ServiceContainer lightInject = new ServiceContainer();
+        
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -31,20 +36,21 @@ namespace OptimalEducation
 
         private void RegisterIoC()
         {
-            var container = new ServiceContainer();
-            container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
-            container.RegisterControllers();
+            lightInject.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
+            lightInject.RegisterControllers();
             //register other services
 
             //contexts
-            container.Register<IOptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
-            container.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
+            lightInject.Register<IOptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
+            lightInject.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
             //userManager classes
-            container.Register<IUserStore<ApplicationUser>>(
+            lightInject.Register<IUserStore<ApplicationUser>>(
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
-            container.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
+            lightInject.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
 
-            container.EnableMvc();
+            lightInject.Register<IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>, GetAllPartQuery>();
+            lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
+            lightInject.EnableMvc();
         }
     }
 }
