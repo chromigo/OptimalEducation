@@ -17,10 +17,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class SectionController : Controller
 	{
-        private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
         private readonly IApplicationUserManager _userManager;
 
-        public SectionController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public SectionController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;

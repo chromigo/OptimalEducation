@@ -37,7 +37,7 @@ namespace OptimalEducation
             //register other services
 
             //contexts
-            container.Register<OptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
+            container.Register<IOptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
             container.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
             //userManager classes
             container.Register<IUserStore<ApplicationUser>>(

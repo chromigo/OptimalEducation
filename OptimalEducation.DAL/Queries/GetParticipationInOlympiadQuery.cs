@@ -10,9 +10,9 @@ namespace OptimalEducation.DAL.Queries
 {
     public class GetParticipationInOlympiadQuery
     {
-        private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 
-        public GetParticipationInOlympiadQuery(OptimalEducationDbContext dbContext)
+        public GetParticipationInOlympiadQuery(IOptimalEducationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

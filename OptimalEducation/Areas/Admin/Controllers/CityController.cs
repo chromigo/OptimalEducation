@@ -15,9 +15,9 @@ namespace OptimalEducation.Areas.Admin.Controllers
     [Authorize(Roles = Role.Admin)]
     public class CityController : Controller
     {
-        private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 
-        public CityController(OptimalEducationDbContext dbContext)
+        public CityController(IOptimalEducationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

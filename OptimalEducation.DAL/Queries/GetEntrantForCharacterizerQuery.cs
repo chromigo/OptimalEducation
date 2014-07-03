@@ -10,9 +10,9 @@ namespace OptimalEducation.DAL.Queries
 {
     public class GetEntrantForCharacterizerQuery
     {
-        private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 
-        public GetEntrantForCharacterizerQuery(OptimalEducationDbContext dbContext)
+        public GetEntrantForCharacterizerQuery(IOptimalEducationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

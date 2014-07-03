@@ -20,10 +20,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-	    private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 	    private readonly IApplicationUserManager _userManager;
 
-		public OrientationController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public OrientationController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
 		{
 		    _dbContext = dbContext;
 		    _userManager = userManager;

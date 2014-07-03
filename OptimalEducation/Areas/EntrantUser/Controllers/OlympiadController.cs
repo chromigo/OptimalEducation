@@ -18,10 +18,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class OlympiadController : Controller
 	{
-		private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 	    private readonly IApplicationUserManager _userManager;
 
-        public OlympiadController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public OlympiadController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
 	    {
             _dbContext = dbContext;
 	        _userManager = userManager;

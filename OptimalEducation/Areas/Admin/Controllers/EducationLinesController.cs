@@ -15,8 +15,8 @@ namespace OptimalEducation.Areas.Admin.Controllers
     [Authorize(Roles = Role.Admin)]
     public class EducationLinesController : Controller
     {
-        private readonly OptimalEducationDbContext _dbContext;
-        public EducationLinesController(OptimalEducationDbContext dbContext)
+        private readonly IOptimalEducationDbContext _dbContext;
+        public EducationLinesController(IOptimalEducationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

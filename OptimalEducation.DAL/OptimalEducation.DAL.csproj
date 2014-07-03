@@ -54,7 +54,7 @@
   <ItemGroup>
     <Compile Include="Builders\IdealEntrantBuilder.cs" />
     <Compile Include="Builders\EntrantBuilder.cs" />
-    <Compile Include="Folder\UpdateEntrantHobbieCommand.cs" />
+    <Compile Include="Commands\UpdateEntrantHobbieCommand.cs" />
     <Compile Include="Migrations\201404191749513_Initialize.cs" />
     <Compile Include="Migrations\201404191749513_Initialize.Designer.cs">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>

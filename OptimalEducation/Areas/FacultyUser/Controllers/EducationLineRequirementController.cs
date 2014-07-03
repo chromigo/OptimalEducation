@@ -17,10 +17,10 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 	[Authorize(Roles = Role.Faculty)]
 	public class EducationLineRequirementController : Controller
 	{
-		private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
         private readonly IApplicationUserManager _userManager;
 
-        public EducationLineRequirementController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public EducationLineRequirementController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
