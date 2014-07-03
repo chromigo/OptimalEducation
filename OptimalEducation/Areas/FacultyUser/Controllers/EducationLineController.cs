@@ -20,9 +20,9 @@ namespace OptimalEducation.Areas.FacultyUser.Controllers
 	public class EducationLineController : Controller
 	{
         private readonly OptimalEducationDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationUserManager _userManager;
 
-        public EducationLineController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public EducationLineController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;

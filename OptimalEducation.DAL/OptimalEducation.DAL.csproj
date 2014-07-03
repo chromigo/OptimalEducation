@@ -163,6 +163,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Queries\Tips.txt" />
     <Content Include="SQLScripts\dbo.Cities.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLineRequirements.data.sql" />
     <Content Include="SQLScripts\dbo.EducationLines.data.sql" />

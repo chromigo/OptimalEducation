@@ -18,9 +18,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	public class SectionController : Controller
 	{
         private readonly OptimalEducationDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationUserManager _userManager;
 
-        public SectionController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public SectionController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;

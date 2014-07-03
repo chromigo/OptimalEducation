@@ -13,17 +13,22 @@ namespace OptimalEducation.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly IApplicationUserManager _userManager;
+
+        public HomeController(IApplicationUserManager applicationUserManager)
+        {
+            _userManager = applicationUserManager;
+        }
+
         public async Task<ActionResult> Index()
         {
             if(User.Identity.IsAuthenticated)
             {
-                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-
                 var userId = User.Identity.GetUserId();
 
-                if(UserManager.Users.SingleOrDefault(p => p.Id == userId)!=null)
+                if (_userManager.Users.SingleOrDefault(p => p.Id == userId) != null)
                 {
-                    var userRoles = await UserManager.GetRolesAsync(userId);
+                    var userRoles = await _userManager.GetRolesAsync(userId);
                     if (userRoles.Any(role => role == Role.Admin))
                         return RedirectToAction("Index", "EducationLines", new { area = "Admin" }); 
                     if (userRoles.Any(role => role == Role.Entrant))

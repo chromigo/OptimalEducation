@@ -18,9 +18,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	public class SchoolController : Controller
 	{
         private readonly OptimalEducationDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationUserManager _userManager;
 
-        public SchoolController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public SchoolController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;

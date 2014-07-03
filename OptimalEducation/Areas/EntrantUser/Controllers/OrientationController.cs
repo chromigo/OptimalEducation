@@ -21,9 +21,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	public class OrientationController : Controller
 	{
 	    private readonly OptimalEducationDbContext _dbContext;
-	    private readonly UserManager<ApplicationUser> _userManager;
+	    private readonly IApplicationUserManager _userManager;
 
-		public OrientationController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+		public OrientationController(OptimalEducationDbContext dbContext, IApplicationUserManager userManager)
 		{
 		    _dbContext = dbContext;
 		    _userManager = userManager;
@@ -34,6 +34,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			var entrantId = await GetEntrantId();
 		    var query = new GetEntrantForCharacterizerQuery(_dbContext);
+            //User user = query.For<User>().With(new FindByLogin { Login = command.Login });
 		    var entrant = await query.Execute(entrantId);
 
             //Предпочтения пользователя по предметам и пр.

@@ -42,7 +42,7 @@ namespace OptimalEducation
             //userManager classes
             container.Register<IUserStore<ApplicationUser>>(
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
-            container.Register<UserManager<ApplicationUser>, UserManager<ApplicationUser>>(new PerRequestLifeTime());
+            container.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
 
             container.EnableMvc();
         }

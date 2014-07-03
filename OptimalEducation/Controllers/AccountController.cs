@@ -21,22 +21,22 @@ namespace OptimalEducation.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationUserManager _userManager;
+        private IApplicationUserManager _userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager)
+        public AccountController(IApplicationUserManager userManager)
         {
             UserManager = userManager;
         }
 
-        public ApplicationUserManager UserManager
+        public IApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<IApplicationUserManager>();
             }
             private set
             {
@@ -293,7 +293,7 @@ namespace OptimalEducation.Controllers
 
         //
         // GET: /Account/Manage
-        public ActionResult Manage(ManageMessageId? message)
+        public async Task<ActionResult> Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -301,7 +301,7 @@ namespace OptimalEducation.Controllers
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            ViewBag.HasLocalPassword = HasPassword();
+            ViewBag.HasLocalPassword = await HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -312,7 +312,7 @@ namespace OptimalEducation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
-            bool hasPassword = HasPassword();
+            bool hasPassword =await HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
@@ -489,10 +489,10 @@ namespace OptimalEducation.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult RemoveAccountList()
+        public async Task<ActionResult> RemoveAccountList()
         {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
+            var linkedAccounts = await UserManager.GetLoginsAsync(User.Identity.GetUserId());
+            ViewBag.ShowRemoveButton = await HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
@@ -545,9 +545,9 @@ namespace OptimalEducation.Controllers
             }
         }
 
-        private bool HasPassword()
+        private async Task<bool> HasPassword()
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
