@@ -18,8 +18,6 @@ namespace OptimalEducation
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private readonly ServiceContainer lightInject = new ServiceContainer();
-        
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -36,10 +34,12 @@ namespace OptimalEducation
 
         private void RegisterIoC()
         {
+            var lightInject = new DependencyResolver();
             lightInject.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
             lightInject.RegisterControllers();
             //register other services
 
+            lightInject.Register<IDependencyResolver>(factory => lightInject);
             //contexts
             lightInject.Register<IOptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
             lightInject.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
@@ -51,6 +51,23 @@ namespace OptimalEducation
             lightInject.Register<IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>, GetAllPartQuery>();
             lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
             lightInject.EnableMvc();
+        }
+    }
+
+    public class DependencyResolver : ServiceContainer, IDependencyResolver
+    {
+        //Реализации этого интерфейса должны осуществлять делегирование в базовый контейнер внедрения зависимостей,
+        //чтобы предоставить зарегистрированную службу для запрошенного типа.
+        //При отсутствии зарегистрированных служб запрошенного типа ASP.NET MVC ожидает от реализации этого интерфейса возврата null из GetService
+        //или пустой коллекции из GetServices.
+        public object GetService(Type serviceType)
+        {
+            return base.GetInstance(serviceType);
+        }
+
+        public IEnumerable<object> GetServices(Type serviceType)
+        {
+            return base.GetAllInstances(serviceType);
         }
     }
 }

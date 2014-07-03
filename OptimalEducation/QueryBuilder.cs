@@ -11,9 +11,9 @@ namespace OptimalEducation
 {
     public class QueryBuilder : IQueryBuilder
     {
-        private readonly IServiceFactory dependencyResolver;
+        private readonly IDependencyResolver dependencyResolver;
 
-        public QueryBuilder(IServiceFactory dependencyResolver)
+        public QueryBuilder(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
         }
@@ -27,19 +27,19 @@ namespace OptimalEducation
 
         private class QueryFor<TResult> : IQueryFor<TResult>
         {
-            private readonly IServiceFactory dependencyResolver;
+            private readonly IDependencyResolver dependencyResolver;
 
-            public QueryFor(IServiceFactory dependencyResolver)
+            public QueryFor(IDependencyResolver dependencyResolver)
             {
                 this.dependencyResolver = dependencyResolver;
             }
 
             public TResult With<TCriterion>(TCriterion criterion) where TCriterion : ICriterion
             {
-                return dependencyResolver.GetInstance<IQuery<TCriterion, TResult>>().Ask(criterion);
+                return dependencyResolver.GetService<IQuery<TCriterion, TResult>>().Ask(criterion);
             }
         }
-
+        
         #endregion
     }
 }
