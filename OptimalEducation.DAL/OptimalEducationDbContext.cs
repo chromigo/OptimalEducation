@@ -34,7 +34,9 @@ namespace OptimalEducation.DAL.Models
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
         DbEntityEntry Entry(object entity);
+        DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         DbSet Set(Type entityType);
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
 
     public class OptimalEducationDbContext : DbContext, IOptimalEducationDbContext

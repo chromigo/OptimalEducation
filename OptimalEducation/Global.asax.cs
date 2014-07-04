@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -48,7 +49,7 @@ namespace OptimalEducation
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
             lightInject.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
 
-            lightInject.Register<IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>, GetAllPartQuery>();
+            lightInject.Register<IQuery<TestCriteria, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllPartQuery>();
             lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
             lightInject.EnableMvc();
         }

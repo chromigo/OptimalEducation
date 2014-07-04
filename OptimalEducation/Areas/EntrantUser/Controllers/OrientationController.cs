@@ -43,8 +43,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
-            
-            var account = Query.For<IEnumerable<ParticipationInOlympiad>>().With(new TestCriteria(){Id = 1});
+            //IDependencyResolver dependencyResolver;
+            //dependencyResolver.GetService<IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>>().Ask(new TestCriteria() { Id = 1 });
+            var account = await Query.For<Task<IEnumerable<ParticipationInOlympiad>>>().With(new TestCriteria(){Id = 1});
 			return View();
 		}
 

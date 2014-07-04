@@ -9,7 +9,7 @@ using CQRS;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllPartQuery : IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>
+    public class GetAllPartQuery : IQuery<TestCriteria, Task<IEnumerable<ParticipationInOlympiad>>>
     {
         private readonly IOptimalEducationDbContext _dbContext;
 
@@ -18,16 +18,14 @@ namespace OptimalEducation.DAL.Queries
             _dbContext = dbContext;
         }
 
-        //add async
-        public IEnumerable<ParticipationInOlympiad> Ask(TestCriteria criterion)
+        public async Task<IEnumerable<ParticipationInOlympiad>> Ask(TestCriteria criterion)
         {
-            var participationinolympiads = _dbContext.ParticipationInOlympiads
+            var participationinolympiads =await _dbContext.ParticipationInOlympiads
                 .Include(p => p.Entrant)
                 .Include(p => p.Olympiad)
                 .Where(p => p.EntrantId == criterion.Id)
                 .AsNoTracking()
-                .ToList();
-                //.ToListAsync();
+                .ToListAsync();
             return participationinolympiads;
         }
     }
