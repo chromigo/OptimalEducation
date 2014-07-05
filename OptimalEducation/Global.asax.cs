@@ -10,6 +10,7 @@ using LightInject;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Models;
@@ -49,10 +50,16 @@ namespace OptimalEducation
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
             lightInject.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
 
-            lightInject.Register<IQuery<GetAllParticipationInOlympiad, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllParticipationInOlympiadOfEntrantQuery>();
-            lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
+            lightInject.Register<IQuery<GetAllParticipationInOlympiadCriterion, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllParticipationInOlympiadOfEntrantQuery>();
+            lightInject.Register<IQuery<GetAllOlympiadsCriterion, Task<IEnumerable<Olympiad>>>, GetAllOlympiadsQuery>();
+            lightInject.Register<IQuery<GetCurrentParticipationInOlympiadCriterion, Task<ParticipationInOlympiad>>, GetCurrentParticipationInOlympiadQuery>();
+            lightInject.Register<IQuery<GetEntrantCriterion, Task<Entrant>>, GetEntrantQuery>();
 
-            lightInject.Register<ICommand<commandContext>, TestCommand>();
+            lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
+            
+            lightInject.Register<ICommand<AddParticipationInOlympiadContext>, AddParticipationInOlympiadCommand>();
+            lightInject.Register<ICommand<RemoveParticipationInOlympiadContext>, RemoveParticipationInOlympiadCommand>();
+            lightInject.Register<ICommand<UpdateParticipationInOlympiadResultContext>, UpdateParticipationInOlympiadResultCommand>();
             lightInject.Register<ICommandBuilder>(factory => new CommandBuilder(lightInject));//Передаем в явном виде сам наш инжектор
 
             lightInject.EnableMvc();

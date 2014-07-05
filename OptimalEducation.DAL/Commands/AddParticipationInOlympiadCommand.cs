@@ -5,9 +5,9 @@ using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.DAL.Commands
 {
-    public class AddParticipationInOlympiad: EFBaseCommand, ICommand<AddParticipationInOlympiadContext>
+    public class AddParticipationInOlympiadCommand: EFBaseCommand, ICommand<AddParticipationInOlympiadContext>
     {
-        public AddParticipationInOlympiad(IOptimalEducationDbContext dbContext) : base(dbContext)
+        public AddParticipationInOlympiadCommand(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 

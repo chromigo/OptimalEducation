@@ -54,7 +54,11 @@
   <ItemGroup>
     <Compile Include="Builders\IdealEntrantBuilder.cs" />
     <Compile Include="Builders\EntrantBuilder.cs" />
+    <Compile Include="Commands\AddParticipationInOlympiadCommand.cs" />
+    <Compile Include="Commands\EFBaseCommand.cs" />
+    <Compile Include="Commands\RemoveParticipationInOlympiadCommand.cs" />
     <Compile Include="Commands\UpdateEntrantHobbieCommand.cs" />
+    <Compile Include="Commands\UpdateParticipationInOlympiadResultCommand.cs" />
     <Compile Include="Migrations\201404191749513_Initialize.cs" />
     <Compile Include="Migrations\201404191749513_Initialize.Designer.cs">
       <DependentUpon>201404191749513_Initialize.cs</DependentUpon>
@@ -120,7 +124,7 @@
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EFBaseQuery.cs" />
-    <Compile Include="Queries\GetAllOlympiads.cs" />
+    <Compile Include="Queries\GetAllOlympiadsQuery.cs" />
     <Compile Include="Queries\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />

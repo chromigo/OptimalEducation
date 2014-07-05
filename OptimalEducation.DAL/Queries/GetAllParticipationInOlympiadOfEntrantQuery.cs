@@ -9,13 +9,13 @@ using CQRS;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllParticipationInOlympiadOfEntrantQuery :  EFBaseQuery, IQuery<GetAllParticipationInOlympiad, Task<IEnumerable<ParticipationInOlympiad>>>
+    public class GetAllParticipationInOlympiadOfEntrantQuery :  EFBaseQuery, IQuery<GetAllParticipationInOlympiadCriterion, Task<IEnumerable<ParticipationInOlympiad>>>
     {
         public GetAllParticipationInOlympiadOfEntrantQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<ParticipationInOlympiad>> Ask(GetAllParticipationInOlympiad criterion)
+        public async Task<IEnumerable<ParticipationInOlympiad>> Ask(GetAllParticipationInOlympiadCriterion criterion)
         {
 			var participationinolympiads =await _dbContext.ParticipationInOlympiads
 				.Include(p => p.Entrant)
@@ -27,7 +27,7 @@ namespace OptimalEducation.DAL.Queries
         }
     }
 
-    public class GetAllParticipationInOlympiad : ICriterion
+    public class GetAllParticipationInOlympiadCriterion : ICriterion
     {
         public int EntrantId { get; set; }
     }

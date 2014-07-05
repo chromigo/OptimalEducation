@@ -9,13 +9,13 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllOlympiadsQuery : EFBaseQuery, IQuery<GetAllOlympiads, Task<IEnumerable<Olympiad>>>
+    public class GetAllOlympiadsQuery : EFBaseQuery, IQuery<GetAllOlympiadsCriterion, Task<IEnumerable<Olympiad>>>
     {
         public GetAllOlympiadsQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<Olympiad>> Ask(GetAllOlympiads criterion)
+        public async Task<IEnumerable<Olympiad>> Ask(GetAllOlympiadsCriterion criterion)
         {
 			var olympiads =await _dbContext.Olympiads
                 .AsNoTracking()
@@ -24,7 +24,7 @@ namespace OptimalEducation.DAL.Queries
         }
 
     }
-    public class GetAllOlympiads:ICriterion
+    public class GetAllOlympiadsCriterion:ICriterion
     {
     }
 }

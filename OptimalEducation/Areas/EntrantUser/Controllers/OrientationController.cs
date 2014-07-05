@@ -27,7 +27,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrant() { EntrantId = entrantId });
+            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantCriterion() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
