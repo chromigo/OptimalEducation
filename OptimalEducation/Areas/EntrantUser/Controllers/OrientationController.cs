@@ -1,20 +1,12 @@
 ﻿using CQRS;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.AnalyticHierarchyProcess;
-using System.Diagnostics;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -23,29 +15,24 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
         private readonly IOptimalEducationDbContext _dbContext;
 	    private readonly IApplicationUserManager _userManager;
-        public IQueryBuilder Query { get; set; }
+	    public IQueryBuilder _queryBuilder;
         public OrientationController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager,IQueryBuilder queryBuilder)
 		{
 		    _dbContext = dbContext;
 		    _userManager = userManager;
-            Query = queryBuilder;
+            _queryBuilder = queryBuilder;
 		}
 
 	    // GET: /EntrantUser/Orientation/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-		    var query = new GetEntrantForCharacterizerQuery(_dbContext);
-            //User user = query.For<User>().With(new FindByLogin { Login = command.Login });
-		    var entrant = await query.Execute(entrantId);
+            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrant() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
-            //IDependencyResolver dependencyResolver;
-            //dependencyResolver.GetService<IQuery<TestCriteria, IEnumerable<ParticipationInOlympiad>>>().Ask(new TestCriteria() { Id = 1 });
-            var account = await Query.For<Task<IEnumerable<ParticipationInOlympiad>>>().With(new TestCriteria(){Id = 1});
 			return View();
 		}
 

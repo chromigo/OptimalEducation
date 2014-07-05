@@ -119,8 +119,9 @@
     <Compile Include="Models\UnitedStateExam.cs" />
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\GetAllPartQuery.cs" />
-    <Compile Include="Queries\GetParticipationInOlympiadQuery.cs" />
+    <Compile Include="Queries\EFBaseQuery.cs" />
+    <Compile Include="Queries\GetAllOlympiads.cs" />
+    <Compile Include="Queries\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />
   </ItemGroup>

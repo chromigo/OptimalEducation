@@ -17,6 +17,10 @@ namespace CQRS
         TResult Ask(TCriterion criterion);
     }
 
+    /// <summary>
+    /// Класс-обертка для упрощения работы с QueryObject (чтобы не вызывать DependencyResolver напрямую)
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IQueryFor<out T>
     {
        T With<TCriterion>(TCriterion criterion) where TCriterion : ICriterion;

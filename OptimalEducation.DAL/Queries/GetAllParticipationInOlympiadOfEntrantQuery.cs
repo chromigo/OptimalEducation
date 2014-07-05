@@ -5,27 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Models;
+using CQRS;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllParticipationInOlympiadOfEntrantQuery
+    public class GetAllParticipationInOlympiadOfEntrantQuery :  EFBaseQuery, IQuery<GetAllParticipationInOlympiad, Task<IEnumerable<ParticipationInOlympiad>>>
     {
-        private readonly IOptimalEducationDbContext _dbContext;
-
-        public GetAllParticipationInOlympiadOfEntrantQuery(IOptimalEducationDbContext dbContext)
+        public GetAllParticipationInOlympiadOfEntrantQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ParticipationInOlympiad>> Execute(int entrantId)
+        public async Task<IEnumerable<ParticipationInOlympiad>> Ask(GetAllParticipationInOlympiad criterion)
         {
 			var participationinolympiads =await _dbContext.ParticipationInOlympiads
 				.Include(p => p.Entrant)
 				.Include(p => p.Olympiad)
-				.Where(p => p.EntrantId == entrantId)
+				.Where(p => p.EntrantId == criterion.EntrantId)
                 .AsNoTracking()
                 .ToListAsync();
             return participationinolympiads;
         }
+    }
+
+    public class GetAllParticipationInOlympiad : ICriterion
+    {
+        public int EntrantId { get; set; }
     }
 }
