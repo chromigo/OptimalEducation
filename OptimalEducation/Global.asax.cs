@@ -49,8 +49,12 @@ namespace OptimalEducation
                 factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
             lightInject.Register<IApplicationUserManager, ApplicationUserManager>(new PerRequestLifeTime());
 
-            lightInject.Register<IQuery<GetAllParticipationInOlympiad, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllPartQuery>();
+            lightInject.Register<IQuery<GetAllParticipationInOlympiad, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllParticipationInOlympiadOfEntrantQuery>();
             lightInject.Register<IQueryBuilder>(factory=>new QueryBuilder(lightInject));//Передаем в явном виде сам наш инжектор
+
+            lightInject.Register<ICommand<commandContext>, TestCommand>();
+            lightInject.Register<ICommandBuilder>(factory => new CommandBuilder(lightInject));//Передаем в явном виде сам наш инжектор
+
             lightInject.EnableMvc();
         }
     }

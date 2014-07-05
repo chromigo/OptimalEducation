@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using CQRS;
+using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Models;
@@ -21,12 +22,14 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	public class OlympiadController : Controller
 	{
         private readonly IQueryBuilder _queryBuilder;
+	    private readonly ICommandBuilder _commandBuilder;
 	    private readonly IApplicationUserManager _userManager;
 
-        public OlympiadController(IQueryBuilder queryBuilder, IApplicationUserManager userManager)
+        public OlympiadController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IApplicationUserManager userManager)
 	    {
             _queryBuilder = queryBuilder;
-	        _userManager = userManager;
+            _commandBuilder = commandBuilder;
+            _userManager = userManager;
 	    }
 
 	    // GET: /EntrantUser/Olympiad/
@@ -81,9 +84,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			participationinolympiad.EntrantId = await GetEntrantId();
 			if (ModelState.IsValid)
 			{
-				_dbContext.ParticipationInOlympiads.Add(participationinolympiad);
-				await _dbContext.SaveChangesAsync();
-
+                await _commandBuilder
+                    .ExecuteAsync(new AddParticipationInOlympiadContext(){ParticipationInOlympiad = participationinolympiad});
 
 				return RedirectToAction("Index");
 			}
