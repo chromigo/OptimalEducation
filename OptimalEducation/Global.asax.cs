@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -36,8 +37,10 @@ namespace OptimalEducation
 
             dryIoC.RegisterInstance(dryIoC);
             dryIoC.Register<IDependencyResolver, DependencyResolver>(Reuse.Singleton);
+            dryIoC.Register<IQueryBuilder, QueryBuilder>();
+            dryIoC.Register<ICommandBuilder, CommandBuilder>();
+
             //register other services
-            //TODO Проверить строчку сверху
             //TODO Проверить время жизни
             //contexts
             dryIoC.Register<IOptimalEducationDbContext, OptimalEducationDbContext>();
@@ -47,23 +50,18 @@ namespace OptimalEducation
             dryIoC.Register<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(Reuse.Transient, new GetConstructor(t => t.GetConstructor(new Type[] { typeof(DbContext) })));
             dryIoC.Register<IApplicationUserManager, ApplicationUserManager>();
 
+            RegisterAllQueries(dryIoC);
 
+            RegisterAllCommands(dryIoC);
+
+            RegisterControllers(dryIoC);
+        }
+
+        private void RegisterAllCommands(Container dryIoC)
+        {
             var pluginAssembly = typeof(IOptimalEducationDbContext).Assembly;
-            var queryInterfaceType = typeof (IQuery<,>);
-           
-            var queryTypes = pluginAssembly
-                .GetTypes()
-                .Where(t => 
-                    t.IsPublic &&
-                    !t.IsAbstract &&
-                    t.GetImplementedTypes().Contains(queryInterfaceType, new TypeEqualityComparer<Type>()));
-            foreach (var type in queryTypes)
-            {
-                var typeInterface = type.GetImplementedTypes().Single(p => p.Name == queryInterfaceType.Name);
-                dryIoC.Register(typeInterface, type, Reuse.Transient);
-            }
+            var commandInterfaceType = typeof (ICommand<>);
 
-            var commandInterfaceType = typeof(ICommand<>);
             var commandTypes = pluginAssembly
                 .GetTypes()
                 .Where(t =>
@@ -75,25 +73,27 @@ namespace OptimalEducation
                 var typeInterface = type.GetImplementedTypes().Single(p => p.Name == commandInterfaceType.Name);
                 dryIoC.Register(typeInterface, type, Reuse.Transient);
             }
-
-                
-            //dryIoC.Register<IQuery<GetAllParticipationInOlympiadCriterion, Task<IEnumerable<ParticipationInOlympiad>>>, GetAllParticipationInOlympiadOfEntrantQuery>();
-            //dryIoC.Register<IQuery<GetAllOlympiadsCriterion, Task<IEnumerable<Olympiad>>>, GetAllOlympiadsQuery>();
-            //dryIoC.Register<IQuery<GetCurrentParticipationInOlympiadCriterion, Task<ParticipationInOlympiad>>, GetCurrentParticipationInOlympiadQuery>();
-            //dryIoC.Register<IQuery<GetEntrantCriterion, Task<Entrant>>, GetEntrantQuery>();
-
-
-            //dryIoC.Register<ICommand<AddParticipationInOlympiadContext>, AddParticipationInOlympiadCommand>();
-            //dryIoC.Register<ICommand<RemoveParticipationInOlympiadContext>, RemoveParticipationInOlympiadCommand>();
-            //dryIoC.Register<ICommand<UpdateParticipationInOlympiadResultContext>, UpdateParticipationInOlympiadResultCommand>();
-
-            dryIoC.Register<IQueryBuilder,QueryBuilder>();//Передаем в явном виде сам наш инжектор
-            dryIoC.Register<ICommandBuilder,CommandBuilder>();//Передаем в явном виде сам наш инжектор
-
-            RegisterControllers(dryIoC);
         }
 
-        private static void RegisterControllers(Container dryIoC)
+        private void RegisterAllQueries(Container dryIoC)
+        {
+            var pluginAssembly = typeof(IOptimalEducationDbContext).Assembly;
+            var queryInterfaceType = typeof (IQuery<,>);
+
+            var queryTypes = pluginAssembly
+                .GetTypes()
+                .Where(t =>
+                    t.IsPublic &&
+                    !t.IsAbstract &&
+                    t.GetImplementedTypes().Contains(queryInterfaceType, new TypeEqualityComparer<Type>()));
+            foreach (var type in queryTypes)
+            {
+                var typeInterface = type.GetImplementedTypes().Single(p => p.Name == queryInterfaceType.Name);
+                dryIoC.Register(typeInterface, type, Reuse.Transient);
+            }
+        }
+
+        private void RegisterControllers(Container dryIoC)
         {
             var controllerAssembly = typeof (MvcApplication).Assembly;
 
@@ -129,8 +129,6 @@ namespace OptimalEducation
            return null;
         }
     }
-
-
 
     public class DryIoCControllerFactory : DefaultControllerFactory
     {
