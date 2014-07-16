@@ -148,6 +148,11 @@ namespace OptimalEducation
             }
             return manager;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 
     public class EmailService : IIdentityMessageService

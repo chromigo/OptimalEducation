@@ -51,7 +51,7 @@ namespace OptimalEducation
             //userManager classes
             dryIoC.Register<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>
                 (Reuse.Transient, new GetConstructor(t => t.GetConstructor(new Type[] { typeof(DbContext) })));//регистриция с заданным конструктором
-            dryIoC.Register<IApplicationUserManager, ApplicationUserManager>();
+            dryIoC.Register<IApplicationUserManager, ApplicationUserManager>(Reuse.InResolutionScope);
 
             RegisterControllers(dryIoC);
             //TODO Проверить время жизни
@@ -105,7 +105,7 @@ namespace OptimalEducation
                     t.GetImplementedTypes().Contains(typeof (IController)));
 
             foreach (var controllerType in controllerTypes)
-                dryIoC.Register(controllerType, Reuse.Transient);
+                dryIoC.Register(controllerType, Reuse.InCurrentScope);
 
             var controllerFactory = new DryIoCControllerFactory(dryIoC);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
