@@ -33,28 +33,28 @@ namespace OptimalEducation
         private void RegisterIoC()
         {
             var dryIoC = new Container();
-            //TODO регистриция контролеров
 
+            //Регистрируем экземпляр нашего контейнера
             dryIoC.RegisterInstance(dryIoC);
+            //Регистрируем класс-обертку для дальнейшей работы в некоторых классах
             dryIoC.Register<IDependencyResolver, DependencyResolver>(Reuse.Singleton);
+            //Регистриуем основные компоненты
             dryIoC.Register<IQueryBuilder, QueryBuilder>();
             dryIoC.Register<ICommandBuilder, CommandBuilder>();
+            RegisterAllQueries(dryIoC);
+            RegisterAllCommands(dryIoC);
 
-            //register other services
-            //TODO Проверить время жизни
-            //contexts
+            //Entity Framework contexts
             dryIoC.Register<IOptimalEducationDbContext, OptimalEducationDbContext>();
             dryIoC.Register<ApplicationDbContext, ApplicationDbContext>();
             dryIoC.Register<DbContext, ApplicationDbContext>();
             //userManager classes
-            dryIoC.Register<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(Reuse.Transient, new GetConstructor(t => t.GetConstructor(new Type[] { typeof(DbContext) })));
+            dryIoC.Register<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>
+                (Reuse.Transient, new GetConstructor(t => t.GetConstructor(new Type[] { typeof(DbContext) })));//регистриция с заданным конструктором
             dryIoC.Register<IApplicationUserManager, ApplicationUserManager>();
 
-            RegisterAllQueries(dryIoC);
-
-            RegisterAllCommands(dryIoC);
-
             RegisterControllers(dryIoC);
+            //TODO Проверить время жизни
         }
 
         private void RegisterAllCommands(Container dryIoC)
