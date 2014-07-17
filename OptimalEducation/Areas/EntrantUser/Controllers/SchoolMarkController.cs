@@ -17,10 +17,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
     [Authorize(Roles = Role.Entrant)]
 	public class SchoolMarkController : Controller
 	{
-        private readonly OptimalEducationDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IOptimalEducationDbContext _dbContext;
+        private readonly IApplicationUserManager _userManager;
 
-        public SchoolMarkController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public SchoolMarkController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;

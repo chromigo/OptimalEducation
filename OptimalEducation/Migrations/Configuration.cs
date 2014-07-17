@@ -16,12 +16,12 @@ namespace OptimalEducation.Migrations
         {
             AutomaticMigrationsEnabled = false;
         }
-        UserManager<ApplicationUser> UserManager;
+        ApplicationUserManager UserManager;
         protected override void Seed(ApplicationDbContext context)
         {
             CreateRoles(context);
 
-            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            UserManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
 
             CreateAdminUser();
             CreateEntrantUsers();

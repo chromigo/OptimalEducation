@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.DAL.Folder;
+using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -19,10 +19,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class HobbieController : Controller
 	{
-		private readonly OptimalEducationDbContext _dbContext;
-	    private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IOptimalEducationDbContext _dbContext;
+        private readonly IApplicationUserManager _userManager;
 
-        public HobbieController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public HobbieController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
 		{
             _dbContext = dbContext;
             _userManager = userManager;

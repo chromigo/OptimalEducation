@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Models;
 
-namespace OptimalEducation.DAL.Folder
+namespace OptimalEducation.DAL.Commands
 {
     public class UpdateEntrantHobbieCommand
     {
-        private readonly OptimalEducationDbContext _dbContext;
+        private readonly IOptimalEducationDbContext _dbContext;
 
-        public UpdateEntrantHobbieCommand(OptimalEducationDbContext context)
+        public UpdateEntrantHobbieCommand(IOptimalEducationDbContext context)
         {
             _dbContext = context;
         }

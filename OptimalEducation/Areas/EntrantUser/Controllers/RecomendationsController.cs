@@ -19,10 +19,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class RecomendationsController : Controller
 	{
-	    private readonly OptimalEducationDbContext _dbContext;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IOptimalEducationDbContext _dbContext;
+        private readonly IApplicationUserManager _userManager;
 
-        public RecomendationsController(OptimalEducationDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public RecomendationsController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
 		{
             _dbContext = dbContext;
             _userManager = userManager;

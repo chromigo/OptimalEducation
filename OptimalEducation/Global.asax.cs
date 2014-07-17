@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using LightInject;
+﻿using CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
+using SimpleInjector;
+using SimpleInjector.Extensions;
+using SimpleInjector.Integration.Web.Mvc;
+using System.Data.Entity;
+using System.Reflection;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
+
 
 namespace OptimalEducation
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static Container Container { get; private set; }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -22,29 +26,50 @@ namespace OptimalEducation
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            //http://www.lightinject.net/ используемый ioc контейнер с руководством по использованию
+            //https://simpleinjector.codeplex.com/ используемый ioc контейнер с руководством по использованию
             RegisterIoC();
-
-            //другой вариант для работы с ioc контейнерами. создать класс-адаптер для конкретного ioc контейнера
-            //ControllerBuilder.Current.SetControllerFactory(new LightInjectControllerFactory()); 
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(Container));
         }
 
         private void RegisterIoC()
         {
-            var container = new ServiceContainer();
-            container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
-            container.RegisterControllers();
-            //register other services
+            Container = new Container();
+            
+            //Регистриуем основные компоненты
+            Container.RegisterPerWebRequest<IQueryBuilder, QueryBuilder>();
+            Container.RegisterPerWebRequest<ICommandBuilder, CommandBuilder>();
+            RegisterAllQueries(Container);
+            RegisterAllCommands(Container);
 
-            //contexts
-            container.Register<OptimalEducationDbContext, OptimalEducationDbContext>(new PerRequestLifeTime());
-            container.Register<ApplicationDbContext, ApplicationDbContext>(new PerRequestLifeTime());
+            //Entity Framework contexts
+            Container.RegisterPerWebRequest<IOptimalEducationDbContext, OptimalEducationDbContext>();
+            Container.RegisterPerWebRequest<ApplicationDbContext, ApplicationDbContext>();
+            Container.RegisterPerWebRequest<DbContext, ApplicationDbContext>();
             //userManager classes
-            container.Register<IUserStore<ApplicationUser>>(
-                factory => new UserStore<ApplicationUser>(factory.GetInstance<ApplicationDbContext>()), new PerRequestLifeTime());
-            container.Register<UserManager<ApplicationUser>, UserManager<ApplicationUser>>(new PerRequestLifeTime());
+            Container.RegisterPerWebRequest<IUserStore<ApplicationUser>>(() =>
+                new UserStore<ApplicationUser>(Container.GetInstance<DbContext>()));
+            Container.RegisterPerWebRequest<IApplicationUserManager, ApplicationUserManager>();
 
-            container.EnableMvc();
+
+            Container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
+            //Container.RegisterMvcIntegratedFilterProvider();
+
+            Container.Verify();
         }
+
+        private void RegisterAllCommands(Container container)
+        {
+            Container.RegisterManyForOpenGeneric(
+                typeof(ICommand<>),
+                typeof(IOptimalEducationDbContext).Assembly);
+        }
+
+        private void RegisterAllQueries(Container container)
+        {
+            Container.RegisterManyForOpenGeneric(
+                typeof(IQuery<,>),
+                typeof(IOptimalEducationDbContext).Assembly);
+        }
+
     }
 }

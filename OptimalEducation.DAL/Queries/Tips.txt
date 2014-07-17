@@ -1,0 +1,1 @@
+﻿    //http://stackoverflow.com/questions/6766478/unit-testing-dbcontext почему не стоит писать unit-tests для слоя орм. Но мы по идее тестируем сами запросы, а не ORM
