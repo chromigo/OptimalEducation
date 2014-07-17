@@ -35,15 +35,5 @@ namespace OptimalEducation.Models
             : base("OptimalEducationDB", throwIfV1Schema: false)
         {
         }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
     }
 }

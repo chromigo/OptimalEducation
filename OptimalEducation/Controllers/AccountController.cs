@@ -480,15 +480,6 @@ namespace OptimalEducation.Controllers
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        _userManager.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
-
         /// <summary>
         /// Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
         /// </summary>
