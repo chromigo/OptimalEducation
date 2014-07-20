@@ -11,59 +11,34 @@ using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Areas.EntrantUser.Models.ViewModels;
 using OptimalEducation.Models;
+using CQRS;
+using OptimalEducation.DAL.ViewModels;
+using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class HobbieController : Controller
 	{
-        private readonly IOptimalEducationDbContext _dbContext;
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICommandBuilder _commandBuilder;
         private readonly IApplicationUserManager _userManager;
 
-        public HobbieController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
-		{
-            _dbContext = dbContext;
+        public HobbieController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IApplicationUserManager userManager)
+        {
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
             _userManager = userManager;
-		}
+        }
 		// GET: /EntrantUser/Hobbie/
 		public async Task<ActionResult> Index()
 		{
-			var hobbieList = await GetUserHobbieAsync();
-			return View(hobbieList);
-		}
-		private async Task<List<AssignedHobbie>> GetUserHobbieAsync()
-		{
-			try 
-			{
-				var entrantId = await GetEntrantId();
-
-				var userHobbieIdsQuery = 
-                    from entrant in _dbContext.Entrants.Include(p=>p.Hobbies).AsNoTracking()
-					where entrant.Id==entrantId
-					from hobbie in entrant.Hobbies
-					select hobbie.Id;
-
-				var userHobbieIds = new HashSet<int>(userHobbieIdsQuery);
-				var allHobbies = await _dbContext.Hobbies.AsNoTracking().ToListAsync<Hobbie>();
-
-				var viewModel = new List<AssignedHobbie>();
-				foreach (var hobbie in allHobbies)
-				{
-					viewModel.Add(new AssignedHobbie
-					{
-						Id = hobbie.Id,
-						Name = hobbie.Name,
-						IsAssigned = userHobbieIds.Contains(hobbie.Id)
-					});
-				}
-				return viewModel;
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+            var entrantId = await GetEntrantId();
+			var assignedHobbies = await _queryBuilder
+				.For<Task<IEnumerable<AssignedHobbie>>>()
+                .With(new GetAssignedHobbiesCriterion() { EntrantId = entrantId });
+            return View(assignedHobbies);
 		}
 
 		//POST: /EntrantUser/UnitedStateExams/Index
@@ -72,8 +47,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index(string[] selectedHobbies)
 		{
 			var entrantId = await GetEntrantId();
-		    var command = new UpdateEntrantHobbieCommand(_dbContext);
-            await command.Execute(entrantId, selectedHobbies);
+
+            await _commandBuilder
+                .ExecuteAsync<UpdateEntrantHobbieContext>(new UpdateEntrantHobbieContext() { EntrantId = entrantId, SelectedHobbies = selectedHobbies });
+
             return RedirectToAction("Index");
 		}
         private async Task<int> GetEntrantId()

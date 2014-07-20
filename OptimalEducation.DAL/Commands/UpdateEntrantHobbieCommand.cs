@@ -5,27 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Models;
+using CQRS;
+using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.DAL.Commands
 {
-    public class UpdateEntrantHobbieCommand
+    public class UpdateEntrantHobbieCommand : EFBaseCommand, ICommand<UpdateEntrantHobbieContext>
     {
-        private readonly IOptimalEducationDbContext _dbContext;
-
-        public UpdateEntrantHobbieCommand(IOptimalEducationDbContext context)
+        public UpdateEntrantHobbieCommand(IOptimalEducationDbContext dbContext)
+            : base(dbContext)
         {
-            _dbContext = context;
         }
 
-        public async Task Execute(int entrantId, string[] selectedHobbies)
+        public async Task ExecuteAsync(UpdateEntrantHobbieContext commandContext)
         {
-            var currentEntrant = await _dbContext.Entrants.SingleAsync(p => p.Id == entrantId);
+            var currentEntrant = await _dbContext.Entrants.SingleAsync(p => p.Id == commandContext.EntrantId);
             var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
 
-            AddOrRemoveEntrantHobbies(selectedHobbies, allHobbies, currentEntrant);
+            AddOrRemoveEntrantHobbies(commandContext.SelectedHobbies, allHobbies, currentEntrant);
             _dbContext.Entry(currentEntrant).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+
 
         private void AddOrRemoveEntrantHobbies(string[] selectedHobbies, List<Hobbie> allHobbies, Entrant currentEntrant)
         {
@@ -62,5 +63,10 @@ namespace OptimalEducation.DAL.Commands
                 }
             }
         }
+    }
+    public class UpdateEntrantHobbieContext : ICommandContext
+    {
+        public int EntrantId { get; set; }
+        public string[] SelectedHobbies { get; set; }
     }
 }

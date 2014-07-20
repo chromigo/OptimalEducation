@@ -222,7 +222,6 @@
     <Compile Include="Areas\EntrantUser\Controllers\SchoolMarkController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\UnitedStateExamsController.cs" />
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
-    <Compile Include="Areas\EntrantUser\Models\ViewModels\AssignedHobbie.cs" />
     <Compile Include="Areas\FacultyUser\Controllers\EducationLineController.cs" />
     <Compile Include="Areas\FacultyUser\Controllers\EducationLineRequirementController.cs" />
     <Compile Include="Areas\FacultyUser\Controllers\InfoController.cs" />
@@ -727,6 +726,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\EntrantUser\Models\" />
     <Folder Include="Areas\FacultyUser\Models\" />
   </ItemGroup>
   <ItemGroup>

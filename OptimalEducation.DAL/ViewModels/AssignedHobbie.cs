@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace OptimalEducation.Areas.EntrantUser.Models.ViewModels
+namespace OptimalEducation.DAL.ViewModels
 {
     public class AssignedHobbie
     {

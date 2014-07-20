@@ -127,6 +127,7 @@
     <Compile Include="Models\Weight.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\EFBaseQuery.cs" />
+    <Compile Include="Queries\GetAssignedHobbiesQuery.cs" />
     <Compile Include="Queries\GetAllOlympiadsQuery.cs" />
     <Compile Include="Queries\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Queries\GetAllShoolsQuery.cs" />
     <Compile Include="Queries\GetParticipationInScoolOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />
+    <Compile Include="ViewModels\AssignedHobbie.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="OptimalEducationDbContext.edmx">
