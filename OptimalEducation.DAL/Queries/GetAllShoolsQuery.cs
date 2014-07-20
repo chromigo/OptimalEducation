@@ -9,14 +9,14 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllShoolsQuery : EFBaseQuery, IQuery<GetAllShoolsCriterion, Task<IEnumerable<School>>>
+    public class GetAllSchoolsQuery : EFBaseQuery, IQuery<GetAllSchoolsCriterion, Task<IEnumerable<School>>>
     {
-        public GetAllShoolsQuery(IOptimalEducationDbContext dbContext)
+        public GetAllSchoolsQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<School>> Ask(GetAllShoolsCriterion criterion)
+        public async Task<IEnumerable<School>> Ask(GetAllSchoolsCriterion criterion)
         {
             var schools = await _dbContext.Schools
                 .AsNoTracking()
@@ -25,7 +25,8 @@ namespace OptimalEducation.DAL.Queries
         }
     }
 
-    public class GetAllShoolsCriterion : ICriterion
-    {
+    public class GetAllSchoolsCriterion : ICriterion
+    {//ToDO: Add some properthies here or empty
     }
+
 }
