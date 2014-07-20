@@ -54,6 +54,9 @@
   <ItemGroup>
     <Compile Include="Builders\IdealEntrantBuilder.cs" />
     <Compile Include="Builders\EntrantBuilder.cs" />
+    <Compile Include="Commands\RemoveParticipationInSchoolCommand.cs" />
+    <Compile Include="Commands\UpdateParticipationInSchoolCommand.cs" />
+    <Compile Include="Commands\AddParticipationInSchoolCommand.cs" />
     <Compile Include="Commands\AddParticipationInOlympiadCommand.cs" />
     <Compile Include="Commands\EFBaseCommand.cs" />
     <Compile Include="Commands\RemoveParticipationInOlympiadCommand.cs" />
@@ -128,6 +131,9 @@
     <Compile Include="Queries\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEducationLinesForCharacterizerQuery.cs" />
+    <Compile Include="Queries\GetCurrentParticipationInScoolOfEntrantQuery.cs" />
+    <Compile Include="Queries\GetAllShoolsQuery.cs" />
+    <Compile Include="Queries\GetParticipationInScoolOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -11,42 +11,47 @@ using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using CQRS;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Commands;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class SchoolController : Controller
 	{
-        private readonly IOptimalEducationDbContext _dbContext;
         private readonly IApplicationUserManager _userManager;
-
-        public SchoolController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICommandBuilder _commandBuilder;
+        public SchoolController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
         {
-            _dbContext = dbContext;
             _userManager = userManager;
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
         }
 		// GET: /EntrantUser/School/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var participationinSchools = _dbContext.ParticipationInSchools
-				.Include(p => p.Entrants)
-				.Include(p => p.School)
-				.Where(p => p.EntrantsId == entrantId);
-			return View(await participationinSchools.ToListAsync());
+			var participationinSchools = await _queryBuilder
+				.For<Task<IEnumerable<ParticipationInSchool>>>()
+                .With(new GetParticipationInScoolOfEntrantCriterion(){EntrantId=entrantId});
+
+            return View(participationinSchools);
 		}
 
 		// GET: /EntrantUser/School/Details/5
 		public async Task<ActionResult> Details(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSchool participationinSchool = await _dbContext.ParticipationInSchools
-				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+            var participationinSchool = await _queryBuilder
+                .For<Task<ParticipationInSchool>>()
+                .With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id=id.Value });
+
 			if (participationinSchool == null)
 			{
 				return HttpNotFound();
@@ -55,9 +60,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		}
 
 		// GET: /EntrantUser/School/Create
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			ViewBag.SchoolId = new SelectList(_dbContext.Schools, "Id", "Name");
+            var allSchools = await _queryBuilder
+                .For<Task<IEnumerable<School>>>()
+                .With(new GetAllShoolsCriterion());
+			ViewBag.SchoolId = new SelectList(allSchools, "Id", "Name");
 			return View();
 		}
 
@@ -66,31 +74,33 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SchoolId")] ParticipationInSchool participationinSchool)
+        public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SchoolId")] ParticipationInSchool participationInSchool)
 		{
-			participationinSchool.EntrantsId = await GetEntrantId();
+			participationInSchool.EntrantsId = await GetEntrantId();
 			if (ModelState.IsValid)
 			{
-				_dbContext.ParticipationInSchools.Add(participationinSchool);
-				await _dbContext.SaveChangesAsync();
+                await _commandBuilder
+                    .ExecuteAsync<AddParticipationInSchoolContext>(new AddParticipationInSchoolContext() { ParticipationInSchool = participationInSchool });
 				return RedirectToAction("Index");
 			}
-
-			ViewBag.SchoolId = new SelectList(_dbContext.Schools, "Id", "Name", participationinSchool.SchoolId);
-			return View(participationinSchool);
+            var allSchools = await _queryBuilder
+                .For<Task<IEnumerable<School>>>()
+                .With(new GetAllShoolsCriterion());
+            ViewBag.SchoolId = new SelectList(allSchools, "Id", "Name", participationInSchool.SchoolId);
+			return View(participationInSchool);
 		}
 
 		// GET: /EntrantUser/School/Edit/5
 		public async Task<ActionResult> Edit(int? id)
 		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
-			var entrantId = await GetEntrantId();
-			ParticipationInSchool participationinSchool = await _dbContext.ParticipationInSchools
-				.Where(p=>p.EntrantsId==entrantId)
-				.FirstOrDefaultAsync(p=>p.Id==id);
+            if (!id.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var entrantId = await GetEntrantId();
+            var participationinSchool = await _queryBuilder
+                .For<Task<ParticipationInSchool>>()
+                .With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSchool == null)
 			{
 				return HttpNotFound();
@@ -103,32 +113,29 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSchool participationinSchool)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSchool participationInSchool)
 		{
-			//var entrantId = await GetEntrantId();
-			//participationinSchool.EntrantId = entrantId;
-
 			if (ModelState.IsValid)
 			{
-				var dbPartOlymp = await _dbContext.ParticipationInSchools.FindAsync(participationinSchool.Id);
-                dbPartOlymp.YearPeriod = participationinSchool.YearPeriod;
-				await _dbContext.SaveChangesAsync();
+                await _commandBuilder
+                    .ExecuteAsync<UpdateParticipationInSchoolContext>(new UpdateParticipationInSchoolContext() { ParticipationInSchool = participationInSchool });
+
 				return RedirectToAction("Index");
 			}
-			return View(participationinSchool);
+            return View(participationInSchool);
 		}
 
 		// GET: /EntrantUser/School/Delete/5
 		public async Task<ActionResult> Delete(int? id)
 		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
-			var entrantId = await GetEntrantId();
-			ParticipationInSchool participationinSchool = await _dbContext.ParticipationInSchools
-				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+            if (!id.HasValue)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var entrantId = await GetEntrantId();
+            var participationinSchool = await _queryBuilder
+                .For<Task<ParticipationInSchool>>()
+                .With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSchool == null)
 			{
 				return HttpNotFound();
@@ -142,11 +149,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
 			var entrantId = await GetEntrantId();
-			ParticipationInSchool participationinSchool = await _dbContext.ParticipationInSchools
-				.Where(p => p.EntrantsId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
-			_dbContext.ParticipationInSchools.Remove(participationinSchool);
-			await _dbContext.SaveChangesAsync();
+
+            await _commandBuilder
+                .ExecuteAsync<RemoveParticipationInShoolContext>(new RemoveParticipationInShoolContext() { EntrantId=entrantId, Id  = id });
+
 			return RedirectToAction("Index");
 		}
 
