@@ -15,7 +15,7 @@ namespace OptimalEducation.Logic.Characterizer
 		/// <param name="entrant">Абитуриент, для которого строятся рекомендации</param>
 		/// <param name="educationLines">Список учебных направлений, отфильтрованных заранее по определенному криетрию</param>
 		/// <returns>Словарь из подходящих учебных направлений и значений близости</returns>
-		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, List<EducationLine> educationLines)
+		public static Dictionary<EducationLine, double> GetRecomendationForEntrant(Entrant entrant, IEnumerable<EducationLine> educationLines)
 		{
 			//Вычисляем кластеры для абитуриента и направлений
             var entratnCharacteristic = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();

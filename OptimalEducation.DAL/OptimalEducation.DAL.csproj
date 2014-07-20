@@ -127,6 +127,7 @@
     <Compile Include="Queries\GetAllOlympiadsQuery.cs" />
     <Compile Include="Queries\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
+    <Compile Include="Queries\GetEducationLinesForCharacterizerQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />
   </ItemGroup>
   <ItemGroup>
