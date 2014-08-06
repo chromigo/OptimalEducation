@@ -11,42 +11,50 @@ using OptimalEducation.DAL.Models;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using CQRS;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Commands;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class SectionController : Controller
 	{
-        private readonly IOptimalEducationDbContext _dbContext;
         private readonly IApplicationUserManager _userManager;
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICommandBuilder _commandBuilder;
 
-        public SectionController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public SectionController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
         {
-            _dbContext = dbContext;
             _userManager = userManager;
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
         }
 		// GET: /EntrantUser/Section/
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-			var participationinSections = _dbContext.ParticipationInSections
-				.Include(p => p.Entrants)
-				.Include(p => p.Section)
-				.Where(p => p.EntrantsId == entrantId);
-			return View(await participationinSections.ToListAsync());
+
+			var participationinSections = await _queryBuilder
+				.For<Task<IEnumerable<ParticipationInSection>>>()
+				.With(new GetParticipationInSectionsOfEntrantCriterion{EntrantId= entrantId });
+
+			return View(participationinSections);
 		}
 
 		// GET: /EntrantUser/Section/Details/5
 		public async Task<ActionResult> Details(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
-				.Where(p => p.EntrantsId == entrantId)
-                .SingleOrDefaultAsync(p => p.Id == id);
+
+            var participationinSection = await _queryBuilder
+				.For<Task<ParticipationInSection>>()
+				.With(new GetCurrentParticipationInSectionsOfEntrantCriterion() { EntrantId=entrantId, Id=id.Value });
+
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -55,9 +63,13 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		}
 
 		// GET: /EntrantUser/Section/Create
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			ViewBag.SectionId = new SelectList(_dbContext.Sections, "Id", "Name");
+			var sections = await _queryBuilder
+				.For<Task<IEnumerable<Section>>>()
+				.With(new GetAllSectionsCriterion());
+
+            ViewBag.SectionId = new SelectList(sections, "Id", "Name");
 			return View();
 		}
 
@@ -66,18 +78,23 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationInSection)
 		{
-			participationinSection.EntrantsId = await GetEntrantId();
+			participationInSection.EntrantsId = await GetEntrantId();
 			if (ModelState.IsValid)
 			{
-				_dbContext.ParticipationInSections.Add(participationinSection);
-				await _dbContext.SaveChangesAsync();
+                await _commandBuilder
+                    .ExecuteAsync<AddParticipationInSectionContext>(new AddParticipationInSectionContext() { ParticipationInSection = participationInSection });
+
 				return RedirectToAction("Index");
 			}
+             
+			var sections = await _queryBuilder
+				.For<Task<IEnumerable<Section>>>()
+				.With(new GetAllSectionsCriterion());
 
-			ViewBag.SectionId = new SelectList(_dbContext.Sections, "Id", "Name", participationinSection.SectionId);
-			return View(participationinSection);
+            ViewBag.SectionId = new SelectList(sections, "Id", "Name", participationInSection.SectionId);
+			return View(participationInSection);
 		}
 
 		// GET: /EntrantUser/Section/Edit/5
@@ -88,9 +105,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
-				.Where(p=>p.EntrantsId==entrantId)
-                .SingleOrDefaultAsync(p => p.Id == id);
+            var participationinSection = await _queryBuilder
+                .For<Task<ParticipationInSection>>()
+                .With(new GetCurrentParticipationInSectionsOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -103,19 +120,16 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationinSection)
+		public async Task<ActionResult> Edit([Bind(Include = "Id,YearPeriod")] ParticipationInSection participationInSection)
 		{
-			//var entrantId = await GetEntrantId();
-			//participationinSection.EntrantId = entrantId;
-
 			if (ModelState.IsValid)
 			{
-				var dbPartOlymp = await _dbContext.ParticipationInSections.FindAsync(participationinSection.Id);
-				dbPartOlymp.YearPeriod = participationinSection.YearPeriod;
-				await _dbContext.SaveChangesAsync();
+                await _commandBuilder
+                    .ExecuteAsync<UpdateParticipationInSectionResultContext>(new UpdateParticipationInSectionResultContext() { ParticipationInSection = participationInSection });
+
 				return RedirectToAction("Index");
 			}
-			return View(participationinSection);
+			return View(participationInSection);
 		}
 
 		// GET: /EntrantUser/Section/Delete/5
@@ -126,9 +140,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
-				.Where(p => p.EntrantsId == entrantId)
-				.SingleOrDefaultAsync(p => p.Id == id);
+            var participationinSection = await _queryBuilder
+                .For<Task<ParticipationInSection>>()
+                .With(new GetCurrentParticipationInSectionsOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSection == null)
 			{
 				return HttpNotFound();
@@ -142,11 +156,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
 			var entrantId = await GetEntrantId();
-			ParticipationInSection participationinSection = await _dbContext.ParticipationInSections
-				.Where(p => p.EntrantsId == entrantId)
-                .SingleOrDefaultAsync(p => p.Id == id);
-			_dbContext.ParticipationInSections.Remove(participationinSection);
-			await _dbContext.SaveChangesAsync();
+
+            await _commandBuilder
+                .ExecuteAsync<RemoveParticipationInSectionContext>(new RemoveParticipationInSectionContext() { EntrantId = entrantId, ParticipationInSectionId = id });
+
 			return RedirectToAction("Index");
 		}
 
