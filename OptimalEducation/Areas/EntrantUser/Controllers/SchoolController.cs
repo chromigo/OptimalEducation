@@ -35,7 +35,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var participationinSchools = await _queryBuilder
 				.For<Task<IEnumerable<ParticipationInSchool>>>()
-				.With(new GetParticipationInScoolOfEntrantCriterion(){EntrantId=entrantId});
+				.With(new GetParticipationInSchoolOfEntrantCriterion(){EntrantId=entrantId});
 
 			return View(participationinSchools);
 		}
@@ -50,7 +50,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
-				.With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id=id.Value });
+				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id=id.Value });
 
 			if (participationinSchool == null)
 			{
@@ -100,7 +100,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
-				.With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
+				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSchool == null)
 			{
 				return HttpNotFound();
@@ -135,7 +135,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			var entrantId = await GetEntrantId();
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
-				.With(new GetCurrentParticipationInScoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
+				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
 			if (participationinSchool == null)
 			{
 				return HttpNotFound();

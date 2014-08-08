@@ -9,14 +9,14 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetCurrentParticipationInScoolOfEntrantQuery : EFBaseQuery, IQuery<GetCurrentParticipationInScoolOfEntrantCriterion, Task<ParticipationInSchool>>
+    public class GetCurrentParticipationInSchoolOfEntrantQuery : EFBaseQuery, IQuery<GetCurrentParticipationInSchoolOfEntrantCriterion, Task<ParticipationInSchool>>
     {
-        public GetCurrentParticipationInScoolOfEntrantQuery(IOptimalEducationDbContext dbContext)
+        public GetCurrentParticipationInSchoolOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<ParticipationInSchool> Ask(GetCurrentParticipationInScoolOfEntrantCriterion criterion)
+        public async Task<ParticipationInSchool> Ask(GetCurrentParticipationInSchoolOfEntrantCriterion criterion)
         {
             var participation = await _dbContext.ParticipationInSchools
                 .Include(p => p.School)
@@ -27,7 +27,7 @@ namespace OptimalEducation.DAL.Queries
         }
     }
 
-    public class GetCurrentParticipationInScoolOfEntrantCriterion : ICriterion
+    public class GetCurrentParticipationInSchoolOfEntrantCriterion : ICriterion
     {
         public int EntrantId { get; set; }
         public int Id { get; set; }
