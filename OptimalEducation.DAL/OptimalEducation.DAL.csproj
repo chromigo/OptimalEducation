@@ -58,6 +58,7 @@
     <Compile Include="Commands\RemoveParticipationInSectionCommand.cs" />
     <Compile Include="Commands\RemoveParticipationInSchoolCommand.cs" />
     <Compile Include="Commands\UpdateParticipationInSectionCommand.cs" />
+    <Compile Include="Commands\UpdateUnitedStateExamsOfEntrantCommand.cs" />
     <Compile Include="Commands\UpdateSchoolMarkOfEntrantCommand.cs" />
     <Compile Include="Commands\UpdateParticipationInSchoolCommand.cs" />
     <Compile Include="Commands\AddParticipationInSchoolCommand.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Queries\GetParticipationInSectionsOfEntrantQuery.cs" />
     <Compile Include="Queries\GetParticipationInScoolOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEntrantForCharacterizerQuery.cs" />
+    <Compile Include="Queries\GetUnitedStateExamsOfEntrantQuery.cs" />
     <Compile Include="Queries\GetSchoolMarksOfEntrantQuery.cs" />
     <Compile Include="ViewModels\AssignedHobbie.cs" />
   </ItemGroup>
