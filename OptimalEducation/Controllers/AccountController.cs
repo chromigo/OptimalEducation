@@ -285,7 +285,7 @@ namespace OptimalEducation.Controllers
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : "";
-            ViewBag.HasLocalPassword = await HasPassword();
+            ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -296,7 +296,7 @@ namespace OptimalEducation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
-            bool hasPassword =await HasPassword();
+            bool hasPassword =HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
@@ -473,10 +473,13 @@ namespace OptimalEducation.Controllers
         }
 
         [ChildActionOnly]
-        public async Task<ActionResult> RemoveAccountList()
+        public ActionResult RemoveAccountList()
         {
-            var linkedAccounts = await _userManager.GetLoginsAsync(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton = await HasPassword() || linkedAccounts.Count > 1;
+            //  In ASP.NET vNext MVC we added support for an equivalent of asynchronous child actions.
+            //  The new feature is named ViewComponents and it's completed. 
+            //  https://aspnetwebstack.codeplex.com/workitem/601
+            var linkedAccounts =  ((UserManager<ApplicationUser>)_userManager).GetLogins(User.Identity.GetUserId());
+            ViewBag.ShowRemoveButton =  HasPassword() || (linkedAccounts.Count > 1);
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
@@ -519,9 +522,9 @@ namespace OptimalEducation.Controllers
             }
         }
 
-        private async Task<bool> HasPassword()
+        private bool HasPassword()
         {
-            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+            var user = ((UserManager<ApplicationUser>)_userManager).FindById(User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
