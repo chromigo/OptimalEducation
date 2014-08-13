@@ -9,13 +9,13 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetEntrantQuery : EFBaseQuery, IQuery<GetEntrantCriterion, Task<Entrant>>
+    public class GetEntrantForCharacterizerQuery : EFBaseQuery, IQuery<GetEntrantForCharacterizerCriterion, Task<Entrant>>
     {
-        public GetEntrantQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
+        public GetEntrantForCharacterizerQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<Entrant> Ask(GetEntrantCriterion criterion)
+        public async Task<Entrant> Ask(GetEntrantForCharacterizerCriterion criterion)
         {
             var entrant = await _dbContext.Entrants
                 .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
@@ -31,7 +31,7 @@ namespace OptimalEducation.DAL.Queries
         }
     }
 
-    public class GetEntrantCriterion: ICriterion
+    public class GetEntrantForCharacterizerCriterion : ICriterion
     {
         public int EntrantId { get; set; }
     }

@@ -12,6 +12,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.DAL.Models;
+using CQRS;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Commands;
 
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
@@ -19,58 +22,43 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class UnitedStateExamsController : Controller
 	{
-        private readonly IOptimalEducationDbContext _dbContext;
         private readonly IApplicationUserManager _userManager;
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICommandBuilder _commandBuilder;
 
-        public UnitedStateExamsController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager)
+        public UnitedStateExamsController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
         {
-            _dbContext = dbContext;
             _userManager = userManager;
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
         }
 		// GET: /EntrantUser/UnitedStateExams/
 		public async Task<ActionResult> Index()
 		{
-			var examList = await GetUserExamsAsync();
-			return View(examList);
-		}
-
-		private async Task<List<UnitedStateExam>> GetUserExamsAsync()
-		{
             var entrantId = await GetEntrantId();
-			var unitedstateexams = _dbContext.UnitedStateExams
-				.Include(u => u.Discipline)
-				.Include(u => u.Entrant)
-                .Where(p => p.EntrantId == entrantId);
-			var examList = await unitedstateexams.ToListAsync();
-			return examList;
+            var USExam = await _queryBuilder
+                    .For<Task<IEnumerable<UnitedStateExam>>>()
+                    .With(new GetUnitedStateExamsOfEntrantCriterion() { EntrantId = entrantId });
+            return View(USExam);
 		}
 
 		// POST: /EntrantUser/UnitedStateExams/Index
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Index([Bind(Include = "Result")] IEnumerable<UnitedStateExam> unitedStateExams)
+        public async Task<ActionResult> Index([Bind(Include = "ExamDisciplineId,Result")] IEnumerable<UnitedStateExam> unitedStateExams)
 		{
-			var examList = await GetUserExamsAsync();
-			//Порядок не должен меняться, поэтому обновляем данные так
-			for (int i = 0; i < examList.Count; i++)
-			{
-				examList[i].Result = unitedStateExams.ElementAt(i).Result;
-			}
-			unitedStateExams = examList;//обновляем список новыми значениями(для передачи во View, в случае ошибки)
-
-			//Проверка 
 			if (ModelState.IsValid)
 			{
-				foreach (var exam in unitedStateExams)
-				{
-					_dbContext.Entry(exam).State = EntityState.Modified;
-				}
-				await _dbContext.SaveChangesAsync();
+                var entrantId = await GetEntrantId();
+
+                await _commandBuilder
+                        .ExecuteAsync<UpdateUnitedStateExamOfEntrantContext>(new UpdateUnitedStateExamOfEntrantContext() { EntrantId = entrantId, UnitedStateExams = unitedStateExams });
                 return RedirectToAction("Index");
 			}
 
 			return View(unitedStateExams);
 		}
+
         private async Task<int> GetEntrantId()
         {
             var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());

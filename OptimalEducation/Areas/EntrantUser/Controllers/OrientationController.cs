@@ -13,12 +13,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-        private readonly IOptimalEducationDbContext _dbContext;
 	    private readonly IApplicationUserManager _userManager;
-	    public IQueryBuilder _queryBuilder;
-        public OrientationController(IOptimalEducationDbContext dbContext, IApplicationUserManager userManager,IQueryBuilder queryBuilder)
+        private readonly IQueryBuilder _queryBuilder;
+        public OrientationController(IApplicationUserManager userManager,IQueryBuilder queryBuilder)
 		{
-		    _dbContext = dbContext;
 		    _userManager = userManager;
             _queryBuilder = queryBuilder;
 		}
@@ -27,7 +25,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		public async Task<ActionResult> Index()
 		{
 			var entrantId = await GetEntrantId();
-            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantCriterion() { EntrantId = entrantId });
+            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantForCharacterizerCriterion() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
             var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
