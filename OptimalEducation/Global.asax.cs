@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.Models;
 using SimpleInjector;
 using SimpleInjector.Extensions;
@@ -40,6 +41,7 @@ namespace OptimalEducation
             Container.RegisterPerWebRequest<ICommandBuilder, CommandBuilder>();
             RegisterAllQueries(Container);
             RegisterAllCommands(Container);
+            RegisterAllLogic(Container);
 
             //Entity Framework contexts
             Container.RegisterPerWebRequest<IOptimalEducationDbContext, OptimalEducationDbContext>();
@@ -69,6 +71,14 @@ namespace OptimalEducation
             Container.RegisterManyForOpenGeneric(
                 typeof(IQuery<,>),
                 typeof(IOptimalEducationDbContext).Assembly);
+        }
+
+        private void RegisterAllLogic(Container container)
+        {
+            Container.RegisterManyForOpenGeneric(
+                typeof(IDistanceRecomendator<,>),
+                Lifestyle.Singleton,
+                typeof(EducationLineDistanceRecomendator).Assembly);
         }
 
     }

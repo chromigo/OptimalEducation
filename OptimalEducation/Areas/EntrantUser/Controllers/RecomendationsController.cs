@@ -23,10 +23,15 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
 		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
-		public RecomendationsController(IApplicationUserManager userManager, IQueryBuilder queryBuilder)
+        private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
+		public RecomendationsController(
+            IApplicationUserManager userManager,
+            IQueryBuilder queryBuilder,
+            IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator)
 		{
 			_userManager = userManager;
 			_queryBuilder=queryBuilder;
+            _distanceRecomendator = distanceRecomendator;
 		}
 
 		// GET: EntrantUser/Recomendations
@@ -44,7 +49,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			//Рекомендации:
 			//1. По методу сравнения расстояний мд характеристиками
-            ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+            ViewBag.DistanceRecomendations = _distanceRecomendator.GetRecomendation(entrant, educationLines);
 			
 			//2. По методу многокритериального анализа
             var multicriterialAnalyzer = new MulticriterialAnalysis(entrant, educationLines);
