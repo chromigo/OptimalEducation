@@ -31,8 +31,6 @@ namespace OptimalEducation.Logic.Characterizer
                 }
             }
 
-
-
             //характеристики для нашего направления
             educationLineSummator = new EducationLineSummator(educationLine, options, educationCharacterisiticNames);
             IdealEducationLineResult.SetUpSettings(options, educationCharacterisiticNames);

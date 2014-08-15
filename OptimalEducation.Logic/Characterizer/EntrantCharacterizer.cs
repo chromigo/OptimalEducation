@@ -456,6 +456,7 @@ namespace OptimalEducation.Logic.Characterizer
                     .Include(e => e.Hobbies.Select(h => h.Weights))
                     .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
                     .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
+                    .AsNoTracking()
                     .Where(e => e.Id == 2).Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 simpleResult = characterizer.CalculateSimpleSum();
@@ -477,7 +478,9 @@ namespace OptimalEducation.Logic.Characterizer
                     .Include(e => e.Hobbies.Select(h => h.Weights))
                     .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
                     .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-                    .Where(e => e.Id == 2).Single();
+                    .Where(e => e.Id == 2)
+                    .AsNoTracking()
+                    .Single();
                 var characterizer = new EntrantSummator(idealEntrant, _options, _educationCharacterisiticNames);
                 complicatedResult = characterizer.CalculateComplicatedSum();
                 isNewOptions = false;
