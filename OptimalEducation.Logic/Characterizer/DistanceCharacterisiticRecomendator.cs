@@ -23,13 +23,14 @@ namespace OptimalEducation.Logic.Characterizer
         public Dictionary<EducationLine, double> GetRecomendation(Entrant subject, IEnumerable<EducationLine> objects)
         {
             //Вычисляем кластеры для абитуриента и направлений
-            var entratnCharacteristic = new EntrantCharacterizer(subject, new EntrantCalculationOptions()).CalculateNormSum();
+            var entrantCharacteristic = new EntrantCharacterizer(subject, new EntrantCalculationOptions()).CalculateNormSum();
             var results = new Dictionary<EducationLine, double>();
             foreach (var edLine in objects)
             {
                 var educationLineCharacterisic = new EducationLineCharacterizer(edLine, new EducationLineCalculationOptions()).CalculateNormSum();
+
                 //Выполняем сравнение
-                var compareResult = CharacteristicDistance.GetDistance(entratnCharacteristic, educationLineCharacterisic);
+                var compareResult = CharacteristicDistance.GetDistance(entrantCharacteristic, educationLineCharacterisic);
                 if (compareResult.HasValue)
                 {
                     results.Add(edLine, compareResult.Value);

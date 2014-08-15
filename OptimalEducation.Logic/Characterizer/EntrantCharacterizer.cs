@@ -13,7 +13,7 @@ namespace OptimalEducation.Logic.Characterizer
     {
         EntrantSummator entrantSummator;
         static List<string> educationCharacterisiticNames;
-        Dictionary<string, double> totalCharacteristics;
+        static Dictionary<string, double> totalCharacteristics;
 
         public EntrantCharacterizer(Entrant entrant, EntrantCalculationOptions options)
         {
@@ -23,14 +23,14 @@ namespace OptimalEducation.Logic.Characterizer
                 educationCharacterisiticNames = context.Characteristics
                     .Where(p => p.Type == CharacteristicType.Education)
                     .Select(p => p.Name)
+                    .AsNoTracking()
                     .ToList();
-            }
 
-
-            totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
+                totalCharacteristics = new Dictionary<string, double>();
+                foreach (var name in educationCharacterisiticNames)
+                {
+                    totalCharacteristics.Add(name, 0);
+                }
             }
 
             //характеристики для нашего направления

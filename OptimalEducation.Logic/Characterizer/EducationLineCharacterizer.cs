@@ -9,9 +9,9 @@ namespace OptimalEducation.Logic.Characterizer
 {
     public class EducationLineCharacterizer
     {
-        EducationLineSummator educationLineCharacterizer;
+        EducationLineSummator educationLineSummator;
         static List<string> educationCharacterisiticNames;
-        Dictionary<string, double> totalCharacteristics;
+        static Dictionary<string, double> totalCharacteristics;
 
         public EducationLineCharacterizer(EducationLine educationLine, EducationLineCalculationOptions options)
         {            
@@ -21,17 +21,20 @@ namespace OptimalEducation.Logic.Characterizer
                 educationCharacterisiticNames = context.Characteristics
                     .Where(p => p.Type == CharacteristicType.Education)
                     .Select(p => p.Name)
+                    .AsNoTracking()
                     .ToList();
+
+                totalCharacteristics = new Dictionary<string, double>();
+                foreach (var name in educationCharacterisiticNames)
+                {
+                    totalCharacteristics.Add(name, 0);
+                }
             }
 
-            totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
-            {
-                totalCharacteristics.Add(name, 0);
-            }
+
 
             //характеристики для нашего направления
-            educationLineCharacterizer = new EducationLineSummator(educationLine, options, educationCharacterisiticNames);
+            educationLineSummator = new EducationLineSummator(educationLine, options, educationCharacterisiticNames);
             IdealEducationLineResult.SetUpSettings(options, educationCharacterisiticNames);
         }
 
@@ -44,12 +47,12 @@ namespace OptimalEducation.Logic.Characterizer
             //Здесь выбираем метод которым формируем результат
             if(isComlicatedMode)
             {
-                sum = educationLineCharacterizer.CalculateComplicatedSum();
+                sum = educationLineSummator.CalculateComplicatedSum();
                 idealResult = IdealEducationLineResult.GetComplicatedResult();
             }
             else
             {
-                sum = educationLineCharacterizer.CalculateSimpleSum();
+                sum = educationLineSummator.CalculateSimpleSum();
                 idealResult = IdealEducationLineResult.GetSimpleResult();
             }
 

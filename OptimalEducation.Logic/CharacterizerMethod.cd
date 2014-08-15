@@ -41,21 +41,13 @@
       <FileName>Characterizer\CharacteristicDistance.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineDistanceRecomendator">
-    <Position X="7.75" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
-      <FileName>Characterizer\DistanceCharacterisiticRecomendator.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="OptimalEducation.Logic.Characterizer.EducationLineCharacterizer">
     <Position X="6.75" Y="2.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAgAEAgAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAkAAgAAAgAAAAA=</HashCode>
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -83,5 +75,28 @@
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineDistanceRecomendator">
+    <Position X="6.75" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Characterizer\DistanceCharacterisiticRecomendator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="OptimalEducation.Logic.Characterizer.EntrantDistanceRecomendator">
+    <Position X="9.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Characterizer\DistanceCharacterisiticRecomendator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="OptimalEducation.Logic.Characterizer.IDistanceRecomendator&lt;TSubject, TObjects&gt;">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Characterizer\DistanceCharacterisiticRecomendator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
