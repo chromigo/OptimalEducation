@@ -79,6 +79,11 @@ namespace OptimalEducation
                 typeof(IDistanceRecomendator<,>),
                 Lifestyle.Singleton,
                 typeof(EducationLineDistanceRecomendator).Assembly);
+
+            //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
+            //В отдельных классах в коде может присутсвовать ручное инстанцирование
+            Container.RegisterSingle<ICharacterizer<Entrant>>(new EntrantCharacterizer(new EntrantCalculationOptions()));
+            Container.RegisterSingle<ICharacterizer<EducationLine>>(new EducationLineCharacterizer(new EducationLineCalculationOptions()));
         }
 
     }

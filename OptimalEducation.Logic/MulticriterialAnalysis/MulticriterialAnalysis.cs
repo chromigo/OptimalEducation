@@ -9,18 +9,30 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public class MulticriterialAnalysis
+    public interface IMulticriterialAnalysisRecomendator
+    {
+        List<EducationLine> Calculate();
+    }
+
+    public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
     {
         PreferenceRelationCalculator preferenceRelationCalculator;
         VectorCriteriaRecalculator vectorCriteriaRecalculator;
         ParretoCalculator parretoCalculator;
 
-        List<EducationLineWithCharacterisics> educationLineRequrements=new List<EducationLineWithCharacterisics>();
+        List<EducationLineWithCharacterisics> educationLineRequrements;
 
-        public MulticriterialAnalysis(Entrant entrant, IEnumerable<EducationLine> educationLines)
+        ICharacterizer<Entrant> _entrantCharacterizer;
+        ICharacterizer<EducationLine> _educationLineCharacterizer;
+
+        public MulticriterialAnalysis(Entrant entrant, IEnumerable<EducationLine> educationLines, 
+            ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {
+            _entrantCharacterizer = entrantCharacterizer;
+            _educationLineCharacterizer = educationLineCharacterizer;
+
             //Вычисляем характеристики пользователя
-            var userCharacterisics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();
+            var userCharacterisics = _entrantCharacterizer.Calculate(entrant);
 
             //Вычисляем характеристики учебных направлений
             educationLineRequrements = new List<EducationLineWithCharacterisics>();
@@ -28,8 +40,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             {
                 if(item.EducationLinesRequirements.Count>0)
                 {
-                    var educationLineCharacterizer = new EducationLineCharacterizer(item, new EducationLineCalculationOptions());
-                    var characteristics = educationLineCharacterizer.CalculateNormSum();
+                    var characteristics = _educationLineCharacterizer.Calculate(item);
                     var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
                     {
                         Characterisics = characteristics
@@ -37,7 +48,6 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                     educationLineRequrements.Add(educationLineWithCharacteristics);
                 }
             }
-
 
             preferenceRelationCalculator = new PreferenceRelationCalculator(userCharacterisics);
             vectorCriteriaRecalculator = new VectorCriteriaRecalculator();

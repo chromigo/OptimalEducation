@@ -278,7 +278,7 @@ namespace UnitTests
         {
             var entrant = CreateEntrant();
 
-            var entratnCharacterisitcs = new EntrantCharacterizer(entrant,new EntrantCalculationOptions()).CalculateNormSum() ;
+            var entratnCharacterisitcs = new EntrantCharacterizer(new EntrantCalculationOptions()).Calculate(entrant) ;
 
             var rus = entratnCharacterisitcs["Русский язык"];
             var math = entratnCharacterisitcs["Математика"];
@@ -306,8 +306,8 @@ namespace UnitTests
                 }
             };
 
-            var characterisicsizer = new EducationLineCharacterizer(educationLine,new EducationLineCalculationOptions());
-            var result = characterisicsizer.CalculateNormSum();
+            var characterisicsizer = new EducationLineCharacterizer(new EducationLineCalculationOptions());
+            var result = characterisicsizer.Calculate(educationLine);
 
             var rus = result["Русский язык"];
             var math = result["Математика"];

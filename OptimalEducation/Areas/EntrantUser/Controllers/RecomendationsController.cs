@@ -24,14 +24,17 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
         private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
+        //private readonly IMulticriterialAnalysisRecomendator<Entrant, EducationLine> _multicriterialAnalysisRecomendator;
 		public RecomendationsController(
             IApplicationUserManager userManager,
             IQueryBuilder queryBuilder,
             IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator)
+            //IMulticriterialAnalysisRecomendator<Entrant, EducationLine> multicriterialAnalysisRecomendator)
 		{
 			_userManager = userManager;
 			_queryBuilder=queryBuilder;
             _distanceRecomendator = distanceRecomendator;
+            //_multicriterialAnalysisRecomendator = multicriterialAnalysisRecomendator;
 		}
 
 		// GET: EntrantUser/Recomendations
@@ -52,7 +55,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             ViewBag.DistanceRecomendations = _distanceRecomendator.GetRecomendation(entrant, educationLines);
 			
 			//2. По методу многокритериального анализа
-            var multicriterialAnalyzer = new MulticriterialAnalysis(entrant, educationLines);
+            var multicriterialAnalyzer = new MulticriterialAnalysis(entrant, educationLines, 
+                new EntrantCharacterizer(new EntrantCalculationOptions()),
+                new EducationLineCharacterizer(new EducationLineCalculationOptions()));
 			var res = multicriterialAnalyzer.Calculate();
 			ViewBag.MulticriterialRecomendations = res;
 
