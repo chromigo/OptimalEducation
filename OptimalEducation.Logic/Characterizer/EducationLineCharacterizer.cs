@@ -9,28 +9,28 @@ namespace OptimalEducation.Logic.Characterizer
 {
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {
-        EducationLineSummator educationLineSummator;
-        List<string> educationCharacterisiticNames;
-        Dictionary<string, double> totalCharacteristics;
+        readonly EducationLineSummator _educationLineSummator;
+        readonly List<string> _educationCharacterisiticNames;
+        readonly Dictionary<string, double> _totalCharacteristics;
 
         public EducationLineCharacterizer(EducationLineCalculationOptions options)
         {            
             var context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
+            _educationCharacterisiticNames = context.Characteristics
                 .Where(p => p.Type == CharacteristicType.Education)
                 .Select(p => p.Name)
                 .AsNoTracking()
                 .ToList();
 
-            totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
+            _totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in _educationCharacterisiticNames)
             {
-                totalCharacteristics.Add(name, 0);
+                _totalCharacteristics.Add(name, 0);
             }
 
             //характеристики для нашего направления
-            educationLineSummator = new EducationLineSummator(options, educationCharacterisiticNames);
-            IdealEducationLineResult.SetUpSettings(options, educationCharacterisiticNames);
+            _educationLineSummator = new EducationLineSummator(options, _educationCharacterisiticNames);
+            IdealEducationLineResult.SetUpSettings(options, _educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> Calculate(EducationLine subject,bool isComlicatedMode = true)
@@ -41,21 +41,21 @@ namespace OptimalEducation.Logic.Characterizer
             //Здесь выбираем метод которым формируем результат
             if(isComlicatedMode)
             {
-                sum = educationLineSummator.CalculateComplicatedSum(subject);
+                sum = _educationLineSummator.CalculateComplicatedSum(subject);
                 idealResult = IdealEducationLineResult.GetComplicatedResult();
             }
             else
             {
-                sum = educationLineSummator.CalculateSimpleSum(subject);
+                sum = _educationLineSummator.CalculateSimpleSum(subject);
                 idealResult = IdealEducationLineResult.GetSimpleResult();
             }
 
             //Нормируем
             foreach (var item in sum)
             {
-                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+                _totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
-            return totalCharacteristics;
+            return _totalCharacteristics;
         }
     }
     public class EducationLineSummator

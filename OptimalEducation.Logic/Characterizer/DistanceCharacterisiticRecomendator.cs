@@ -14,8 +14,8 @@ namespace OptimalEducation.Logic.Characterizer
 
     public class EntrantDistanceRecomendator : IDistanceRecomendator<Entrant, EducationLine>
     {
-        ICharacterizer<Entrant> _entrantCharacterizer;
-        ICharacterizer<EducationLine> _educationLineCharacterizer;
+        readonly ICharacterizer<Entrant> _entrantCharacterizer;
+        readonly ICharacterizer<EducationLine> _educationLineCharacterizer;
 
         public EntrantDistanceRecomendator(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {
@@ -56,8 +56,8 @@ namespace OptimalEducation.Logic.Characterizer
     }
     public class EducationLineDistanceRecomendator : IDistanceRecomendator<EducationLine, Entrant>
     {
-        ICharacterizer<Entrant> _entrantCharacterizer;
-        ICharacterizer<EducationLine> _educationLineCharacterizer;
+        readonly ICharacterizer<Entrant> _entrantCharacterizer;
+        readonly ICharacterizer<EducationLine> _educationLineCharacterizer;
 
         public EducationLineDistanceRecomendator(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {

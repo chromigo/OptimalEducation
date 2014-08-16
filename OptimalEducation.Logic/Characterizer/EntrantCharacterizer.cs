@@ -11,28 +11,28 @@ namespace OptimalEducation.Logic.Characterizer
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
-        EntrantSummator entrantSummator;
-        List<string> educationCharacterisiticNames;
-        Dictionary<string, double> totalCharacteristics;
+        readonly EntrantSummator _entrantSummator;
+        readonly List<string> _educationCharacterisiticNames;
+        readonly Dictionary<string, double> _totalCharacteristics;
 
         public EntrantCharacterizer(EntrantCalculationOptions options)
         {
             var context = new OptimalEducationDbContext();
-            educationCharacterisiticNames = context.Characteristics
+            _educationCharacterisiticNames = context.Characteristics
                 .Where(p => p.Type == CharacteristicType.Education)
                 .Select(p => p.Name)
                 .AsNoTracking()
                 .ToList();
 
-            totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
+            _totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in _educationCharacterisiticNames)
             {
-                totalCharacteristics.Add(name, 0);
+                _totalCharacteristics.Add(name, 0);
             }
 
             //характеристики для нашего направления
-            entrantSummator = new EntrantSummator(options, educationCharacterisiticNames);
-            IdealEntrantResult.SetUpSettings(options, educationCharacterisiticNames);
+            _entrantSummator = new EntrantSummator(options, _educationCharacterisiticNames);
+            IdealEntrantResult.SetUpSettings(options, _educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> Calculate(Entrant subject, bool isComplicatedMode = true)
@@ -43,22 +43,22 @@ namespace OptimalEducation.Logic.Characterizer
             //Здесь выбираем метод которым формируем результат
             if (isComplicatedMode)
             {
-                sum = entrantSummator.CalculateComplicatedSum(subject);
+                sum = _entrantSummator.CalculateComplicatedSum(subject);
                 idealResult = IdealEntrantResult.GetComplicatedResult();
             }
             else
             {
-                sum = entrantSummator.CalculateSimpleSum(subject);
+                sum = _entrantSummator.CalculateSimpleSum(subject);
                 idealResult = IdealEntrantResult.GetSimpleResult();
             }
             
             //Нормируем
             foreach (var item in sum)
             {
-                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+                _totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
 
-            return totalCharacteristics;
+            return _totalCharacteristics;
         }
     }
 

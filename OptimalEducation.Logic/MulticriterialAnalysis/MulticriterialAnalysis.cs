@@ -16,23 +16,21 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
 
     public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
     {
-        PreferenceRelationCalculator preferenceRelationCalculator;
-        VectorCriteriaRecalculator vectorCriteriaRecalculator;
-        ParretoCalculator parretoCalculator;
+        readonly ICharacterizer<Entrant> _entrantCharacterizer;
+        readonly ICharacterizer<EducationLine> _educationLineCharacterizer;
 
-        List<EducationLineWithCharacterisics> educationLineRequrements;
-
-        ICharacterizer<Entrant> _entrantCharacterizer;
-        ICharacterizer<EducationLine> _educationLineCharacterizer;
+        readonly PreferenceRelationCalculator _preferenceRelationCalculator;
+        readonly VectorCriteriaRecalculator _vectorCriteriaRecalculator;
+        readonly ParretoCalculator _parretoCalculator;
 
         public MulticriterialAnalysis(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {
             _entrantCharacterizer = entrantCharacterizer;
             _educationLineCharacterizer = educationLineCharacterizer;
 
-            preferenceRelationCalculator = new PreferenceRelationCalculator();
-            vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
-            parretoCalculator = new ParretoCalculator();
+            _preferenceRelationCalculator = new PreferenceRelationCalculator();
+            _vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
+            _parretoCalculator = new ParretoCalculator();
         }
 
         public List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines)
@@ -41,7 +39,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             var userCharacterisics = _entrantCharacterizer.Calculate(entrant);
 
             //Вычисляем характеристики учебных направлений
-            educationLineRequrements = new List<EducationLineWithCharacterisics>();
+            var educationLineRequrements = new List<EducationLineWithCharacterisics>();
             foreach (var item in educationLines)
             {
                 if (item.EducationLinesRequirements.Count > 0)
@@ -53,11 +51,11 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             }
             
             //Получаем предпочтения пользователя
-            var userPref = preferenceRelationCalculator.GetPreferenceRelations(userCharacterisics);
+            var userPref = _preferenceRelationCalculator.GetPreferenceRelations(userCharacterisics);
             //Пересчитываем кластеры университетов с учетом предпочтений пользователя
-            var recalculatedCharacterisics = vectorCriteriaRecalculator.RecalculateEducationLineCharacterisics(educationLineRequrements, userPref);
+            var recalculatedCharacterisics = _vectorCriteriaRecalculator.RecalculateEducationLineCharacterisics(educationLineRequrements, userPref);
             //Строим множество паррето-оптимальных веткоров
-            var parretoEducationLineCharacterisics = parretoCalculator.ParretoSetCreate(recalculatedCharacterisics);
+            var parretoEducationLineCharacterisics = _parretoCalculator.ParretoSetCreate(recalculatedCharacterisics);
 
             var recomendedEducationLines = new List<EducationLine>();
             foreach (var item in parretoEducationLineCharacterisics)
