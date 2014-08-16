@@ -60,13 +60,13 @@ namespace OptimalEducation.Logic.Characterizer
     }
     public class EducationLineSummator
     {
-        EducationLineCalculationOptions _options;
-        List<string> educationCharacterisiticNames;
+        readonly EducationLineCalculationOptions _options;
+        readonly List<string> _educationCharacterisiticNames;
 
         public EducationLineSummator(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
         {
             _options = options;
-            this.educationCharacterisiticNames = educationCharacterisiticNames;
+            _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
         #region Построение словарей с характеристиками
@@ -74,7 +74,7 @@ namespace OptimalEducation.Logic.Characterizer
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
+            foreach (var name in _educationCharacterisiticNames)
             {
                 characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
@@ -134,7 +134,7 @@ namespace OptimalEducation.Logic.Characterizer
         public Dictionary<string, double> CalculateSimpleSum(EducationLine educationLine)
         {
             var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
+            foreach (var name in _educationCharacterisiticNames)
             {
                 totalCharacteristics.Add(name, 0);
             }
@@ -159,7 +159,7 @@ namespace OptimalEducation.Logic.Characterizer
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in educationCharacterisiticNames)
+            foreach (var name in _educationCharacterisiticNames)
             {
                 characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
@@ -173,7 +173,7 @@ namespace OptimalEducation.Logic.Characterizer
             if (_options.IsCalculateUnateStateExam)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, educationLine);
-                foreach (var name in educationCharacterisiticNames)
+                foreach (var name in _educationCharacterisiticNames)
                 {
                     characteristicAddItems[name].Add(unatedStateExamCharacteristics[name]);
                 }
