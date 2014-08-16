@@ -425,7 +425,14 @@ namespace OptimalEducation.Logic.Characterizer
         {
             if (_options == null)
                 _options = options;
-            else if (_options.IsCalculateUnateStateExam != options.IsCalculateUnateStateExam)
+            else if (
+                _options.IsCalculateUnateStateExam != options.IsCalculateUnateStateExam ||
+                _options.IsCalculateHobbie != options.IsCalculateHobbie ||
+                _options.IsCalculateOlympiad != options.IsCalculateOlympiad ||
+                _options.IsCalculateSchoolMark != options.IsCalculateSchoolMark ||
+                _options.IsCalculateSchoolType != options.IsCalculateSchoolType ||
+                _options.IsCalculateSection != options.IsCalculateSection 
+                )
             {
                 _options = options;
                 isNewOptions = true;
