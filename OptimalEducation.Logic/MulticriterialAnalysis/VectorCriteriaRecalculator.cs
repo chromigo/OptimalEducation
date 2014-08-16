@@ -20,8 +20,8 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             foreach (var item in educationLineWithCharacterisics)
             {
                 //Разбиваем все кластеры текущего направления на важные и неважные
-                var importantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
-                var unImportantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
+                var importantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine, new Dictionary<string,double>());
+                var unImportantCharacterisics = new EducationLineWithCharacterisics(item.EducationLine, new Dictionary<string,double>());
                 foreach (var characterisics in item.Characterisics)
                 {
                     if (userPrefer.Any(p => p.ImportantCharacterisicName == characterisics.Key))
@@ -31,7 +31,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
                 }
 
                 //Пересчитываем значения неважных кластеров
-                var recalculatedCharacterisics = new EducationLineWithCharacterisics(item.EducationLine);
+                var recalculatedCharacterisics = new EducationLineWithCharacterisics(item.EducationLine, new Dictionary<string,double>());
                 int i = 0;//используется для поментки пересозданных кластеров
                 foreach (var importantCharacterisic in importantCharacterisics.Characterisics)
                 {

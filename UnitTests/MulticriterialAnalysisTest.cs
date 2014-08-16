@@ -31,8 +31,8 @@ namespace UnitTests
             #endregion
 
             #region Act
-            var preferenceCalculator = new PreferenceRelationCalculator(userCharacterisitcs);
-            var calculatedPreferences = preferenceCalculator.GetPreferenceRelations(); 
+            var preferenceCalculator = new PreferenceRelationCalculator();
+            var calculatedPreferences = preferenceCalculator.GetPreferenceRelations(userCharacterisitcs); 
             #endregion
 
             #region Asserts
@@ -94,9 +94,9 @@ namespace UnitTests
             var educationLine3 = new EducationLine() { Id = 3 };
 
             var educationLineCharacterisics = new List<EducationLineWithCharacterisics>();
-            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine1) { Characterisics = characterisitcs1 });
-            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine2) { Characterisics = characterisitcs2 });
-            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine3) { Characterisics = characterisitcs3 });
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine1, characterisitcs1));
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine2, characterisitcs2));
+            educationLineCharacterisics.Add(new EducationLineWithCharacterisics(educationLine3, characterisitcs3));
 
             var tetasMath = new Dictionary<string, double>();
             tetasMath.Add("Литература", 0.6);
@@ -198,11 +198,11 @@ namespace UnitTests
             var educationLine4 = new EducationLine() { Id = 4 };
             var educationLine5 = new EducationLine() { Id = 5 };
             List<EducationLineWithCharacterisics> table = new List<EducationLineWithCharacterisics>();
-            table.Add(new EducationLineWithCharacterisics(educationLine1) { Characterisics = y1 });
-            table.Add(new EducationLineWithCharacterisics(educationLine2) { Characterisics = y2 });
-            table.Add(new EducationLineWithCharacterisics(educationLine3) { Characterisics = y3 });
-            table.Add(new EducationLineWithCharacterisics(educationLine4) { Characterisics = y4 });
-            table.Add(new EducationLineWithCharacterisics(educationLine5) { Characterisics = y5 });
+            table.Add(new EducationLineWithCharacterisics(educationLine1,y1));
+            table.Add(new EducationLineWithCharacterisics(educationLine2,y2));
+            table.Add(new EducationLineWithCharacterisics(educationLine3,y3));
+            table.Add(new EducationLineWithCharacterisics(educationLine4,y4));
+            table.Add(new EducationLineWithCharacterisics(educationLine5,y5));
 
 
             var answerTable = new List<EducationLineWithCharacterisics>();

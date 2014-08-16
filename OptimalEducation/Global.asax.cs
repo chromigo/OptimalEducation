@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using SimpleInjector;
 using SimpleInjector.Extensions;
@@ -84,6 +85,8 @@ namespace OptimalEducation
             //В отдельных классах в коде может присутсвовать ручное инстанцирование
             Container.RegisterSingle<ICharacterizer<Entrant>>(new EntrantCharacterizer(new EntrantCalculationOptions()));
             Container.RegisterSingle<ICharacterizer<EducationLine>>(new EducationLineCharacterizer(new EducationLineCalculationOptions()));
+
+            Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
         }
 
     }

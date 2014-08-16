@@ -13,23 +13,17 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         const double diff = 0.05;
         //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
 
-        Dictionary<string, double> _userCharacteristics;
-
         Dictionary<string, double> _importantCharacterisics;
         Dictionary<string, double> _unImportantCharacterisics;
-
-        public PreferenceRelationCalculator(Dictionary<string, double> userCharacteristics)
-        {
-            _userCharacteristics = userCharacteristics;
-            SeparateCharacterisicsToImprotantAnd_Unimportant();
-        }
 
         /// <summary>
         /// Получаем отношение предпочтения
         /// </summary>
         /// <returns>Список из Важных кластеров и их отношений с неважными(teta)</returns>
-        public List<PreferenceRelation> GetPreferenceRelations()
+        public List<PreferenceRelation> GetPreferenceRelations(Dictionary<string, double> userCharacteristics)
         {
+            SeparateCharacterisicsToImprotantAnd_Unimportant(userCharacteristics);
+
             var preferenceRelations = new List<PreferenceRelation>();
             //Определяем коэффициенты отн важности. Здесь настраиваем правило, по которому будем строить эти коэффициенты
             foreach (var impCharacteristic in _importantCharacterisics)
@@ -52,18 +46,18 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         }
 
         #region Helpers
-        void SeparateCharacterisicsToImprotantAnd_Unimportant()
+        void SeparateCharacterisicsToImprotantAnd_Unimportant(Dictionary<string, double> userCharacteristics)
         {
             //Пусть пока работает по такому правилу:
             //Находим максимальный критерий
-            var maxCharacteristic = GetMaxValue(_userCharacteristics);
+            var maxCharacteristic = GetMaxValue(userCharacteristics);
             //При предположении что все значения у нас от 0 до 1
             //находим близкие по значению критерии - с разницей до -0,1
-            _importantCharacterisics = (from characteristic in _userCharacteristics
+            _importantCharacterisics = (from characteristic in userCharacteristics
                                         where (characteristic.Value >= (maxCharacteristic - diff))
                                   select characteristic).ToDictionary(p => p.Key, el => el.Value);
 
-            _unImportantCharacterisics = (from characteristic in _userCharacteristics
+            _unImportantCharacterisics = (from characteristic in userCharacteristics
                                           where (characteristic.Value < (maxCharacteristic - diff))
                                     select characteristic).ToDictionary(p => p.Key, el => el.Value);
         }
@@ -82,10 +76,10 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             else
                 throw new ArithmeticException("Значение коэффициента относительной важности не лежит в пределах 0<teta<1");
         }
-        double GetMaxValue(Dictionary<string,double> dictionary)
+        double GetMaxValue(Dictionary<string,double> userCharacteristics)
         {
-            double maxValue = dictionary.First().Value;
-            foreach (var item in dictionary)
+            double maxValue = userCharacteristics.First().Value;
+            foreach (var item in userCharacteristics)
             {
                 if (item.Value > maxValue) maxValue = item.Value;
             }

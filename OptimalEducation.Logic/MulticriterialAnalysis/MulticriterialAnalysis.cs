@@ -11,7 +11,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
     public interface IMulticriterialAnalysisRecomendator
     {
-        List<EducationLine> Calculate();
+        List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines);
     }
 
     public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
@@ -25,12 +25,18 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         ICharacterizer<Entrant> _entrantCharacterizer;
         ICharacterizer<EducationLine> _educationLineCharacterizer;
 
-        public MulticriterialAnalysis(Entrant entrant, IEnumerable<EducationLine> educationLines, 
-            ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
+        public MulticriterialAnalysis(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {
             _entrantCharacterizer = entrantCharacterizer;
             _educationLineCharacterizer = educationLineCharacterizer;
 
+            preferenceRelationCalculator = new PreferenceRelationCalculator();
+            vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
+            parretoCalculator = new ParretoCalculator();
+        }
+
+        public List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines)
+        {
             //Вычисляем характеристики пользователя
             var userCharacterisics = _entrantCharacterizer.Calculate(entrant);
 
@@ -38,26 +44,16 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             educationLineRequrements = new List<EducationLineWithCharacterisics>();
             foreach (var item in educationLines)
             {
-                if(item.EducationLinesRequirements.Count>0)
+                if (item.EducationLinesRequirements.Count > 0)
                 {
                     var characteristics = _educationLineCharacterizer.Calculate(item);
-                    var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item)
-                    {
-                        Characterisics = characteristics
-                    };
+                    var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item, characteristics);
                     educationLineRequrements.Add(educationLineWithCharacteristics);
                 }
             }
-
-            preferenceRelationCalculator = new PreferenceRelationCalculator(userCharacterisics);
-            vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
-            parretoCalculator = new ParretoCalculator();
-        }
-
-        public List<EducationLine> Calculate()
-        {
+            
             //Получаем предпочтения пользователя
-            var userPref = preferenceRelationCalculator.GetPreferenceRelations();
+            var userPref = preferenceRelationCalculator.GetPreferenceRelations(userCharacterisics);
             //Пересчитываем кластеры университетов с учетом предпочтений пользователя
             var recalculatedCharacterisics = vectorCriteriaRecalculator.RecalculateEducationLineCharacterisics(educationLineRequrements, userPref);
             //Строим множество паррето-оптимальных веткоров
