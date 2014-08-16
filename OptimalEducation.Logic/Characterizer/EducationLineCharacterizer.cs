@@ -233,6 +233,7 @@ namespace OptimalEducation.Logic.Characterizer
                 var idealEducationLine = context.EducationLines
                     .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
                     .Where(p => p.Name == "IDEAL")
+                    .AsNoTracking()
                     .Single();
                 var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
                 simpleResult = characterizer.CalculateSimpleSum(idealEducationLine);
@@ -250,6 +251,7 @@ namespace OptimalEducation.Logic.Characterizer
                 var idealEducationLine = context.EducationLines
                     .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
                     .Where(p => p.Name == "IDEAL")
+                    .AsNoTracking()
                     .Single();
                 var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
                 complicatedResult = characterizer.CalculateComplicatedSum(idealEducationLine);
