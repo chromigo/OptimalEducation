@@ -56,12 +56,13 @@ namespace OptimalEducation.Logic.Characterizer
     }
     public class EducationLineDistanceRecomendator : IDistanceRecomendator<EducationLine, Entrant>
     {
-        EntrantCharacterizer _entrantCharacterizer;
-        EducationLineCharacterizer _educationLineCharacterizer;
-        public EducationLineDistanceRecomendator()
+        ICharacterizer<Entrant> _entrantCharacterizer;
+        ICharacterizer<EducationLine> _educationLineCharacterizer;
+
+        public EducationLineDistanceRecomendator(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
         {
-            _entrantCharacterizer = new EntrantCharacterizer(new EntrantCalculationOptions());
-            _educationLineCharacterizer = new EducationLineCharacterizer(new EducationLineCalculationOptions());
+            _entrantCharacterizer = entrantCharacterizer;
+            _educationLineCharacterizer = educationLineCharacterizer;
         }
         /// <summary>
         /// Вычисляет рекомендации по учебным направлениям для конкретного абитуриента
