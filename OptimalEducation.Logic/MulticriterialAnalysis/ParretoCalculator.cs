@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public class ParretoCalculator
+    public class ParretoCalculator : IParretoCalculator
     {
         /// <summary>
         /// Строит множество Парето из заданного множества

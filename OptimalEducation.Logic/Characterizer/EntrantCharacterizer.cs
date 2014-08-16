@@ -13,7 +13,6 @@ namespace OptimalEducation.Logic.Characterizer
     {
         readonly EntrantSummator _entrantSummator;
         readonly List<string> _educationCharacterisiticNames;
-        readonly Dictionary<string, double> _totalCharacteristics;
 
         public EntrantCharacterizer(EntrantCalculationOptions options)
         {
@@ -24,12 +23,6 @@ namespace OptimalEducation.Logic.Characterizer
                 .AsNoTracking()
                 .ToList();
 
-            _totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in _educationCharacterisiticNames)
-            {
-                _totalCharacteristics.Add(name, 0);
-            }
-
             //характеристики для нашего направления
             _entrantSummator = new EntrantSummator(options, _educationCharacterisiticNames);
             IdealEntrantResult.SetUpSettings(options, _educationCharacterisiticNames);
@@ -39,6 +32,12 @@ namespace OptimalEducation.Logic.Characterizer
         {
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
+
+            var totalCharacteristics = new Dictionary<string, double>();
+            foreach (var name in _educationCharacterisiticNames)
+            {
+                totalCharacteristics.Add(name, 0);
+            }
 
             //Здесь выбираем метод которым формируем результат
             if (isComplicatedMode)
@@ -55,10 +54,10 @@ namespace OptimalEducation.Logic.Characterizer
             //Нормируем
             foreach (var item in sum)
             {
-                _totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
             }
 
-            return _totalCharacteristics;
+            return totalCharacteristics;
         }
     }
 

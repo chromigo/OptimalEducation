@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public class PreferenceRelationCalculator
+    public class PreferenceRelationCalculator : IPreferenceRelationCalculator
     {
         //SeparateCharacterisicsToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
         const double diff = 0.05;

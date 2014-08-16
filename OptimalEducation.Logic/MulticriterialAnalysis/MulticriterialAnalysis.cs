@@ -19,18 +19,21 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         readonly ICharacterizer<Entrant> _entrantCharacterizer;
         readonly ICharacterizer<EducationLine> _educationLineCharacterizer;
 
-        readonly PreferenceRelationCalculator _preferenceRelationCalculator;
-        readonly VectorCriteriaRecalculator _vectorCriteriaRecalculator;
-        readonly ParretoCalculator _parretoCalculator;
+        readonly IPreferenceRelationCalculator _preferenceRelationCalculator;
+        readonly IVectorCriteriaRecalculator _vectorCriteriaRecalculator;
+        readonly IParretoCalculator _parretoCalculator;
 
-        public MulticriterialAnalysis(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer)
+        public MulticriterialAnalysis(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer,
+            IPreferenceRelationCalculator preferenceRelationCalculator,
+            IVectorCriteriaRecalculator vectorCriteriaRecalculator,
+            IParretoCalculator parretoCalculator)
         {
             _entrantCharacterizer = entrantCharacterizer;
             _educationLineCharacterizer = educationLineCharacterizer;
 
-            _preferenceRelationCalculator = new PreferenceRelationCalculator();
-            _vectorCriteriaRecalculator = new VectorCriteriaRecalculator();
-            _parretoCalculator = new ParretoCalculator();
+            _preferenceRelationCalculator = preferenceRelationCalculator;
+            _vectorCriteriaRecalculator = vectorCriteriaRecalculator;
+            _parretoCalculator = parretoCalculator;
         }
 
         public List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public class VectorCriteriaRecalculator
+    public class VectorCriteriaRecalculator : OptimalEducation.Logic.MulticriterialAnalysis.IVectorCriteriaRecalculator
     {
         /// <summary>
         /// Перестраивает текущую "таблицу" учебноеНаправление/кластер c учетом предпочтений пользователя
