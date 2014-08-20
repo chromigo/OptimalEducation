@@ -6,18 +6,20 @@ using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using CQRS;
+using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
         readonly EntrantSummator _entrantSummator;
-        readonly List<string> _educationCharacterisiticNames;
+        readonly EducationCharacteristicNamesHelper _namesHelper;
         readonly IdealEntrantResult _idealResult;
 
         public EntrantCharacterizer(EducationCharacteristicNamesHelper namesHelper, EntrantSummator entrantSummator, IdealEntrantResult idealResult)
         {
-            _educationCharacterisiticNames = namesHelper.Names;
+            _namesHelper = namesHelper;
 
             _entrantSummator = entrantSummator;
             _idealResult = idealResult;
@@ -29,7 +31,7 @@ namespace OptimalEducation.Logic.Characterizers
             Dictionary<string, double> idealResult;
 
             var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in _educationCharacterisiticNames)
+            foreach (var name in _namesHelper.Names)
             {
                 totalCharacteristics.Add(name, 0);
             }
@@ -58,11 +60,11 @@ namespace OptimalEducation.Logic.Characterizers
 
     public class EntrantSummator
     {
-        readonly List<string> _educationCharacterisiticNames;
+        EducationCharacteristicNamesHelper _namesHelper;
 
         public EntrantSummator(EducationCharacteristicNamesHelper namesHelper)
         {
-            _educationCharacterisiticNames = namesHelper.Names;
+            _namesHelper = namesHelper;
         }
 
         #region Построение словарей с характеристиками
@@ -70,7 +72,7 @@ namespace OptimalEducation.Logic.Characterizers
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in _educationCharacterisiticNames)
+            foreach (var name in _namesHelper.Names)
             {
                 characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
@@ -249,7 +251,7 @@ namespace OptimalEducation.Logic.Characterizers
         public Dictionary<string, double> CalculateSimpleSum(Entrant entrant)
         {
             var totalCharacteristics = new Dictionary<string, double>();
-            foreach (var name in _educationCharacterisiticNames)
+            foreach (var name in _namesHelper.Names)
             {
                 totalCharacteristics.Add(name, 0);
             }
@@ -294,7 +296,7 @@ namespace OptimalEducation.Logic.Characterizers
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
-            foreach (var name in _educationCharacterisiticNames)
+            foreach (var name in _namesHelper.Names)
             {
                 characteristicAddItems.Add(name, new List<double>());
                 resultCharacteristics.Add(name, 0);
@@ -310,7 +312,7 @@ namespace OptimalEducation.Logic.Characterizers
             if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, entrant);
-                foreach (var name in _educationCharacterisiticNames)
+                foreach (var name in _namesHelper.Names)
                 {
                     characteristicAddItems[name].Add(unatedStateExamCharacteristics[name]);
                 }
@@ -318,7 +320,7 @@ namespace OptimalEducation.Logic.Characterizers
             if (true)
             {
                 schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums, entrant);
-                foreach (var name in _educationCharacterisiticNames)
+                foreach (var name in _namesHelper.Names)
                 {
                     characteristicAddItems[name].Add(schoolMarkCharacteristics[name]);
                 }
@@ -326,7 +328,7 @@ namespace OptimalEducation.Logic.Characterizers
             if (true)
             {
                 olympiadCharacteristics = Characterising(CreateOlympiadPartSums, entrant);
-                foreach (var name in _educationCharacterisiticNames)
+                foreach (var name in _namesHelper.Names)
                 {
                     characteristicAddItems[name].Add(olympiadCharacteristics[name]);
                 }
@@ -420,27 +422,26 @@ namespace OptimalEducation.Logic.Characterizers
 
     public class EducationCharacteristicNamesHelper
     {
-        List<string> names;
-        public List<string> Names
+        private readonly IQueryBuilder _queryBuilder;
+
+        public EducationCharacteristicNamesHelper(IQueryBuilder queryBuilder)
+        {
+            _queryBuilder = queryBuilder;
+        }
+
+        IEnumerable<string> names;
+        public IEnumerable<string> Names
         {
             get
             {
                 if(names==null)
                 {
-                    var context = new OptimalEducationDbContext();
-                    names = context.Characteristics
-                        .Where(p => p.Type == CharacteristicType.Education)
-                        .Select(p => p.Name)
-                        .AsNoTracking()
-                        .ToList();
+                    names = _queryBuilder
+			            .For<IEnumerable<string>>()
+                        .With(new GetEducationCharacterisitcNamesCriterion());
                 }
                 return names;
             }
-        }
-
-        public EducationCharacteristicNamesHelper()
-        {
-
         }
     }
 }

@@ -7,20 +7,20 @@ using OptimalEducation.DAL.Models;
 namespace OptimalEducation.DAL.Queries
 {
 
-    public class GetEducationCharacterisitcNamesQuery : EFBaseQuery, IQuery<GetEducationCharacterisitcNamesCriterion, Task<IEnumerable<string>>>
+    public class GetEducationCharacterisitcNamesQuery : EFBaseQuery, IQuery<GetEducationCharacterisitcNamesCriterion, IEnumerable<string>>
     {
         public GetEducationCharacterisitcNamesQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<string>> Ask(GetEducationCharacterisitcNamesCriterion criterion)
+        public IEnumerable<string> Ask(GetEducationCharacterisitcNamesCriterion criterion)
         {
-            var characterisitcNames = await _dbContext.Characteristics
+            var characterisitcNames = _dbContext.Characteristics
                 .Where(p => p.Type == CharacteristicType.Education)
                 .Select(p => p.Name)
                 .AsNoTracking()
-                .ToListAsync();
+                .ToList();
             return characterisitcNames;
         }
     }

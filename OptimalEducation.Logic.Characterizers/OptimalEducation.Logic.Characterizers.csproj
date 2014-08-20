@@ -61,6 +61,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRS\CQRS.csproj">
+      <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
+      <Name>CQRS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>

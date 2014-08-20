@@ -91,6 +91,8 @@ namespace OptimalEducation
             Container.RegisterSingle<IParretoCalculator, ParretoCalculator>();
 
             Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
+
+            Container.RegisterSingle<EducationCharacteristicNamesHelper>();
         }
 
     }
