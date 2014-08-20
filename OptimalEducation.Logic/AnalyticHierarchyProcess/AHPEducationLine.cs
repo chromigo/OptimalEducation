@@ -314,12 +314,14 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //    }
             //}
 
+            var entrantCharacterizer= new EntrantCharacterizer(new EntrantCalculationOptions(false, true, true, true, true, true));
+            
+
             foreach (Entrant entrant in _entrants)
             {
                 bool userAcceptable = true;
 
-                EntrantCalculationOptions entrClassOpt = new EntrantCalculationOptions(false, true, true, true, true, true);
-                var entrantCharacteristics = new EntrantCharacterizer(entrClassOpt).Calculate(entrant);
+                var entrantCharacteristics = entrantCharacterizer.Calculate(entrant);
                 if (entrantCharacteristics.Count() <= 0) userAcceptable = false;
                 
                 //foreach (var item in entrantCharacteristics)

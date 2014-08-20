@@ -209,13 +209,11 @@ namespace OptimalEducation.Logic.Characterizer
     {
         readonly EducationLineCalculationOptions _options;
         readonly List<string> _educationCharacterisiticNames;
-        static int count;
 
         public IdealEducationLineResult(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
         {
             _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
-            count++;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)

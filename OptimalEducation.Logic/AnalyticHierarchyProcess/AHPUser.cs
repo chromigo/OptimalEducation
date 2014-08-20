@@ -344,8 +344,7 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
         {
             int totalAvailLines = 0;
 
-            EntrantCalculationOptions entrClassOpt = new EntrantCalculationOptions(false, true, true, true, true, true);
-            entrantCharacteristics = new EntrantCharacterizer(entrClassOpt).Calculate(_entrant);
+            entrantCharacteristics = new EntrantCharacterizer(new EntrantCalculationOptions(false, true, true, true, true, true)).Calculate(_entrant);
             
             //foreach (var item in entrantCharacteristics)
             //{
@@ -357,12 +356,11 @@ namespace OptimalEducation.Logic.AnalyticHierarchyProcess
             //}
             
             maxEntrantClusterSum = entrantCharacteristics.Values.Max();
-            
+            var edLineClusterizer = new EducationLineCharacterizer(new EducationLineCalculationOptions());
             foreach (EducationLine EdLine in _educationLines)
             {
                 bool edLineAcceptable = true;
 
-                var edLineClusterizer = new EducationLineCharacterizer(new EducationLineCalculationOptions());
                 var edLineResult = edLineClusterizer.Calculate(EdLine);
 
                 if (edLineResult.Count() <= 0) edLineAcceptable = false;
