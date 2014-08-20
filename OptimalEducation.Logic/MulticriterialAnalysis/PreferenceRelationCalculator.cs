@@ -13,23 +13,22 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         const double diff = 0.05;
         //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
 
-        Dictionary<string, double> _importantCharacterisics;
-        Dictionary<string, double> _unImportantCharacterisics;
-
         /// <summary>
         /// Получаем отношение предпочтения
         /// </summary>
         /// <returns>Список из Важных кластеров и их отношений с неважными(teta)</returns>
         public List<PreferenceRelation> GetPreferenceRelations(Dictionary<string, double> userCharacteristics)
         {
-            SeparateCharacterisicsToImprotantAnd_Unimportant(userCharacteristics);
+            var separatedCharacteristics = SeparateCharacterisicsToImprotantAnd_Unimportant(userCharacteristics);
+            var importantCharactristics = separatedCharacteristics.Item1;
+            var unImportantCharacteristics = separatedCharacteristics.Item2;
 
             var preferenceRelations = new List<PreferenceRelation>();
             //Определяем коэффициенты отн важности. Здесь настраиваем правило, по которому будем строить эти коэффициенты
-            foreach (var impCharacteristic in _importantCharacterisics)
+            foreach (var impCharacteristic in importantCharactristics)
             {
                 var preferenceRelation = new PreferenceRelation(impCharacteristic.Key);
-                foreach (var unImpCharacteristic in _unImportantCharacterisics)
+                foreach (var unImpCharacteristic in unImportantCharacteristics)
                 {
                     //TODO: Определеить более клевую логику по выбору коэффициентов относительной важности
 
@@ -46,20 +45,22 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
         }
 
         #region Helpers
-        void SeparateCharacterisicsToImprotantAnd_Unimportant(Dictionary<string, double> userCharacteristics)
+        Tuple<Dictionary<string,double>,Dictionary<string,double>> SeparateCharacterisicsToImprotantAnd_Unimportant(Dictionary<string, double> userCharacteristics)
         {
             //Пусть пока работает по такому правилу:
             //Находим максимальный критерий
             var maxCharacteristic = GetMaxValue(userCharacteristics);
             //При предположении что все значения у нас от 0 до 1
-            //находим близкие по значению критерии - с разницей до -0,1
-            _importantCharacterisics = (from characteristic in userCharacteristics
+            //находим близкие по значению критерии
+            var importantCharacterisics = (from characteristic in userCharacteristics
                                         where (characteristic.Value >= (maxCharacteristic - diff))
                                   select characteristic).ToDictionary(p => p.Key, el => el.Value);
 
-            _unImportantCharacterisics = (from characteristic in userCharacteristics
+            var unImportantCharacterisics = (from characteristic in userCharacteristics
                                           where (characteristic.Value < (maxCharacteristic - diff))
                                     select characteristic).ToDictionary(p => p.Key, el => el.Value);
+
+            return new Tuple<Dictionary<string, double>, Dictionary<string, double>>(importantCharacterisics, unImportantCharacterisics);
         }
         /// <summary>
         /// Вычисляем коэф. относительной важности
