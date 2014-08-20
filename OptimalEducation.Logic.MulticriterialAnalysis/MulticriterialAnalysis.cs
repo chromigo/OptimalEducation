@@ -1,5 +1,5 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.Characterizers;
 using OptimalEducation.Logic.MulticriterialAnalysis.Models;
 using System;
 using System.Collections.Generic;

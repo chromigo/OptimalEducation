@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OptimalEducation.Logic.Characterizer
+namespace OptimalEducation.Logic.Characterizers
 {
     public interface ICharacterizer<T>
     {

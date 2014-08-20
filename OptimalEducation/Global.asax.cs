@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.Characterizers;
 using OptimalEducation.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using SimpleInjector;

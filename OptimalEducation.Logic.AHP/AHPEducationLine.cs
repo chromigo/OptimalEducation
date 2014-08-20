@@ -1,5 +1,5 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.Characterizers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;

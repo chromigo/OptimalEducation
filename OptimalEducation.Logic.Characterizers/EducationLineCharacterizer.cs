@@ -5,7 +5,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Web;
 
-namespace OptimalEducation.Logic.Characterizer
+namespace OptimalEducation.Logic.Characterizers
 {
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {

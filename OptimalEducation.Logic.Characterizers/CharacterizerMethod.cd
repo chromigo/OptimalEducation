@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OptimalEducation.Logic.Characterizer.EntrantCharacterizer">
+  <Class Name="OptimalEducation.Logic.Characterizers.EntrantCharacterizer">
     <Position X="9.25" Y="2.5" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -10,7 +10,7 @@
       <FileName>Characterizer\EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EntrantSummator">
+  <Class Name="OptimalEducation.Logic.Characterizers.EntrantSummator">
     <Position X="9.25" Y="4.25" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -20,28 +20,28 @@
       <FileName>Characterizer\EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.IdealEntrantResult" Collapsed="true">
+  <Class Name="OptimalEducation.Logic.Characterizers.IdealEntrantResult" Collapsed="true">
     <Position X="12.5" Y="4.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAQAIAAQAAAAAIAAAAAAAAACABAAAAAAABAA=</HashCode>
       <FileName>Characterizer\EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EntrantCalculationOptions" Collapsed="true">
+  <Class Name="OptimalEducation.Logic.Characterizers.EntrantCalculationOptions" Collapsed="true">
     <Position X="12.5" Y="3.75" Width="2" />
     <TypeIdentifier>
       <HashCode>CAAAAAAAAAAAAAAAEAAAAAAAAAAAgAAEAEAAAAAAAAg=</HashCode>
       <FileName>Characterizer\EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.CharacteristicDistance">
+  <Class Name="OptimalEducation.Logic.Characterizers.CharacteristicDistance">
     <Position X="12.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAACCAAAEAAAAgAAAAQAAAAAAAAAAA=</HashCode>
       <FileName>Characterizer\CharacteristicDistance.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineCharacterizer">
+  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineCharacterizer">
     <Position X="6.75" Y="2.5" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -51,7 +51,7 @@
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineSummator">
+  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineSummator">
     <Position X="6.75" Y="4.25" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
@@ -61,21 +61,21 @@
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.IdealEducationLineResult" Collapsed="true">
+  <Class Name="OptimalEducation.Logic.Characterizers.IdealEducationLineResult" Collapsed="true">
     <Position X="12.5" Y="5.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAQAIAAQAAAAAIAAAAAAAAACABAAAAAAABAA=</HashCode>
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineCalculationOptions" Collapsed="true">
+  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineCalculationOptions" Collapsed="true">
     <Position X="12.5" Y="3" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>Characterizer\EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EducationLineDistanceRecomendator">
+  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineDistanceRecomendator">
     <Position X="6.75" Y="0.5" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
@@ -83,7 +83,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizer.EntrantDistanceRecomendator">
+  <Class Name="OptimalEducation.Logic.Characterizers.EntrantDistanceRecomendator">
     <Position X="9.75" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
@@ -91,7 +91,7 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="OptimalEducation.Logic.Characterizer.IDistanceRecomendator&lt;TSubject, TObjects&gt;">
+  <Interface Name="OptimalEducation.Logic.Characterizers.IDistanceRecomendator&lt;TSubject, TObjects&gt;">
     <Position X="4.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>

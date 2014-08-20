@@ -715,9 +715,17 @@
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic\OptimalEducation.Logic.csproj">
-      <Project>{8e374da9-e7d9-4453-8493-4f5010c71ad7}</Project>
-      <Name>OptimalEducation.Logic</Name>
+    <ProjectReference Include="..\OptimalEducation.Logic.AHP\OptimalEducation.Logic.AHP.csproj">
+      <Project>{06c777a0-94ad-4b82-abdb-7674398780ff}</Project>
+      <Name>OptimalEducation.Logic.AHP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers\OptimalEducation.Logic.Characterizers.csproj">
+      <Project>{452552d7-9d40-48e2-8931-ea66279726bd}</Project>
+      <Name>OptimalEducation.Logic.Characterizers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Logic.MulticriterialAnalysis.csproj">
+      <Project>{d7e15781-56f7-4745-ab0f-08856ea9af52}</Project>
+      <Name>OptimalEducation.Logic.MulticriterialAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

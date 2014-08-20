@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.Characterizers;
 
 namespace UnitTests
 {

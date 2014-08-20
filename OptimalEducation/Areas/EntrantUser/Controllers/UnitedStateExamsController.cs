@@ -10,7 +10,7 @@ using System.Web.Mvc;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Logic.Characterizers;
 using OptimalEducation.DAL.Models;
 using CQRS;
 using OptimalEducation.DAL.Queries;

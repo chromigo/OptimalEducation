@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Characterizer
+namespace OptimalEducation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
