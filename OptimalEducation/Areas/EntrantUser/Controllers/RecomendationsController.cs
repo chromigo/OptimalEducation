@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.AnalyticHierarchyProcess;
 using System.Diagnostics;
 using CQRS;
 using OptimalEducation.DAL.Queries;
@@ -57,16 +56,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			//2. По методу многокритериального анализа
             ViewBag.MulticriterialRecomendations = _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
-			//3. По МАИ
-            var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
-			var orderedList = AHPUserAnalyzer.AllCriterionContainer;
-			var tempAHPDict = new Dictionary<EducationLine,double>();
-			foreach (var item in orderedList)
-			{
-                var edLine = educationLines.Find(p => p.Id == item.databaseId);
-				tempAHPDict.Add(edLine,item.absolutePriority);
-			}
-			ViewBag.APHRecomendations = tempAHPDict;
 			return View();
 		}
 
