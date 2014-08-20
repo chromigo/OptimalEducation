@@ -11,6 +11,7 @@ namespace OptimalEducation.Logic.Characterizer
     {
         readonly EducationLineSummator _educationLineSummator;
         readonly List<string> _educationCharacterisiticNames;
+        readonly IdealEducationLineResult _idealResult;
 
         public EducationLineCharacterizer(EducationLineCalculationOptions options)
         {            
@@ -23,7 +24,7 @@ namespace OptimalEducation.Logic.Characterizer
 
             //характеристики для нашего направления
             _educationLineSummator = new EducationLineSummator(options, _educationCharacterisiticNames);
-            IdealEducationLineResult.SetUpSettings(options, _educationCharacterisiticNames);
+            _idealResult=new IdealEducationLineResult(options, _educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> Calculate(EducationLine subject,bool isComlicatedMode = true)
@@ -41,12 +42,12 @@ namespace OptimalEducation.Logic.Characterizer
             if(isComlicatedMode)
             {
                 sum = _educationLineSummator.CalculateComplicatedSum(subject);
-                idealResult = IdealEducationLineResult.GetComplicatedResult();
+                idealResult = _idealResult.GetComplicatedResult();
             }
             else
             {
                 sum = _educationLineSummator.CalculateSimpleSum(subject);
-                idealResult = IdealEducationLineResult.GetSimpleResult();
+                idealResult = _idealResult.GetSimpleResult();
             }
 
             //Нормируем
@@ -204,59 +205,43 @@ namespace OptimalEducation.Logic.Characterizer
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public static class IdealEducationLineResult
+    public class IdealEducationLineResult
     {
-        static EducationLineCalculationOptions _options;
-        static List<string> _educationCharacterisiticNames;
-        static bool isNewOptions;
-        public static void SetUpSettings(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
-        {
-            if (_options == null)
-                _options = options;
-            else if(_options.IsCalculateUnateStateExam!=options.IsCalculateUnateStateExam)
-            {
-                _options = options;
-                isNewOptions = true;
-            }
+        readonly EducationLineCalculationOptions _options;
+        readonly List<string> _educationCharacterisiticNames;
+        static int count;
 
+        public IdealEducationLineResult(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
+        {
+            _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
+            count++;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)
-        static Dictionary<string, double> simpleResult;
-        public static Dictionary<string, double> GetSimpleResult()
+        public Dictionary<string, double> GetSimpleResult()
         {
-            if (simpleResult == null||isNewOptions)
-            {
-                var context = new OptimalEducationDbContext();
-                var idealEducationLine = context.EducationLines
-                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
-                    .Where(p => p.Name == "IDEAL")
-                    .AsNoTracking()
-                    .Single();
-                var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
-                simpleResult = characterizer.CalculateSimpleSum(idealEducationLine);
-                isNewOptions = false;
-            }
-            return simpleResult;
+            var context = new OptimalEducationDbContext();
+            var idealEducationLine = context.EducationLines
+                .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                .Where(p => p.Name == "IDEAL")
+                .AsNoTracking()
+                .Single();
+            var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
+            return characterizer.CalculateSimpleSum(idealEducationLine);
         }
         //Для 2-го предположения(геом сложение+ нормир)
-        static Dictionary<string, double> complicatedResult;
-        public static Dictionary<string, double> GetComplicatedResult()
+        public Dictionary<string, double> GetComplicatedResult()
         {
-            if (complicatedResult == null|| isNewOptions)
-            {
-                var context = new OptimalEducationDbContext();
-                var idealEducationLine = context.EducationLines
-                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
-                    .Where(p => p.Name == "IDEAL")
-                    .AsNoTracking()
-                    .Single();
-                var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
-                complicatedResult = characterizer.CalculateComplicatedSum(idealEducationLine);
-                isNewOptions = false;
-            }
-            return complicatedResult;
+            var context = new OptimalEducationDbContext();
+            var idealEducationLine = context.EducationLines
+                .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
+                .Where(p => p.Name == "IDEAL")
+                .AsNoTracking()
+                .Single();
+            var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
+
+            return characterizer.CalculateComplicatedSum(idealEducationLine);
         } 
     }
 
