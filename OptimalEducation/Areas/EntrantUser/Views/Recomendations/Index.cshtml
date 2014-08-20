@@ -58,36 +58,6 @@
 
 </table>
 
-<h3>МАИ</h3>
-<table class="table table-bordered table-striped">
-    @{
-        var aphRecomendations = (ViewBag.APHRecomendations as Dictionary<EducationLine, double>);
-    }
-    <tr>
-        <th>№</th>
-        <th>Название ВУЗ-а</th>
-        <th>Название факультета</th>
-        <th>Название направления</th>
-        <th>Код направления</th>
-        <th>% Схожести (debug)</th>
-    </tr>
-
-    @{count = 0;}
-    @foreach (var recomendation in aphRecomendations)
-    {
-        count++;
-        var percentageValue = recomendation.Value * 100;
-        <tr>
-            <td>@count</td>
-            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
-            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
-            <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
-            <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
-            <td>@percentageValue.ToString("0.0", CultureInfo.InvariantCulture)</td>
-        </tr>
-    }
-</table>
-
 
 
 
