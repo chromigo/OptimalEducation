@@ -13,7 +13,7 @@ namespace OptimalEducation.Logic.Characterizers
         readonly List<string> _educationCharacterisiticNames;
         readonly IdealEducationLineResult _idealResult;
 
-        public EducationLineCharacterizer(EducationLineCalculationOptions options)
+        public EducationLineCharacterizer()
         {            
             var context = new OptimalEducationDbContext();
             _educationCharacterisiticNames = context.Characteristics
@@ -23,8 +23,8 @@ namespace OptimalEducation.Logic.Characterizers
                 .ToList();
 
             //характеристики для нашего направления
-            _educationLineSummator = new EducationLineSummator(options, _educationCharacterisiticNames);
-            _idealResult=new IdealEducationLineResult(options, _educationCharacterisiticNames);
+            _educationLineSummator = new EducationLineSummator(_educationCharacterisiticNames);
+            _idealResult=new IdealEducationLineResult(_educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> Calculate(EducationLine subject,bool isComlicatedMode = true)
@@ -60,12 +60,10 @@ namespace OptimalEducation.Logic.Characterizers
     }
     public class EducationLineSummator
     {
-        readonly EducationLineCalculationOptions _options;
         readonly List<string> _educationCharacterisiticNames;
 
-        public EducationLineSummator(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
+        public EducationLineSummator(List<string> educationCharacterisiticNames)
         {
-            _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -143,7 +141,7 @@ namespace OptimalEducation.Logic.Characterizers
             Dictionary<string, double> unatedStateExamCharacteristics;
             //Etc
 
-            if (_options.IsCalculateUnateStateExam)
+            if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, educationLine);
                 foreach (var item in unatedStateExamCharacteristics)
@@ -170,7 +168,7 @@ namespace OptimalEducation.Logic.Characterizers
 
             //Вычисляем частичные характеристики
             //в результатер работы каждой функции получается новая таблица характеристик, которую мы добавляем в общий список
-            if (_options.IsCalculateUnateStateExam)
+            if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, educationLine);
                 foreach (var name in _educationCharacterisiticNames)
@@ -207,12 +205,10 @@ namespace OptimalEducation.Logic.Characterizers
     /// </summary>
     public class IdealEducationLineResult
     {
-        readonly EducationLineCalculationOptions _options;
         readonly List<string> _educationCharacterisiticNames;
 
-        public IdealEducationLineResult(EducationLineCalculationOptions options, List<string> educationCharacterisiticNames)
+        public IdealEducationLineResult(List<string> educationCharacterisiticNames)
         {
-            _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -225,7 +221,7 @@ namespace OptimalEducation.Logic.Characterizers
                 .Where(p => p.Name == "IDEAL")
                 .AsNoTracking()
                 .Single();
-            var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
+            var characterizer = new EducationLineSummator(_educationCharacterisiticNames);
             return characterizer.CalculateSimpleSum(idealEducationLine);
         }
         //Для 2-го предположения(геом сложение+ нормир)
@@ -237,34 +233,9 @@ namespace OptimalEducation.Logic.Characterizers
                 .Where(p => p.Name == "IDEAL")
                 .AsNoTracking()
                 .Single();
-            var characterizer = new EducationLineSummator(_options, _educationCharacterisiticNames);
+            var characterizer = new EducationLineSummator(_educationCharacterisiticNames);
 
             return characterizer.CalculateComplicatedSum(idealEducationLine);
         } 
-    }
-
-    /// <summary>
-    /// Насктройки, в которых указывается, какие данные учебного направления учитывать.
-    /// Стандартный конструкор без параметров - вычислять все.
-    /// </summary>
-    public class EducationLineCalculationOptions
-    {
-        public bool IsCalculateUnateStateExam { get; private set; }
-        //Etc
-
-        public EducationLineCalculationOptions(
-            bool IsCalculateUnateStateExam
-            //etc
-            )
-        {
-            this.IsCalculateUnateStateExam = IsCalculateUnateStateExam;
-            //etc
-        }
-
-        public EducationLineCalculationOptions()
-        {
-            this.IsCalculateUnateStateExam = true;
-            //etc
-        }
     }
 }

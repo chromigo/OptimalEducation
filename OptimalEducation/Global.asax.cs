@@ -83,8 +83,8 @@ namespace OptimalEducation
 
             //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
             //В отдельных классах в коде может присутсвовать ручное инстанцирование
-            Container.RegisterSingle<ICharacterizer<Entrant>>(new EntrantCharacterizer(new EntrantCalculationOptions()));
-            Container.RegisterSingle<ICharacterizer<EducationLine>>(new EducationLineCharacterizer(new EducationLineCalculationOptions()));
+            Container.RegisterSingle<ICharacterizer<Entrant>, EntrantCharacterizer>();
+            Container.RegisterSingle<ICharacterizer<EducationLine>, EducationLineCharacterizer>();
 
             Container.RegisterSingle<IPreferenceRelationCalculator, PreferenceRelationCalculator>();
             Container.RegisterSingle<IVectorCriteriaRecalculator, VectorCriteriaRecalculator>();

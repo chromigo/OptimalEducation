@@ -62,10 +62,6 @@
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic.AHP\OptimalEducation.Logic.AHP.csproj">
-      <Project>{06c777a0-94ad-4b82-abdb-7674398780ff}</Project>
-      <Name>OptimalEducation.Logic.AHP</Name>
-    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.Logic.Characterizers\OptimalEducation.Logic.Characterizers.csproj">
       <Project>{452552d7-9d40-48e2-8931-ea66279726bd}</Project>
       <Name>OptimalEducation.Logic.Characterizers</Name>

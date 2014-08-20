@@ -15,7 +15,7 @@ namespace OptimalEducation.Logic.Characterizers
         readonly List<string> _educationCharacterisiticNames;
         readonly IdealEntrantResult _idealResult;
 
-        public EntrantCharacterizer(EntrantCalculationOptions options)
+        public EntrantCharacterizer()
         {
             var context = new OptimalEducationDbContext();
             _educationCharacterisiticNames = context.Characteristics
@@ -25,8 +25,8 @@ namespace OptimalEducation.Logic.Characterizers
                 .ToList();
 
             //характеристики для нашего направления
-            _entrantSummator = new EntrantSummator(options, _educationCharacterisiticNames);
-            _idealResult=new IdealEntrantResult(options, _educationCharacterisiticNames);
+            _entrantSummator = new EntrantSummator(_educationCharacterisiticNames);
+            _idealResult=new IdealEntrantResult(_educationCharacterisiticNames);
         }
 
         public Dictionary<string, double> Calculate(Entrant subject, bool isComplicatedMode = true)
@@ -64,12 +64,10 @@ namespace OptimalEducation.Logic.Characterizers
 
     public class EntrantSummator
     {
-        readonly EntrantCalculationOptions _options;
         readonly List<string> _educationCharacterisiticNames;
 
-        public EntrantSummator(EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
+        public EntrantSummator(List<string> educationCharacterisiticNames)
         {
-            _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -267,12 +265,10 @@ namespace OptimalEducation.Logic.Characterizers
             Dictionary<string, double> unatedStateExamCharacteristics;
             Dictionary<string, double> schoolMarkCharacteristics;
             Dictionary<string, double> olympiadCharacteristics;
-            Dictionary<string, double> sectionCharacteristics;
-            Dictionary<string, double> hobbieCharacteristics;
-            Dictionary<string, double> schoolTypeCharacteristics;
+            //etc dictionary
 
             
-            if (_options.IsCalculateUnateStateExam)
+            if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, entrant);
                 foreach (var item in unatedStateExamCharacteristics)
@@ -280,7 +276,7 @@ namespace OptimalEducation.Logic.Characterizers
                     totalCharacteristics[item.Key] += item.Value;
                 }
             }
-            if (_options.IsCalculateSchoolMark)
+            if (true)
             {
                 schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums, entrant);
                 foreach (var item in schoolMarkCharacteristics)
@@ -288,7 +284,7 @@ namespace OptimalEducation.Logic.Characterizers
                     totalCharacteristics[item.Key] += item.Value;
                 }
             }
-            if (_options.IsCalculateOlympiad)
+            if (true)
             {
                 olympiadCharacteristics = Characterising(CreateOlympiadPartSums, entrant);
                 foreach (var item in olympiadCharacteristics)
@@ -296,30 +292,7 @@ namespace OptimalEducation.Logic.Characterizers
                     totalCharacteristics[item.Key] += item.Value;
                 }
             }
-            //if (_options.IsCalculateSection)
-            //{
-            //    sectionCharacteristics = Characterising(CreateOlympiadPartSums,entrant);
-            //    foreach (var item in sectionCharacteristics)
-            //    {
-            //        totalCharacteristics[item.Key] += item.Value;
-            //    }
-            //}
-            //if (_options.IsCalculateHobbie)
-            //{
-            //    hobbieCharacteristics = Characterising(CreateOlympiadPartSums,entrant);
-            //    foreach (var item in hobbieCharacteristics)
-            //    {
-            //        totalCharacteristics[item.Key] += item.Value;
-            //    }
-            //}
-            //if (_options.IsCalculateSchoolMark)
-            //{
-            //    schoolTypeCharacteristics = Characterising(CreateOlympiadPartSums,entrant);
-            //    foreach (var item in schoolTypeCharacteristics)
-            //    {
-            //        totalCharacteristics[item.Key] += item.Value;
-            //    }
-            //}
+            //Etc characterisitcs
 
             return totalCharacteristics;
         }
@@ -336,12 +309,11 @@ namespace OptimalEducation.Logic.Characterizers
             Dictionary<string, double> unatedStateExamCharacteristics;
             Dictionary<string, double> schoolMarkCharacteristics;
             Dictionary<string, double> olympiadCharacteristics;
-            Dictionary<string, double> sectionCharacteristics;
-            Dictionary<string, double> hobbieCharacteristics;
-            Dictionary<string, double> schoolTypeCharacteristics;
+            //etc dictionary
+
             //Вычисляем частичные характеристики
             //в результатер работы каждой функции получается новая таблица характеристик, которую мы добавляем в общий список
-            if (_options.IsCalculateUnateStateExam)
+            if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, entrant);
                 foreach (var name in _educationCharacterisiticNames)
@@ -349,7 +321,7 @@ namespace OptimalEducation.Logic.Characterizers
                     characteristicAddItems[name].Add(unatedStateExamCharacteristics[name]);
                 }
             }
-            if (_options.IsCalculateSchoolMark)
+            if (true)
             {
                 schoolMarkCharacteristics = Characterising(CreateSchoolMarkPartSums, entrant);
                 foreach (var name in _educationCharacterisiticNames)
@@ -357,7 +329,7 @@ namespace OptimalEducation.Logic.Characterizers
                     characteristicAddItems[name].Add(schoolMarkCharacteristics[name]);
                 }
             }
-            if (_options.IsCalculateOlympiad)
+            if (true)
             {
                 olympiadCharacteristics = Characterising(CreateOlympiadPartSums, entrant);
                 foreach (var name in _educationCharacterisiticNames)
@@ -365,30 +337,7 @@ namespace OptimalEducation.Logic.Characterizers
                     characteristicAddItems[name].Add(olympiadCharacteristics[name]);
                 }
             }
-            //if (_options.IsCalculateSection)
-            //{
-            //    sectionCharacteristics = Characterising(CreateOlympiadPartSums);
-            //    foreach (var name in educationCharacterisiticNames)
-            //    {
-            //        characteristicAddItems[name].Add(sectionCharacteristics[name]);
-            //    }
-            //}
-            //if (_options.IsCalculateHobbie)
-            //{
-            //    hobbieCharacteristics = Characterising(CreateOlympiadPartSums);
-            //    foreach (var name in educationCharacterisiticNames)
-            //    {
-            //        characteristicAddItems[name].Add(hobbieCharacteristics[name]);
-            //    }
-            //}
-            //if (_options.IsCalculateSchoolType)
-            //{
-            //    schoolTypeCharacteristics = Characterising(CreateOlympiadPartSums);
-            //    foreach (var name in educationCharacterisiticNames)
-            //    {
-            //        characteristicAddItems[name].Add(schoolTypeCharacteristics[name]);
-            //    }
-            //}
+            //Etc characterisitcs
 
             //Cкладываем по аналогии с геом. прогрессией и делим на норм число
             foreach (var item in characteristicAddItems)
@@ -418,13 +367,11 @@ namespace OptimalEducation.Logic.Characterizers
     /// </summary>
     public class IdealEntrantResult
     {
-        readonly EntrantCalculationOptions _options;
         readonly List<string> _educationCharacterisiticNames;
         //Задает/обновляет настройки статического класса.
 
-        public IdealEntrantResult(EntrantCalculationOptions options, List<string> educationCharacterisiticNames)
+        public IdealEntrantResult(List<string> educationCharacterisiticNames)
         {
-            _options = options;
             _educationCharacterisiticNames = educationCharacterisiticNames;
         }
 
@@ -441,7 +388,7 @@ namespace OptimalEducation.Logic.Characterizers
                 .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
                 .AsNoTracking()
                 .Where(e => e.Id == 2).Single();
-            var characterizer = new EntrantSummator(_options, _educationCharacterisiticNames);
+            var characterizer = new EntrantSummator(_educationCharacterisiticNames);
 
             return characterizer.CalculateSimpleSum(idealEntrant);
         }
@@ -459,49 +406,9 @@ namespace OptimalEducation.Logic.Characterizers
                 .Where(e => e.Id == 2)
                 .AsNoTracking()
                 .Single();
-            var characterizer = new EntrantSummator(_options, _educationCharacterisiticNames);
+            var characterizer = new EntrantSummator(_educationCharacterisiticNames);
 
             return characterizer.CalculateComplicatedSum(idealEntrant);
-        }
-    }
-
-    /// <summary>
-    /// Насктройки, в которых указывается, какие данные пользователя учитывать.
-    /// Стандартный конструкор без параметров - вычислять все.
-    /// </summary>
-    public class EntrantCalculationOptions
-    {
-        public bool IsCalculateUnateStateExam { get; private set; }
-        public bool IsCalculateSchoolMark { get; private set; }
-        public bool IsCalculateOlympiad { get; private set; }
-        public bool IsCalculateSection { get; private set; }
-        public bool IsCalculateHobbie { get; private set; }
-        public bool IsCalculateSchoolType { get; private set; }
-
-        public EntrantCalculationOptions(
-            bool IsCalculateUnateStateExam,
-            bool IsCalculateSchoolMark,
-            bool IsCalculateOlympiad,
-            bool IsCalculateSection,
-            bool IsCalculateHobbie,
-            bool IsCalculateSchoolType)
-        {
-            this.IsCalculateUnateStateExam = IsCalculateUnateStateExam;
-            this.IsCalculateSchoolMark = IsCalculateSchoolMark;
-            this.IsCalculateOlympiad = IsCalculateOlympiad;
-            this.IsCalculateSection = IsCalculateSection;
-            this.IsCalculateHobbie = IsCalculateHobbie;
-            this.IsCalculateSchoolType = IsCalculateSchoolType;
-        }
-
-        public EntrantCalculationOptions()
-        {
-            this.IsCalculateUnateStateExam = true;
-            this.IsCalculateSchoolMark = true;
-            this.IsCalculateOlympiad = true;
-            this.IsCalculateSection = true;
-            this.IsCalculateHobbie = true;
-            this.IsCalculateSchoolType = true;
         }
     }
 }
