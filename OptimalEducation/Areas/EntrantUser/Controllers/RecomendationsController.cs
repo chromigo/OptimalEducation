@@ -1,9 +1,9 @@
-﻿using CQRS;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
-using OptimalEducation.Logic.Characterizers.Interfaces;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using System.Collections.Generic;
 using System.Linq;

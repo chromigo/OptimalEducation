@@ -1,7 +1,6 @@
 ﻿using Interfaces.CQRS;
-using System.Web.Mvc;
 
-namespace OptimalEducation
+namespace Implementation.CQRS
 {
     public class QueryBuilder : IQueryBuilder
     {

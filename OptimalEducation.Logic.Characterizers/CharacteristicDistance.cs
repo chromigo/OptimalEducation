@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Characterizers
+namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public static class CharacteristicDistance
     {

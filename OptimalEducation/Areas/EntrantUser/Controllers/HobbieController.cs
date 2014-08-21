@@ -12,7 +12,7 @@ using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.Models;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.DAL.Queries;
 

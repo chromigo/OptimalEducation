@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis.Interfaces
+namespace OptimalEducation.Interfaces.Logic.MulticriterialAnalysis
 {
     public interface IMulticriterialAnalysisRecomendator
     {

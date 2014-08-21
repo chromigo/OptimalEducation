@@ -16,21 +16,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.DAL", "OptimalEducation.DAL\OptimalEducation.DAL.csproj", "{788B7129-4288-4005-B014-6F60FFA689A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS", "CQRS\CQRS.csproj", "{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces.CQRS", "CQRS\Interfaces.CQRS.csproj", "{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.AHP", "OptimalEducation.Logic.AHP\OptimalEducation.Logic.AHP.csproj", "{06C777A0-94AD-4B82-ABDB-7674398780FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.Characterizers", "OptimalEducation.Logic.Characterizers\OptimalEducation.Logic.Characterizers.csproj", "{452552D7-9D40-48E2-8931-EA66279726BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Implementation.Logic.Characterizers", "OptimalEducation.Logic.Characterizers\OptimalEducation.Implementation.Logic.Characterizers.csproj", "{452552D7-9D40-48E2-8931-EA66279726BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Logic.MulticriterialAnalysis.csproj", "{D7E15781-56F7-4745-AB0F-08856EA9AF52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Implementation.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Implementation.Logic.MulticriterialAnalysis.csproj", "{D7E15781-56F7-4745-AB0F-08856EA9AF52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{9E93825C-75BC-4615-96A7-0BFE90999440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.Characterizers.Interfaces", "OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Logic.Characterizers.Interfaces.csproj", "{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces.Logic.Characterizers", "OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj", "{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces", "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.csproj", "{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj", "{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

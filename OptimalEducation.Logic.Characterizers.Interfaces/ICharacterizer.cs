@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Characterizers.Interfaces
+namespace OptimalEducation.Interfaces.Logic.Characterizers
 {
     public interface ICharacterizer<T>
     {

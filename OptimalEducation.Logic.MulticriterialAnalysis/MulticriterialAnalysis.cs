@@ -1,15 +1,11 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizers;
-using OptimalEducation.Logic.Characterizers.Interfaces;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
-using System;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis
+namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
 {
     public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
     {

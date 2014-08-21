@@ -1,12 +1,12 @@
 ﻿using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizers.Interfaces;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Characterizers
+namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EntrantDistanceRecomendator : IDistanceRecomendator<Entrant, EducationLine>
     {

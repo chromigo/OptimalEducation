@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
-using OptimalEducation.Logic.Characterizers.Interfaces;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 
-namespace OptimalEducation.Logic.Characterizers
+namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {

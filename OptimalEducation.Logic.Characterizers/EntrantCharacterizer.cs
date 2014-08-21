@@ -5,11 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CQRS;
 using OptimalEducation.DAL.Queries;
-using OptimalEducation.Logic.Characterizers.Interfaces;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using Interfaces.CQRS;
 
-namespace OptimalEducation.Logic.Characterizers
+namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {

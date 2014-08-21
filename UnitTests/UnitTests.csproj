@@ -62,13 +62,13 @@
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Logic.Characterizers.Interfaces.csproj">
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
       <Project>{70dc5edb-c783-446a-adda-b4aae15694f2}</Project>
-      <Name>OptimalEducation.Logic.Characterizers.Interfaces</Name>
+      <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.csproj">
+    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj">
       <Project>{d29a05e5-7b7f-4b7b-8da9-9f4c179f69d3}</Project>
-      <Name>OptimalEducation.Logic.MulticriterialAnalysis.Interfaces</Name>
+      <Name>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimalEducation\OptimalEducation.csproj">
       <Project>{0299d429-301e-4beb-998b-bbd59b9640d7}</Project>

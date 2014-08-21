@@ -2,9 +2,8 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using OptimalEducation.Logic.MulticriterialAnalysis;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 
 namespace UnitTests
 {

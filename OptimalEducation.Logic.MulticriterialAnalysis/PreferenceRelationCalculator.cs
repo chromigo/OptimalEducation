@@ -1,12 +1,10 @@
-﻿using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
+﻿using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis
+namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
 {
     public class PreferenceRelationCalculator : IPreferenceRelationCalculator
     {

@@ -1,8 +1,8 @@
-﻿using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
+﻿using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 using System;
 using System.Collections.Generic;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis.Interfaces
+namespace OptimalEducation.Interfaces.Logic.MulticriterialAnalysis
 {
     public interface IParretoCalculator
     {

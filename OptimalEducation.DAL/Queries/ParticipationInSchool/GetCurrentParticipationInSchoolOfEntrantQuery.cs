@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries

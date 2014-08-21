@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models
+namespace OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models
 {
     public class EducationLineWithCharacterisics
     {

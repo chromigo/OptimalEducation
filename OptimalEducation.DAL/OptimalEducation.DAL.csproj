@@ -199,9 +199,9 @@
     <Content Include="SQLScripts\dbo.HigherEducationInstitutions.data.sql" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CQRS\CQRS.csproj">
+    <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">
       <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
-      <Name>CQRS</Name>
+      <Name>Interfaces.CQRS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

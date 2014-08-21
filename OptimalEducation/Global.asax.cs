@@ -1,11 +1,11 @@
-﻿using CQRS;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizers;
-using OptimalEducation.Logic.Characterizers.Interfaces;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
+using OptimalEducation.Implementation.Logic.Characterizers;
+using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using SimpleInjector;
 using SimpleInjector.Extensions;
