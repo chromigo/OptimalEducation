@@ -9,7 +9,7 @@ namespace OptimalEducation.Logic.Characterizers
 {
     public interface IDistanceRecomendator<TSubject,TObjects>
     {
-        Dictionary<TObjects, double> GetRecomendation(TSubject subject, IEnumerable<TObjects> objects);
+        Task<Dictionary<TObjects, double>> GetRecomendation(TSubject subject, IEnumerable<TObjects> objects);
     }
 
     public class EntrantDistanceRecomendator : IDistanceRecomendator<Entrant, EducationLine>
@@ -28,14 +28,14 @@ namespace OptimalEducation.Logic.Characterizers
         /// <param name="subject">Абитуриент, для которого строятся рекомендации</param>
         /// <param name="objects">Список учебных направлений, отфильтрованных заранее по определенному криетрию</param>
         /// <returns>Словарь из подходящих учебных направлений и значений близости</returns>
-        public Dictionary<EducationLine, double> GetRecomendation(Entrant subject, IEnumerable<EducationLine> objects)
+        public async Task<Dictionary<EducationLine, double>> GetRecomendation(Entrant subject, IEnumerable<EducationLine> objects)
         {
             //Вычисляем кластеры для абитуриента и направлений
-            var entrantCharacteristic = _entrantCharacterizer.Calculate(subject);
+            var entrantCharacteristic = await _entrantCharacterizer.Calculate(subject);
             var results = new Dictionary<EducationLine, double>();
             foreach (var edLine in objects)
             {
-                var educationLineCharacterisic = _educationLineCharacterizer.Calculate(edLine);
+                var educationLineCharacterisic = await _educationLineCharacterizer.Calculate(edLine);
 
                 //Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetDistance(entrantCharacteristic, educationLineCharacterisic);
@@ -70,14 +70,14 @@ namespace OptimalEducation.Logic.Characterizers
         /// <param name="subject">Абитуриент, для которого строятся рекомендации</param>
         /// <param name="objects">Список учебных направлений, отфильтрованных заранее по определенному криетрию</param>
         /// <returns>Словарь из подходящих учебных направлений и значений близости</returns>
-        public Dictionary<Entrant, double> GetRecomendation(EducationLine subject, IEnumerable<Entrant> objects)
+        public async Task<Dictionary<Entrant, double>> GetRecomendation(EducationLine subject, IEnumerable<Entrant> objects)
         {
             //Вычисляем кластеры для направления и абитуриентов
-            var educationLineCharacterisic = _educationLineCharacterizer.Calculate(subject);
+            var educationLineCharacterisic = await _educationLineCharacterizer.Calculate(subject);
             var results = new Dictionary<Entrant, double>();
             foreach (var entrant in objects)
             {
-                var entratnCharacterisic = _entrantCharacterizer.Calculate(entrant);
+                var entratnCharacterisic =await _entrantCharacterizer.Calculate(entrant);
                 //Выполняем сравнение
                 var compareResult = CharacteristicDistance.GetDistance(entratnCharacterisic, educationLineCharacterisic);
                 if (compareResult.HasValue)

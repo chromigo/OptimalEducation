@@ -25,7 +25,7 @@ namespace OptimalEducation.Logic.Characterizers
             _idealResult = idealResult;
         }
 
-        public Dictionary<string, double> Calculate(Entrant subject, bool isComplicatedMode = true)
+        public async Task<Dictionary<string, double>> Calculate(Entrant subject, bool isComplicatedMode = true)
         {
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
@@ -40,12 +40,12 @@ namespace OptimalEducation.Logic.Characterizers
             if (isComplicatedMode)
             {
                 sum = _entrantSummator.CalculateComplicatedSum(subject);
-                idealResult = _idealResult.GetComplicatedResult();
+                idealResult = await _idealResult.GetComplicatedResult();
             }
             else
             {
                 sum = _entrantSummator.CalculateSimpleSum(subject);
-                idealResult = _idealResult.GetSimpleResult();
+                idealResult = await _idealResult.GetSimpleResult();
             }
             
             //Нормируем
@@ -364,29 +364,22 @@ namespace OptimalEducation.Logic.Characterizers
     public class IdealEntrantResult
     {
         readonly EntrantSummator _entrantSummator;
-        public IdealEntrantResult(EntrantSummator entrantSummator)
+        readonly IQueryBuilder _queryBuilder;
+        public IdealEntrantResult(EntrantSummator entrantSummator, IQueryBuilder queryBuilder)
         {
             _entrantSummator = entrantSummator;
+            _queryBuilder = queryBuilder;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)
         Dictionary<string, double> simpleResult;
-        public Dictionary<string, double> GetSimpleResult()
+        public async Task<Dictionary<string, double>> GetSimpleResult()
         {
             if(simpleResult==null)
             {
-                simpleResult = new Dictionary<string, double>();
-
-                var db = new OptimalEducationDbContext();
-                var idealEntrant = db.Entrants
-                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
-                    .Include(e => e.ParticipationInSections.Select(pse => pse.Section.Weights))
-                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
-                    .Include(e => e.Hobbies.Select(h => h.Weights))
-                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
-                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-                    .AsNoTracking()
-                    .Where(e => e.Id == 2).Single();
+                var idealEntrant = await _queryBuilder
+                    .For<Task<Entrant>>()
+				    .With(new GetEntrantForCharacterizerCriterion() {EntrantId=2});
 
                 simpleResult = _entrantSummator.CalculateSimpleSum(idealEntrant);
             }
@@ -395,23 +388,13 @@ namespace OptimalEducation.Logic.Characterizers
         }
         //Для 2-го предположения(геом сложение+ нормир)
         Dictionary<string, double> complicatedResult;
-        public Dictionary<string, double> GetComplicatedResult()
+        public async Task<Dictionary<string, double>> GetComplicatedResult()
         {
             if(complicatedResult==null)
             {
-                complicatedResult = new Dictionary<string, double>();
-
-                var db = new OptimalEducationDbContext();
-                var idealEntrant =db.Entrants
-                    .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
-                    .Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
-                    .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
-                    .Include(e => e.Hobbies.Select(h => h.Weights))
-                    .Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
-                    .Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-                    .Where(e => e.Id == 2)
-                    .AsNoTracking()
-                    .Single();
+                var idealEntrant = await _queryBuilder
+                    .For<Task<Entrant>>()
+                    .With(new GetEntrantForCharacterizerCriterion() { EntrantId = 2 });
 
                 complicatedResult = _entrantSummator.CalculateComplicatedSum(idealEntrant);
             }

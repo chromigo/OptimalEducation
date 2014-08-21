@@ -136,6 +136,7 @@
     <Compile Include="Queries\GetAssignedHobbiesQuery.cs" />
     <Compile Include="Queries\GetAllOlympiadsQuery.cs" />
     <Compile Include="Queries\GetEducationCharacterisitcNamesQuery.cs" />
+    <Compile Include="Queries\GetIdelaEducationLineForCharacterizerQuery.cs" />
     <Compile Include="Queries\ParticipationInOlympiad\GetCurrentParticipationInOlympiadQuery.cs" />
     <Compile Include="Queries\ParticipationInOlympiad\GetAllParticipationInOlympiadOfEntrantQuery.cs" />
     <Compile Include="Queries\GetEducationLinesForCharacterizerQuery.cs" />

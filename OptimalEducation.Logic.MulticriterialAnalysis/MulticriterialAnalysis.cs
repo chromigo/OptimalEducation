@@ -11,7 +11,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
     public interface IMulticriterialAnalysisRecomendator
     {
-        List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines);
+        Task<List<EducationLine>> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines);
     }
 
     public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
@@ -36,10 +36,10 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             _parretoCalculator = parretoCalculator;
         }
 
-        public List<EducationLine> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines)
+        public async Task<List<EducationLine>> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines)
         {
             //Вычисляем характеристики пользователя
-            var userCharacterisics = _entrantCharacterizer.Calculate(entrant);
+            var userCharacterisics = await _entrantCharacterizer.Calculate(entrant);
 
             //Вычисляем характеристики учебных направлений
             var educationLineRequrements = new List<EducationLineWithCharacterisics>();
@@ -47,7 +47,7 @@ namespace OptimalEducation.Logic.MulticriterialAnalysis
             {
                 if (item.EducationLinesRequirements.Count > 0)
                 {
-                    var characteristics = _educationLineCharacterizer.Calculate(item);
+                    var characteristics = await _educationLineCharacterizer.Calculate(item);
                     var educationLineWithCharacteristics = new EducationLineWithCharacterisics(item, characteristics);
                     educationLineRequrements.Add(educationLineWithCharacteristics);
                 }

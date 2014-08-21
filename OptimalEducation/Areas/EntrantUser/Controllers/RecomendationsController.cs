@@ -51,10 +51,10 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			//Рекомендации:
 			//1. По методу сравнения расстояний мд характеристиками
-            ViewBag.DistanceRecomendations = _distanceRecomendator.GetRecomendation(entrant, educationLines);
+            ViewBag.DistanceRecomendations = await _distanceRecomendator.GetRecomendation(entrant, educationLines);
 			
 			//2. По методу многокритериального анализа
-            ViewBag.MulticriterialRecomendations = _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
+            ViewBag.MulticriterialRecomendations =await _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
 			return View();
 		}

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web;
+using System.Threading.Tasks;
+using CQRS;
+using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.Logic.Characterizers
 {
@@ -21,7 +24,7 @@ namespace OptimalEducation.Logic.Characterizers
             _idealResult = idealResult;
         }
 
-        public Dictionary<string, double> Calculate(EducationLine subject,bool isComlicatedMode = true)
+        public async Task<Dictionary<string, double>> Calculate(EducationLine subject,bool isComlicatedMode = true)
         {
             Dictionary<string, double> sum;
             Dictionary<string, double> idealResult;
@@ -36,12 +39,12 @@ namespace OptimalEducation.Logic.Characterizers
             if(isComlicatedMode)
             {
                 sum = _educationLineSummator.CalculateComplicatedSum(subject);
-                idealResult = _idealResult.GetComplicatedResult();
+                idealResult = await _idealResult.GetComplicatedResult();
             }
             else
             {
                 sum = _educationLineSummator.CalculateSimpleSum(subject);
-                idealResult = _idealResult.GetSimpleResult();
+                idealResult = await _idealResult.GetSimpleResult();
             }
 
             //Нормируем
@@ -200,26 +203,23 @@ namespace OptimalEducation.Logic.Characterizers
     public class IdealEducationLineResult
     {
         readonly EducationLineSummator _summator;
+        readonly IQueryBuilder _queryBuilder;
 
-        public IdealEducationLineResult(EducationLineSummator summator)
+        public IdealEducationLineResult(EducationLineSummator summator, IQueryBuilder queryBuilder)
         {
             _summator = summator;
+            _queryBuilder=queryBuilder;
         }
 
         //Для 1-го предположения(простое сложение+ нормир)
         Dictionary<string, double> simpleResult;
-        public Dictionary<string, double> GetSimpleResult()
+        public async Task<Dictionary<string, double>> GetSimpleResult()
         {
             if (simpleResult == null)
             {
-                simpleResult = new Dictionary<string, double>();
-
-                var context = new OptimalEducationDbContext();
-                var idealEducationLine = context.EducationLines
-                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
-                    .Where(p => p.Name == "IDEAL")
-                    .AsNoTracking()
-                    .Single();
+                var idealEducationLine = await _queryBuilder
+                        .For<Task<EducationLine>>()
+                        .With(new GetIdelaEducationLineForCharacterizerCriterion());
 
                 simpleResult=_summator.CalculateSimpleSum(idealEducationLine);
             }
@@ -227,18 +227,13 @@ namespace OptimalEducation.Logic.Characterizers
         }
         //Для 2-го предположения(геом сложение+ нормир)
         Dictionary<string, double> complicatedResult;
-        public Dictionary<string, double> GetComplicatedResult()
+        public async Task<Dictionary<string, double>> GetComplicatedResult()
         {
             if (complicatedResult == null)
             {
-                complicatedResult = new Dictionary<string, double>();
-
-                var context = new OptimalEducationDbContext();
-                var idealEducationLine = context.EducationLines
-                    .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
-                    .Where(p => p.Name == "IDEAL")
-                    .AsNoTracking()
-                    .Single();
+                var idealEducationLine = await _queryBuilder
+                        .For<Task<EducationLine>>()
+                        .With(new GetIdelaEducationLineForCharacterizerCriterion());
 
                 complicatedResult=_summator.CalculateComplicatedSum(idealEducationLine);
             }

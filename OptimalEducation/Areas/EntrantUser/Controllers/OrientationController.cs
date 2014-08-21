@@ -30,7 +30,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantForCharacterizerCriterion() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
-            var entrantCharacteristics = _entrantCharacterizer.Calculate(entrant);//add true for complicated method
+            var entrantCharacteristics = await _entrantCharacterizer.Calculate(entrant);//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
 			return View();
