@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
 using Interfaces.CQRS;
-namespace OptimalEducation
+namespace Implimentation.CQRS
 {
     public class CommandBuilder : ICommandBuilder
     {

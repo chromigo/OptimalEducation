@@ -235,8 +235,6 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CQRS.Implimentation\CommandBuilder.cs" />
-    <Compile Include="CQRS.Implimentation\QueryBuilder.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -710,6 +708,10 @@
     <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">
       <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
       <Name>Interfaces.CQRS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Implimentation.CQRS\Implimentation.CQRS.csproj">
+      <Project>{0c4d86c8-59ed-48c5-94f8-1eab0a884836}</Project>
+      <Name>Implimentation.CQRS</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>

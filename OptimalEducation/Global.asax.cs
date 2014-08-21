@@ -1,4 +1,5 @@
-﻿using Interfaces.CQRS;
+﻿using Implimentation.CQRS;
+using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;

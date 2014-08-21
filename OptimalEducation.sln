@@ -32,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj", "{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Implimentation.CQRS", "Implimentation.CQRS\Implimentation.CQRS.csproj", "{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,10 @@ Global
 		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,5 +91,6 @@ Global
 		{D7E15781-56F7-4745-AB0F-08856EA9AF52} = {9E93825C-75BC-4615-96A7-0BFE90999440}
 		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
 		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836} = {9E93825C-75BC-4615-96A7-0BFE90999440}
 	EndGlobalSection
 EndGlobal
