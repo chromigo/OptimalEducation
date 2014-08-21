@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using CQRS;
+using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizers;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Logic.Characterizers.Interfaces;
+using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
 using OptimalEducation.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using System.Diagnostics;
-using CQRS;
-using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {

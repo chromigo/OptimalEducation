@@ -2,7 +2,7 @@
 using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
-using OptimalEducation.Logic.Characterizers;
+using OptimalEducation.Logic.Characterizers.Interfaces;
 using OptimalEducation.Models;
 using System.Linq;
 using System.Threading.Tasks;

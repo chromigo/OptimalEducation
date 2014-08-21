@@ -1,9 +1,8 @@
-﻿using OptimalEducation.DAL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.Characterizers
+namespace OptimalEducation.Logic.Characterizers.Interfaces
 {
     public interface ICharacterizer<T>
     {

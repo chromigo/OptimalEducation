@@ -1,4 +1,5 @@
 ﻿using OptimalEducation.DAL.Models;
+using OptimalEducation.Logic.Characterizers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,6 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.Characterizers
 {
-    public interface IDistanceRecomendator<TSubject,TObjects>
-    {
-        Task<Dictionary<TObjects, double>> GetRecomendation(TSubject subject, IEnumerable<TObjects> objects);
-    }
-
     public class EntrantDistanceRecomendator : IDistanceRecomendator<Entrant, EducationLine>
     {
         readonly ICharacterizer<Entrant> _entrantCharacterizer;

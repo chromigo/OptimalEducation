@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis.Models
+namespace OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models
 {
     public class PreferenceRelation
     {

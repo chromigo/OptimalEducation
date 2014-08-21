@@ -1,6 +1,8 @@
 ﻿using OptimalEducation.DAL.Models;
 using OptimalEducation.Logic.Characterizers;
-using OptimalEducation.Logic.MulticriterialAnalysis.Models;
+using OptimalEducation.Logic.Characterizers.Interfaces;
+using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
+using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,6 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public interface IMulticriterialAnalysisRecomendator
-    {
-        Task<List<EducationLine>> Calculate(Entrant entrant, IEnumerable<EducationLine> educationLines);
-    }
-
     public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
     {
         readonly ICharacterizer<Entrant> _entrantCharacterizer;

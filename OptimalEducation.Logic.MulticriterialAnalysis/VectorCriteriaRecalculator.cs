@@ -1,4 +1,5 @@
-﻿using OptimalEducation.Logic.MulticriterialAnalysis.Models;
+﻿using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
+using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OptimalEducation.Logic.MulticriterialAnalysis
 {
-    public class VectorCriteriaRecalculator : OptimalEducation.Logic.MulticriterialAnalysis.IVectorCriteriaRecalculator
+    public class VectorCriteriaRecalculator :IVectorCriteriaRecalculator
     {
         /// <summary>
         /// Перестраивает текущую "таблицу" учебноеНаправление/кластер c учетом предпочтений пользователя

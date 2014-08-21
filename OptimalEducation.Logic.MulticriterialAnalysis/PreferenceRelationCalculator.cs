@@ -1,4 +1,5 @@
-﻿using OptimalEducation.Logic.MulticriterialAnalysis.Models;
+﻿using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces;
+using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

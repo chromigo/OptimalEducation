@@ -24,6 +24,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.Char
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Logic.MulticriterialAnalysis.csproj", "{D7E15781-56F7-4745-AB0F-08856EA9AF52}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{9E93825C-75BC-4615-96A7-0BFE90999440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.Characterizers.Interfaces", "OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Logic.Characterizers.Interfaces.csproj", "{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces", "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.csproj", "{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,8 +66,24 @@ Global
 		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{06C777A0-94AD-4B82-ABDB-7674398780FF} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{452552D7-9D40-48E2-8931-EA66279726BD} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
 	EndGlobalSection
 EndGlobal

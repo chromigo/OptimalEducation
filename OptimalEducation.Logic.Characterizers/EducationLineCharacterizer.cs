@@ -6,6 +6,7 @@ using System.Web;
 using System.Threading.Tasks;
 using CQRS;
 using OptimalEducation.DAL.Queries;
+using OptimalEducation.Logic.Characterizers.Interfaces;
 
 namespace OptimalEducation.Logic.Characterizers
 {

@@ -1,8 +1,8 @@
-﻿using OptimalEducation.Logic.MulticriterialAnalysis.Models;
+﻿using OptimalEducation.Logic.MulticriterialAnalysis.Interfaces.Models;
 using System;
 using System.Collections.Generic;
 
-namespace OptimalEducation.Logic.MulticriterialAnalysis
+namespace OptimalEducation.Logic.MulticriterialAnalysis.Interfaces
 {
     public interface IPreferenceRelationCalculator
     {
