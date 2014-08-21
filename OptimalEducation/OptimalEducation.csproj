@@ -235,8 +235,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandBuilder.cs" />
-    <Compile Include="QueryBuilder.cs" />
+    <Compile Include="CQRS.Implimentation\CommandBuilder.cs" />
+    <Compile Include="CQRS.Implimentation\QueryBuilder.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
