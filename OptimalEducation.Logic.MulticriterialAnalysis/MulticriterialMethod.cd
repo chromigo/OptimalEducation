@@ -1,38 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="OptimalEducation.Logic.MulticriterialAnalysis.VectorCriteriaRecalculator">
-    <Position X="1.75" Y="5.5" Width="2.75" />
+    <Position X="1.75" Y="5.25" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MulticriterialAnalysis\VectorCriteriaRecalculator.cs</FileName>
+      <FileName>VectorCriteriaRecalculator.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="OptimalEducation.Logic.MulticriterialAnalysis.MulticriterialAnalysis">
-    <Position X="1.75" Y="1.5" Width="2" />
+    <Position X="1.75" Y="0.75" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAACAAAAAAAgAAAACAAAA=</HashCode>
-      <FileName>MulticriterialAnalysis\MulticriterialAnalysis.cs</FileName>
+      <HashCode>AAAAgAAAgAAAAAAAAAAAAAAAACAAAAAAIAgAAAIAAAA=</HashCode>
+      <FileName>MulticriterialAnalysis.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="OptimalEducation.Logic.MulticriterialAnalysis.ParretoCalculator">
     <Position X="1.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>MulticriterialAnalysis\ParretoCalculator.cs</FileName>
+      <FileName>ParretoCalculator.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="OptimalEducation.Logic.MulticriterialAnalysis.PreferenceRelationCalculator">
-    <Position X="1.75" Y="3.25" Width="3.75" />
+    <Position X="1.75" Y="2.75" Width="3.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>CAAACgAQAAAAAQgAAAAAAAAAAAAAAAAAAAAAAAAQAAg=</HashCode>
-      <FileName>MulticriterialAnalysis\PreferenceRelationCalculator.cs</FileName>
+      <HashCode>CAAACgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>PreferenceRelationCalculator.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
