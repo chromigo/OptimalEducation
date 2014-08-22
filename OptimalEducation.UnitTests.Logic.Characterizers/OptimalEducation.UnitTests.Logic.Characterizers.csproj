@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0E486F96-FACD-4199-A82B-5C9AF4B32A83}</ProjectGuid>
+    <ProjectGuid>{DD7DD18C-D869-4604-AA22-4B2FE069A6E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
+    <RootNamespace>OptimalEducation.UnitTests.Logic.Characterizers</RootNamespace>
+    <AssemblyName>OptimalEducation.UnitTests.Logic.Characterizers</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -52,28 +55,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CharacteristicDistanceTest.cs" />
     <Compile Include="CharacterizerTest.cs" />
+    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MulticriterialAnalysisTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
-      <Project>{70dc5edb-c783-446a-adda-b4aae15694f2}</Project>
-      <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj">
-      <Project>{d29a05e5-7b7f-4b7b-8da9-9f4c179f69d3}</Project>
-      <Name>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation\OptimalEducation.csproj">
-      <Project>{0299d429-301e-4beb-998b-bbd59b9640d7}</Project>
-      <Name>OptimalEducation</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
