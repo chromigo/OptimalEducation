@@ -56,13 +56,21 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CharacterizerTest.cs" />
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="EducationCharacteristicNamesHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">
+      <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
+      <Name>Interfaces.CQRS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers\OptimalEducation.Implementation.Logic.Characterizers.csproj">
+      <Project>{452552d7-9d40-48e2-8931-ea66279726bd}</Project>
+      <Name>OptimalEducation.Implementation.Logic.Characterizers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

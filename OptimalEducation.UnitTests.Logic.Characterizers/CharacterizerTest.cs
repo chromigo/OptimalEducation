@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using OptimalEducation.DAL.Models;
 
-namespace UnitTests
+namespace OptimalEducation.UnitTests.Logic.Characterizers
 {
     [TestClass]
     public class CharacterizerTest
