@@ -12,11 +12,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {
-        readonly EducationLineSummator _educationLineSummator;
+        readonly ISummator<EducationLine> _educationLineSummator;
         readonly EducationCharacteristicNamesHelper _namesHelper;
         readonly IdealEducationLineResult _idealResult;
 
-        public EducationLineCharacterizer(EducationCharacteristicNamesHelper namesHelper, EducationLineSummator entrantSummator, IdealEducationLineResult idealResult)
+        public EducationLineCharacterizer(EducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IdealEducationLineResult idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -55,7 +55,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             return totalCharacteristics;
         }
     }
-    public class EducationLineSummator
+    public class EducationLineSummator : ISummator<EducationLine>
     {
         readonly EducationCharacteristicNamesHelper _namesHelper;
 
@@ -202,10 +202,10 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     /// </summary>
     public class IdealEducationLineResult
     {
-        readonly EducationLineSummator _summator;
+        readonly ISummator<EducationLine> _summator;
         readonly IQueryBuilder _queryBuilder;
 
-        public IdealEducationLineResult(EducationLineSummator summator, IQueryBuilder queryBuilder)
+        public IdealEducationLineResult(ISummator<EducationLine> summator, IQueryBuilder queryBuilder)
         {
             _summator = summator;
             _queryBuilder=queryBuilder;

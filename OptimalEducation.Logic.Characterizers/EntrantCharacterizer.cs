@@ -13,11 +13,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
-        readonly EntrantSummator _entrantSummator;
+        readonly ISummator<Entrant> _entrantSummator;
         readonly EducationCharacteristicNamesHelper _namesHelper;
         readonly IdealEntrantResult _idealResult;
 
-        public EntrantCharacterizer(EducationCharacteristicNamesHelper namesHelper, EntrantSummator entrantSummator, IdealEntrantResult idealResult)
+        public EntrantCharacterizer(EducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator, IdealEntrantResult idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -58,7 +58,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
         }
     }
 
-    public class EntrantSummator
+    public class EntrantSummator : ISummator<Entrant>
     {
         EducationCharacteristicNamesHelper _namesHelper;
 
@@ -363,9 +363,9 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     /// </summary>
     public class IdealEntrantResult
     {
-        readonly EntrantSummator _entrantSummator;
+        readonly ISummator<Entrant> _entrantSummator;
         readonly IQueryBuilder _queryBuilder;
-        public IdealEntrantResult(EntrantSummator entrantSummator, IQueryBuilder queryBuilder)
+        public IdealEntrantResult(ISummator<Entrant> entrantSummator, IQueryBuilder queryBuilder)
         {
             _entrantSummator = entrantSummator;
             _queryBuilder = queryBuilder;

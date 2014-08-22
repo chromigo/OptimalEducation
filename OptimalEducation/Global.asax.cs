@@ -84,6 +84,11 @@ namespace OptimalEducation
                 Lifestyle.Singleton,
                 typeof(EducationLineDistanceRecomendator).Assembly);
 
+            Container.RegisterManyForOpenGeneric(
+                typeof(ISummator<>),
+                //Lifestyle.Singleton, ???
+                typeof(EducationLineDistanceRecomendator).Assembly);
+
             //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
             //В отдельных классах в коде может присутсвовать ручное инстанцирование
             Container.RegisterSingle<ICharacterizer<Entrant>, EntrantCharacterizer>();
