@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 

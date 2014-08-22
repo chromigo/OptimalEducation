@@ -1,4 +1,4 @@
-﻿using CQRS;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;

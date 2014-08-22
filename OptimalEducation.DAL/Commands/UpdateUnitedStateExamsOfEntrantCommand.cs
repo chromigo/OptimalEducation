@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Models;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.DAL.Commands

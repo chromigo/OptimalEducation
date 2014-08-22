@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Logic.Characterizer;
 using OptimalEducation.DAL.Models;
-using CQRS;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Commands;
 

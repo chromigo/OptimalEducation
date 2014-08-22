@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation", "OptimalEducation\OptimalEducation.csproj", "{0299D429-301E-4BEB-998B-BBD59B9640D7}"
 EndProject
@@ -16,9 +16,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.DAL", "OptimalEducation.DAL\OptimalEducation.DAL.csproj", "{788B7129-4288-4005-B014-6F60FFA689A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic", "OptimalEducation.Logic\OptimalEducation.Logic.csproj", "{8E374DA9-E7D9-4453-8493-4F5010C71AD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces.CQRS", "CQRS\Interfaces.CQRS.csproj", "{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS", "CQRS\CQRS.csproj", "{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Logic.AHP", "OptimalEducation.Logic.AHP\OptimalEducation.Logic.AHP.csproj", "{06C777A0-94AD-4B82-ABDB-7674398780FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Implementation.Logic.Characterizers", "OptimalEducation.Logic.Characterizers\OptimalEducation.Implementation.Logic.Characterizers.csproj", "{452552D7-9D40-48E2-8931-EA66279726BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Implementation.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Implementation.Logic.MulticriterialAnalysis.csproj", "{D7E15781-56F7-4745-AB0F-08856EA9AF52}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implementation", "{9E93825C-75BC-4615-96A7-0BFE90999440}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces.Logic.Characterizers", "OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj", "{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.Interfaces.Logic.MulticriterialAnalysis", "OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj", "{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Implimentation.CQRS", "Implimentation.CQRS\Implimentation.CQRS.csproj", "{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,16 +52,45 @@ Global
 		{788B7129-4288-4005-B014-6F60FFA689A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{788B7129-4288-4005-B014-6F60FFA689A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{788B7129-4288-4005-B014-6F60FFA689A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E374DA9-E7D9-4453-8493-4F5010C71AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06C777A0-94AD-4B82-ABDB-7674398780FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06C777A0-94AD-4B82-ABDB-7674398780FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06C777A0-94AD-4B82-ABDB-7674398780FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06C777A0-94AD-4B82-ABDB-7674398780FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{452552D7-9D40-48E2-8931-EA66279726BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{452552D7-9D40-48E2-8931-EA66279726BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{452552D7-9D40-48E2-8931-EA66279726BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{452552D7-9D40-48E2-8931-EA66279726BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{941491BC-CEDC-4502-A7E4-3F8C9CF736A0} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{06C777A0-94AD-4B82-ABDB-7674398780FF} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{452552D7-9D40-48E2-8931-EA66279726BD} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{D7E15781-56F7-4745-AB0F-08856EA9AF52} = {9E93825C-75BC-4615-96A7-0BFE90999440}
+		{70DC5EDB-C783-446A-ADDA-B4AAE15694F2} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3} = {86FE1200-6B5E-41C9-B2BC-CEE95C5D74CD}
+		{0C4D86C8-59ED-48C5-94F8-1EAB0A884836} = {9E93825C-75BC-4615-96A7-0BFE90999440}
 	EndGlobalSection
 EndGlobal

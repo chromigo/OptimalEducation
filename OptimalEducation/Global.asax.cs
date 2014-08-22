@@ -1,7 +1,12 @@
-﻿using CQRS;
+﻿using Implimentation.CQRS;
+using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.Implementation.Logic.Characterizers;
+using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using SimpleInjector;
 using SimpleInjector.Extensions;
@@ -40,6 +45,7 @@ namespace OptimalEducation
             Container.RegisterPerWebRequest<ICommandBuilder, CommandBuilder>();
             RegisterAllQueries(Container);
             RegisterAllCommands(Container);
+            RegisterAllLogic(Container);
 
             //Entity Framework contexts
             Container.RegisterPerWebRequest<IOptimalEducationDbContext, OptimalEducationDbContext>();
@@ -69,6 +75,27 @@ namespace OptimalEducation
             Container.RegisterManyForOpenGeneric(
                 typeof(IQuery<,>),
                 typeof(IOptimalEducationDbContext).Assembly);
+        }
+
+        private void RegisterAllLogic(Container container)
+        {
+            Container.RegisterManyForOpenGeneric(
+                typeof(IDistanceRecomendator<,>),
+                Lifestyle.Singleton,
+                typeof(EducationLineDistanceRecomendator).Assembly);
+
+            //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
+            //В отдельных классах в коде может присутсвовать ручное инстанцирование
+            Container.RegisterSingle<ICharacterizer<Entrant>, EntrantCharacterizer>();
+            Container.RegisterSingle<ICharacterizer<EducationLine>, EducationLineCharacterizer>();
+
+            Container.RegisterSingle<IPreferenceRelationCalculator, PreferenceRelationCalculator>();
+            Container.RegisterSingle<IVectorCriteriaRecalculator, VectorCriteriaRecalculator>();
+            Container.RegisterSingle<IParretoCalculator, ParretoCalculator>();
+
+            Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
+
+            Container.RegisterSingle<EducationCharacteristicNamesHelper>();
         }
 
     }

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 
-namespace CQRS
+namespace Interfaces.CQRS
 {
     /// <summary>
-    ///     Критерии запроса
+    /// Критерии запроса
     /// </summary>
     public interface ICommandContext { }
 
@@ -11,7 +11,7 @@ namespace CQRS
         where TCommandContext : ICommandContext
     {
         /// <summary>
-        ///     Выполняет действия команды.
+        /// Выполняет действия команды.
         /// </summary>
         /// <param name="commandContext">Контекст команды</param>
         Task ExecuteAsync(TCommandContext commandContext);
@@ -20,7 +20,7 @@ namespace CQRS
     public interface ICommandBuilder
     {
         /// <summary>
-        ///     Создает команду с определенным контекстом и выполняет её.
+        /// Создает команду с определенным контекстом и выполняет её.
         /// </summary>
         /// <typeparam name="TCommandContext">Тип контекста команды.</typeparam>
         /// <param name="commandContext">Контекст команды.</param>

@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Interfaces.CQRS;
+using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.AnalyticHierarchyProcess;
-using System.Diagnostics;
-using CQRS;
-using OptimalEducation.DAL.Queries;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -23,10 +17,18 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
 		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
-		public RecomendationsController(IApplicationUserManager userManager, IQueryBuilder queryBuilder)
+        private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
+        private readonly IMulticriterialAnalysisRecomendator _multicriterialAnalysisRecomendator;
+		public RecomendationsController(
+            IApplicationUserManager userManager,
+            IQueryBuilder queryBuilder,
+            IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator,
+            IMulticriterialAnalysisRecomendator multicriterialAnalysisRecomendator)
 		{
 			_userManager = userManager;
 			_queryBuilder=queryBuilder;
+            _distanceRecomendator = distanceRecomendator;
+            _multicriterialAnalysisRecomendator = multicriterialAnalysisRecomendator;
 		}
 
 		// GET: EntrantUser/Recomendations
@@ -44,23 +46,11 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			//Рекомендации:
 			//1. По методу сравнения расстояний мд характеристиками
-            ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+            ViewBag.DistanceRecomendations = await _distanceRecomendator.GetRecomendation(entrant, educationLines);
 			
 			//2. По методу многокритериального анализа
-            var multicriterialAnalyzer = new MulticriterialAnalysis(entrant, educationLines);
-			var res = multicriterialAnalyzer.Calculate();
-			ViewBag.MulticriterialRecomendations = res;
+            ViewBag.MulticriterialRecomendations =await _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
-			//3. По МАИ
-            var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
-			var orderedList = AHPUserAnalyzer.AllCriterionContainer;
-			var tempAHPDict = new Dictionary<EducationLine,double>();
-			foreach (var item in orderedList)
-			{
-                var edLine = educationLines.Find(p => p.Id == item.databaseId);
-				tempAHPDict.Add(edLine,item.absolutePriority);
-			}
-			ViewBag.APHRecomendations = tempAHPDict;
 			return View();
 		}
 

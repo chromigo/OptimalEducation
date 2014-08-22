@@ -1,8 +1,8 @@
-﻿using CQRS;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 using OptimalEducation.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,10 +15,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
 	    private readonly IApplicationUserManager _userManager;
         private readonly IQueryBuilder _queryBuilder;
-        public OrientationController(IApplicationUserManager userManager,IQueryBuilder queryBuilder)
+        private readonly ICharacterizer<Entrant> _entrantCharacterizer;
+        public OrientationController(IApplicationUserManager userManager,IQueryBuilder queryBuilder, ICharacterizer<Entrant> entrantCharacterizer)
 		{
 		    _userManager = userManager;
             _queryBuilder = queryBuilder;
+            _entrantCharacterizer = entrantCharacterizer;
 		}
 
 	    // GET: /EntrantUser/Orientation/
@@ -28,7 +30,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantForCharacterizerCriterion() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
-            var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
+            var entrantCharacteristics = await _entrantCharacterizer.Calculate(entrant);//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
 			return View();
