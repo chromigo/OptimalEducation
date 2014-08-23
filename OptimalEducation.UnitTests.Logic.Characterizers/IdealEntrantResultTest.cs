@@ -28,8 +28,10 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers
                 .For<Task<Entrant>>()
                 .With(Arg.Any<GetEntrantForCharacterizerCriterion>())
                 .ReturnsForAnyArgs(Task.FromResult(entrant));
+            queryBuilder.ClearReceivedCalls();
 
             entrantSummator.CalculateSimpleSum(entrant).Returns(idealResult);
+            entrantSummator.ClearReceivedCalls();
 
             //Act
             var currentResultTask = idealEntrantResult.GetSimpleResult();
@@ -38,11 +40,13 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers
             //Assert
             Assert.AreEqual(idealResult, currentResultTask.Result);
 
-            //2.
-            //queryBuilder.DidNotReceive();
-            
-            //idealEntrantResult.n.GetSimpleResult();
+            //cache test
+            //Проверяем что методы вызывались только при первом обращении
+            idealEntrantResult.GetSimpleResult().Wait();
+            idealEntrantResult.GetSimpleResult().Wait();
 
+            queryBuilder.Received(1).For<Task<Entrant>>();
+            entrantSummator.Received(1).CalculateSimpleSum(entrant);
         }
     }
 }

@@ -12,26 +12,30 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers
     public class EducationCharacteristicNamesHelperTest
     {
         [TestMethod]
-        public void GetCorrectListOfNames()
+        public void GetCorrectListOfNames_and_result_is_cached()
         {
             //Arrange
             var answer=new List<string>() {"Русский" ,"Математика" ,"Информатика"};
 
             var queryBuilder = Substitute.For<IQueryBuilder>();
-            var queryFor = Substitute.For<IQueryFor<IEnumerable<string>>>();
 
             queryBuilder
                 .For<IEnumerable<string>>()
-                .Returns(queryFor);
+                .With(Arg.Any<GetEducationCharacterisitcNamesCriterion>()).ReturnsForAnyArgs(answer);
 
-            queryFor.With(Arg.Any<GetEducationCharacterisitcNamesCriterion>()).ReturnsForAnyArgs(answer);
+            queryBuilder.ClearReceivedCalls();
 
             //Act
             var helper = new EducationCharacteristicNamesHelper(queryBuilder);
             var result = helper.Names;
+            var cachedResult1 = helper.Names;
+            var cachedResult2 = helper.Names;
+            var cachedResult3 = helper.Names;
 
             //Assert
             Assert.AreEqual(answer, result);
+            //cache test
+            queryBuilder.Received(1).For<IEnumerable<string>>();
         }
     }
 }
