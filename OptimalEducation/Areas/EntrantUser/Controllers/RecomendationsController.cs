@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using System.Collections.Generic;

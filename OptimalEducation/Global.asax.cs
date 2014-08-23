@@ -4,8 +4,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.Characterizers;
+using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;
 using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
 using SimpleInjector;
@@ -79,21 +81,20 @@ namespace OptimalEducation
 
         private void RegisterAllLogic(Container container)
         {
-            var implementationCharacterizerAssembly = typeof(EducationLineDistanceRecomendator).Assembly;
             Container.RegisterManyForOpenGeneric(
                 typeof(IDistanceRecomendator<,>),
                 Lifestyle.Singleton,
-                implementationCharacterizerAssembly);
+                typeof(EducationLineDistanceRecomendator).Assembly);
 
             Container.RegisterManyForOpenGeneric(
                 typeof(ISummator<>),
                 //Lifestyle, ???
-                implementationCharacterizerAssembly);
+                typeof(EducationLineSummator).Assembly);
 
             Container.RegisterManyForOpenGeneric(
                 typeof(IIdealResult<>),
                 //Lifestyle, ???         
-                implementationCharacterizerAssembly);
+                typeof(IdealEntrantResult).Assembly);
 
             //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
             //В отдельных классах в коде может присутсвовать ручное инстанцирование

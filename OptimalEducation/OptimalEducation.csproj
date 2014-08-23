@@ -717,6 +717,14 @@
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Implementation.Logic.DistanceRecomendator\OptimalEducation.Implementation.Logic.DistanceRecomendator.csproj">
+      <Project>{37aa4d5a-c34e-4f4e-ad29-57e59bd80a96}</Project>
+      <Name>OptimalEducation.Implementation.Logic.DistanceRecomendator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Interfaces.Logic.DistanceRecomendator\OptimalEducation.Interfaces.Logic.DistanceRecomendator.csproj">
+      <Project>{c008ce01-57f4-4ab9-98b5-932cd623fabc}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.DistanceRecomendator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
       <Project>{70dc5edb-c783-446a-adda-b4aae15694f2}</Project>
       <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>

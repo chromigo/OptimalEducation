@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OptimalEducation.Interfaces.Logic.Characterizers
+namespace OptimalEducation.Interfaces.Logic.DistanceRecomendator
 {
     public interface IDistanceRecomendator<TSubject, TObjects>
     {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}</ProjectGuid>
+    <ProjectGuid>{C008CE01-57F4-4AB9-98B5-932CD623FABC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Interfaces.Logic.Characterizers</RootNamespace>
-    <AssemblyName>OptimalEducation.Interfaces.Logic.Characterizers</AssemblyName>
+    <RootNamespace>OptimalEducation.Interfaces.Logic.DistanceRecomendator</RootNamespace>
+    <AssemblyName>OptimalEducation.Interfaces.Logic.DistanceRecomendator</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,10 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICharacterizer.cs" />
-    <Compile Include="IEducationCharacteristicNamesHelper.cs" />
-    <Compile Include="IIdealResult.cs" />
-    <Compile Include="ISummator.cs" />
+    <Compile Include="IDistanceRecomendator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

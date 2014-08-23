@@ -42,8 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CharacteristicDistance.cs" />
-    <Compile Include="DistanceCharacterisiticRecomendator.cs" />
     <Compile Include="EducationCharacteristicNamesHelper.cs" />
     <Compile Include="EducationLineCharacterizer.cs" />
     <Compile Include="EntrantCharacterizer.cs" />

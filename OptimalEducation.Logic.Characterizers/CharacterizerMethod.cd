@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OptimalEducation.Logic.Characterizers.EntrantCharacterizer">
-    <Position X="4.25" Y="3.25" Width="2.5" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.EntrantCharacterizer">
+    <Position X="4" Y="0.75" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -11,8 +11,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.EntrantSummator">
-    <Position X="4.25" Y="5" Width="2.5" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.EntrantSummator">
+    <Position X="4" Y="3.25" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -20,23 +20,18 @@
       <HashCode>AAAAAAAAQgEAAQgAAAAAAggAAAAAAAAAAAEgIAAAAAA=</HashCode>
       <FileName>EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.IdealEntrantResult" Collapsed="true">
-    <Position X="8.75" Y="3.25" Width="1.75" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.IdealEntrantResult" Collapsed="true">
+    <Position X="7.25" Y="0.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAIAAAAAAAABAIAAAAAAAAAAABAAAAAAABAA=</HashCode>
       <FileName>EntrantCharacterizer.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.CharacteristicDistance">
-    <Position X="8.75" Y="0.75" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAACCAAAEAAAAgAAAAQAAAAAAAAAAA=</HashCode>
-      <FileName>CharacteristicDistance.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineCharacterizer">
-    <Position X="0.75" Y="3.25" Width="2.25" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.EducationLineCharacterizer">
+    <Position X="0.75" Y="0.75" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -46,8 +41,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineSummator">
-    <Position X="0.75" Y="5" Width="2.25" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.EducationLineSummator">
+    <Position X="0.75" Y="3.25" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -55,27 +50,13 @@
       <HashCode>AAAAAAAAQAEAAAgAAAAAAAAAAAAAAAAAAAAgIAAAAAA=</HashCode>
       <FileName>EducationLineCharacterizer.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.IdealEducationLineResult" Collapsed="true">
-    <Position X="8.75" Y="4" Width="2" />
+  <Class Name="OptimalEducation.Implementation.Logic.Characterizers.IdealEducationLineResult" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAgAAIAAAAAAABAIAAAAAAAAAAABAAAAAAABAA=</HashCode>
       <FileName>EducationLineCharacterizer.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.EducationLineDistanceRecomendator">
-    <Position X="0.75" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAgAEAAAAAA=</HashCode>
-      <FileName>DistanceCharacterisiticRecomendator.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="OptimalEducation.Logic.Characterizers.EntrantDistanceRecomendator">
-    <Position X="4.25" Y="0.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAgAEAAAAAA=</HashCode>
-      <FileName>DistanceCharacterisiticRecomendator.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

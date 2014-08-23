@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}</ProjectGuid>
+    <ProjectGuid>{37AA4D5A-C34E-4F4E-AD29-57E59BD80A96}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Interfaces.Logic.Characterizers</RootNamespace>
-    <AssemblyName>OptimalEducation.Interfaces.Logic.Characterizers</AssemblyName>
+    <RootNamespace>OptimalEducation.Implementation.Logic.DistanceRecomendator</RootNamespace>
+    <AssemblyName>OptimalEducation.Implementation.Logic.DistanceRecomendator</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,11 +39,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ICharacterizer.cs" />
-    <Compile Include="IEducationCharacteristicNamesHelper.cs" />
-    <Compile Include="IIdealResult.cs" />
-    <Compile Include="ISummator.cs" />
+    <Compile Include="CharacteristicDistance.cs" />
+    <Compile Include="EducationLineDistanceRecomendator.cs" />
+    <Compile Include="EntrantDistanceRecomendator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
+      <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
+      <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Interfaces.Logic.DistanceRecomendator\OptimalEducation.Interfaces.Logic.DistanceRecomendator.csproj">
+      <Project>{c008ce01-57f4-4ab9-98b5-932cd623fabc}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.DistanceRecomendator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
+      <Project>{70dc5edb-c783-446a-adda-b4aae15694f2}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
