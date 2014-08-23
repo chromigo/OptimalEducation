@@ -8,7 +8,7 @@ using Interfaces.CQRS;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-namespace OptimalEducation.UnitTests.Logic.Characterizers
+namespace OptimalEducation.UnitTests.Logic.Characterizers.Entrant
 {
     [TestClass]
     public class IdealEntrantResultTest
