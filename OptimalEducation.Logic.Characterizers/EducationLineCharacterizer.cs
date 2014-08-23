@@ -13,10 +13,10 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {
         readonly ISummator<EducationLine> _educationLineSummator;
-        readonly EducationCharacteristicNamesHelper _namesHelper;
+        readonly IEducationCharacteristicNamesHelper _namesHelper;
         readonly IdealEducationLineResult _idealResult;
 
-        public EducationLineCharacterizer(EducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IdealEducationLineResult idealResult)
+        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IdealEducationLineResult idealResult)
         {
             _namesHelper = namesHelper;
 

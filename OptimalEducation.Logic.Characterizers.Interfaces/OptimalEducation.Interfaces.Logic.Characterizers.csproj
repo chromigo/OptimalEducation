@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ICharacterizer.cs" />
     <Compile Include="IDistanceRecomendator.cs" />
+    <Compile Include="IEducationCharacteristicNamesHelper.cs" />
     <Compile Include="ISummator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

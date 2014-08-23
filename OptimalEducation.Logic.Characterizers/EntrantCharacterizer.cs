@@ -14,10 +14,10 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
         readonly ISummator<Entrant> _entrantSummator;
-        readonly EducationCharacteristicNamesHelper _namesHelper;
+        readonly IEducationCharacteristicNamesHelper _namesHelper;
         readonly IdealEntrantResult _idealResult;
 
-        public EntrantCharacterizer(EducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator, IdealEntrantResult idealResult)
+        public EntrantCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator, IdealEntrantResult idealResult)
         {
             _namesHelper = namesHelper;
 

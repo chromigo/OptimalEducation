@@ -1,14 +1,11 @@
 ﻿using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
-using System;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OptimalEducation.Implementation.Logic.Characterizers
 {
-    public class EducationCharacteristicNamesHelper
+    public class EducationCharacteristicNamesHelper : IEducationCharacteristicNamesHelper
     {
         private readonly IQueryBuilder _queryBuilder;
 

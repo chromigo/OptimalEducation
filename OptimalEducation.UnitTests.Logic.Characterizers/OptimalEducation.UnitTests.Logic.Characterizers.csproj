@@ -58,6 +58,7 @@
     <Compile Include="CharacterizerTest.cs" />
     <Compile Include="EducationCharacteristicNamesHelperTest.cs" />
     <Compile Include="EducationLineTests\EducationLineSummatorTest.cs" />
+    <Compile Include="EntrantTests\EntrantCharacterizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntrantTests\IdealEntrantResultTest.cs" />
     <Compile Include="EntrantTests\EntrantSummatorTest.cs" />

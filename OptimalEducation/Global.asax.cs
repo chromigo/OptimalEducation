@@ -100,8 +100,7 @@ namespace OptimalEducation
 
             Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
 
-            Container.RegisterSingle<EducationCharacteristicNamesHelper>();
+            Container.RegisterSingle<IEducationCharacteristicNamesHelper, EducationCharacteristicNamesHelper>();
         }
-
     }
 }
