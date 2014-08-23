@@ -57,10 +57,10 @@
   <ItemGroup>
     <Compile Include="CharacterizerTest.cs" />
     <Compile Include="EducationCharacteristicNamesHelperTest.cs" />
-    <Compile Include="EducationLine\EducationLineSummatorTest.cs" />
+    <Compile Include="EducationLineTests\EducationLineSummatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entrant\IdealEntrantResultTest.cs" />
-    <Compile Include="Entrant\EntrantSummatorTest.cs" />
+    <Compile Include="EntrantTests\IdealEntrantResultTest.cs" />
+    <Compile Include="EntrantTests\EntrantSummatorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">

@@ -8,7 +8,9 @@ using Interfaces.CQRS;
 using System.Threading.Tasks;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-namespace OptimalEducation.UnitTests.Logic.Characterizers.Entrant
+
+
+namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
 {
     [TestClass]
     public class IdealEntrantResultTest
@@ -66,7 +68,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.Entrant
                 .ReturnsForAnyArgs(Task.FromResult(entrant));
             queryBuilder.ClearReceivedCalls();
 
-            entrantSummator.GetComplicatedResult(entrant).Returns(idealResult);
+            entrantSummator.CalculateComplicatedSum(entrant).Returns(idealResult);
             entrantSummator.ClearReceivedCalls();
 
             //Act
@@ -82,7 +84,8 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.Entrant
             //cache test
             //Проверяем что методы вызывались только при первом обращении
             queryBuilder.Received(1).For<Task<Entrant>>();
-            entrantSummator.Received(1).GetComplicatedResult(entrant);
+            entrantSummator.Received(1).CalculateComplicatedSum(entrant);
         }
+
     }
 }
