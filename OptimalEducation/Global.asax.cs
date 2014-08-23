@@ -79,15 +79,21 @@ namespace OptimalEducation
 
         private void RegisterAllLogic(Container container)
         {
+            var implementationCharacterizerAssembly = typeof(EducationLineDistanceRecomendator).Assembly;
             Container.RegisterManyForOpenGeneric(
                 typeof(IDistanceRecomendator<,>),
                 Lifestyle.Singleton,
-                typeof(EducationLineDistanceRecomendator).Assembly);
+                implementationCharacterizerAssembly);
 
             Container.RegisterManyForOpenGeneric(
                 typeof(ISummator<>),
-                //Lifestyle.Singleton, ???
-                typeof(EducationLineDistanceRecomendator).Assembly);
+                //Lifestyle, ???
+                implementationCharacterizerAssembly);
+
+            Container.RegisterManyForOpenGeneric(
+                typeof(IIdealResult<>),
+                //Lifestyle, ???         
+                implementationCharacterizerAssembly);
 
             //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
             //В отдельных классах в коде может присутсвовать ручное инстанцирование

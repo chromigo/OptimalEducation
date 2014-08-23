@@ -14,9 +14,9 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     {
         readonly ISummator<EducationLine> _educationLineSummator;
         readonly IEducationCharacteristicNamesHelper _namesHelper;
-        readonly IdealEducationLineResult _idealResult;
+        readonly IIdealResult<EducationLine> _idealResult;
 
-        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IdealEducationLineResult idealResult)
+        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IIdealResult<EducationLine> idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -200,7 +200,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public class IdealEducationLineResult
+    public class IdealEducationLineResult : IIdealResult<EducationLine>
     {
         readonly ISummator<EducationLine> _summator;
         readonly IQueryBuilder _queryBuilder;
