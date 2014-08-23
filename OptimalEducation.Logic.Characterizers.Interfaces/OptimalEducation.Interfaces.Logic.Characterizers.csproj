@@ -7,8 +7,8 @@
     <ProjectGuid>{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Logic.Characterizers.Interfaces</RootNamespace>
-    <AssemblyName>OptimalEducation.Logic.Characterizers.Interfaces</AssemblyName>
+    <RootNamespace>OptimalEducation.Interfaces.Logic.Characterizers</RootNamespace>
+    <AssemblyName>OptimalEducation.Interfaces.Logic.Characterizers</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,6 +41,9 @@
   <ItemGroup>
     <Compile Include="ICharacterizer.cs" />
     <Compile Include="IDistanceRecomendator.cs" />
+    <Compile Include="IEducationCharacteristicNamesHelper.cs" />
+    <Compile Include="IIdealResult.cs" />
+    <Compile Include="ISummator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

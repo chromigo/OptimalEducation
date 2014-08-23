@@ -7,8 +7,8 @@
     <ProjectGuid>{452552D7-9D40-48E2-8931-EA66279726BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Logic.Characterizers</RootNamespace>
-    <AssemblyName>OptimalEducation.Logic.Characterizers</AssemblyName>
+    <RootNamespace>OptimalEducation.Implementation.Logic.Characterizers</RootNamespace>
+    <AssemblyName>OptimalEducation.Implementation.Logic.Characterizers</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CharacteristicDistance.cs" />
     <Compile Include="DistanceCharacterisiticRecomendator.cs" />
+    <Compile Include="EducationCharacteristicNamesHelper.cs" />
     <Compile Include="EducationLineCharacterizer.cs" />
     <Compile Include="EntrantCharacterizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

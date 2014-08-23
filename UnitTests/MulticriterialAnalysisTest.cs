@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 
-namespace UnitTests
+namespace OptimalEducation.UnitTests.Logic.MulticriterialAnalysis
 {
     [TestClass]
     public class MulticriterialAnalysisTest

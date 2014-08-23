@@ -12,11 +12,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EducationLineCharacterizer:ICharacterizer<EducationLine>
     {
-        readonly EducationLineSummator _educationLineSummator;
-        readonly EducationCharacteristicNamesHelper _namesHelper;
-        readonly IdealEducationLineResult _idealResult;
+        readonly ISummator<EducationLine> _educationLineSummator;
+        readonly IEducationCharacteristicNamesHelper _namesHelper;
+        readonly IIdealResult<EducationLine> _idealResult;
 
-        public EducationLineCharacterizer(EducationCharacteristicNamesHelper namesHelper, EducationLineSummator entrantSummator, IdealEducationLineResult idealResult)
+        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IIdealResult<EducationLine> idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -55,7 +55,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             return totalCharacteristics;
         }
     }
-    public class EducationLineSummator
+    public class EducationLineSummator : ISummator<EducationLine>
     {
         readonly EducationCharacteristicNamesHelper _namesHelper;
 
@@ -200,12 +200,12 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public class IdealEducationLineResult
+    public class IdealEducationLineResult : IIdealResult<EducationLine>
     {
-        readonly EducationLineSummator _summator;
+        readonly ISummator<EducationLine> _summator;
         readonly IQueryBuilder _queryBuilder;
 
-        public IdealEducationLineResult(EducationLineSummator summator, IQueryBuilder queryBuilder)
+        public IdealEducationLineResult(ISummator<EducationLine> summator, IQueryBuilder queryBuilder)
         {
             _summator = summator;
             _queryBuilder=queryBuilder;

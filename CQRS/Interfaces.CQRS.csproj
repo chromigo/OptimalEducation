@@ -7,8 +7,8 @@
     <ProjectGuid>{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CQRS</RootNamespace>
-    <AssemblyName>CQRS</AssemblyName>
+    <RootNamespace>Interfaces.CQRS</RootNamespace>
+    <AssemblyName>Interfaces.CQRS</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

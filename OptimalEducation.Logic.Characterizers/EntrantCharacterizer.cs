@@ -13,11 +13,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
-        readonly EntrantSummator _entrantSummator;
-        readonly EducationCharacteristicNamesHelper _namesHelper;
-        readonly IdealEntrantResult _idealResult;
+        readonly ISummator<Entrant> _entrantSummator;
+        readonly IEducationCharacteristicNamesHelper _namesHelper;
+        readonly IIdealResult<Entrant> _idealResult;
 
-        public EntrantCharacterizer(EducationCharacteristicNamesHelper namesHelper, EntrantSummator entrantSummator, IdealEntrantResult idealResult)
+        public EntrantCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator, IIdealResult<Entrant> idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -58,7 +58,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
         }
     }
 
-    public class EntrantSummator
+    public class EntrantSummator : ISummator<Entrant>
     {
         EducationCharacteristicNamesHelper _namesHelper;
 
@@ -361,11 +361,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
     /// Класс для вычислений идеального результата.
     /// Используется при нормировании результата.
     /// </summary>
-    public class IdealEntrantResult
+    public class IdealEntrantResult : IIdealResult<Entrant>
     {
-        readonly EntrantSummator _entrantSummator;
+        readonly ISummator<Entrant> _entrantSummator;
         readonly IQueryBuilder _queryBuilder;
-        public IdealEntrantResult(EntrantSummator entrantSummator, IQueryBuilder queryBuilder)
+        public IdealEntrantResult(ISummator<Entrant> entrantSummator, IQueryBuilder queryBuilder)
         {
             _entrantSummator = entrantSummator;
             _queryBuilder = queryBuilder;
@@ -400,31 +400,6 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             }
 
             return complicatedResult;
-        }
-    }
-
-    public class EducationCharacteristicNamesHelper
-    {
-        private readonly IQueryBuilder _queryBuilder;
-
-        public EducationCharacteristicNamesHelper(IQueryBuilder queryBuilder)
-        {
-            _queryBuilder = queryBuilder;
-        }
-
-        IEnumerable<string> names;
-        public IEnumerable<string> Names
-        {
-            get
-            {
-                if(names==null)
-                {
-                    names = _queryBuilder
-			            .For<IEnumerable<string>>()
-                        .With(new GetEducationCharacterisitcNamesCriterion());
-                }
-                return names;
-            }
         }
     }
 }
