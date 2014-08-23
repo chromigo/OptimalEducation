@@ -36,15 +36,15 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers
             //Act
             var currentResultTask = idealEntrantResult.GetSimpleResult();
             currentResultTask.Wait();
+            //последующие вызовы
+            idealEntrantResult.GetSimpleResult().Wait();
+            idealEntrantResult.GetSimpleResult().Wait();
 
             //Assert
             Assert.AreEqual(idealResult, currentResultTask.Result);
 
             //cache test
             //Проверяем что методы вызывались только при первом обращении
-            idealEntrantResult.GetSimpleResult().Wait();
-            idealEntrantResult.GetSimpleResult().Wait();
-
             queryBuilder.Received(1).For<Task<Entrant>>();
             entrantSummator.Received(1).CalculateSimpleSum(entrant);
         }
