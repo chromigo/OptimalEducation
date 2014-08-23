@@ -48,5 +48,41 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.Entrant
             queryBuilder.Received(1).For<Task<Entrant>>();
             entrantSummator.Received(1).CalculateSimpleSum(entrant);
         }
+
+        [TestMethod]
+        public void GetCorrectIdealEntrantComplicatedResult_and_result_is_cached()
+        {
+            //Arrange
+            var entrant = new Entrant() { Id = 2 };
+            var idealResult = new Dictionary<string, double>();
+
+            var queryBuilder = Substitute.For<IQueryBuilder>();
+            var entrantSummator = Substitute.For<ISummator<Entrant>>();
+            var idealEntrantResult = new IdealEntrantResult(entrantSummator, queryBuilder);
+
+            queryBuilder
+                .For<Task<Entrant>>()
+                .With(Arg.Any<GetEntrantForCharacterizerCriterion>())
+                .ReturnsForAnyArgs(Task.FromResult(entrant));
+            queryBuilder.ClearReceivedCalls();
+
+            entrantSummator.GetComplicatedResult(entrant).Returns(idealResult);
+            entrantSummator.ClearReceivedCalls();
+
+            //Act
+            var currentResultTask = idealEntrantResult.GetComplicatedResult();
+            currentResultTask.Wait();
+            //последующие вызовы
+            idealEntrantResult.GetComplicatedResult().Wait();
+            idealEntrantResult.GetComplicatedResult().Wait();
+
+            //Assert
+            Assert.AreEqual(idealResult, currentResultTask.Result);
+
+            //cache test
+            //Проверяем что методы вызывались только при первом обращении
+            queryBuilder.Received(1).For<Task<Entrant>>();
+            entrantSummator.Received(1).GetComplicatedResult(entrant);
+        }
     }
 }

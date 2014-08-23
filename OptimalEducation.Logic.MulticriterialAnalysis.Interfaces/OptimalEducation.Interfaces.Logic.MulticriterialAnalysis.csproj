@@ -7,8 +7,8 @@
     <ProjectGuid>{D29A05E5-7B7F-4B7B-8DA9-9F4C179F69D3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Logic.MulticriterialAnalysis.Interfaces</RootNamespace>
-    <AssemblyName>OptimalEducation.Logic.MulticriterialAnalysis.Interfaces</AssemblyName>
+    <RootNamespace>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</RootNamespace>
+    <AssemblyName>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

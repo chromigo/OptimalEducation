@@ -6,8 +6,8 @@
     <ProjectGuid>{0E486F96-FACD-4199-A82B-5C9AF4B32A83}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
+    <RootNamespace>OptimalEducation.UnitTests.Logic.MulticriterialAnalysis</RootNamespace>
+    <AssemblyName>OptimalEducation.UnitTests.Logic.MulticriterialAnalysis</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
