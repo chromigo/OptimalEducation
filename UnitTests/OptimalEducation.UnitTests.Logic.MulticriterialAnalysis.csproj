@@ -71,10 +71,6 @@
       <Project>{d29a05e5-7b7f-4b7b-8da9-9f4c179f69d3}</Project>
       <Name>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation\OptimalEducation.csproj">
-      <Project>{0299d429-301e-4beb-998b-bbd59b9640d7}</Project>
-      <Name>OptimalEducation</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
