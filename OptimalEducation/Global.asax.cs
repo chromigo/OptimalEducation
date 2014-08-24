@@ -102,8 +102,6 @@ namespace OptimalEducation
             Container.RegisterSingle<ICharacterizer<EducationLine>, EducationLineCharacterizer>();
 
             Container.RegisterSingle<IPreferenceRelationCalculator, PreferenceRelationCalculator>();
-            Container.RegisterSingle<IVectorCriteriaRecalculator, VectorCriteriaRecalculator>();
-            Container.RegisterSingle<IParretoCalculator, ParretoCalculator>();
 
             Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
 

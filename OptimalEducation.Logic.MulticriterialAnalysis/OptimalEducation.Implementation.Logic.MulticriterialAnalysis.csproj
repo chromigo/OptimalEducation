@@ -43,10 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MulticriterialAnalysis.cs" />
-    <Compile Include="ParretoCalculator.cs" />
     <Compile Include="PreferenceRelationCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VectorCriteriaRecalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
