@@ -8,10 +8,8 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
 {
     public class PreferenceRelationCalculator : IPreferenceRelationCalculator
     {
-        //SeparateCharacterisicsToImprotantAnd_Unimportant - задается правило разбиения на группы важные/не важные. На данный момент по правилу: (max-0.1) -это важные
         const double diff = 0.05;
-        //GetPreferenceRelations -задается логика определения отношения предпочтения(По важным/неважным критериям)
-
+        const double w_i = 0.1;//на данный момент задается просто константой
         /// <summary>
         /// Получаем отношение предпочтения
         /// </summary>
@@ -29,12 +27,9 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
                 var preferenceRelation = new PreferenceRelation(impCharacteristic.Key);
                 foreach (var unImpCharacteristic in unImportantCharacteristics)
                 {
-                    //TODO: Определеить более клевую логику по выбору коэффициентов относительной важности
-
                     //1. Через формулу относительной важности с небольшими модификациями
-                    //значение важного - значение неважного
-                    var diff = impCharacteristic.Value - unImpCharacteristic.Value;
-                    var teta = TetaMethod(0.1, diff);//на данный момент задается просто константой
+                    var delta = impCharacteristic.Value - unImpCharacteristic.Value;
+                    var teta = TetaMethod(w_i, delta);
 
                     preferenceRelation.Tetas.Add(unImpCharacteristic.Key, teta);
                 }

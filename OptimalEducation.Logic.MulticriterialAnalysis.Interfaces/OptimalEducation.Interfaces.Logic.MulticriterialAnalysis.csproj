@@ -40,9 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMulticriterialAnalysisRecomendator.cs" />
-    <Compile Include="IParretoCalculator.cs" />
     <Compile Include="IPreferenceRelationCalculator.cs" />
-    <Compile Include="IVectorCriteriaRecalculator.cs" />
     <Compile Include="Models\EducationLineWithCharacterisics.cs" />
     <Compile Include="Models\PreferenceRelation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
