@@ -9,6 +9,10 @@ using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.Models;
 using OptimalEducation.Helpers;
+using System.Security.Principal;
+using System.Web;
+using System.Web.Routing;
+using System.Web.Mvc;
 
 namespace OptimalEducation.Controllers
 {
@@ -17,22 +21,30 @@ namespace OptimalEducation.Controllers
     {
 
         [TestMethod]
-        public void TestMethod1()
+        public void Index_get_correct_assignedHobbie_list()
         {
             //Arrange
-            var userManager = Substitute.For<IApplicationUserManager>();
             var commandBuilder = Substitute.For<ICommandBuilder>();
             var queryBuilder = Substitute.For<IQueryBuilder>();
             var infoExtractor = Substitute.For<IInfoExtractor>();
-            var appUser = Substitute.For<IdentityUser>();
-            
-            userManager
-                .FindByIdAsync(User.Identity.GetUserId())
-                .Returns(Task.FromResult(appUser));
-            appUser.//FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
 
-            var entrantId=132;
-            var assignedHobbie = new List<AssignedHobbie>()
+            //how to test iprincipal,iidentity and asp etc http://stackoverflow.com/questions/1314370/how-to-setup-iprincipal-for-a-mockup
+            var user = Substitute.For<IPrincipal>();
+            var identity = Substitute.For<IIdentity>();
+            identity.AuthenticationType.Returns("Type");
+            identity.IsAuthenticated.Returns(true);
+            identity.Name.Returns("Name");
+            user.Identity.Returns(identity);
+
+            var httpContext = Substitute.For<HttpContextBase>();
+            httpContext.User.Returns(user);
+            var reqContext = new RequestContext(httpContext, new RouteData());
+
+            var entrantId=123;
+
+            infoExtractor.ExtractEntrantId("").ReturnsForAnyArgs(Task.FromResult(entrantId));
+            
+            IEnumerable<AssignedHobbie> assignedHobbie = new List<AssignedHobbie>()
             {
                 new AssignedHobbie(),
                 new AssignedHobbie(),
@@ -41,13 +53,17 @@ namespace OptimalEducation.Controllers
             queryBuilder
                 .For<Task<IEnumerable<AssignedHobbie>>>()
                 .With(Arg.Is<GetAssignedHobbiesCriterion>(p=>p.EntrantId==entrantId))
-                .ReturnsForAnyArgs(Task.FromResult(assignedHobbie));
+                .Returns(Task.FromResult(assignedHobbie));
 
             //Act
-            var controller = new HobbieController(queryBuilder, commandBuilder, userManager,infoExtractor);
-
+            var controller = new HobbieController(queryBuilder, commandBuilder,infoExtractor);
+            controller.ControllerContext =
+                    new ControllerContext(reqContext, controller);
+            var task = controller.Index();
+            task.Wait();
+            var result = (ViewResult)task.Result;
             //Assert
-
+            Assert.AreEqual(assignedHobbie, result.Model);
         }
     }
 }

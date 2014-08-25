@@ -24,20 +24,19 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
         private readonly IQueryBuilder _queryBuilder;
         private readonly ICommandBuilder _commandBuilder;
-        private readonly IApplicationUserManager _userManager;
         private readonly IInfoExtractor _infoExtractor;
 
-        public HobbieController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IApplicationUserManager userManager, IInfoExtractor infoExtractor)
+        public HobbieController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
         {
             _queryBuilder = queryBuilder;
             _commandBuilder = commandBuilder;
-            _userManager = userManager;
             _infoExtractor = infoExtractor;
         }
 		// GET: /EntrantUser/Hobbie/
 		public async Task<ActionResult> Index()
 		{
-            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            var entrantId = await _infoExtractor.ExtractEntrantId(userId);
 			var assignedHobbies = await _queryBuilder
 				.For<Task<IEnumerable<AssignedHobbie>>>()
                 .With(new GetAssignedHobbiesCriterion() { EntrantId = entrantId });
