@@ -3,6 +3,7 @@ using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using OptimalEducation.Helpers;
 using OptimalEducation.Implementation.Logic.Characterizers;
 using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;
@@ -57,7 +58,7 @@ namespace OptimalEducation
             Container.RegisterPerWebRequest<IUserStore<ApplicationUser>>(() =>
                 new UserStore<ApplicationUser>(Container.GetInstance<DbContext>()));
             Container.RegisterPerWebRequest<IApplicationUserManager, ApplicationUserManager>();
-
+            Container.RegisterPerWebRequest<IInfoExtractor, InfoExtractor>();
 
             Container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
             //Container.RegisterMvcIntegratedFilterProvider();
