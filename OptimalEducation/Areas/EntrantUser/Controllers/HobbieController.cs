@@ -35,8 +35,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Hobbie/
 		public async Task<ActionResult> Index()
 		{
-            var userId = User.Identity.GetUserId();
-            var entrantId = await _infoExtractor.ExtractEntrantId(userId);
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			var assignedHobbies = await _queryBuilder
 				.For<Task<IEnumerable<AssignedHobbie>>>()
                 .With(new GetAssignedHobbiesCriterion() { EntrantId = entrantId });
