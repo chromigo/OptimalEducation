@@ -8,14 +8,14 @@ using System.Linq;
 
 namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
 {
-    public class MulticriterialAnalysis : IMulticriterialAnalysisRecomendator
+    public class MulticriterialAnalysisRecomendator : IMulticriterialAnalysisRecomendator
     {
         readonly ICharacterizer<Entrant> _entrantCharacterizer;
         readonly ICharacterizer<EducationLine> _educationLineCharacterizer;
 
         readonly IPreferenceRelationCalculator _preferenceRelationCalculator;
 
-        public MulticriterialAnalysis(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer,
+        public MulticriterialAnalysisRecomendator(ICharacterizer<Entrant> entrantCharacterizer, ICharacterizer<EducationLine> educationLineCharacterizer,
             IPreferenceRelationCalculator preferenceRelationCalculator)
         {
             _entrantCharacterizer = entrantCharacterizer;

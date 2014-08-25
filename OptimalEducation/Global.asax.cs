@@ -103,7 +103,7 @@ namespace OptimalEducation
 
             Container.RegisterSingle<IPreferenceRelationCalculator, PreferenceRelationCalculator>();
 
-            Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysis>();
+            Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysisRecomendator>();
 
             Container.RegisterSingle<IEducationCharacteristicNamesHelper, EducationCharacteristicNamesHelper>();
         }
