@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Commands;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -23,16 +24,19 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
 		private readonly ICommandBuilder _commandBuilder;
-		public SchoolController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
+        private readonly IInfoExtractor _infoExtractor;
+
+        public SchoolController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
 		{
 			_userManager = userManager;
 			_queryBuilder = queryBuilder;
 			_commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
 		}
 		// GET: /EntrantUser/School/
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			var participationinSchools = await _queryBuilder
 				.For<Task<IEnumerable<ParticipationInSchool>>>()
 				.With(new GetParticipationInSchoolOfEntrantCriterion(){EntrantId=entrantId});
@@ -47,7 +51,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
 				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id=id.Value });
@@ -76,7 +80,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SchoolId")] ParticipationInSchool participationInSchool)
 		{
-			participationInSchool.EntrantsId = await GetEntrantId();
+            participationInSchool.EntrantsId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			if (ModelState.IsValid)
 			{
 				await _commandBuilder
@@ -97,7 +101,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
 				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
@@ -132,7 +136,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			var participationinSchool = await _queryBuilder
 				.For<Task<ParticipationInSchool>>()
 				.With(new GetCurrentParticipationInSchoolOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
@@ -148,20 +152,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
 			await _commandBuilder
 				.ExecuteAsync<RemoveParticipationInShoolContext>(new RemoveParticipationInShoolContext() { EntrantId=entrantId, Id  = id });
 
 			return RedirectToAction("Index");
-		}
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
 		}
 	}
 }

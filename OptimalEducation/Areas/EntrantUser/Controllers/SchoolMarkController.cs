@@ -14,6 +14,7 @@ using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Commands;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -23,16 +24,19 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
 		private readonly ICommandBuilder _commandBuilder;
-		public SchoolMarkController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
+        private readonly IInfoExtractor _infoExtractor;
+
+        public SchoolMarkController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
 		{
 			_userManager = userManager;
 			_queryBuilder = queryBuilder;
 			_commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
 		}
 		// GET: /EntrantUser/SchoolMark/
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
 			var schoolMarks = await _queryBuilder
 				.For<Task<IEnumerable<SchoolMark>>>()
@@ -48,7 +52,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var entrantId = await GetEntrantId();
+				var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
 				await _commandBuilder
                         .ExecuteAsync<UpdateSchoolMarkOfEntrantContext>(new UpdateSchoolMarkOfEntrantContext() { EntrantId = entrantId, SchoolMark = schoolMark });
@@ -57,15 +61,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			}
 
 			return View(schoolMark);
-		}
-
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
 		}
 	}
 }
