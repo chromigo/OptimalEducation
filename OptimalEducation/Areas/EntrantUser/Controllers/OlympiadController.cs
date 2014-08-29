@@ -18,14 +18,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	{
         private readonly IQueryBuilder _queryBuilder;
 	    private readonly ICommandBuilder _commandBuilder;
-	    private readonly IApplicationUserManager _userManager;
         private readonly IInfoExtractor _infoExtractor;
 
-        public OlympiadController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IApplicationUserManager userManager, IInfoExtractor infoExtractor)
+        public OlympiadController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
 	    {
             _queryBuilder = queryBuilder;
             _commandBuilder = commandBuilder;
-            _userManager = userManager;
             _infoExtractor = infoExtractor;
 	    }
 

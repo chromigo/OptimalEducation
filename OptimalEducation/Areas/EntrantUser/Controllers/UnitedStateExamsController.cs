@@ -16,14 +16,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class UnitedStateExamsController : Controller
 	{
-        private readonly IApplicationUserManager _userManager;
         private readonly IQueryBuilder _queryBuilder;
         private readonly ICommandBuilder _commandBuilder;
         private readonly IInfoExtractor _infoExtractor;
 
-        public UnitedStateExamsController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
+        public UnitedStateExamsController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
         {
-            _userManager = userManager;
             _queryBuilder = queryBuilder;
             _commandBuilder = commandBuilder;
             _infoExtractor = infoExtractor;

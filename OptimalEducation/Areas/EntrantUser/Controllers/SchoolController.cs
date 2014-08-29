@@ -21,14 +21,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles = Role.Entrant)]
 	public class SchoolController : Controller
 	{
-		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
 		private readonly ICommandBuilder _commandBuilder;
         private readonly IInfoExtractor _infoExtractor;
 
-        public SchoolController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
+        public SchoolController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
 		{
-			_userManager = userManager;
 			_queryBuilder = queryBuilder;
 			_commandBuilder = commandBuilder;
             _infoExtractor = infoExtractor;

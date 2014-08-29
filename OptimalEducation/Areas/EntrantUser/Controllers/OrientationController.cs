@@ -14,14 +14,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-	    private readonly IApplicationUserManager _userManager;
         private readonly IQueryBuilder _queryBuilder;
         private readonly ICharacterizer<Entrant> _entrantCharacterizer;
         private readonly IInfoExtractor _infoExtractor;
 
-        public OrientationController(IApplicationUserManager userManager,IQueryBuilder queryBuilder, ICharacterizer<Entrant> entrantCharacterizer, IInfoExtractor infoExtractor)
+        public OrientationController(IQueryBuilder queryBuilder, ICharacterizer<Entrant> entrantCharacterizer, IInfoExtractor infoExtractor)
 		{
-		    _userManager = userManager;
             _queryBuilder = queryBuilder;
             _entrantCharacterizer = entrantCharacterizer;
             _infoExtractor = infoExtractor;

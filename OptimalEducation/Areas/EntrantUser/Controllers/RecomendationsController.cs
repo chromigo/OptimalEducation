@@ -17,20 +17,17 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class RecomendationsController : Controller
 	{
-		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
         private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
         private readonly IMulticriterialAnalysisRecomendator _multicriterialAnalysisRecomendator;
         private readonly IInfoExtractor _infoExtractor;
 
 		public RecomendationsController(
-            IApplicationUserManager userManager,
             IQueryBuilder queryBuilder,
             IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator,
             IMulticriterialAnalysisRecomendator multicriterialAnalysisRecomendator,
             IInfoExtractor infoExtractor)
 		{
-			_userManager = userManager;
 			_queryBuilder=queryBuilder;
             _distanceRecomendator = distanceRecomendator;
             _multicriterialAnalysisRecomendator = multicriterialAnalysisRecomendator;
