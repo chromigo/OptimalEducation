@@ -113,5 +113,27 @@ namespace OptimalEducation.Controllers
             //Assert
             Assert.IsTrue(result == partInOlympResult);
         }
+
+        [TestMethod]
+        public void Details_return_HttpNotFound_if_not_found_element_in_out_collections()
+        {
+            const int partInOlympId = 23;
+            ParticipationInOlympiad partInOlympResult=null;
+            //Arrange
+            queryBuilder
+                .For<Task<ParticipationInOlympiad>>()
+                .With(Arg.Is<GetCurrentParticipationInOlympiadCriterion>(p => p.EntrantId == entrantId && p.ParticipationInOlympiadId == partInOlympId))
+                .Returns(Task.FromResult(partInOlympResult));
+
+            //Act
+            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            controller.ControllerContext =
+                    new ControllerContext(requestContext, controller);
+            var task = controller.Details(partInOlympId);
+            task.Wait();
+
+            //Assert
+            Assert.IsTrue(task.Result is HttpNotFoundResult);
+        }
     }
 }
