@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
+using OptimalEducation.Helpers;
 using OptimalEducation.Interfaces.Logic.Characterizers;
 using OptimalEducation.Interfaces.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
@@ -16,26 +17,27 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class RecomendationsController : Controller
 	{
-		private readonly IApplicationUserManager _userManager;
 		private readonly IQueryBuilder _queryBuilder;
         private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
         private readonly IMulticriterialAnalysisRecomendator _multicriterialAnalysisRecomendator;
+        private readonly IInfoExtractor _infoExtractor;
+
 		public RecomendationsController(
-            IApplicationUserManager userManager,
             IQueryBuilder queryBuilder,
             IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator,
-            IMulticriterialAnalysisRecomendator multicriterialAnalysisRecomendator)
+            IMulticriterialAnalysisRecomendator multicriterialAnalysisRecomendator,
+            IInfoExtractor infoExtractor)
 		{
-			_userManager = userManager;
 			_queryBuilder=queryBuilder;
             _distanceRecomendator = distanceRecomendator;
             _multicriterialAnalysisRecomendator = multicriterialAnalysisRecomendator;
+            _infoExtractor = infoExtractor;
 		}
 
 		// GET: EntrantUser/Recomendations
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
             
 			var entrant = await _queryBuilder
 				.For<Task<Entrant>>()
@@ -53,14 +55,6 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             ViewBag.MulticriterialRecomendations =await _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
 			return View();
-		}
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
 		}
 	}
 }

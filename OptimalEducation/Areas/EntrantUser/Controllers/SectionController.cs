@@ -14,26 +14,27 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Commands;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class SectionController : Controller
 	{
-        private readonly IApplicationUserManager _userManager;
         private readonly IQueryBuilder _queryBuilder;
         private readonly ICommandBuilder _commandBuilder;
+        private readonly IInfoExtractor _infoExtractor;
 
-        public SectionController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
+        public SectionController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
         {
-            _userManager = userManager;
             _queryBuilder = queryBuilder;
             _commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
         }
 		// GET: /EntrantUser/Section/
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
 			var participationinSections = await _queryBuilder
 				.For<Task<IEnumerable<ParticipationInSection>>>()
@@ -49,7 +50,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
             var participationinSection = await _queryBuilder
 				.For<Task<ParticipationInSection>>()
@@ -80,7 +81,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create([Bind(Include = "YearPeriod,SectionId")] ParticipationInSection participationInSection)
 		{
-			participationInSection.EntrantsId = await GetEntrantId();
+            participationInSection.EntrantsId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			if (ModelState.IsValid)
 			{
                 await _commandBuilder
@@ -104,7 +105,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
             var participationinSection = await _queryBuilder
                 .For<Task<ParticipationInSection>>()
                 .With(new GetCurrentParticipationInSectionsOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
@@ -139,7 +140,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
             var participationinSection = await _queryBuilder
                 .For<Task<ParticipationInSection>>()
                 .With(new GetCurrentParticipationInSectionsOfEntrantCriterion() { EntrantId = entrantId, Id = id.Value });
@@ -155,20 +156,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-			var entrantId = await GetEntrantId();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
             await _commandBuilder
                 .ExecuteAsync<RemoveParticipationInSectionContext>(new RemoveParticipationInSectionContext() { EntrantId = entrantId, ParticipationInSectionId = id });
 
 			return RedirectToAction("Index");
-		}
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-            var entrantClaim = currentUser.Claims.SingleOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
 		}
 	}
 }

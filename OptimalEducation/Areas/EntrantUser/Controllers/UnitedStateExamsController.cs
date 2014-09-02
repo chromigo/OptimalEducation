@@ -8,6 +8,7 @@ using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Commands;
+using OptimalEducation.Helpers;
 
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
@@ -15,20 +16,20 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	[Authorize(Roles=Role.Entrant)]
 	public class UnitedStateExamsController : Controller
 	{
-        private readonly IApplicationUserManager _userManager;
         private readonly IQueryBuilder _queryBuilder;
         private readonly ICommandBuilder _commandBuilder;
+        private readonly IInfoExtractor _infoExtractor;
 
-        public UnitedStateExamsController(IApplicationUserManager userManager, IQueryBuilder queryBuilder, ICommandBuilder commandBuilder)
+        public UnitedStateExamsController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
         {
-            _userManager = userManager;
             _queryBuilder = queryBuilder;
             _commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
         }
 		// GET: /EntrantUser/UnitedStateExams/
 		public async Task<ActionResult> Index()
 		{
-            var entrantId = await GetEntrantId();
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
             var USExam = await _queryBuilder
                     .For<Task<IEnumerable<UnitedStateExam>>>()
                     .With(new GetUnitedStateExamsOfEntrantCriterion() { EntrantId = entrantId });
@@ -42,7 +43,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-                var entrantId = await GetEntrantId();
+                var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
                 await _commandBuilder
                         .ExecuteAsync<UpdateUnitedStateExamOfEntrantContext>(new UpdateUnitedStateExamOfEntrantContext() { EntrantId = entrantId, UnitedStateExams = unitedStateExams });
@@ -51,13 +52,5 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
 			return View(unitedStateExams);
 		}
-
-        private async Task<int> GetEntrantId()
-        {
-            var currentUser = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-            var entrantId = int.Parse(entrantClaim.ClaimValue);
-            return entrantId;
-        }
 	}
 }
