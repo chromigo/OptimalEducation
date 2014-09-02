@@ -14,6 +14,7 @@ using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.Areas.EntrantUser.Controllers;
 using System.Web.Mvc;
 using System.Net;
+using System.Linq;
 
 namespace OptimalEducation.Controllers
 {
@@ -134,6 +135,33 @@ namespace OptimalEducation.Controllers
 
             //Assert
             Assert.IsTrue(task.Result is HttpNotFoundResult);
+        }
+
+        [TestMethod]
+        public void Create_get_method_return_all_olympiads()
+        {
+            IEnumerable<Olympiad> olympiads = new List<Olympiad>()
+                {
+                    new Olympiad(){Id=1,Name="o1"},
+                    new Olympiad(){Id=2,Name="o2"},
+                    new Olympiad(){Id=3,Name="o3"},
+                    new Olympiad(){Id=4,Name="o4"}
+                };
+            //Arrange
+            queryBuilder
+                .For<Task<IEnumerable<Olympiad>>>()
+                .With(Arg.Any<GetAllOlympiadsCriterion>())
+                .Returns(Task.FromResult(olympiads));
+
+            //Act
+            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            controller.ControllerContext = new ControllerContext(requestContext, controller);
+            var task = controller.Create();
+            task.Wait();
+            var result = ((ViewResult)task.Result).ViewBag.OlympiadId as SelectList;
+
+            //Assert
+            Assert.AreEqual(olympiads, result.Items);
         }
     }
 }
