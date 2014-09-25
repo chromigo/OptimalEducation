@@ -1,95 +1,60 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Interfaces.CQRS;
+using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Helpers;
+using OptimalEducation.Interfaces.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.DistanceRecomendator;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.AnalyticHierarchyProcess;
-using System.Diagnostics;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]
 	public class RecomendationsController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+		private readonly IQueryBuilder _queryBuilder;
+        private readonly IDistanceRecomendator<Entrant, EducationLine> _distanceRecomendator;
+        private readonly IMulticriterialAnalysisRecomendator _multicriterialAnalysisRecomendator;
+        private readonly IInfoExtractor _infoExtractor;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public RecomendationsController()
+		public RecomendationsController(
+            IQueryBuilder queryBuilder,
+            IDistanceRecomendator<Entrant,EducationLine> distanceRecomendator,
+            IMulticriterialAnalysisRecomendator multicriterialAnalysisRecomendator,
+            IInfoExtractor infoExtractor)
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public RecomendationsController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+			_queryBuilder=queryBuilder;
+            _distanceRecomendator = distanceRecomendator;
+            _multicriterialAnalysisRecomendator = multicriterialAnalysisRecomendator;
+            _infoExtractor = infoExtractor;
 		}
 
 		// GET: EntrantUser/Recomendations
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
-			var entrant = await db.Entrants
-				.Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
-				.Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
-				.Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
-				.Include(e => e.Hobbies.Select(h => h.Weights))
-				.Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
-				.Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-				.Where(e => e.Id == entrantId).SingleAsync();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            
+			var entrant = await _queryBuilder
+				.For<Task<Entrant>>()
+                .With(new GetEntrantForCharacterizerCriterion() { EntrantId = entrantId });
 
-			var educationLines = await db.EducationLines
-				.Include(edl=>edl.EducationLinesRequirements.Select(edlReq=>edlReq.ExamDiscipline.Weights.Select(w=>w.Characterisic)))
-				.Include(edl => edl.Faculty.HigherEducationInstitution)
-				.Where(p => p.Actual == true && p.Name!="IDEAL")
-				.ToListAsync();
-
+			var educationLines = await _queryBuilder
+                .For<Task<List<EducationLine>>>()
+                .With(new GetEducationLinesForCharacterizerCriterion());
 
 			//Рекомендации:
-			//По методу сравнения расстояний мд характеристиками
-            ViewBag.DistanceRecomendations = DistanceCharacterisiticRecomendator.GetRecomendationForEntrant(entrant, educationLines);
+			//1. По методу сравнения расстояний мд характеристиками
+            ViewBag.DistanceRecomendations = await _distanceRecomendator.GetRecomendation(entrant, educationLines);
 			
-			//По методу многокритериального анализа
-			var multicriterialAnalyzer = new MulticriterialAnalysis(entrant,educationLines);
-            var res = multicriterialAnalyzer.Calculate();
-            ViewBag.MulticriterialRecomendations = res;
+			//2. По методу многокритериального анализа
+            ViewBag.MulticriterialRecomendations =await _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
-			//По МАИ
-			var AHPUserAnalyzer = new AHPUser(entrant, educationLines, new AHPUserSettings());
-			var orderedList = AHPUserAnalyzer.AllCriterionContainer;
-			var tempAHPDict = new Dictionary<EducationLine,double>();
-			foreach (var item in orderedList)
-			{
-				var edLine = educationLines.Find(p=>p.Id==item.databaseId);
-				tempAHPDict.Add(edLine,item.absolutePriority);
-			}
-			ViewBag.APHRecomendations = tempAHPDict;
 			return View();
-		}
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

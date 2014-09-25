@@ -7,66 +7,39 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Areas.EntrantUser.Models.ViewModels;
 using OptimalEducation.Models;
+using Interfaces.CQRS;
+using OptimalEducation.DAL.ViewModels;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class HobbieController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICommandBuilder _commandBuilder;
+        private readonly IInfoExtractor _infoExtractor;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public HobbieController()
-		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public HobbieController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
+        public HobbieController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
+        {
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
+        }
 		// GET: /EntrantUser/Hobbie/
 		public async Task<ActionResult> Index()
 		{
-			var hobbieList = await GetUserHobbieAsync();
-			return View(hobbieList);
-		}
-		private async Task<List<AssignedHobbie>> GetUserHobbieAsync()
-		{
-			try 
-			{
-				var entrantId = await GetEntrantId();
-
-				var userHobbieIdsQuery = (from entrant in db.Entrants.Include(p=>p.Hobbies)
-						where entrant.Id==entrantId
-						from hobbie in entrant.Hobbies
-						select hobbie.Id);
-
-				var userHobbieIds = new HashSet<int>(userHobbieIdsQuery);
-				var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
-
-				var viewModel = new List<AssignedHobbie>();
-				foreach (var hobbie in allHobbies)
-				{
-					viewModel.Add(new AssignedHobbie
-					{
-						Id = hobbie.Id,
-						Name = hobbie.Name,
-						IsAssigned = userHobbieIds.Contains(hobbie.Id)
-					});
-				}
-				return viewModel;
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+			var assignedHobbies = await _queryBuilder
+				.For<Task<IEnumerable<AssignedHobbie>>>()
+                .With(new GetAssignedHobbiesCriterion() { EntrantId = entrantId });
+            return View(assignedHobbies);
 		}
 
 		//POST: /EntrantUser/UnitedStateExams/Index
@@ -74,60 +47,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Index(string[] selectedHobbies)
 		{
-			var entrantId = await GetEntrantId();
-			var currentEntrant =  await db.Entrants.SingleAsync(p => p.Id == entrantId);
-			var allHobbies = await db.Hobbies.ToListAsync<Hobbie>();
-			if (selectedHobbies == null)
-			{
-				foreach (var hobbie in allHobbies)
-				{
-					currentEntrant.Hobbies.Remove(hobbie);
-				}
-			}
-			else
-			{
-				var selectedHobbiesList = new List<int>();
-				foreach (var hobbie in selectedHobbies)
-				{
-					selectedHobbiesList.Add(int.Parse(hobbie));
-				}
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
-				var lastUserHobbieIds = currentEntrant.Hobbies.Select(h=>h.Id);
-				foreach (var hobbie in allHobbies)
-				{
-					if (selectedHobbiesList.Contains(hobbie.Id))
-					{
-						//Если не было - добавляем
-						if (!lastUserHobbieIds.Contains(hobbie.Id))
-							currentEntrant.Hobbies.Add(hobbie);
-					}
-					else//не выбранное хобби
-					{
-						//Если было - удаляем
-						if (lastUserHobbieIds.Contains(hobbie.Id))
-							currentEntrant.Hobbies.Remove(hobbie);
-					}
-				}
-			}
-			db.Entry(currentEntrant).State = EntityState.Modified;
-			await db.SaveChangesAsync();
+            await _commandBuilder
+                .ExecuteAsync<UpdateEntrantHobbieContext>(new UpdateEntrantHobbieContext() { EntrantId = entrantId, SelectedHobbies = selectedHobbies });
+
             return RedirectToAction("Index");
-		}
-        private async Task<int> GetEntrantId()
-        {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-            var entrantId = int.Parse(entrantClaim.ClaimValue);
-            return entrantId;
-        }
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

@@ -11,85 +11,54 @@ using OptimalEducation.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
+using Interfaces.CQRS;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Commands;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
-    [Authorize(Roles = Role.Entrant)]
+	[Authorize(Roles = Role.Entrant)]
 	public class SchoolMarkController : Controller
 	{
-        private OptimalEducationDbContext db = new OptimalEducationDbContext();
-        private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+		private readonly IQueryBuilder _queryBuilder;
+		private readonly ICommandBuilder _commandBuilder;
+        private readonly IInfoExtractor _infoExtractor;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public SchoolMarkController()
+        public SchoolMarkController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
 		{
-            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public SchoolMarkController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+			_queryBuilder = queryBuilder;
+			_commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
 		}
 		// GET: /EntrantUser/SchoolMark/
 		public async Task<ActionResult> Index()
 		{
-			var examList = await GetUserSchoolMarkAsync();
-			return View(examList);
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+
+			var schoolMarks = await _queryBuilder
+				.For<Task<IEnumerable<SchoolMark>>>()
+				.With(new GetSchoolMarksOfEntrantCriterion() { EntrantId = entrantId });
+
+			return View(schoolMarks);
 		}
-        private async Task<List<SchoolMark>> GetUserSchoolMarkAsync()
-        {
-            var entrantId = await GetEntrantId();
-            var schoolMarks = db.SchoolMarks
-                .Include(u => u.SchoolDiscipline)
-                .Include(u => u.Entrant)
-                .Where(p => p.EntrantId == entrantId);
 
-            return await schoolMarks.ToListAsync();
-        }
-
-        // POST: /EntrantUser/UnitedStateExams/Index
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index([Bind(Include = "Result")] IEnumerable<SchoolMark> schoolMark)
-        {
-            var examList = await GetUserSchoolMarkAsync();
-            //Порядок не должен меняться, поэтому обновляем данные так
-            for (int i = 0; i < examList.Count; i++)
-            {
-                examList[i].Result = schoolMark.ElementAt(i).Result;
-            }
-            schoolMark = examList;//обновляем список новыми значениями(для передачи во View, в случае ошибки)
-
-            //Проверка 
-            if (ModelState.IsValid)
-            {
-                foreach (var exam in schoolMark)
-                {
-                    db.Entry(exam).State = EntityState.Modified;
-                }
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(schoolMark);
-        }
-
-
-        private async Task<int> GetEntrantId()
-        {
-            var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-            var entrantId = int.Parse(entrantClaim.ClaimValue);
-            return entrantId;
-        }
-		protected override void Dispose(bool disposing)
+        // POST: /EntrantUser/SchoolMark/Index
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Index([Bind(Include = "SchoolDisciplineId,Result")] IEnumerable<SchoolMark> schoolMark)
 		{
-			if (disposing)
+			if (ModelState.IsValid)
 			{
-				db.Dispose();
-                dbIdentity.Dispose();
+				var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+
+				await _commandBuilder
+                        .ExecuteAsync<UpdateSchoolMarkOfEntrantContext>(new UpdateSchoolMarkOfEntrantContext() { EntrantId = entrantId, SchoolMark = schoolMark });
+
+				return RedirectToAction("Index");
 			}
-			base.Dispose(disposing);
+
+			return View(schoolMark);
 		}
 	}
 }

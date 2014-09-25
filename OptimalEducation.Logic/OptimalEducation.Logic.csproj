@@ -50,18 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnalyticHierarchyProcess\AHPEducationLine.cs" />
-    <Compile Include="AnalyticHierarchyProcess\AHPUser.cs" />
-    <Compile Include="Characterizer\CharacteristicDistance.cs" />
-    <Compile Include="Characterizer\DistanceCharacterisiticRecomendator.cs" />
-    <Compile Include="Characterizer\EducationLineCharacterizer.cs" />
-    <Compile Include="Characterizer\EntrantCharacterizer.cs" />
-    <Compile Include="MulticriterialAnalysis\Models\EducationLineAndClustersRow.cs" />
-    <Compile Include="MulticriterialAnalysis\Models\PreferenceRelation.cs" />
-    <Compile Include="MulticriterialAnalysis\MulticriterialAnalysis.cs" />
-    <Compile Include="MulticriterialAnalysis\ParretoCalculator.cs" />
-    <Compile Include="MulticriterialAnalysis\PreferenceRelationCalculator.cs" />
-    <Compile Include="MulticriterialAnalysis\VectorCriteriaRecalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,8 +61,6 @@
   <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="CharacterizerMethod.cd" />
-    <None Include="MulticriterialMethod.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

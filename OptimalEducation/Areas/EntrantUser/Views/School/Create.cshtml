@@ -11,12 +11,12 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Секция</h4>
+        <h4>Школа</h4>
         <hr />
         @Html.ValidationSummary(true)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.SchoolId, "Секция", new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SchoolId, "Школа", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("SchoolId", String.Empty)
                 @Html.ValidationMessageFor(model => model.SchoolId)

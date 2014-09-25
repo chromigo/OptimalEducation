@@ -118,6 +118,18 @@
     <Reference Include="SendGridMail">
       <HintPath>..\packages\Sendgrid.3.0.2\lib\SendGridMail.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\packages\SimpleInjector.2.5.2\lib\net45\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Diagnostics">
+      <HintPath>..\packages\SimpleInjector.2.5.2\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web">
+      <HintPath>..\packages\SimpleInjector.Integration.Web.2.5.2\lib\net40\SimpleInjector.Integration.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Integration.Web.Mvc">
+      <HintPath>..\packages\SimpleInjector.Integration.Web.Mvc.2.5.2\lib\net40\SimpleInjector.Integration.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -198,9 +210,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\CityController.cs" />
-    <Compile Include="Areas\Admin\Controllers\EducationLineRequirementsController.cs" />
-    <Compile Include="Areas\Admin\Controllers\EducationLinesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\InfoController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OrientationController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\RecomendationsController.cs" />
@@ -210,9 +220,6 @@
     <Compile Include="Areas\EntrantUser\Controllers\SchoolMarkController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\UnitedStateExamsController.cs" />
     <Compile Include="Areas\EntrantUser\EntrantUserAreaRegistration.cs" />
-    <Compile Include="Areas\EntrantUser\Models\ViewModels\AssignedHobbie.cs" />
-    <Compile Include="Areas\FacultyUser\Controllers\EducationLineController.cs" />
-    <Compile Include="Areas\FacultyUser\Controllers\EducationLineRequirementController.cs" />
     <Compile Include="Areas\FacultyUser\Controllers\InfoController.cs" />
     <Compile Include="Areas\FacultyUser\FacultyUserAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -220,6 +227,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\IInfoExtractor.cs" />
+    <Compile Include="Helpers\InfoExtractor.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.Designer.cs">
       <DependentUpon>201403210957306_Init_Identity.cs</DependentUpon>
@@ -247,11 +256,6 @@
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\EntrantUser\Views\web.config" />
     <Content Include="Areas\FacultyUser\Views\web.config" />
-    <Content Include="Areas\Admin\Views\City\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\City\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\City\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\City\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\City\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
@@ -280,26 +284,8 @@
     <Content Include="Areas\EntrantUser\Views\School\Index.cshtml" />
     <Content Include="Areas\FacultyUser\Views\_ViewStart.cshtml" />
     <Content Include="Areas\FacultyUser\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLine\Create.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLine\Delete.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLine\Details.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLine\Edit.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLine\Index.cshtml" />
     <Content Include="Areas\FacultyUser\Views\Info\Index.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Create.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Delete.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Details.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Edit.cshtml" />
-    <Content Include="Areas\FacultyUser\Views\EducationLineRequirement\Index.cshtml" />
     <Content Include="Areas\EntrantUser\Views\Recomendations\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLines\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLines\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLines\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLines\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLines\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLineRequirements\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLineRequirements\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\EducationLineRequirements\Index.cshtml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\globalize\cultures\globalize.culture.af-ZA.js" />
@@ -659,8 +645,10 @@
     <Content Include="fonts\zocial-regular-webfont.eot" />
     <Content Include="fonts\zocial-regular-webfont.ttf" />
     <Content Include="fonts\zocial-regular-webfont.woff" />
-    <Content Include="EmailNotificationsCredentials.config" />
+    <Content Include="Credentials.config" />
     <Content Include="DatabaseCredentials.config" />
+    <Content Include="Areas\Admin\Views\Info\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\OptimalEducation.pubxml" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -712,20 +700,48 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\EntrantUser\Models\" />
     <Folder Include="Areas\FacultyUser\Models\" />
-    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">
+      <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
+      <Name>Interfaces.CQRS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Implimentation.CQRS\Implimentation.CQRS.csproj">
+      <Project>{0c4d86c8-59ed-48c5-94f8-1eab0a884836}</Project>
+      <Name>Implimentation.CQRS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OptimalEducation.Logic\OptimalEducation.Logic.csproj">
-      <Project>{8e374da9-e7d9-4453-8493-4f5010c71ad7}</Project>
-      <Name>OptimalEducation.Logic</Name>
+    <ProjectReference Include="..\OptimalEducation.Implementation.Logic.DistanceRecomendator\OptimalEducation.Implementation.Logic.DistanceRecomendator.csproj">
+      <Project>{37aa4d5a-c34e-4f4e-ad29-57e59bd80a96}</Project>
+      <Name>OptimalEducation.Implementation.Logic.DistanceRecomendator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Interfaces.Logic.DistanceRecomendator\OptimalEducation.Interfaces.Logic.DistanceRecomendator.csproj">
+      <Project>{c008ce01-57f4-4ab9-98b5-932cd623fabc}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.DistanceRecomendator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
+      <Project>{70dc5edb-c783-446a-adda-b4aae15694f2}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers\OptimalEducation.Implementation.Logic.Characterizers.csproj">
+      <Project>{452552d7-9d40-48e2-8931-ea66279726bd}</Project>
+      <Name>OptimalEducation.Implementation.Logic.Characterizers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis.Interfaces\OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.csproj">
+      <Project>{d29a05e5-7b7f-4b7b-8da9-9f4c179f69d3}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.MulticriterialAnalysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.MulticriterialAnalysis\OptimalEducation.Implementation.Logic.MulticriterialAnalysis.csproj">
+      <Project>{d7e15781-56f7-4745-ab0f-08856ea9af52}</Project>
+      <Name>OptimalEducation.Implementation.Logic.MulticriterialAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

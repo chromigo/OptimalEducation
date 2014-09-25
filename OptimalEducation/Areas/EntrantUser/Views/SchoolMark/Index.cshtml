@@ -9,12 +9,13 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
+    
 
     <div class="form-horizontal">
         @for (int i = 0; i < Model.Count(); i++)
         {
             @Html.ValidationSummary(true)
+            @Html.HiddenFor(modelItem => Model[i].SchoolDisciplineId)
             <div class="form-group">
                 @Html.LabelFor(modelItem => Model[i].Result, Model[i].SchoolDiscipline.Name, new { @class = "control-label col-md-2" })
                 <div class="col-md-10">

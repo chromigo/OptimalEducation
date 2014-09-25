@@ -1,73 +1,41 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Interfaces.CQRS;
+using Microsoft.AspNet.Identity;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.Logic.Characterizer;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Helpers;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 using OptimalEducation.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Data.Entity;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.Logic.MulticriterialAnalysis;
-using OptimalEducation.Logic.AnalyticHierarchyProcess;
-using System.Diagnostics;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles=Role.Entrant)]
 	public class OrientationController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
+        private readonly IQueryBuilder _queryBuilder;
+        private readonly ICharacterizer<Entrant> _entrantCharacterizer;
+        private readonly IInfoExtractor _infoExtractor;
 
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-
-		public OrientationController()
+        public OrientationController(IQueryBuilder queryBuilder, ICharacterizer<Entrant> entrantCharacterizer, IInfoExtractor infoExtractor)
 		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public OrientationController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
+            _queryBuilder = queryBuilder;
+            _entrantCharacterizer = entrantCharacterizer;
+            _infoExtractor = infoExtractor;
 		}
 
-		// GET: /EntrantUser/Orientation/
+	    // GET: /EntrantUser/Orientation/
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
-			var entrant = await db.Entrants
-				.Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
-				.Include(e => e.ParticipationInSections.Select(pse=>pse.Section.Weights))
-				.Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))
-				.Include(e => e.Hobbies.Select(h => h.Weights))
-				.Include(e => e.SchoolMarks.Select(sm => sm.SchoolDiscipline.Weights))
-				.Include(e => e.UnitedStateExams.Select(use => use.Discipline.Weights))
-				.Where(e => e.Id == entrantId).SingleAsync();
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            var entrant = await _queryBuilder.For<Task<Entrant>>().With(new GetEntrantForCharacterizerCriterion() { EntrantId = entrantId });
 
             //Предпочтения пользователя по предметам и пр.
-            var entrantCharacteristics = new EntrantCharacterizer(entrant, new EntrantCalculationOptions()).CalculateNormSum();//add true for complicated method
+            var entrantCharacteristics = await _entrantCharacterizer.Calculate(entrant);//add true for complicated method
             ViewBag.Preferences = entrantCharacteristics;
 
 			return View();
-		}
-
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-				dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

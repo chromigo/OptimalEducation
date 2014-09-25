@@ -1,66 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.Models;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.DAL.Commands;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.Helpers;
+using OptimalEducation.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
 	[Authorize(Roles = Role.Entrant)]
 	public class OlympiadController : Controller
 	{
-		private OptimalEducationDbContext db = new OptimalEducationDbContext();
-		private ApplicationDbContext dbIdentity = new ApplicationDbContext();
-		public UserManager<ApplicationUser> UserManager { get; private set; }
-		public OlympiadController()
-		{
-			UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(dbIdentity));
-		}
-		public OlympiadController(UserManager<ApplicationUser> userManager)
-		{
-			UserManager = userManager;
-		}
-		// GET: /EntrantUser/Olympiad/
+        private readonly IQueryBuilder _queryBuilder;
+	    private readonly ICommandBuilder _commandBuilder;
+        private readonly IInfoExtractor _infoExtractor;
+
+        public OlympiadController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
+	    {
+            _queryBuilder = queryBuilder;
+            _commandBuilder = commandBuilder;
+            _infoExtractor = infoExtractor;
+	    }
+
+	    // GET: /EntrantUser/Olympiad/
 		public async Task<ActionResult> Index()
 		{
-			var entrantId = await GetEntrantId();
-			var participationinolympiads = db.ParticipationInOlympiads
-				.Include(p => p.Entrant)
-				.Include(p => p.Olympiad)
-				.Where(p => p.EntrantId == entrantId);
-			return View(await participationinolympiads.ToListAsync());
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+		    var participationinolympiads = await _queryBuilder
+                                                    .For<Task<IEnumerable<ParticipationInOlympiad>>>()
+		                                            .With(new GetAllParticipationInOlympiadCriterion() {EntrantId = entrantId});
+            return View(participationinolympiads);
 		}
 
 		// GET: /EntrantUser/Olympiad/Details/5
 		public async Task<ActionResult> Details(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await db.ParticipationInOlympiads
-				.Where(p => p.EntrantId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
-			if (participationinolympiad == null)
+			else
 			{
-				return HttpNotFound();
+			    var poId = id.Value;
+                var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+                var participationinolympiads = await _queryBuilder.For<Task<ParticipationInOlympiad>>()
+                    .With(new GetCurrentParticipationInOlympiadCriterion() { EntrantId = entrantId,ParticipationInOlympiadId  = poId});
+
+                if (participationinolympiads == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(participationinolympiads);
 			}
-			return View(participationinolympiad);
 		}
 
 		// GET: /EntrantUser/Olympiad/Create
-		public ActionResult Create()
+		public async Task<ActionResult> Create()
 		{
-			ViewBag.OlympiadId = new SelectList(db.Olympiads, "Id", "Name");
+		    var olympiads = await _queryBuilder
+                                        .For<Task<IEnumerable<Olympiad>>>()
+                                        .With(new GetAllOlympiadsCriterion());
+			ViewBag.OlympiadId = new SelectList(olympiads, "Id", "Name");
 			return View();
 		}
 
@@ -71,34 +76,40 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Create([Bind(Include="Result,OlympiadId")] ParticipationInOlympiad participationinolympiad)
 		{
-			participationinolympiad.EntrantId = await GetEntrantId();
+			participationinolympiad.EntrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			if (ModelState.IsValid)
 			{
-				db.ParticipationInOlympiads.Add(participationinolympiad);
-				await db.SaveChangesAsync();
+                await _commandBuilder
+                    .ExecuteAsync(new AddParticipationInOlympiadContext(){ParticipationInOlympiad = participationinolympiad});
+
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.OlympiadId = new SelectList(db.Olympiads, "Id", "Name", participationinolympiad.OlympiadId);
+            var olympiads = await _queryBuilder
+                            .For<Task<IEnumerable<Olympiad>>>()
+                            .With(new GetAllOlympiadsCriterion());
+            ViewBag.OlympiadId = new SelectList(olympiads, "Id", "Name", participationinolympiad.OlympiadId);
+
 			return View(participationinolympiad);
 		}
 
 		// GET: /EntrantUser/Olympiad/Edit/5
 		public async Task<ActionResult> Edit(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await db.ParticipationInOlympiads
-				.Where(p=>p.EntrantId==entrantId)
-				.FirstOrDefaultAsync(p=>p.Id==id);
-			if (participationinolympiad == null)
+            var poId = id.Value;
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            var participationinOlympiads = await _queryBuilder.For<Task<ParticipationInOlympiad>>()
+                .With(new GetCurrentParticipationInOlympiadCriterion() { EntrantId = entrantId, ParticipationInOlympiadId = poId });
+
+            if (participationinOlympiads == null)
 			{
 				return HttpNotFound();
 			}
-			return View(participationinolympiad);
+            return View(participationinOlympiads);
 		}
 
 		// POST: /EntrantUser/Olympiad/Edit/5
@@ -108,14 +119,14 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Edit([Bind(Include="Id,Result")] ParticipationInOlympiad participationinolympiad)
 		{
-			//var entrantId = await GetEntrantId();
+			//var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 			//participationinolympiad.EntrantId = entrantId;
 
 			if (ModelState.IsValid)
 			{
-				var dbPartOlymp = await db.ParticipationInOlympiads.FindAsync(participationinolympiad.Id);
-				dbPartOlymp.Result = participationinolympiad.Result;
-				await db.SaveChangesAsync();
+                await _commandBuilder
+                        .ExecuteAsync(new UpdateParticipationInOlympiadResultContext() { ParticipationInOlympiadId = participationinolympiad.Id, UpdateResult = participationinolympiad.Result });
+
 				return RedirectToAction("Index");
 			}
 			return View(participationinolympiad);
@@ -124,14 +135,16 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Olympiad/Delete/5
 		public async Task<ActionResult> Delete(int? id)
 		{
-			if (id == null)
+			if (!id.HasValue)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await db.ParticipationInOlympiads
-				.Where(p => p.EntrantId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
+		    var participationInOlympiadId = id.Value;
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            var participationinolympiad = await _queryBuilder
+                .For<Task<ParticipationInOlympiad>>()
+                .With(new GetCurrentParticipationInOlympiadCriterion() { EntrantId = entrantId, ParticipationInOlympiadId = participationInOlympiadId });
+
 			if (participationinolympiad == null)
 			{
 				return HttpNotFound();
@@ -144,30 +157,12 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> DeleteConfirmed(int id)
 		{
-			var entrantId = await GetEntrantId();
-			ParticipationInOlympiad participationinolympiad = await db.ParticipationInOlympiads
-				.Where(p => p.EntrantId == entrantId)
-				.FirstOrDefaultAsync(p => p.Id == id);
-			db.ParticipationInOlympiads.Remove(participationinolympiad);
-			await db.SaveChangesAsync();
-			return RedirectToAction("Index");
-		}
+			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
-		private async Task<int> GetEntrantId()
-		{
-			var currentUser = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			var entrantClaim = currentUser.Claims.FirstOrDefault(p => p.ClaimType == MyClaimTypes.EntityUserId);
-			var entrantId = int.Parse(entrantClaim.ClaimValue);
-			return entrantId;
-		}
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-                dbIdentity.Dispose();
-			}
-			base.Dispose(disposing);
+            await _commandBuilder
+                .ExecuteAsync(new RemoveParticipationInOlympiadContext(){EntrantId = entrantId,ParticipationInOlympiadId = id});
+
+			return RedirectToAction("Index");
 		}
 	}
 }
