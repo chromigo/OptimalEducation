@@ -1,45 +1,46 @@
 ﻿[![Stories in Ready](https://badge.waffle.io/chromigo/optimaleducation.png?label=ready&title=Ready)](https://waffle.io/chromigo/optimaleducation)
 OptimalEducation
-================
 
 Web-сервис, помогающий абитуриентам(ученикам) выбрать ВУЗ, где им будет наиболее комфортно обучаться.
 
-===
-Особености запуска на Microsoft Azure и локально:
-  1. Web.config - раскомментировать строку с подключением + залить файл с настройками DatabaseCredentials.config
-  вида
-```xml
-<connectionStrings>
-<add 
-name="DBName" 
-providerName="System.Data.SqlClient" 
-connectionString="yourConnectionString;" />
-</connectionStrings>
-```
-  2. Залить файл с настройками для email службы оповещения SendGrid  - EmailNotificationsCredentials.config вида
+Инструкция для запуска локально:
+
+Добавить в главный проект недостающие файлы с информацией о настройках подключения вида:
+  1. Credentials.config
 ```xml
 <appSettings>
-	<add key="SendGrid_Login" value="yourLogin"/>
-	<add key="SendGrid_Password" value="yourPassword"/>
+  <!--SendGrid auth-->
+  <add key="SendGrid_Login" value="YOUR_Login"/>
+  <add key="SendGrid_Password" value="YOUR_Password"/>
+  <!--Google auth-->
+  <add key="Google_ClientId" value="YOUR_ClientId"/>
+  <add key="Google_ClientSecret" value="YOUR_ClientSecret"/>
+  <!--Facebook auth-->
+  <add key="Facebook_ClientId" value="YOUR_ClientId"/>
+  <add key="Facebook_ClientSecret" value="YOUR_ClientSecret"/>
+  <!--Twitter auth-->
+  <add key="Twitter_ClientId" value="YOUR_ClientId"/>
+  <add key="Twitter_ClientSecret" value="YOUR_ClientSecret"/>
+  <!--Microsoft auth-->
+  <add key="Microsoft_ClientId" value="YOUR_ClientId"/>
+  <add key="Microsoft_ClientSecret" value="YOUR_ClientSecret"/>
 </appSettings>
 ```
-  3. В App_Start\BundleConfig.cs
-```csharp
-    BundleTable.EnableOptimizations = true; 
-```
-  4. Выключить Debug режим в Web.Config
+  2. DatabaseCredentials.config
 ```xml
-<system.web>
-    <compilation debug="false" targetFramework="4.5.1" />
-</system.web>
+<connectionStrings>
+  <add name="YOUR_DB_NAME" 
+       providerName="System.Data.SqlClient" 
+       connectionString="YOUR_CONNECTION_STRING" />
+</connectionStrings>
 ```
-  Дополнительно+под вопросом:
-  1. В Web.config убрать все ссылки на сборки незивестные(например профайлер)
-  2. В Web.config  
-```xml
-<system.web>
-  <customErrors mode="Off" />
-  ... 
-<.system.web>
-```
-  3. XsrfKey поменять?
+
+ Не обязательно вводить корректные данные, для локальной работы используются другие.(можно скопировать эти как есть)
+
+ 2. Выполнить построение базы данных
+ Открыть Package Manager Console и ввести:
+ ```
+ update-database
+ ```
+ Должна создасться база данных с начальной информацией, необходимой для работы.
+ Все, можно смотреть.
