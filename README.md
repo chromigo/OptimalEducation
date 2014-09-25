@@ -38,12 +38,13 @@ DatabaseCredentials.config
 Не обязательно вводить корректные данные, для локальной работы используются другие.(можно скопировать эти как есть)
 
 * Выполнить построение базы данных
- Открыть Package Manager Console и ввести:
+ Открыть Package Manager Console и ввести по очереди:
 
 ```
 #!
 
- update-database
+ update-database -ProjectName: OptimalEducation
+ update-database -ProjectName: OptimalEducation.DAL
 ```
  Должна создасться база данных с начальной информацией, необходимой для работы.
 
