@@ -1,12 +1,13 @@
 ﻿[![Stories in Ready](https://badge.waffle.io/chromigo/optimaleducation.png?label=ready&title=Ready)](https://waffle.io/chromigo/optimaleducation)
-OptimalEducation
+# OptimalEducation #
 
 Web-сервис, помогающий абитуриентам(ученикам) выбрать ВУЗ, где им будет наиболее комфортно обучаться.
 
-Инструкция для запуска локально:
+## Инструкция для запуска локально: ##
 
-Добавить в главный проект недостающие файлы с информацией о настройках подключения вида:
-  1. Credentials.config
+* Добавить в главный проект недостающие файлы с информацией о настройках подключения вида:
+
+Credentials.config
 ```xml
 <appSettings>
   <!--SendGrid auth-->
@@ -26,7 +27,7 @@ Web-сервис, помогающий абитуриентам(ученикам
   <add key="Microsoft_ClientSecret" value="YOUR_ClientSecret"/>
 </appSettings>
 ```
-  2. DatabaseCredentials.config
+DatabaseCredentials.config
 ```xml
 <connectionStrings>
   <add name="YOUR_DB_NAME" 
@@ -34,13 +35,18 @@ Web-сервис, помогающий абитуриентам(ученикам
        connectionString="YOUR_CONNECTION_STRING" />
 </connectionStrings>
 ```
+Не обязательно вводить корректные данные, для локальной работы используются другие.(можно скопировать эти как есть)
 
- Не обязательно вводить корректные данные, для локальной работы используются другие.(можно скопировать эти как есть)
-
- 2. Выполнить построение базы данных
+* Выполнить построение базы данных
  Открыть Package Manager Console и ввести:
- ```
+
+```
+#!
+
  update-database
- ```
+```
  Должна создасться база данных с начальной информацией, необходимой для работы.
+
+
+
  Все, можно смотреть.
