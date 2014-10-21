@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using System.Web.Mvc;
 using Interfaces.CQRS;
+using System.Web.Mvc;
 namespace Implimentation.CQRS
 {
     public class CommandBuilder : ICommandBuilder
