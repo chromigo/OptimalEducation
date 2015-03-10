@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
@@ -21,7 +19,7 @@ namespace OptimalEducation.DAL.Queries
             var edLines = await _dbContext.EducationLines
                 .Include(edl => edl.EducationLinesRequirements.Select(edlReq => edlReq.ExamDiscipline.Weights.Select(w => w.Characterisic)))
                 .Include(edl => edl.Faculty.HigherEducationInstitution)
-                .Where(p => p.Actual == true && p.Name != "IDEAL")
+                .Where(p => p.Actual && p.Name != "IDEAL")
                 .AsNoTracking()
                 .ToListAsync();
             return edLines;
