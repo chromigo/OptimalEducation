@@ -80,7 +80,7 @@ namespace OptimalEducation.Controllers
             var selectedHobbies=new string[10];
 
             commandBuilder
-                .ExecuteAsync<UpdateEntrantHobbieContext>(new UpdateEntrantHobbieContext() { EntrantId = entrantId, SelectedHobbies = selectedHobbies })
+                .ExecuteAsync(new UpdateEntrantHobbieContext { EntrantId = entrantId, SelectedHobbies = selectedHobbies })
                 .Returns(Task.Delay(1));
             
             //Act

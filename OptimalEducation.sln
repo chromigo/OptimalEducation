@@ -5,13 +5,6 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation", "OptimalEducation\OptimalEducation.csproj", "{0299D429-301E-4BEB-998B-BBD59B9640D7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{71E66EA8-220F-4B0F-8818-947FEA5EC726}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.UnitTests.Logic.MulticriterialAnalysis", "UnitTests\OptimalEducation.UnitTests.Logic.MulticriterialAnalysis.csproj", "{0E486F96-FACD-4199-A82B-5C9AF4B32A83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptimalEducation.DAL", "OptimalEducation.DAL\OptimalEducation.DAL.csproj", "{788B7129-4288-4005-B014-6F60FFA689A4}"

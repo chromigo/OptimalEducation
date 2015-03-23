@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using SimpleInjector.Diagnostics;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -28,7 +29,8 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 	    }
 
 	    // GET: /EntrantUser/Olympiad/
-		public async Task<ActionResult> Index()
+
+	    public async Task<ActionResult> Index()
 		{
 			var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 		    var participationinolympiads = await _queryBuilder
@@ -37,7 +39,7 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             return View(participationinolympiads);
 		}
 
-		// GET: /EntrantUser/Olympiad/Details/5
+	    // GET: /EntrantUser/Olympiad/Details/5
 		public async Task<ActionResult> Details(int? id)
 		{
 			if (!id.HasValue)
@@ -96,20 +98,20 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 		// GET: /EntrantUser/Olympiad/Edit/5
 		public async Task<ActionResult> Edit(int? id)
 		{
-			if (!id.HasValue)
+		    if (!id.HasValue)
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-            var poId = id.Value;
-            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
-            var participationinOlympiads = await _queryBuilder.For<Task<ParticipationInOlympiad>>()
-                .With(new GetCurrentParticipationInOlympiadCriterion() { EntrantId = entrantId, ParticipationInOlympiadId = poId });
+		    var poId = id.Value;
+		    var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+		    var participationinOlympiads = await _queryBuilder.For<Task<ParticipationInOlympiad>>()
+		        .With(new GetCurrentParticipationInOlympiadCriterion() { EntrantId = entrantId, ParticipationInOlympiadId = poId });
 
-            if (participationinOlympiads == null)
-			{
-				return HttpNotFound();
-			}
-            return View(participationinOlympiads);
+		    if (participationinOlympiads == null)
+		    {
+		    }
+		    return HttpNotFound();
+		    return View(participationinOlympiads);
 		}
 
 		// POST: /EntrantUser/Olympiad/Edit/5
