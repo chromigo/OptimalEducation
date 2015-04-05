@@ -1,9 +1,11 @@
 using System;
-using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL;
 
 namespace OptimalEducation.Implementation.Logic.AHP
 {
-    [Obsolete("АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем.")]
+    [Obsolete(
+        "АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем."
+        )]
     public class AhpUserSettings
     {
         private readonly OptimalEducationDbContext _context = new OptimalEducationDbContext();

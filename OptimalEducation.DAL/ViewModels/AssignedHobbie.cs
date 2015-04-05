@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace OptimalEducation.DAL.ViewModels
+﻿namespace OptimalEducation.DAL.ViewModels
 {
     public class AssignedHobbie
     {

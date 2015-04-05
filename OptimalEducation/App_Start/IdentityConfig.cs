@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
 using OptimalEducation.Models;
-using System.Net;
-using System.Net.Mail;
 using SendGrid;
-using System.Configuration;
 
 namespace OptimalEducation
 {
@@ -19,6 +16,28 @@ namespace OptimalEducation
 
     public interface IApplicationUserManager
     {
+        IPasswordHasher PasswordHasher { get; set; }
+        IIdentityValidator<ApplicationUser> UserValidator { get; set; }
+        IIdentityValidator<string> PasswordValidator { get; set; }
+        IClaimsIdentityFactory<ApplicationUser, string> ClaimsIdentityFactory { get; set; }
+        IIdentityMessageService EmailService { get; set; }
+        IIdentityMessageService SmsService { get; set; }
+        IUserTokenProvider<ApplicationUser, string> UserTokenProvider { get; set; }
+        bool UserLockoutEnabledByDefault { get; set; }
+        int MaxFailedAccessAttemptsBeforeLockout { get; set; }
+        TimeSpan DefaultAccountLockoutTimeSpan { get; set; }
+        bool SupportsUserTwoFactor { get; }
+        bool SupportsUserPassword { get; }
+        bool SupportsUserSecurityStamp { get; }
+        bool SupportsUserRole { get; }
+        bool SupportsUserLogin { get; }
+        bool SupportsUserEmail { get; }
+        bool SupportsUserPhoneNumber { get; }
+        bool SupportsUserClaim { get; }
+        bool SupportsUserLockout { get; }
+        bool SupportsQueryableUsers { get; }
+        IQueryable<ApplicationUser> Users { get; }
+        IDictionary<string, IUserTokenProvider<ApplicationUser, string>> TwoFactorProviders { get; }
         void Dispose();
         Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user, string authenticationType);
         Task<IdentityResult> CreateAsync(ApplicationUser user);
@@ -79,28 +98,6 @@ namespace OptimalEducation
         Task<IdentityResult> AccessFailedAsync(string userId);
         Task<IdentityResult> ResetAccessFailedCountAsync(string userId);
         Task<int> GetAccessFailedCountAsync(string userId);
-        IPasswordHasher PasswordHasher { get; set; }
-        IIdentityValidator<ApplicationUser> UserValidator { get; set; }
-        IIdentityValidator<string> PasswordValidator { get; set; }
-        IClaimsIdentityFactory<ApplicationUser, string> ClaimsIdentityFactory { get; set; }
-        IIdentityMessageService EmailService { get; set; }
-        IIdentityMessageService SmsService { get; set; }
-        IUserTokenProvider<ApplicationUser, string> UserTokenProvider { get; set; }
-        bool UserLockoutEnabledByDefault { get; set; }
-        int MaxFailedAccessAttemptsBeforeLockout { get; set; }
-        TimeSpan DefaultAccountLockoutTimeSpan { get; set; }
-        bool SupportsUserTwoFactor { get; }
-        bool SupportsUserPassword { get; }
-        bool SupportsUserSecurityStamp { get; }
-        bool SupportsUserRole { get; }
-        bool SupportsUserLogin { get; }
-        bool SupportsUserEmail { get; }
-        bool SupportsUserPhoneNumber { get; }
-        bool SupportsUserClaim { get; }
-        bool SupportsUserLockout { get; }
-        bool SupportsQueryableUsers { get; }
-        IQueryable<ApplicationUser> Users { get; }
-        IDictionary<string, IUserTokenProvider<ApplicationUser, string>> TwoFactorProviders { get; }
     }
 
     public class ApplicationUserManager : UserManager<ApplicationUser>, IApplicationUserManager
@@ -109,13 +106,13 @@ namespace OptimalEducation
             : base(store)
         {
             // Configure validation logic for usernames
-            this.UserValidator = new UserValidator<ApplicationUser>(this)
+            UserValidator = new UserValidator<ApplicationUser>(this)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
             // Configure validation logic for passwords
-            this.PasswordValidator = new PasswordValidator
+            PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6
             };
@@ -139,7 +136,6 @@ namespace OptimalEducation
             //    this.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             //}
         }
-
     }
 
     public class EmailService : IIdentityMessageService
@@ -149,7 +145,7 @@ namespace OptimalEducation
             //create message
             var myMessage = new SendGridMessage();
             myMessage.AddTo(message.Destination);
-            myMessage.From = new System.Net.Mail.MailAddress("optimaleducation@gmail.com");
+            myMessage.From = new MailAddress("optimaleducation@gmail.com");
             myMessage.Subject = message.Subject;
             //myMessage.Text = message.Body;
             myMessage.Html = message.Body;

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
 {
@@ -12,6 +11,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
         public void CalculateSimpleSum_NOT_TESTED()
         {
         }
+
         [TestMethod]
         public void CalculateComplicatedSum_NOT_TESTED()
         {

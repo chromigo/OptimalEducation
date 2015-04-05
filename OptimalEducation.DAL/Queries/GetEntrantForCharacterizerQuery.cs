@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetEntrantForCharacterizerQuery : EFBaseQuery, IQuery<GetEntrantForCharacterizerCriterion, Task<Entrant>>
+    public class GetEntrantForCharacterizerQuery : EfBaseQuery,
+        IQuery<GetEntrantForCharacterizerCriterion, Task<Entrant>>
     {
         public GetEntrantForCharacterizerQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
@@ -17,7 +15,7 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<Entrant> Ask(GetEntrantForCharacterizerCriterion criterion)
         {
-            var entrant = await _dbContext.Entrants
+            var entrant = await DbContext.Entrants
                 .Include(e => e.ParticipationInSchools.Select(h => h.School.Weights))
                 .Include(e => e.ParticipationInSections.Select(pse => pse.Section.Weights))
                 .Include(e => e.ParticipationInOlympiads.Select(po => po.Olympiad.Weights))

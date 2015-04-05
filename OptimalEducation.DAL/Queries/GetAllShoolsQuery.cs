@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllSchoolsQuery : EFBaseQuery, IQuery<GetAllSchoolsCriterion, Task<IEnumerable<School>>>
+    public class GetAllSchoolsQuery : EfBaseQuery, IQuery<GetAllSchoolsCriterion, Task<IEnumerable<School>>>
     {
         public GetAllSchoolsQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -18,7 +15,7 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<IEnumerable<School>> Ask(GetAllSchoolsCriterion criterion)
         {
-            var schools = await _dbContext.Schools
+            var schools = await DbContext.Schools
                 .AsNoTracking()
                 .ToListAsync();
             return schools;
@@ -26,7 +23,7 @@ namespace OptimalEducation.DAL.Queries
     }
 
     public class GetAllSchoolsCriterion : ICriterion
-    {//ToDO: Add some properthies here or empty
-    }
+    {
 
+    }
 }

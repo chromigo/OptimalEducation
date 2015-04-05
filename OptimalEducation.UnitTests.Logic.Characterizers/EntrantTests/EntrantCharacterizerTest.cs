@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.Implementation.Logic.Characterizers;
-using NSubstitute;
-using OptimalEducation.Interfaces.Logic.Characterizers;
-using OptimalEducation.DAL.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.Implementation.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
 {
@@ -18,12 +17,12 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             //Arrange
             var namesHelper = Substitute.For<IEducationCharacteristicNamesHelper>();
             var entrantSummator = Substitute.For<ISummator<Entrant>>();
-            var idealResult = Substitute.For<IIdealResult<Entrant>>();
+            var idealResult = Substitute.For<IIdealResult>();
 
             var entrantCharacterizer = new EntrantCharacterizer(namesHelper, entrantSummator, idealResult);
-            var entrant = new Entrant(){};
+            var entrant = new Entrant();
 
-            var characteristicNames=new List<string>()
+            var characteristicNames = new List<string>
             {
                 "Русский",
                 "Математика",
@@ -36,13 +35,13 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             complicatedSum.Add("Математика", 0.6);
             complicatedSum.Add("Информатика", 0.8);
             entrantSummator.CalculateComplicatedSum(entrant).Returns(complicatedSum);
-            
-            var complicatedIdealSum=new Dictionary<string,double>();
+
+            var complicatedIdealSum = new Dictionary<string, double>();
             complicatedIdealSum.Add("Русский", 0.4);
             complicatedIdealSum.Add("Математика", 0.6);
             complicatedIdealSum.Add("Информатика", 0.8);
             idealResult.GetComplicatedResult().Returns(Task.FromResult(complicatedIdealSum));
-            
+
             //Act
             var resultTask = entrantCharacterizer.Calculate(entrant);
             resultTask.Wait();
@@ -64,12 +63,12 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             //Arrange
             var namesHelper = Substitute.For<IEducationCharacteristicNamesHelper>();
             var entrantSummator = Substitute.For<ISummator<Entrant>>();
-            var idealResult = Substitute.For<IIdealResult<Entrant>>();
+            var idealResult = Substitute.For<IIdealResult>();
 
             var entrantCharacterizer = new EntrantCharacterizer(namesHelper, entrantSummator, idealResult);
-            var entrant = new Entrant() { };
+            var entrant = new Entrant();
 
-            var characteristicNames = new List<string>()
+            var characteristicNames = new List<string>
             {
                 "Русский",
                 "Математика",
@@ -90,7 +89,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             idealResult.GetSimpleResult().Returns(Task.FromResult(complicatedIdealSum));
 
             //Act
-            var resultTask = entrantCharacterizer.Calculate(entrant,false);
+            var resultTask = entrantCharacterizer.Calculate(entrant, false);
             resultTask.Wait();
 
             //Assert

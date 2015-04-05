@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.Queries;
 
-namespace OptimalEducation.DAL.Commands
+namespace OptimalEducation.DAL.Commands.ParticipationInSection
 {
-    public class AddParticipationInSectionCommand: EFBaseCommand, ICommand<AddParticipationInSectionContext>
+    public class AddParticipationInSectionCommand : EfBaseCommand, ICommand<AddParticipationInSectionContext>
     {
         public AddParticipationInSectionCommand(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
@@ -13,13 +11,13 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(AddParticipationInSectionContext commandContext)
         {
-            _dbContext.ParticipationInSections.Add(commandContext.ParticipationInSection);
-            await _dbContext.SaveChangesAsync();
+            DbContext.ParticipationInSections.Add(commandContext.ParticipationInSection);
+            await DbContext.SaveChangesAsync();
         }
     }
 
-    public class AddParticipationInSectionContext:ICommandContext
+    public class AddParticipationInSectionContext : ICommandContext
     {
-        public ParticipationInSection ParticipationInSection { get; set; }      
+        public Models.ParticipationInSection ParticipationInSection { get; set; }
     }
 }

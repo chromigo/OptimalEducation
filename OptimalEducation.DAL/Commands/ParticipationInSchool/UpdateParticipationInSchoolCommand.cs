@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.Queries;
-using System.Data.Entity.Core;
 
-namespace OptimalEducation.DAL.Commands
+namespace OptimalEducation.DAL.Commands.ParticipationInSchool
 {
-    public class UpdateParticipationInSchoolCommand : EFBaseCommand, ICommand<UpdateParticipationInSchoolContext>
+    public class UpdateParticipationInSchoolCommand : EfBaseCommand, ICommand<UpdateParticipationInSchoolContext>
     {
         public UpdateParticipationInSchoolCommand(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -15,14 +12,14 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(UpdateParticipationInSchoolContext commandContext)
         {
-            var dbPartOlymp = await _dbContext.ParticipationInSchools.FindAsync(commandContext.ParticipationInSchool.Id);
+            var dbPartOlymp = await DbContext.ParticipationInSchools.FindAsync(commandContext.ParticipationInSchool.Id);
             dbPartOlymp.YearPeriod = commandContext.ParticipationInSchool.YearPeriod;
-            await _dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
         }
     }
 
     public class UpdateParticipationInSchoolContext : ICommandContext
     {
-        public ParticipationInSchool ParticipationInSchool { get; set; }      
+        public Models.ParticipationInSchool ParticipationInSchool { get; set; }
     }
 }

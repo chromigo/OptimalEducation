@@ -1,12 +1,9 @@
 ﻿using Microsoft.Owin;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.Migrations;
-using OptimalEducation.Models;
+using OptimalEducation;
 using Owin;
-using System.Data.Entity;
-using System.Linq;
 
-[assembly: OwinStartupAttribute(typeof(OptimalEducation.Startup))]
+[assembly: OwinStartup(typeof (Startup))]
+
 namespace OptimalEducation
 {
     public partial class Startup

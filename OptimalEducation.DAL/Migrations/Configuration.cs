@@ -1,17 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.IO;
+using System.Linq;
+using OptimalEducation.DAL.Builders;
+using OptimalEducation.DAL.Models;
+
 namespace OptimalEducation.DAL.Migrations
 {
-    using OptimalEducation.DAL.Builders;
-    using OptimalEducation.DAL.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.IO;
-    using System.Linq;
-
     internal sealed class Configuration : DbMigrationsConfiguration<OptimalEducationDbContext>
     {
-        OptimalEducationDbContext db = new OptimalEducationDbContext();
+        OptimalEducationDbContext _db = new OptimalEducationDbContext();
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -51,7 +50,7 @@ namespace OptimalEducation.DAL.Migrations
 
         private void CreateCommonEntrant()
         {
-            if(db.Entrants.SingleOrDefault(p=>p.Id==1)==null)
+            if(_db.Entrants.SingleOrDefault(p=>p.Id==1)==null)
             {
                 EntrantBuilder.Create("Alice", 1);
             }
@@ -59,14 +58,14 @@ namespace OptimalEducation.DAL.Migrations
 
         private void CreateIdealEntrant()
         {
-            if (db.Entrants.SingleOrDefault(p => p.Id == 2) == null)
+            if (_db.Entrants.SingleOrDefault(p => p.Id == 2) == null)
             {
                 IdealEntrantBuilder.Create();
             }
         }
         private void CreateIdealEducationLine()
         {
-            if (db.EducationLines.SingleOrDefault(p => p.Name == "IDEAL") == null)
+            if (_db.EducationLines.SingleOrDefault(p => p.Name == "IDEAL") == null)
             {
                 var idealEducationLine = new EducationLine
                 {
@@ -74,89 +73,89 @@ namespace OptimalEducation.DAL.Migrations
                     Actual = true,
                     RequiredSum = 300,
                     Code = "000000",
-                    FacultyId = db.Faculties.Single(p => p.Name == "default_department").Id,
+                    FacultyId = _db.Faculties.Single(p => p.Name == "default_department").Id,
                     //GeneralEducationLineId = db.GeneralEducationLines.Single(p => p.Code == "1").Id,
                     EducationLinesRequirements = new List<EducationLineRequirement>
                     {
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Русский язык").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Математика").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Математика").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Информатика").Id
                         },
 
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Физика").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Физика").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Химия").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Химия").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Биология").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Биология").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="География").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="География").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Обществознание").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Обществознание").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="История").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="История").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Литература").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Литература").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Английский язык").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Английский язык").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Немецкий язык").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Немецкий язык").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Французский язык").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Французский язык").Id
                         },
                         new EducationLineRequirement 
                         {
                             Requirement=100, 
-                            ExamDisciplineId=db.ExamDisciplines.Single(p=>p.Name=="Испанский язык").Id
+                            ExamDisciplineId=_db.ExamDisciplines.Single(p=>p.Name=="Испанский язык").Id
                         },
                     }
                 };
-                db.EducationLines.Add(idealEducationLine);
-                db.SaveChanges();
+                _db.EducationLines.Add(idealEducationLine);
+                _db.SaveChanges();
             }
         }
 
-        private static void BaseEntitiesInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        private static void BaseEntitiesInit(OptimalEducationDbContext context)
         {
             //Принял решение не использовать метод AddOrUpdate - с ним много проблем. 
             //В текущей версии просто 1 раз заполняются данные, если не существуют.
@@ -192,7 +191,7 @@ namespace OptimalEducation.DAL.Migrations
             EducationLines_Requirements(context);
         }
 
-        private static List<Characteristic> CharacteristicInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        private static List<Characteristic> CharacteristicInit(OptimalEducationDbContext context)
         {
             //на данный момент формируется на основе егэ экзаменов.
             //В дальнейшем необходимо подумать и перерасбить более разумно
@@ -233,7 +232,7 @@ namespace OptimalEducation.DAL.Migrations
             return сharacterisics;
         }
 
-        private static void GeneralEducationLinesInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        private static void GeneralEducationLinesInit(OptimalEducationDbContext context)
         {
             var generalEducationLines = new List<GeneralEducationLine>
             {
@@ -252,7 +251,7 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void FacultiesInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<HigherEducationInstitution> higherEducationInstitutions)
+        private static void FacultiesInit(OptimalEducationDbContext context, List<HigherEducationInstitution> higherEducationInstitutions)
         {
             var faculties = new List<Faculty>
             {
@@ -272,7 +271,7 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static List<HigherEducationInstitution> HigherEducationInsitutionInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<City> cities)
+        private static List<HigherEducationInstitution> HigherEducationInsitutionInit(OptimalEducationDbContext context, List<City> cities)
         {
             var higherEducationInstitutions = new List<HigherEducationInstitution>
             {
@@ -293,7 +292,7 @@ namespace OptimalEducation.DAL.Migrations
             return higherEducationInstitutions;
         }
 
-        private static List<City> CityInit(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        private static List<City> CityInit(OptimalEducationDbContext context)
         {
             var cities = new List<City>
             {
@@ -314,7 +313,7 @@ namespace OptimalEducation.DAL.Migrations
             return cities;
         }
 
-        private static void EducationLines_Requirements(OptimalEducation.DAL.Models.OptimalEducationDbContext context)
+        private static void EducationLines_Requirements(OptimalEducationDbContext context)
         {
             var educationLines = new List<EducationLine>
             {
@@ -462,39 +461,39 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void Hobbies_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void Hobbies_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             var hobbies = new List<Hobbie>
             {
                 new Hobbie {Name = "Рисование", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.7},
                 }},
                 new Hobbie {Name = "Лепка из глины", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
                 }},
                 new Hobbie {Name = "3-д моделирование", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
                 }},
                 new Hobbie {Name = "Пение", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
                 }},
                 new Hobbie {Name = "Игра на гитаре", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
                 }},
                 new Hobbie {Name = "Культура японии", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.8},
                 }},
             };
 
@@ -509,24 +508,24 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void Schools_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void Schools_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             var schools = new List<School>
             {
                 new School {Name = "Школа английского языка",EducationQuality=100, Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
                 }},
                 new School {Name = "Физмат лицей", EducationQuality= 70, Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.5},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.5},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.5},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.5},
                 }},
                 new School {Name = "Обычная школа", EducationQuality=60, Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.7},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
                 }},
             };
             foreach (var school in schools)
@@ -540,59 +539,59 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void Sections_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void Sections_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             var sections = new List<Section>
             {
                 new Section {Name = "Легкая атлетика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
                 }},
                 new Section {Name = "Тяжелая атлетика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.2},
                 }},
                 new Section {Name = "Теннис", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
                 }},
                 new Section {Name = "Плавание", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
                 }},
                 new Section {Name = "Боевых искуств", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.4},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Скорость реакции"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.4},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Скорость реакции"),Coefficient=0.3},
                 }},
                 new Section {Name = "Бокс", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Скорость реакции"),Coefficient=0.4},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Скорость реакции"),Coefficient=0.4},
                 }},
                 new Section {Name = "Футбол", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
                 }},
                 new Section {Name = "Волейбол", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
                 }},
                 new Section {Name = "Баскетбол", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Выносливость"),Coefficient=0.5},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Сила"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Зрение"),Coefficient=0.3},
                 }},
             };
             foreach (var section in sections)
@@ -606,7 +605,7 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void Olympiads_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void Olympiads_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             //Тут кучи разных, есть даже экзотические(я так понля для поступления в соотвествующий вуз)
             //Пока заполним малую часть(и не частные, а общие)
@@ -614,88 +613,88 @@ namespace OptimalEducation.DAL.Migrations
             {
                 new Olympiad {Name = "Русский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.1},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.1},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.1},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.1},
                 }},
                 new Olympiad {Name = "Математика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Информатика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.1}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.1}
                 }},
                 new Olympiad {Name = "Физика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Химия", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Биология", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "География", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
                 }},
 
                 new Olympiad {Name = "Обществознание", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "История", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Литература", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
 
                 new Olympiad {Name = "Английский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Немецкий язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Французский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new Olympiad {Name = "Испанский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
             };
             foreach (var olympiad in olympiads)
@@ -709,101 +708,101 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void SchoolDisciplines_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void SchoolDisciplines_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             //На данный момент только за 11 класс
             var schoolDisciplines = new List<SchoolDiscipline>
             {
                 new SchoolDiscipline {Name = "Алгебра", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Геометрия", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.7},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.1}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.7},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.1}
                 }},
                 new SchoolDiscipline {Name = "Информатика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Физика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Химия", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Биология", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "География", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
                 }},
 
                 new SchoolDiscipline {Name = "История", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Обществознание", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
                 }},
                 new SchoolDiscipline {Name = "Литература", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
                 
                 new SchoolDiscipline {Name = "Русский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Английский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Немецкий язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Французский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new SchoolDiscipline {Name = "Испанский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
             };
             foreach (var discipline in schoolDisciplines)
@@ -817,94 +816,94 @@ namespace OptimalEducation.DAL.Migrations
             context.SaveChanges();
         }
 
-        private static void Exams_Weight(OptimalEducation.DAL.Models.OptimalEducationDbContext context, List<Characteristic> Characterisics)
+        private static void Exams_Weight(OptimalEducationDbContext context, List<Characteristic> characterisics)
         {
             var examDisciplines = new List<ExamDiscipline>
             {
                 new ExamDiscipline {Name = "Русский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.1},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.1},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.1},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.1},
                 }},
                 new ExamDiscipline {Name = "Математика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Информатика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.1}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Информатика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.3},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.1}
                 }},
                 new ExamDiscipline {Name = "Физика", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Химия", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Математика"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Биология", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Химия"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Физика"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "География", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Биология"),Coefficient=0.2}
                 }},
 
                 new ExamDiscipline {Name = "Обществознание", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.8},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "История", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Обществознание"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="География"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Литература", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Литература"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="История"),Coefficient=0.2}
                 }},
 
                 new ExamDiscipline {Name = "Английский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Немецкий язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Немецкий язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Французский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Французский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
                 new ExamDiscipline {Name = "Испанский язык", Weights=new List<Weight>()
                 {
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
-                    new Weight(){Characterisic=Characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Испанский язык"),Coefficient=0.6},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Английский язык"),Coefficient=0.2},
+                    new Weight(){Characterisic=characterisics.Single(p=>p.Name=="Русский язык"),Coefficient=0.2}
                 }},
             };
             foreach (var discipline in examDisciplines)

@@ -1,6 +1,5 @@
-﻿using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis.Models;
 
 namespace OptimalEducation.Interfaces.Logic.MulticriterialAnalysis
 {

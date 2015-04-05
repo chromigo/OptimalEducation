@@ -1,15 +1,13 @@
-﻿using OptimalEducation.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Helpers
 {
     public class InfoExtractor : IInfoExtractor
     {
         private readonly IApplicationUserManager _userManager;
+
         public InfoExtractor(IApplicationUserManager userManager)
         {
             _userManager = userManager;

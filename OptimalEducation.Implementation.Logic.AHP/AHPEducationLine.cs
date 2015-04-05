@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Implementation.CQRS;
+using OptimalEducation.DAL;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.Characterizers;
 
@@ -10,14 +11,16 @@ namespace OptimalEducation.Implementation.Logic.AHP
     /// <summary>
     ///     Расчет приоритетности пользователей с помощью метода анализа иерарохий относительно направления
     /// </summary>
-    [Obsolete("АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем.")]
+    [Obsolete(
+        "АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем."
+        )]
     public class AhpEducationLine
     {
+        private readonly OptimalEducationDbContext _context = new OptimalEducationDbContext();
         private readonly EducationLine _educationLine;
         private readonly List<Entrant> _entrants = new List<Entrant>();
         //Общие настройки метода и приоритеты критериев
         private readonly AhpEdLineSettings _settings;
-        private readonly OptimalEducationDbContext _context = new OptimalEducationDbContext();
 
         public AhpEducationLine(EducationLine educationLineGiven, List<Entrant> entrantsGiven,
             AhpEdLineSettings settings)
@@ -224,12 +227,14 @@ namespace OptimalEducation.Implementation.Logic.AHP
             var queryBuilder = new QueryBuilder();
             var educationCharacteristicNamesHelper = new EducationCharacteristicNamesHelper(queryBuilder);
             var educationLineSummator = new EducationLineSummator(educationCharacteristicNamesHelper);
-            var edLineClusterizer = new EducationLineCharacterizer(educationCharacteristicNamesHelper, educationLineSummator, new IdealEducationLineResult(educationLineSummator, queryBuilder));
+            var edLineClusterizer = new EducationLineCharacterizer(educationCharacteristicNamesHelper,
+                educationLineSummator, new IdealEducationLineResult(educationLineSummator, queryBuilder));
             _educationLineClusters = await edLineClusterizer.Calculate(_educationLine);
             _maxEdLineClusterSum = _educationLineClusters.Values.Max();
 
             var entrantSummator = new EntrantSummator(educationCharacteristicNamesHelper);
-            var entrantCharacterizer = new EntrantCharacterizer(educationCharacteristicNamesHelper, entrantSummator, new IdealEntrantResult(entrantSummator, queryBuilder));
+            var entrantCharacterizer = new EntrantCharacterizer(educationCharacteristicNamesHelper, entrantSummator,
+                new IdealEntrantResult(entrantSummator, queryBuilder));
 
             foreach (var entrant in _entrants)
             {

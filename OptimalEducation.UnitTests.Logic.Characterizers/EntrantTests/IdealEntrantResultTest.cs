@@ -1,14 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.DAL.Models;
-using System.Collections.Generic;
-using OptimalEducation.Implementation.Logic.Characterizers;
-using NSubstitute;
-using Interfaces.CQRS;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Interfaces.CQRS;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
+using OptimalEducation.Implementation.Logic.Characterizers;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
 {
@@ -19,8 +17,8 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
         public void GetCorrectIdealEntrantSimpleResult_and_result_is_cached()
         {
             //Arrange
-            var entrant = new Entrant() { Id = 2 };
-            var idealResult = new Dictionary<string,double>();
+            var entrant = new Entrant {Id = 2};
+            var idealResult = new Dictionary<string, double>();
 
             var queryBuilder = Substitute.For<IQueryBuilder>();
             var entrantSummator = Substitute.For<ISummator<Entrant>>();
@@ -55,7 +53,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
         public void GetCorrectIdealEntrantComplicatedResult_and_result_is_cached()
         {
             //Arrange
-            var entrant = new Entrant() { Id = 2 };
+            var entrant = new Entrant {Id = 2};
             var idealResult = new Dictionary<string, double>();
 
             var queryBuilder = Substitute.For<IQueryBuilder>();
@@ -86,6 +84,5 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             queryBuilder.Received(1).For<Task<Entrant>>();
             entrantSummator.Received(1).CalculateComplicatedSum(entrant);
         }
-
     }
 }

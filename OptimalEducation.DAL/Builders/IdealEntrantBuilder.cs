@@ -1,22 +1,20 @@
-﻿using OptimalEducation.DAL.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Builders
 {
     public static class IdealEntrantBuilder
     {
-        static bool idealEntrantWasCreated;
+        private static bool _idealEntrantWasCreated;
+
         public static Entrant Create()
         {
-            if (idealEntrantWasCreated == false)
+            if (_idealEntrantWasCreated == false)
             {
-                var entrant = new Entrant()
+                var entrant = new Entrant
                 {
-                    Id = 2,//(связано через claim с аккаунтом идеального пользователя)
+                    Id = 2, //(связано через claim с аккаунтом идеального пользователя)
                     FirstName = "IDEAL",
                     LastName = "Ерохин"
                 };
@@ -24,14 +22,15 @@ namespace OptimalEducation.DAL.Builders
                 using (var context = new OptimalEducationDbContext())
                 {
                     //Добавляем ему результаты по ЕГЭ
-                    foreach (var discipline in context.ExamDisciplines.Where(p => p.ExamType == ExamType.UnitedStateExam))
+                    foreach (
+                        var discipline in context.ExamDisciplines.Where(p => p.ExamType == ExamType.UnitedStateExam))
                     {
                         entrant.UnitedStateExams.Add(
                             new UnitedStateExam
                             {
                                 Discipline = discipline,
                                 Entrant = entrant,
-                                Result = 100,
+                                Result = 100
                             });
                     }
                     //Добавляем ему результаты по школьным предметам
@@ -42,16 +41,16 @@ namespace OptimalEducation.DAL.Builders
                             {
                                 SchoolDiscipline = schoolDisc,
                                 Entrant = entrant,
-                                Result = 5,
+                                Result = 5
                             });
                     }
                     //Добавляем ему результаты по олимпиадам(по всем???)
-                    for (int i = 0; i < 3; i++)
+                    for (var i = 0; i < 3; i++)
                     {
                         foreach (var olympiad in context.Olympiads)
                         {
                             entrant.ParticipationInOlympiads.Add(
-                                new ParticipationInOlympiad()
+                                new ParticipationInOlympiad
                                 {
                                     Entrant = entrant,
                                     Result = OlypmpiadResult.FirstPlace,
@@ -64,10 +63,10 @@ namespace OptimalEducation.DAL.Builders
                     context.SaveChanges();
                 }
 
-                idealEntrantWasCreated = true;
+                _idealEntrantWasCreated = true;
                 return entrant;
             }
-            else throw new Exception("Идеальный пользователь уже был создан в Seed методе. Повторный вызов запрещен.");
+            throw new Exception("Идеальный пользователь уже был создан в Seed методе. Повторный вызов запрещен.");
         }
     }
 }

@@ -1,9 +1,8 @@
+using System.Data.Entity.Migrations;
+
 namespace OptimalEducation.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class AddCharacteristicEnum_Into_Characteristics : DbMigration
+    public partial class AddCharacteristicEnumIntoCharacteristics : DbMigration
     {
         public override void Up()
         {

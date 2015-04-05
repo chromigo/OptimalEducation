@@ -1,32 +1,19 @@
+using System.Collections.Generic;
+
 namespace OptimalEducation.DAL.Models
 {
-
-using System;
-    using System.Collections.Generic;
-    
-public partial class SchoolDiscipline
-{
-
-    public SchoolDiscipline()
+    public class SchoolDiscipline
     {
+        public SchoolDiscipline()
+        {
+            SchoolMarks = new HashSet<SchoolMark>();
 
-        this.SchoolMarks = new HashSet<SchoolMark>();
+            Weights = new HashSet<Weight>();
+        }
 
-        this.Weights = new HashSet<Weight>();
-
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<SchoolMark> SchoolMarks { get; set; }
+        public virtual ICollection<Weight> Weights { get; set; }
     }
-
-
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-
-
-
-    public virtual ICollection<SchoolMark> SchoolMarks { get; set; }
-
-    public virtual ICollection<Weight> Weights { get; set; }
-
-}
-
 }

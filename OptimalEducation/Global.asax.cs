@@ -1,6 +1,14 @@
-﻿using Interfaces.CQRS;
+﻿using System.Data.Entity;
+using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
+using Implementation.CQRS;
+using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.DAL;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Helpers;
 using OptimalEducation.Implementation.Logic.Characterizers;
@@ -13,17 +21,10 @@ using OptimalEducation.Models;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 using SimpleInjector.Integration.Web.Mvc;
-using System.Data.Entity;
-using System.Reflection;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using Implementation.CQRS;
-
 
 namespace OptimalEducation
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         public static Container Container { get; private set; }
 
@@ -42,13 +43,13 @@ namespace OptimalEducation
         private void RegisterIoC()
         {
             Container = new Container();
-            
+
             //Регистриуем основные компоненты
             Container.RegisterPerWebRequest<IQueryBuilder, QueryBuilder>();
             Container.RegisterPerWebRequest<ICommandBuilder, CommandBuilder>();
-            RegisterAllQueries(Container);
-            RegisterAllCommands(Container);
-            RegisterAllLogic(Container);
+            RegisterAllQueries();
+            RegisterAllCommands();
+            RegisterAllLogic();
 
             //Entity Framework contexts
             Container.RegisterPerWebRequest<IOptimalEducationDbContext, OptimalEducationDbContext>();
@@ -59,6 +60,7 @@ namespace OptimalEducation
                 new UserStore<ApplicationUser>(Container.GetInstance<DbContext>()));
             Container.RegisterPerWebRequest<IApplicationUserManager, ApplicationUserManager>();
             Container.RegisterPerWebRequest<IInfoExtractor, InfoExtractor>();
+            Container.RegisterPerWebRequest<IIdealResult, IdealEntrantResult>();
 
             Container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
             //Container.RegisterMvcIntegratedFilterProvider();
@@ -66,36 +68,31 @@ namespace OptimalEducation
             Container.Verify();
         }
 
-        private void RegisterAllCommands(Container container)
+        private void RegisterAllCommands()
         {
             Container.RegisterManyForOpenGeneric(
-                typeof(ICommand<>),
-                typeof(IOptimalEducationDbContext).Assembly);
+                typeof (ICommand<>),
+                typeof (IOptimalEducationDbContext).Assembly);
         }
 
-        private void RegisterAllQueries(Container container)
+        private void RegisterAllQueries()
         {
             Container.RegisterManyForOpenGeneric(
-                typeof(IQuery<,>),
-                typeof(IOptimalEducationDbContext).Assembly);
+                typeof (IQuery<,>),
+                typeof (IOptimalEducationDbContext).Assembly);
         }
 
-        private void RegisterAllLogic(Container container)
+        private void RegisterAllLogic()
         {
             Container.RegisterManyForOpenGeneric(
-                typeof(IDistanceRecomendator<,>),
+                typeof (IDistanceRecomendator<,>),
                 Lifestyle.Singleton,
-                typeof(EducationLineDistanceRecomendator).Assembly);
+                typeof (EducationLineDistanceRecomendator).Assembly);
 
             Container.RegisterManyForOpenGeneric(
-                typeof(ISummator<>),
+                typeof (ISummator<>),
                 //Lifestyle, ???
-                typeof(EducationLineSummator).Assembly);
-
-            Container.RegisterManyForOpenGeneric(
-                typeof(IIdealResult<>),
-                //Lifestyle, ???         
-                typeof(IdealEntrantResult).Assembly);
+                typeof (EducationLineSummator).Assembly);
 
             //По умолчанию будет возвращаться singleton класс со стандартными опциями вычисления
             //В отдельных классах в коде может присутсвовать ручное инстанцирование

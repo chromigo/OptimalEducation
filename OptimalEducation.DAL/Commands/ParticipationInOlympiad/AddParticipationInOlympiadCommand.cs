@@ -1,11 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.Queries;
 
-namespace OptimalEducation.DAL.Commands
+namespace OptimalEducation.DAL.Commands.ParticipationInOlympiad
 {
-    public class AddParticipationInOlympiadCommand: EFBaseCommand, ICommand<AddParticipationInOlympiadContext>
+    public class AddParticipationInOlympiadCommand : EfBaseCommand, ICommand<AddParticipationInOlympiadContext>
     {
         public AddParticipationInOlympiadCommand(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
@@ -13,13 +11,13 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(AddParticipationInOlympiadContext commandContext)
         {
-            _dbContext.ParticipationInOlympiads.Add(commandContext.ParticipationInOlympiad);
-            await _dbContext.SaveChangesAsync();
+            DbContext.ParticipationInOlympiads.Add(commandContext.ParticipationInOlympiad);
+            await DbContext.SaveChangesAsync();
         }
     }
 
-    public class AddParticipationInOlympiadContext:ICommandContext
+    public class AddParticipationInOlympiadContext : ICommandContext
     {
-        public ParticipationInOlympiad ParticipationInOlympiad { get; set; }      
+        public Models.ParticipationInOlympiad ParticipationInOlympiad { get; set; }
     }
 }

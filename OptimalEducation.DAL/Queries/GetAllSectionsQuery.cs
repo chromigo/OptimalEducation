@@ -6,7 +6,7 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllSectionsQuery : EFBaseQuery, IQuery<GetAllSectionsCriterion, Task<IEnumerable<Section>>>
+    public class GetAllSectionsQuery : EfBaseQuery, IQuery<GetAllSectionsCriterion, Task<IEnumerable<Section>>>
     {
         public GetAllSectionsQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -15,13 +15,13 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<IEnumerable<Section>> Ask(GetAllSectionsCriterion criterion)
         {
-            var sections = await _dbContext.Sections
+            var sections = await DbContext.Sections
                 .AsNoTracking()
                 .ToListAsync();
             return sections;
         }
-
     }
+
     public class GetAllSectionsCriterion : ICriterion
     {
     }

@@ -1,38 +1,35 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web.Routing;
-using OptimalEducation.Helpers;
-using Interfaces.CQRS;
-using NSubstitute;
-using System.Web;
-using System.Security.Principal;
-using OptimalEducation.DAL.Queries;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.ViewModels;
-using OptimalEducation.Areas.EntrantUser.Controllers;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Linq;
+using System.Security.Principal;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Interfaces.CQRS;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.Areas.EntrantUser.Controllers;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Queries.ParticipationInOlympiad;
+using OptimalEducation.Helpers;
 
 namespace OptimalEducation.Controllers
 {
     [TestClass]
     public class OlympiadControllerTest
     {
-        readonly ICommandBuilder commandBuilder = Substitute.For<ICommandBuilder>();
-        readonly IQueryBuilder queryBuilder = Substitute.For<IQueryBuilder>();
-        readonly IInfoExtractor infoExtractor = Substitute.For<IInfoExtractor>();
-        readonly RequestContext requestContext;
-
-        const int entrantId = 123;
+        private const int EntrantId = 123;
+        private readonly ICommandBuilder _commandBuilder = Substitute.For<ICommandBuilder>();
+        private readonly IInfoExtractor _infoExtractor = Substitute.For<IInfoExtractor>();
+        private readonly IQueryBuilder _queryBuilder = Substitute.For<IQueryBuilder>();
+        private readonly RequestContext _requestContext;
 
         public OlympiadControllerTest()
         {
-            requestContext = SubstituteRequerstContext();
+            _requestContext = SubstituteRequerstContext();
 
-            infoExtractor.ExtractEntrantId("").ReturnsForAnyArgs(Task.FromResult(entrantId));
+            _infoExtractor.ExtractEntrantId("").ReturnsForAnyArgs(Task.FromResult(EntrantId));
         }
 
         private RequestContext SubstituteRequerstContext()
@@ -55,24 +52,24 @@ namespace OptimalEducation.Controllers
         public void Index_get_correct_ParticipationInOlympiads_list()
         {
             //Arrange            
-            IEnumerable<ParticipationInOlympiad> participationInOlympiad = new List<ParticipationInOlympiad>()
+            IEnumerable<ParticipationInOlympiad> participationInOlympiad = new List<ParticipationInOlympiad>
             {
                 new ParticipationInOlympiad(),
                 new ParticipationInOlympiad(),
-                new ParticipationInOlympiad(),
+                new ParticipationInOlympiad()
             };
-            queryBuilder
+            _queryBuilder
                 .For<Task<IEnumerable<ParticipationInOlympiad>>>()
-                .With(Arg.Is<GetAllParticipationInOlympiadCriterion>(p => p.EntrantId == entrantId))
+                .With(Arg.Is<GetAllParticipationInOlympiadCriterion>(p => p.EntrantId == EntrantId))
                 .Returns(Task.FromResult(participationInOlympiad));
 
             //Act
-            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            var controller = new OlympiadController(_queryBuilder, _commandBuilder, _infoExtractor);
             controller.ControllerContext =
-                    new ControllerContext(requestContext, controller);
+                new ControllerContext(_requestContext, controller);
             var task = controller.Index();
             task.Wait();
-            var result = (ViewResult)task.Result;
+            var result = (ViewResult) task.Result;
             //Assert
             Assert.AreEqual(participationInOlympiad, result.Model);
         }
@@ -81,35 +78,37 @@ namespace OptimalEducation.Controllers
         public void Details_return_HttpStatusCodeBadRequest_if_id_is_null()
         {
             //Act
-            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            var controller = new OlympiadController(_queryBuilder, _commandBuilder, _infoExtractor);
             controller.ControllerContext =
-                    new ControllerContext(requestContext, controller);
+                new ControllerContext(_requestContext, controller);
             var task = controller.Details(null);
             task.Wait();
-            var result = ((HttpStatusCodeResult)task.Result);
+            var result = ((HttpStatusCodeResult) task.Result);
 
             //Assert
-            Assert.IsTrue(result.StatusCode== (int)HttpStatusCode.BadRequest);
+            Assert.IsTrue(result.StatusCode == (int) HttpStatusCode.BadRequest);
         }
 
         [TestMethod]
         public void Details_return_correct_ParticipationInOlympiads_if_id_is_correct()
         {
-            const int partInOlympId= 22;
+            const int partInOlympId = 22;
             var partInOlympResult = new ParticipationInOlympiad();
             //Arrange
-            queryBuilder
+            _queryBuilder
                 .For<Task<ParticipationInOlympiad>>()
-                .With(Arg.Is<GetCurrentParticipationInOlympiadCriterion>(p=>p.EntrantId==entrantId && p.ParticipationInOlympiadId == partInOlympId))
+                .With(
+                    Arg.Is<GetCurrentParticipationInOlympiadCriterion>(
+                        p => p.EntrantId == EntrantId && p.ParticipationInOlympiadId == partInOlympId))
                 .Returns(Task.FromResult(partInOlympResult));
 
             //Act
-            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            var controller = new OlympiadController(_queryBuilder, _commandBuilder, _infoExtractor);
             controller.ControllerContext =
-                    new ControllerContext(requestContext, controller);
+                new ControllerContext(_requestContext, controller);
             var task = controller.Details(partInOlympId);
             task.Wait();
-            var result = ((ViewResult)task.Result).Model;
+            var result = ((ViewResult) task.Result).Model;
 
             //Assert
             Assert.IsTrue(result == partInOlympResult);
@@ -119,17 +118,18 @@ namespace OptimalEducation.Controllers
         public void Details_return_HttpNotFound_if_not_found_element_in_out_collections()
         {
             const int partInOlympId = 23;
-            ParticipationInOlympiad partInOlympResult=null;
             //Arrange
-            queryBuilder
+            _queryBuilder
                 .For<Task<ParticipationInOlympiad>>()
-                .With(Arg.Is<GetCurrentParticipationInOlympiadCriterion>(p => p.EntrantId == entrantId && p.ParticipationInOlympiadId == partInOlympId))
-                .Returns(Task.FromResult(partInOlympResult));
+                .With(
+                    Arg.Is<GetCurrentParticipationInOlympiadCriterion>(
+                        p => p.EntrantId == EntrantId && p.ParticipationInOlympiadId == partInOlympId))
+                .Returns(Task.FromResult<ParticipationInOlympiad>(null));
 
             //Act
-            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
+            var controller = new OlympiadController(_queryBuilder, _commandBuilder, _infoExtractor);
             controller.ControllerContext =
-                    new ControllerContext(requestContext, controller);
+                new ControllerContext(_requestContext, controller);
             var task = controller.Details(partInOlympId);
             task.Wait();
 
@@ -140,25 +140,25 @@ namespace OptimalEducation.Controllers
         [TestMethod]
         public void Create_get_method_return_all_olympiads()
         {
-            IEnumerable<Olympiad> olympiads = new List<Olympiad>()
-                {
-                    new Olympiad(){Id=1,Name="o1"},
-                    new Olympiad(){Id=2,Name="o2"},
-                    new Olympiad(){Id=3,Name="o3"},
-                    new Olympiad(){Id=4,Name="o4"}
-                };
+            IEnumerable<Olympiad> olympiads = new List<Olympiad>
+            {
+                new Olympiad {Id = 1, Name = "o1"},
+                new Olympiad {Id = 2, Name = "o2"},
+                new Olympiad {Id = 3, Name = "o3"},
+                new Olympiad {Id = 4, Name = "o4"}
+            };
             //Arrange
-            queryBuilder
+            _queryBuilder
                 .For<Task<IEnumerable<Olympiad>>>()
                 .With(Arg.Any<GetAllOlympiadsCriterion>())
                 .Returns(Task.FromResult(olympiads));
 
             //Act
-            var controller = new OlympiadController(queryBuilder, commandBuilder, infoExtractor);
-            controller.ControllerContext = new ControllerContext(requestContext, controller);
+            var controller = new OlympiadController(_queryBuilder, _commandBuilder, _infoExtractor);
+            controller.ControllerContext = new ControllerContext(_requestContext, controller);
             var task = controller.Create();
             task.Wait();
-            var result = ((ViewResult)task.Result).ViewBag.OlympiadId as SelectList;
+            var result = ((ViewResult) task.Result).ViewBag.OlympiadId as SelectList;
 
             //Assert
             Assert.AreEqual(olympiads, result.Items);

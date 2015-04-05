@@ -1,23 +1,22 @@
-﻿using OptimalEducation.DAL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Interfaces.CQRS;
+using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-using Interfaces.CQRS;
 
 namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EntrantCharacterizer : ICharacterizer<Entrant>
     {
-        readonly ISummator<Entrant> _entrantSummator;
-        readonly IEducationCharacteristicNamesHelper _namesHelper;
-        readonly IIdealResult<Entrant> _idealResult;
+        private readonly ISummator<Entrant> _entrantSummator;
+        private readonly IIdealResult _idealResult;
+        private readonly IEducationCharacteristicNamesHelper _namesHelper;
 
-        public EntrantCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator, IIdealResult<Entrant> idealResult)
+        public EntrantCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<Entrant> entrantSummator,
+            IIdealResult idealResult)
         {
             _namesHelper = namesHelper;
 
@@ -47,11 +46,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
                 sum = _entrantSummator.CalculateSimpleSum(subject);
                 idealResult = await _idealResult.GetSimpleResult();
             }
-            
+
             //Нормируем
             foreach (var item in sum)
             {
-                totalCharacteristics[item.Key] = item.Value / idealResult[item.Key];
+                totalCharacteristics[item.Key] = item.Value/idealResult[item.Key];
             }
 
             return totalCharacteristics;
@@ -60,7 +59,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 
     public class EntrantSummator : ISummator<Entrant>
     {
-        EducationCharacteristicNamesHelper _namesHelper;
+        private readonly EducationCharacteristicNamesHelper _namesHelper;
 
         public EntrantSummator(EducationCharacteristicNamesHelper namesHelper)
         {
@@ -68,7 +67,9 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
         }
 
         #region Построение словарей с характеристиками
-        private Dictionary<string, double> Characterising(Action<Dictionary<string, List<double>>, Entrant> partSumsMethod, Entrant entrant)
+
+        private Dictionary<string, double> Characterising(
+            Action<Dictionary<string, List<double>>, Entrant> partSumsMethod, Entrant entrant)
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
             var resultCharacteristics = new Dictionary<string, double>();
@@ -85,18 +86,18 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             foreach (var item in characteristicAddItems)
             {
                 var itemList = (from elem in item.Value
-                                orderby elem descending
-                                select elem).ToList();
+                    orderby elem descending
+                    select elem).ToList();
                 //Используем идею геометрической прогрессии
                 //Наибольший вклад вносит первое(наибольшее) значение. 
                 //чем больше результатов, тем меньше их вклад
                 //Пример: 4,3,3,2: 4*1+3/2 + 3/4 +2/8
                 double b = 1;
                 double sum = 0;
-                for (int i = 0; i < itemList.Count; i++)
+                for (var i = 0; i < itemList.Count; i++)
                 {
-                    sum += itemList[i] * b;
-                    b = b / 4;
+                    sum += itemList[i]*b;
+                    b = b/4;
                 }
 
                 resultCharacteristics[item.Key] = sum;
@@ -104,49 +105,52 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             return resultCharacteristics;
         }
 
-        private void CreateUnatedStateExamPartSums(Dictionary<string, List<double>> unatedStateExamCharactericAddItems, Entrant entrant)
+        private void CreateUnatedStateExamPartSums(Dictionary<string, List<double>> unatedStateExamCharactericAddItems,
+            Entrant entrant)
         {
             //Вычисляем пары "название кластера"+"спискок частичных сумм"
             foreach (var exam in entrant.UnitedStateExams)
             {
                 if (exam.Result.HasValue)
                 {
-                    double result = exam.Result.Value / 100.0;//нормализованный результат(100б=1.00, 70,=0.7)
+                    var result = exam.Result.Value/100.0; //нормализованный результат(100б=1.00, 70,=0.7)
                     var discipline = exam.Discipline;
                     foreach (var weight in discipline.Weights)
                     {
                         var coeff = weight.Coefficient;
                         var characteristicName = weight.Characterisic.Name;
 
-                        var characteristicResult = result * coeff;
+                        var characteristicResult = result*coeff;
                         unatedStateExamCharactericAddItems[characteristicName].Add(characteristicResult);
                     }
                 }
             }
         }
 
-        private void CreateSchoolMarkPartSums(Dictionary<string, List<double>> schoolMarkCharactericAddItems, Entrant entrant)
+        private void CreateSchoolMarkPartSums(Dictionary<string, List<double>> schoolMarkCharactericAddItems,
+            Entrant entrant)
         {
             foreach (var shoolMark in entrant.SchoolMarks)
             {
                 if (shoolMark.Result.HasValue)
                 {
                     //нормализованный результат(5=1.00)
-                    double result = shoolMark.Result.Value / 5.0;
+                    var result = shoolMark.Result.Value/5.0;
                     var discipline = shoolMark.SchoolDiscipline;
                     foreach (var weight in discipline.Weights)
                     {
                         var coeff = weight.Coefficient;
                         var characteristicName = weight.Characterisic.Name;
 
-                        var characteristicResult = result * coeff;
+                        var characteristicResult = result*coeff;
                         schoolMarkCharactericAddItems[characteristicName].Add(characteristicResult);
                     }
                 }
             }
         }
 
-        private void CreateOlympiadPartSums(Dictionary<string, List<double>> olympiadCharacteristicAddItems, Entrant entrant)
+        private void CreateOlympiadPartSums(Dictionary<string, List<double>> olympiadCharacteristicAddItems,
+            Entrant entrant)
         {
             foreach (var olympResult in entrant.ParticipationInOlympiads)
             {
@@ -160,11 +164,14 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
                     double characteristicResult = 0;
                     switch (result)
                     {
-                        case OlypmpiadResult.FirstPlace: characteristicResult = ((double)result / 100) * coeff;
+                        case OlypmpiadResult.FirstPlace:
+                            characteristicResult = ((double) result/100)*coeff;
                             break;
-                        case OlypmpiadResult.SecondPlace: characteristicResult = ((double)result / 100) * coeff;
+                        case OlypmpiadResult.SecondPlace:
+                            characteristicResult = ((double) result/100)*coeff;
                             break;
-                        case OlypmpiadResult.ThirdPlace: characteristicResult = ((double)result / 100) * coeff;
+                        case OlypmpiadResult.ThirdPlace:
+                            characteristicResult = ((double) result/100)*coeff;
                             break;
                     }
 
@@ -173,7 +180,8 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             }
         }
 
-        private void CreateSectionPartSums(Dictionary<string, List<double>> sectionCharacteristicAddItems, Entrant entrant)
+        private void CreateSectionPartSums(Dictionary<string, List<double>> sectionCharacteristicAddItems,
+            Entrant entrant)
         {
             foreach (var sectionResult in entrant.ParticipationInSections)
             {
@@ -192,7 +200,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
                     var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
-                    double characteristicResult = result * coeff;
+                    var characteristicResult = result*coeff;
 
                     sectionCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
@@ -211,14 +219,15 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
                     //TODO: Реализовать особую логику учета данных?
                     //пока просто учитывается наличие хобби как факт
                     double someValue = 1;
-                    double characteristicResult = someValue * coeff;
+                    var characteristicResult = someValue*coeff;
 
                     hobbieCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
         }
 
-        private void CreateSchoolTypePartSums(Dictionary<string, List<double>> schoolTypeCharacteristicAddItems, Entrant entrant)
+        private void CreateSchoolTypePartSums(Dictionary<string, List<double>> schoolTypeCharacteristicAddItems,
+            Entrant entrant)
         {
             //для простоты будем брать последнюю школу, где абитуриент учился
             //(возможно стоит рассмотреть более сложный вариант в будущем)
@@ -226,7 +235,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             if (lastParticipationInSchool != null)
             {
                 //Или еще учитывать кол-во лет обучения?
-                var quality = lastParticipationInSchool.School.EducationQuality / 100.0;
+                var quality = lastParticipationInSchool.School.EducationQuality/100.0;
                 var schoolWeights = lastParticipationInSchool.School.Weights;
                 foreach (var weight in schoolWeights)
                 {
@@ -234,18 +243,20 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
                     var characteristicName = weight.Characterisic.Name;
 
                     //TODO: Реализовать особую логику учета данных?
-                    double characteristicResult = quality * coeff;
+                    var characteristicResult = quality*coeff;
 
                     schoolTypeCharacteristicAddItems[characteristicName].Add(characteristicResult);
                 }
             }
         }
+
         #endregion
 
         #region 2 Метода + вспомогаетльные для вычисления результата
+
         /// <summary>
-        /// Вычесленный результат по правилу: простое сложение частичных результатов
-        /// (по идее будет плохой результат, если, к примеру, не указаны олимпиады. Возможно такое поведение и нужно.)
+        ///     Вычесленный результат по правилу: простое сложение частичных результатов
+        ///     (по идее будет плохой результат, если, к примеру, не указаны олимпиады. Возможно такое поведение и нужно.)
         /// </summary>
         /// <returns></returns>
         public Dictionary<string, double> CalculateSimpleSum(Entrant entrant)
@@ -263,7 +274,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             Dictionary<string, double> olympiadCharacteristics;
             //etc dictionary
 
-            
+
             if (true)
             {
                 unatedStateExamCharacteristics = Characterising(CreateUnatedStateExamPartSums, entrant);
@@ -292,6 +303,7 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 
             return totalCharacteristics;
         }
+
         public Dictionary<string, double> CalculateComplicatedSum(Entrant entrant)
         {
             var characteristicAddItems = new Dictionary<string, List<double>>();
@@ -338,15 +350,15 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             //Cкладываем по аналогии с геом. прогрессией и делим на норм число
             foreach (var item in characteristicAddItems)
             {
-                var itemList = (from elem in  item.Value
-                                   orderby elem descending
-                                   select elem).ToList();
+                var itemList = (from elem in item.Value
+                    orderby elem descending
+                    select elem).ToList();
                 double b = 1;
                 double sum = 0;
-                for (int i = 0; i < itemList.Count; i++)
+                for (var i = 0; i < itemList.Count; i++)
                 {
-                    sum += itemList[i] * b;
-                    b = b / 4;
+                    sum += itemList[i]*b;
+                    b = b/4;
                 }
 
                 resultCharacteristics[item.Key] = sum;
@@ -354,52 +366,55 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 
             return resultCharacteristics;
         }
+
         #endregion
     }
 
     /// <summary>
-    /// Класс для вычислений идеального результата.
-    /// Используется при нормировании результата.
+    ///     Класс для вычислений идеального результата.
+    ///     Используется при нормировании результата.
     /// </summary>
-    public class IdealEntrantResult : IIdealResult<Entrant>
+    public class IdealEntrantResult : IIdealResult
     {
-        readonly ISummator<Entrant> _entrantSummator;
-        readonly IQueryBuilder _queryBuilder;
+        //Для 2-го предположения(геом сложение+ нормир)
+        private Dictionary<string, double> _complicatedResult;
+        //Для 1-го предположения(простое сложение+ нормир)
+        private Dictionary<string, double> _simpleResult;
+        private readonly ISummator<Entrant> _entrantSummator;
+        private readonly IQueryBuilder _queryBuilder;
+
         public IdealEntrantResult(ISummator<Entrant> entrantSummator, IQueryBuilder queryBuilder)
         {
             _entrantSummator = entrantSummator;
             _queryBuilder = queryBuilder;
         }
 
-        //Для 1-го предположения(простое сложение+ нормир)
-        Dictionary<string, double> simpleResult;
         public async Task<Dictionary<string, double>> GetSimpleResult()
         {
-            if(simpleResult==null)
+            if (_simpleResult == null)
             {
                 var idealEntrant = await _queryBuilder
                     .For<Task<Entrant>>()
-				    .With(new GetEntrantForCharacterizerCriterion() {EntrantId=2});
+                    .With(new GetEntrantForCharacterizerCriterion {EntrantId = 2});
 
-                simpleResult = _entrantSummator.CalculateSimpleSum(idealEntrant);
+                _simpleResult = _entrantSummator.CalculateSimpleSum(idealEntrant);
             }
 
-            return simpleResult;
+            return _simpleResult;
         }
-        //Для 2-го предположения(геом сложение+ нормир)
-        Dictionary<string, double> complicatedResult;
+
         public async Task<Dictionary<string, double>> GetComplicatedResult()
         {
-            if(complicatedResult==null)
+            if (_complicatedResult == null)
             {
                 var idealEntrant = await _queryBuilder
                     .For<Task<Entrant>>()
-                    .With(new GetEntrantForCharacterizerCriterion() { EntrantId = 2 });
+                    .With(new GetEntrantForCharacterizerCriterion {EntrantId = 2});
 
-                complicatedResult = _entrantSummator.CalculateComplicatedSum(idealEntrant);
+                _complicatedResult = _entrantSummator.CalculateComplicatedSum(idealEntrant);
             }
 
-            return complicatedResult;
+            return _complicatedResult;
         }
     }
 }

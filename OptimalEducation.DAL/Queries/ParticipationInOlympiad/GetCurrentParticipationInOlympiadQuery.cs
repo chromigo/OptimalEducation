@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
+﻿using System.Data.Entity;
 using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
 
-namespace OptimalEducation.DAL.Queries
+namespace OptimalEducation.DAL.Queries.ParticipationInOlympiad
 {
-    public class GetCurrentParticipationInOlympiadQuery : EFBaseQuery, IQuery<GetCurrentParticipationInOlympiadCriterion, Task<ParticipationInOlympiad>>
+    public class GetCurrentParticipationInOlympiadQuery : EfBaseQuery,
+        IQuery<GetCurrentParticipationInOlympiadCriterion, Task<Models.ParticipationInOlympiad>>
     {
         public GetCurrentParticipationInOlympiadQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<ParticipationInOlympiad> Ask(GetCurrentParticipationInOlympiadCriterion criterion)
+        public async Task<Models.ParticipationInOlympiad> Ask(GetCurrentParticipationInOlympiadCriterion criterion)
         {
-            var participationinolympiad = await _dbContext.ParticipationInOlympiads
+            var participationinolympiad = await DbContext.ParticipationInOlympiads
                 .Include(p => p.Olympiad)
                 .AsNoTracking()
-                .SingleOrDefaultAsync(p => p.EntrantId == criterion.EntrantId && p.Id == criterion.ParticipationInOlympiadId);
+                .SingleOrDefaultAsync(
+                    p => p.EntrantId == criterion.EntrantId && p.Id == criterion.ParticipationInOlympiadId);
             return participationinolympiad;
         }
     }

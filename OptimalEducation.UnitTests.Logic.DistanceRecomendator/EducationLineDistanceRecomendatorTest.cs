@@ -1,11 +1,11 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.DAL.Models;
-using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-using NSubstitute;
 
 namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
 {
@@ -20,27 +20,33 @@ namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
             var educationLineCharacterizer = Substitute.For<ICharacterizer<EducationLine>>();
 
             var educationLine = new EducationLine();
-            var entrantList = new List<Entrant>()
+            var entrantList = new List<Entrant>
             {
-                new Entrant(){Id=1},
-                new Entrant(){Id=2},
+                new Entrant {Id = 1},
+                new Entrant {Id = 2}
             };
 
-            var educationLineCharcteristic = new Dictionary<string, double>();
-            educationLineCharcteristic.Add("Русский", 0.5);
-            educationLineCharcteristic.Add("Математика", 0.6);
-            educationLineCharcteristic.Add("Информатика", 0.7);
-            var entrantCharacteristic1 = new Dictionary<string, double>();
-            entrantCharacteristic1.Add("Русский", 0.8);
-            entrantCharacteristic1.Add("Математика", 0.6);
-            entrantCharacteristic1.Add("Информатика", 0.5);
-            var entrantCharacteristic2 = new Dictionary<string, double>();
-            entrantCharacteristic2.Add("Русский", 0.6);
-            entrantCharacteristic2.Add("Математика", 0.7);
-            entrantCharacteristic2.Add("Информатика", 0.8);
+            var educationLineCharcteristic = new Dictionary<string, double>
+            {
+                {"Русский", 0.5},
+                {"Математика", 0.6},
+                {"Информатика", 0.7}
+            };
+            var entrantCharacteristic1 = new Dictionary<string, double>
+            {
+                {"Русский", 0.8},
+                {"Математика", 0.6},
+                {"Информатика", 0.5}
+            };
+            var entrantCharacteristic2 = new Dictionary<string, double>
+            {
+                {"Русский", 0.6},
+                {"Математика", 0.7},
+                {"Информатика", 0.8}
+            };
 
-            var entrantEdLineOneDistance = Math.Abs(0.5 - 0.8) + Math.Abs(0.6 - 0.6) + Math.Abs(0.7 - 0.5);//0.5
-            var entrantEdLineTwoDistance = Math.Abs(0.5 - 0.6) + Math.Abs(0.6 - 0.7) + Math.Abs(0.7 - 0.8);//0.3
+            var entrantEdLineOneDistance = Math.Abs(0.5 - 0.8) + Math.Abs(0.6 - 0.6) + Math.Abs(0.7 - 0.5); //0.5
+            var entrantEdLineTwoDistance = Math.Abs(0.5 - 0.6) + Math.Abs(0.6 - 0.7) + Math.Abs(0.7 - 0.8); //0.3
 
             educationLineCharacterizer
                 .Calculate(educationLine)
@@ -53,7 +59,8 @@ namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
                 .Returns(Task.FromResult(entrantCharacteristic2));
 
             //Act
-            var entrantRecomendator = new EducationLineDistanceRecomendator(entrantCharacterizer, educationLineCharacterizer);
+            var entrantRecomendator = new EducationLineDistanceRecomendator(entrantCharacterizer,
+                educationLineCharacterizer);
             var taskResult = entrantRecomendator.GetRecomendation(educationLine, entrantList);
             taskResult.Wait();
             var result = taskResult.Result;

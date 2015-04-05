@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
+
 namespace OptimalEducation.DAL.Queries
 {
-     
-    public class GetSchoolMarksOfEntrantQuery : EFBaseQuery, IQuery<GetSchoolMarksOfEntrantCriterion, Task<IEnumerable<SchoolMark>>>
+    public class GetSchoolMarksOfEntrantQuery : EfBaseQuery,
+        IQuery<GetSchoolMarksOfEntrantCriterion, Task<IEnumerable<SchoolMark>>>
     {
         public GetSchoolMarksOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -16,7 +17,7 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<IEnumerable<SchoolMark>> Ask(GetSchoolMarksOfEntrantCriterion criterion)
         {
-            var schoolMarks = await _dbContext.SchoolMarks
+            var schoolMarks = await DbContext.SchoolMarks
                 .Include(u => u.SchoolDiscipline)
                 .Where(p => p.EntrantId == criterion.EntrantId)
                 .AsNoTracking()
@@ -29,5 +30,4 @@ namespace OptimalEducation.DAL.Queries
     {
         public int EntrantId { get; set; }
     }
-
 }

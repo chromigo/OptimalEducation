@@ -3,17 +3,17 @@
 @if (EnumHelper.IsValidForEnumHelper(ViewData.ModelMetadata))
 {
     // Provide radio buttons for current Enum value
-    string name = ViewData.ModelMetadata.PropertyName;
-    string id = Html.IdForModel().ToString();
-    int itemNum = 0;
+    var name = ViewData.ModelMetadata.PropertyName;
+    var id = Html.IdForModel().ToString();
+    var itemNum = 0;
 
-    foreach (SelectListItem item in EnumHelper.GetSelectList(ViewData.ModelMetadata, (Enum)Model))
+    foreach (var item in EnumHelper.GetSelectList(ViewData.ModelMetadata, Model))
     {
-        string myId = id + itemNum++.ToString();
-        string myChecked = item.Selected ? "checked" : null;
+        var myId = id + itemNum++;
+        var myChecked = item.Selected ? "checked" : null;
 
         <label class="radio-inline">
-            <input type="radio" id="@(myId)" name="@(name)" value="@(item.Value)" checked="@(myChecked)" /> @(item.Text)
+            <input type="radio" id="@(myId)" name="@(name)" value="@(item.Value)" checked="@(myChecked)"/> @(item.Text)
         </label>
     }
 }

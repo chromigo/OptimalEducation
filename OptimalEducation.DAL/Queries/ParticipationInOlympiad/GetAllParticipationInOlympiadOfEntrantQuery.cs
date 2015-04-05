@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
 
-namespace OptimalEducation.DAL.Queries
+namespace OptimalEducation.DAL.Queries.ParticipationInOlympiad
 {
-    public class GetAllParticipationInOlympiadOfEntrantQuery :  EFBaseQuery, IQuery<GetAllParticipationInOlympiadCriterion, Task<IEnumerable<ParticipationInOlympiad>>>
+    public class GetAllParticipationInOlympiadOfEntrantQuery : EfBaseQuery,
+        IQuery<GetAllParticipationInOlympiadCriterion, Task<IEnumerable<Models.ParticipationInOlympiad>>>
     {
         public GetAllParticipationInOlympiadOfEntrantQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<ParticipationInOlympiad>> Ask(GetAllParticipationInOlympiadCriterion criterion)
+        public async Task<IEnumerable<Models.ParticipationInOlympiad>> Ask(
+            GetAllParticipationInOlympiadCriterion criterion)
         {
-			var participationinolympiads =await _dbContext.ParticipationInOlympiads
-				.Include(p => p.Entrant)
-				.Include(p => p.Olympiad)
-				.Where(p => p.EntrantId == criterion.EntrantId)
+            var participationinolympiads = await DbContext.ParticipationInOlympiads
+                .Include(p => p.Entrant)
+                .Include(p => p.Olympiad)
+                .Where(p => p.EntrantId == criterion.EntrantId)
                 .AsNoTracking()
                 .ToListAsync();
             return participationinolympiads;

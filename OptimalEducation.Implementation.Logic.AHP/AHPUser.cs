@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Implementation.CQRS;
+using OptimalEducation.DAL;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.Characterizers;
 
@@ -11,15 +12,17 @@ namespace OptimalEducation.Implementation.Logic.AHP
     /// <summary>
     ///     Расчет приоритетности направлений с помощью метода анализа иерарохий относительно пользователя
     /// </summary>
-    [Obsolete("АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем.")]
+    [Obsolete(
+        "АХТУНГ! Страшный говнокод! Был удален и возвращен по причине - нужно чтобы временно работало. В дальнейшем перепишется или выпилится насовсем."
+        )]
     public class AhpUser
     {
         private int _totalEducationLines;
+        private readonly OptimalEducationDbContext _context = new OptimalEducationDbContext();
         private readonly List<EducationLine> _educationLines = new List<EducationLine>();
         private readonly Entrant _entrant;
         //Общие настройки метода и приоритеты критериев
         private readonly AhpUserSettings _settings;
-        private readonly OptimalEducationDbContext _context = new OptimalEducationDbContext();
 
         public AhpUser(Entrant entrantGiven, List<EducationLine> educationLinesGiven, AhpUserSettings settings)
         {
@@ -73,6 +76,7 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
             return FinalCalculate();
         }
+
         //Критерий расстояний - расчеты приоритетов для всех подходящих направлений
         //Расчет конечных приоритетов и сортировка
         private List<TotalResultUnit> FinalCalculate()
@@ -93,12 +97,13 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
                 _allCriterionContainer.Find(x => x.DatabaseId == _firstCriterionContainer[i].DatabaseId)
                     .FirstCriterionFinalPriority =
-                    _firstCriterionContainer[i].LocalPriority * _settings.FirstCriterionPriority;
+                    _firstCriterionContainer[i].LocalPriority*_settings.FirstCriterionPriority;
             }
             //Потом тоже самое для 2 критерия
             for (var i = 0; i < _secondCriterionContainer.Count; i++)
             {
-                if ((_allCriterionContainer.FindIndex(x => x.DatabaseId == _secondCriterionContainer[i].DatabaseId)) >= 0)
+                if ((_allCriterionContainer.FindIndex(x => x.DatabaseId == _secondCriterionContainer[i].DatabaseId)) >=
+                    0)
                 {
                     //DUNNO LOL
                 }
@@ -111,7 +116,7 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
                 _allCriterionContainer.Find(x => x.DatabaseId == _secondCriterionContainer[i].DatabaseId)
                     .SecondCriterionFinalPriority =
-                    _secondCriterionContainer[i].LocalPriority * _settings.SecondCriterionPriority;
+                    _secondCriterionContainer[i].LocalPriority*_settings.SecondCriterionPriority;
             }
             //Потом тоже самое для 3-го
             for (var i = 0; i < _thirdCriterionContainer.Count; i++)
@@ -129,14 +134,15 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
                 _allCriterionContainer.Find(x => x.DatabaseId == _thirdCriterionContainer[i].DatabaseId)
                     .ThirdCriterionFinalPriority =
-                    _thirdCriterionContainer[i].LocalPriorityFaculty * _settings.ThirdCriterionPriority *
+                    _thirdCriterionContainer[i].LocalPriorityFaculty*_settings.ThirdCriterionPriority*
                     (1 - HeIprestigePart) +
-                    _thirdCriterionContainer[i].LocalPriorityHei * _settings.ThirdCriterionPriority * HeIprestigePart;
+                    _thirdCriterionContainer[i].LocalPriorityHei*_settings.ThirdCriterionPriority*HeIprestigePart;
             }
             //Потом тоже самое для 4 критерия
             for (var i = 0; i < _fourthCriterionContainer.Count; i++)
             {
-                if ((_allCriterionContainer.FindIndex(x => x.DatabaseId == _fourthCriterionContainer[i].DatabaseId)) >= 0)
+                if ((_allCriterionContainer.FindIndex(x => x.DatabaseId == _fourthCriterionContainer[i].DatabaseId)) >=
+                    0)
                 {
                     //DUNNO LOL
                     //ЕВГЕНИЙ: БЛЯЯЯ. ЧИтающий этот говнокод, да узри же тот же ужас и батхерт, который испытал я, пытаясь причесать его...
@@ -150,7 +156,7 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
                 _allCriterionContainer.Find(x => x.DatabaseId == _fourthCriterionContainer[i].DatabaseId)
                     .FourthCriterionFinalPriority =
-                    _fourthCriterionContainer[i].LocalPriority * _settings.FourthCriterionPriority;
+                    _fourthCriterionContainer[i].LocalPriority*_settings.FourthCriterionPriority;
             }
 
             //Завершающее сложение и заполнение выходного словарая
@@ -167,6 +173,7 @@ namespace OptimalEducation.Implementation.Logic.AHP
 
             return _allCriterionContainer;
         }
+
         //Критерий трудности по ЕГЭ - заполнение направлений во временный список
         private void InitialiseFirstCriterion()
         {
@@ -327,12 +334,14 @@ namespace OptimalEducation.Implementation.Logic.AHP
             var queryBuilder = new QueryBuilder();
             var educationCharacteristicNamesHelper = new EducationCharacteristicNamesHelper(queryBuilder);
             var entrantSummator = new EntrantSummator(educationCharacteristicNamesHelper);
-            var entrantCharacterizer = new EntrantCharacterizer(educationCharacteristicNamesHelper, entrantSummator, new IdealEntrantResult(entrantSummator, queryBuilder));
+            var entrantCharacterizer = new EntrantCharacterizer(educationCharacteristicNamesHelper, entrantSummator,
+                new IdealEntrantResult(entrantSummator, queryBuilder));
             _entrantCharacteristics = await entrantCharacterizer.Calculate(_entrant);
 
             _maxEntrantClusterSum = _entrantCharacteristics.Values.Max();
             var educationLineSummator = new EducationLineSummator(educationCharacteristicNamesHelper);
-            var edLineClusterizer = new EducationLineCharacterizer(educationCharacteristicNamesHelper, educationLineSummator, new IdealEducationLineResult(educationLineSummator, queryBuilder));
+            var edLineClusterizer = new EducationLineCharacterizer(educationCharacteristicNamesHelper,
+                educationLineSummator, new IdealEducationLineResult(educationLineSummator, queryBuilder));
 
             foreach (var edLine in _educationLines)
             {
@@ -536,7 +545,10 @@ namespace OptimalEducation.Implementation.Logic.AHP
                     educationLine.HasCoordinates = false;
                     educationLine.LocalPriority = 0;
 
-                    educationLine.Distance = edLine.Faculty.HigherEducationInstitution.City.Id == _settings.FourthCriterionCityId ? 0 : 9.0;
+                    educationLine.Distance = edLine.Faculty.HigherEducationInstitution.City.Id ==
+                                             _settings.FourthCriterionCityId
+                        ? 0
+                        : 9.0;
 
                     counter++;
 
@@ -576,8 +588,6 @@ namespace OptimalEducation.Implementation.Logic.AHP
             }
             _fourthCriterionMatrixSize = counter;
         }
-
-        
 
         private void CalculateFourthCriterion()
         {

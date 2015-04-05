@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Commands
 {
-    public class UpdateEntrantHobbieCommand : EFBaseCommand, ICommand<UpdateEntrantHobbieContext>
+    public class UpdateEntrantHobbieCommand : EfBaseCommand, ICommand<UpdateEntrantHobbieContext>
     {
         public UpdateEntrantHobbieCommand(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -19,14 +16,13 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(UpdateEntrantHobbieContext commandContext)
         {
-            var currentEntrant = await _dbContext.Entrants.SingleAsync(p => p.Id == commandContext.EntrantId);
-            var allHobbies = await _dbContext.Hobbies.ToListAsync<Hobbie>();
+            var currentEntrant = await DbContext.Entrants.SingleAsync(p => p.Id == commandContext.EntrantId);
+            var allHobbies = await DbContext.Hobbies.ToListAsync();
 
             AddOrRemoveEntrantHobbies(commandContext.SelectedHobbies, allHobbies, currentEntrant);
-            _dbContext.Entry(currentEntrant).State = EntityState.Modified;
-            await _dbContext.SaveChangesAsync();
+            DbContext.Entry(currentEntrant).State = EntityState.Modified;
+            await DbContext.SaveChangesAsync();
         }
-
 
         private void AddOrRemoveEntrantHobbies(string[] selectedHobbies, List<Hobbie> allHobbies, Entrant currentEntrant)
         {
@@ -39,11 +35,7 @@ namespace OptimalEducation.DAL.Commands
             }
             else
             {
-                var selectedHobbiesList = new List<int>();
-                foreach (var hobbie in selectedHobbies)
-                {
-                    selectedHobbiesList.Add(int.Parse(hobbie));
-                }
+                var selectedHobbiesList = selectedHobbies.Select(int.Parse).ToList();
 
                 var lastUserHobbieIds = currentEntrant.Hobbies.Select(h => h.Id);
                 foreach (var hobbie in allHobbies)
@@ -64,6 +56,7 @@ namespace OptimalEducation.DAL.Commands
             }
         }
     }
+
     public class UpdateEntrantHobbieContext : ICommandContext
     {
         public int EntrantId { get; set; }

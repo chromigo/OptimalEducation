@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
 
-namespace OptimalEducation.DAL.Queries
+namespace OptimalEducation.DAL.Queries.ParticipationInSection
 {
-    public class GetParticipationInSectionsOfEntrantQuery : EFBaseQuery, IQuery<GetParticipationInSectionsOfEntrantCriterion, Task<IEnumerable<ParticipationInSection>>>
+    public class GetParticipationInSectionsOfEntrantQuery : EfBaseQuery,
+        IQuery<GetParticipationInSectionsOfEntrantCriterion, Task<IEnumerable<Models.ParticipationInSection>>>
     {
         public GetParticipationInSectionsOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<IEnumerable<ParticipationInSection>> Ask(GetParticipationInSectionsOfEntrantCriterion criterion)
+        public async Task<IEnumerable<Models.ParticipationInSection>> Ask(
+            GetParticipationInSectionsOfEntrantCriterion criterion)
         {
-            var participationinSections = await _dbContext.ParticipationInSections
+            var participationinSections = await DbContext.ParticipationInSections
                 .Include(p => p.Section)
                 .Where(p => p.EntrantsId == criterion.EntrantId)
                 .AsNoTracking()

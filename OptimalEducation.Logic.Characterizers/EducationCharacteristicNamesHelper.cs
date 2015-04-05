@@ -1,12 +1,13 @@
-﻿using Interfaces.CQRS;
+﻿using System.Collections.Generic;
+using Interfaces.CQRS;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-using System.Collections.Generic;
 
 namespace OptimalEducation.Implementation.Logic.Characterizers
 {
     public class EducationCharacteristicNamesHelper : IEducationCharacteristicNamesHelper
     {
+        private IEnumerable<string> _names;
         private readonly IQueryBuilder _queryBuilder;
 
         public EducationCharacteristicNamesHelper(IQueryBuilder queryBuilder)
@@ -14,18 +15,13 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             _queryBuilder = queryBuilder;
         }
 
-        IEnumerable<string> names;
         public IEnumerable<string> Names
         {
             get
             {
-                if (names == null)
-                {
-                    names = _queryBuilder
-                        .For<IEnumerable<string>>()
-                        .With(new GetEducationCharacterisitcNamesCriterion());
-                }
-                return names;
+                return _names ?? (_names = _queryBuilder
+                    .For<IEnumerable<string>>()
+                    .With(new GetEducationCharacterisitcNamesCriterion()));
             }
         }
     }
