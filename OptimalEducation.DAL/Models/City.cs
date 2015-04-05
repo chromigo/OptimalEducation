@@ -1,35 +1,22 @@
+using System.Collections.Generic;
+using System.Data.Entity.Spatial;
+
 namespace OptimalEducation.DAL.Models
 {
-
-using System;
-    using System.Collections.Generic;
-using System.Data.Entity.Spatial;
-    
-public partial class City
-{
-
-    public City()
+    public class City
     {
+        public City()
+        {
+            HigherEducationInstitutions = new HashSet<HigherEducationInstitution>();
 
-        this.HigherEducationInstitutions = new HashSet<HigherEducationInstitution>();
+            Schools = new HashSet<School>();
+        }
 
-        this.Schools = new HashSet<School>();
-
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Prestige { get; set; }
+        public DbGeography Location { get; set; }
+        public virtual ICollection<HigherEducationInstitution> HigherEducationInstitutions { get; set; }
+        public virtual ICollection<School> Schools { get; set; }
     }
-
-
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-    
-    public int Prestige { get; set; }
-
-    public DbGeography Location { get; set; }
-
-    public virtual ICollection<HigherEducationInstitution> HigherEducationInstitutions { get; set; }
-
-    public virtual ICollection<School> Schools { get; set; }
-
-}
-
 }

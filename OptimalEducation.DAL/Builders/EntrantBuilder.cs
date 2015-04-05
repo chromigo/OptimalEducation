@@ -1,34 +1,30 @@
-﻿using OptimalEducation.DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Builders
 {
     //TODO: add async?
     public static class EntrantBuilder
     {
-        public static Entrant Create(string name, int id=-1)
+        public static Entrant Create(string name, int id = -1)
         {
-            var entrant = new Entrant()
-                {
-                    FirstName=name
-                };
+            var entrant = new Entrant
+            {
+                FirstName = name
+            };
             if (id >= 0) entrant.Id = id;
 
-            using(var context = new OptimalEducationDbContext())
-	        {
+            using (var context = new OptimalEducationDbContext())
+            {
                 //Добавляем ему результаты по ЕГЭ
-                foreach (var discipline in context.ExamDisciplines.Where(p=>p.ExamType==ExamType.UnitedStateExam))
+                foreach (var discipline in context.ExamDisciplines.Where(p => p.ExamType == ExamType.UnitedStateExam))
                 {
                     entrant.UnitedStateExams.Add(
                         new UnitedStateExam
                         {
                             Discipline = discipline,
                             Entrant = entrant,
-                            Result = 50,
+                            Result = 50
                         });
                 }
 
@@ -40,13 +36,13 @@ namespace OptimalEducation.DAL.Builders
                         {
                             SchoolDiscipline = schoolDisc,
                             Entrant = entrant,
-                            Result = 4,
+                            Result = 4
                         });
                 }
 
                 context.Entrants.Add(entrant);
                 context.SaveChanges();
-	        }
+            }
 
             return entrant;
         }

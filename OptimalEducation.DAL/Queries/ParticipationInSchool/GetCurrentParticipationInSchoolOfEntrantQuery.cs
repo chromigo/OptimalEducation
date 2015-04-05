@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
 
-namespace OptimalEducation.DAL.Queries
+namespace OptimalEducation.DAL.Queries.ParticipationInSchool
 {
-    public class GetCurrentParticipationInSchoolOfEntrantQuery : EFBaseQuery, IQuery<GetCurrentParticipationInSchoolOfEntrantCriterion, Task<ParticipationInSchool>>
+    public class GetCurrentParticipationInSchoolOfEntrantQuery : EfBaseQuery,
+        IQuery<GetCurrentParticipationInSchoolOfEntrantCriterion, Task<Models.ParticipationInSchool>>
     {
         public GetCurrentParticipationInSchoolOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<ParticipationInSchool> Ask(GetCurrentParticipationInSchoolOfEntrantCriterion criterion)
+        public async Task<Models.ParticipationInSchool> Ask(GetCurrentParticipationInSchoolOfEntrantCriterion criterion)
         {
-            var participation = await _dbContext.ParticipationInSchools
+            var participation = await DbContext.ParticipationInSchools
                 .Include(p => p.School)
-                .Where(p => p.EntrantsId == criterion.EntrantId && p.Id==criterion.Id)
+                .Where(p => p.EntrantsId == criterion.EntrantId && p.Id == criterion.Id)
                 .AsNoTracking()
                 .SingleOrDefaultAsync();
             return participation;

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OptimalEducation.Interfaces.Logic.DistanceRecomendator
 {
-    public interface IDistanceRecomendator<TSubject, TObjects>
+    public interface IDistanceRecomendator<in TSubject, TObjects>
     {
         Task<Dictionary<TObjects, double>> GetRecomendation(TSubject subject, IEnumerable<TObjects> objects);
     }

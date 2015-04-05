@@ -1,9 +1,8 @@
+using System.Data.Entity.Migrations;
+
 namespace OptimalEducation.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class HEIFullName : DbMigration
+    public partial class HeiFullName : DbMigration
     {
         public override void Up()
         {

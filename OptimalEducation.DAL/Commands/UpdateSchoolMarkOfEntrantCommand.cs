@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using OptimalEducation.DAL.Models;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Commands
 {
-    public class UpdateSchoolMarkOfEntrantCommand : EFBaseCommand, ICommand<UpdateSchoolMarkOfEntrantContext>
+    public class UpdateSchoolMarkOfEntrantCommand : EfBaseCommand, ICommand<UpdateSchoolMarkOfEntrantContext>
     {
         public UpdateSchoolMarkOfEntrantCommand(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -19,21 +16,21 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(UpdateSchoolMarkOfEntrantContext commandContext)
         {
-            var oldEnrantSchoolMarks = await _dbContext.SchoolMarks
+            var oldEnrantSchoolMarks = await DbContext.SchoolMarks
                 .Include(u => u.SchoolDiscipline)
                 .Where(p => p.EntrantId == commandContext.EntrantId)
                 .ToListAsync();
 
-            var schoolMark = commandContext.SchoolMark.ToDictionary(p=>p.SchoolDisciplineId);
+            var schoolMark = commandContext.SchoolMark.ToDictionary(p => p.SchoolDisciplineId);
             foreach (var oldMark in oldEnrantSchoolMarks)
             {
                 oldMark.Result = schoolMark[oldMark.SchoolDisciplineId].Result;
-
             }
 
-            await _dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
         }
     }
+
     public class UpdateSchoolMarkOfEntrantContext : ICommandContext
     {
         public int EntrantId { get; set; }

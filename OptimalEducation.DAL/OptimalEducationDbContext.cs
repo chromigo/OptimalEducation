@@ -3,8 +3,9 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
+using OptimalEducation.DAL.Models;
 
-namespace OptimalEducation.DAL.Models
+namespace OptimalEducation.DAL
 {
     public interface IOptimalEducationDbContext
     {
@@ -28,11 +29,9 @@ namespace OptimalEducation.DAL.Models
         DbSet<EducationLineRequirement> EducationLineRequirements { get; set; }
         DbSet<SchoolDiscipline> SchoolDisciplines { get; set; }
         DbSet<Weight> Weights { get; set; }
-
         int SaveChanges();
         Task<int> SaveChangesAsync();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-
         DbEntityEntry Entry(object entity);
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
         DbSet Set(Type entityType);
@@ -45,6 +44,7 @@ namespace OptimalEducation.DAL.Models
             : base("OptimalEducationDB")
         {
         }
+
         public virtual DbSet<Section> Sections { get; set; }
         public virtual DbSet<Entrant> Entrants { get; set; }
         public virtual DbSet<School> Schools { get; set; }

@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
 
-namespace OptimalEducation.DAL.Queries
+namespace OptimalEducation.DAL.Queries.ParticipationInSection
 {
-    public class GetCurrentParticipationInSectionsOfEntrantQuery : EFBaseQuery, IQuery<GetCurrentParticipationInSectionsOfEntrantCriterion, Task<ParticipationInSection>>
+    public class GetCurrentParticipationInSectionsOfEntrantQuery : EfBaseQuery,
+        IQuery<GetCurrentParticipationInSectionsOfEntrantCriterion, Task<Models.ParticipationInSection>>
     {
         public GetCurrentParticipationInSectionsOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
         {
         }
 
-        public async Task<ParticipationInSection> Ask(GetCurrentParticipationInSectionsOfEntrantCriterion criterion)
+        public async Task<Models.ParticipationInSection> Ask(GetCurrentParticipationInSectionsOfEntrantCriterion criterion)
         {
-            var participationinSection = await _dbContext.ParticipationInSections
+            var participationinSection = await DbContext.ParticipationInSections
                 .Include(p => p.Section)
-                .Where(p => p.EntrantsId == criterion.EntrantId && p.Id==criterion.Id)
+                .Where(p => p.EntrantsId == criterion.EntrantId && p.Id == criterion.Id)
                 .AsNoTracking()
-                .SingleOrDefaultAsync();// null - HttpNotFound();
+                .SingleOrDefaultAsync(); // null - HttpNotFound();
             return participationinSection;
         }
     }

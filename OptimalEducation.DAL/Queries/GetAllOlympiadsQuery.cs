@@ -6,7 +6,7 @@ using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.DAL.Queries
 {
-    public class GetAllOlympiadsQuery : EFBaseQuery, IQuery<GetAllOlympiadsCriterion, Task<IEnumerable<Olympiad>>>
+    public class GetAllOlympiadsQuery : EfBaseQuery, IQuery<GetAllOlympiadsCriterion, Task<IEnumerable<Olympiad>>>
     {
         public GetAllOlympiadsQuery(IOptimalEducationDbContext dbContext) : base(dbContext)
         {
@@ -14,14 +14,14 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<IEnumerable<Olympiad>> Ask(GetAllOlympiadsCriterion criterion)
         {
-			var olympiads =await _dbContext.Olympiads
+            var olympiads = await DbContext.Olympiads
                 .AsNoTracking()
                 .ToListAsync();
             return olympiads;
         }
-
     }
-    public class GetAllOlympiadsCriterion:ICriterion
+
+    public class GetAllOlympiadsCriterion : ICriterion
     {
     }
 }

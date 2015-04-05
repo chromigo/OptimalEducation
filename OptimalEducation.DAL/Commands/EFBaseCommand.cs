@@ -1,14 +1,12 @@
-﻿using OptimalEducation.DAL.Models;
-
-namespace OptimalEducation.DAL.Queries
+﻿namespace OptimalEducation.DAL.Commands
 {
-    public abstract class EFBaseCommand
+    public abstract class EfBaseCommand
     {
-        protected readonly IOptimalEducationDbContext _dbContext;
+        protected readonly IOptimalEducationDbContext DbContext;
 
-        public EFBaseCommand(IOptimalEducationDbContext dbContext)
+        public EfBaseCommand(IOptimalEducationDbContext dbContext)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
         }
     }
 }

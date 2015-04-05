@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.Queries;
 
-namespace OptimalEducation.DAL.Commands
+namespace OptimalEducation.DAL.Commands.ParticipationInSchool
 {
-    public class RemoveParticipationInSchoolCommand : EFBaseCommand, ICommand<RemoveParticipationInShoolContext>
+    public class RemoveParticipationInSchoolCommand : EfBaseCommand, ICommand<RemoveParticipationInShoolContext>
     {
         public RemoveParticipationInSchoolCommand(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -19,11 +14,11 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(RemoveParticipationInShoolContext commandContext)
         {
-            var participationInSchool = await _dbContext.ParticipationInSchools
+            var participationInSchool = await DbContext.ParticipationInSchools
                 .Where(p => p.EntrantsId == commandContext.EntrantId && p.Id == commandContext.Id)
                 .SingleAsync();
-            _dbContext.ParticipationInSchools.Remove(participationInSchool);
-            await _dbContext.SaveChangesAsync();
+            DbContext.ParticipationInSchools.Remove(participationInSchool);
+            await DbContext.SaveChangesAsync();
         }
     }
 

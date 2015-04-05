@@ -1,46 +1,37 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace OptimalEducation.DAL.Models
 {
-
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    
-    public partial class ExamDiscipline
+    public class ExamDiscipline
     {
-
         public ExamDiscipline()
         {
+            UnitedStateExams = new HashSet<UnitedStateExam>();
 
-            this.UnitedStateExams = new HashSet<UnitedStateExam>();
+            EducationLineRequirements = new HashSet<EducationLineRequirement>();
 
-            this.EducationLineRequirements = new HashSet<EducationLineRequirement>();
-
-            this.Weights = new HashSet<Weight>();
-
+            Weights = new HashSet<Weight>();
         }
 
-
         public int Id { get; set; }
+
         [Display(Name = "Дисциплина")]
         public string Name { get; set; }
-
-
 
         public virtual ICollection<UnitedStateExam> UnitedStateExams { get; set; }
 
         /// <summary>
-        /// Тип экзамена
+        ///     Тип экзамена
         /// </summary>
         public ExamType ExamType { get; set; }
-        
+
         public virtual ICollection<EducationLineRequirement> EducationLineRequirements { get; set; }
-
         public virtual ICollection<Weight> Weights { get; set; }
-
     }
 
     /// <summary>
-    /// Типы экзаменов
+    ///     Типы экзаменов
     /// </summary>
     public enum ExamType
     {
@@ -49,5 +40,4 @@ namespace OptimalEducation.DAL.Models
         CustomOralExam,
         CustomExamOther
     }
-
 }

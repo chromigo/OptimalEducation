@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Owin;
-
-using OptimalEducation.Models;
-using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Builders;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Controllers
 {
@@ -51,13 +44,13 @@ namespace OptimalEducation.Controllers
                 {
                     await SignInAsync(user, model.RememberMe);
 
-                    var userRoles =await  _userManager.GetRolesAsync(user.Id);
+                    var userRoles = await _userManager.GetRolesAsync(user.Id);
                     if (userRoles.Any(role => role == Role.Admin))
-                        return RedirectToAction("Index", "Info", new { area = "Admin" });
+                        return RedirectToAction("Index", "Info", new {area = "Admin"});
                     if (userRoles.Any(role => role == Role.Entrant))
-                        return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
+                        return RedirectToAction("Index", "Orientation", new {area = "EntrantUser"});
                     if (userRoles.Any(role => role == Role.Faculty))
-                        return RedirectToAction("Index", "Info", new { area = "FacultyUser" });
+                        return RedirectToAction("Index", "Info", new {area = "FacultyUser"});
                 }
                 else
                 {
@@ -86,13 +79,13 @@ namespace OptimalEducation.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await CreateUserEntrant(user);
 
-                    await SignInAsync(user, isPersistent: false);
+                    await SignInAsync(user, false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -107,12 +100,9 @@ namespace OptimalEducation.Controllers
                     //    "Confirm your account",
                     //    "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
+                    return RedirectToAction("Index", "Orientation", new {area = "EntrantUser"});
                 }
-                else
-                {
-                    AddErrors(result);
-                }
+                AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
@@ -136,19 +126,16 @@ namespace OptimalEducation.Controllers
             }
             catch (Exception)
             {
-              // ConfirmEmailAsync throws when the userId is not found.
-              return View("Error");
+                // ConfirmEmailAsync throws when the userId is not found.
+                return View("Error");
             }
 
             if (result.Succeeded)
             {
                 return View("ConfirmEmail");
             }
-            else
-            {
-                AddErrors(result);
-                return View();
-            }
+            AddErrors(result);
+            return View();
         }
 
         //
@@ -177,12 +164,11 @@ namespace OptimalEducation.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                string code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action(
-                    "ResetPassword", 
-                    "Account", 
-                    new { userId = user.Id, code = code },
-                    protocol: Request.Url.Scheme);		
+                    "ResetPassword",
+                    "Account",
+                    new {userId = user.Id, code}, Request.Url.Scheme);
                 await _userManager.SendEmailAsync(
                     user.Id,
                     "Reset Password",
@@ -205,7 +191,7 @@ namespace OptimalEducation.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string userId,string code)
+        public ActionResult ResetPassword(string userId, string code)
         {
             if (code == null)
             {
@@ -230,16 +216,13 @@ namespace OptimalEducation.Controllers
                     ModelState.AddModelError("", "No user found.");
                     return View();
                 }
-                IdentityResult result = await _userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+                var result = await _userManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("ResetPasswordConfirmation", "Account");
                 }
-                else
-                {
-                    AddErrors(result);
-                    return View();
-                }
+                AddErrors(result);
+                return View();
             }
 
             // If we got this far, something failed, redisplay form
@@ -260,19 +243,22 @@ namespace OptimalEducation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
         {
-            ManageMessageId? message = null;
-            IdentityResult result = await _userManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
+            ManageMessageId? message;
+            var result =
+                await
+                    _userManager.RemoveLoginAsync(User.Identity.GetUserId(),
+                        new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, false);
                 message = ManageMessageId.RemoveLoginSuccess;
             }
             else
             {
                 message = ManageMessageId.Error;
             }
-            return RedirectToAction("Manage", new { Message = message });
+            return RedirectToAction("Manage", new {Message = message});
         }
 
         //
@@ -280,11 +266,15 @@ namespace OptimalEducation.Controllers
         public async Task<ActionResult> Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : "";
+                message == ManageMessageId.ChangePasswordSuccess
+                    ? "Your password has been changed."
+                    : message == ManageMessageId.SetPasswordSuccess
+                        ? "Your password has been set."
+                        : message == ManageMessageId.RemoveLoginSuccess
+                            ? "The external login was removed."
+                            : message == ManageMessageId.Error
+                                ? "An error has occurred."
+                                : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
@@ -296,30 +286,30 @@ namespace OptimalEducation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Manage(ManageUserViewModel model)
         {
-            bool hasPassword =HasPassword();
+            var hasPassword = HasPassword();
             ViewBag.HasLocalPassword = hasPassword;
             ViewBag.ReturnUrl = Url.Action("Manage");
             if (hasPassword)
             {
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await _userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                    var result =
+                        await
+                            _userManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+                                model.NewPassword);
                     if (result.Succeeded)
                     {
                         var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
-                        await SignInAsync(user, isPersistent: false);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+                        await SignInAsync(user, false);
+                        return RedirectToAction("Manage", new {Message = ManageMessageId.ChangePasswordSuccess});
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
             else
             {
                 // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
+                var state = ModelState["OldPassword"];
                 if (state != null)
                 {
                     state.Errors.Clear();
@@ -327,15 +317,12 @@ namespace OptimalEducation.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    IdentityResult result = await _userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                    var result = await _userManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+                        return RedirectToAction("Manage", new {Message = ManageMessageId.SetPasswordSuccess});
                     }
-                    else
-                    {
-                        AddErrors(result);
-                    }
+                    AddErrors(result);
                 }
             }
 
@@ -351,7 +338,8 @@ namespace OptimalEducation.Controllers
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
             // Request a redirect to the external login provider
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+            return new ChallengeResult(provider,
+                Url.Action("ExternalLoginCallback", "Account", new {ReturnUrl = returnUrl}));
         }
 
         //
@@ -369,16 +357,13 @@ namespace OptimalEducation.Controllers
             var user = await _userManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
-                await SignInAsync(user, isPersistent: false);
+                await SignInAsync(user, false);
                 return RedirectToLocal(returnUrl);
             }
-            else
-            {
-                // If the user does not have an account, then prompt the user to create an account
-                ViewBag.ReturnUrl = returnUrl;
-                ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-            }
+            // If the user does not have an account, then prompt the user to create an account
+            ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel {Email = loginInfo.Email});
         }
 
         //
@@ -398,14 +383,14 @@ namespace OptimalEducation.Controllers
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
             if (loginInfo == null)
             {
-                return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+                return RedirectToAction("Manage", new {Message = ManageMessageId.Error});
             }
             var result = await _userManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
                 return RedirectToAction("Manage");
             }
-            return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+            return RedirectToAction("Manage", new {Message = ManageMessageId.Error});
         }
 
         //
@@ -413,7 +398,8 @@ namespace OptimalEducation.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+            string returnUrl)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -428,7 +414,7 @@ namespace OptimalEducation.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -436,14 +422,14 @@ namespace OptimalEducation.Controllers
                     if (result.Succeeded)
                     {
                         await CreateUserEntrant(user);
-                        await SignInAsync(user, isPersistent: false);
+                        await SignInAsync(user, false);
 
                         // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                         // Send an email with this link
                         // string code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
                         // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                         // SendEmail(user.Email, callbackUrl, "Confirm your account", "Please confirm your account by clicking this link");
-                        
+
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -478,13 +464,13 @@ namespace OptimalEducation.Controllers
             //  In ASP.NET vNext MVC we added support for an equivalent of asynchronous child actions.
             //  The new feature is named ViewComponents and it's completed. 
             //  https://aspnetwebstack.codeplex.com/workitem/601
-            var linkedAccounts =  ((UserManager<ApplicationUser>)_userManager).GetLogins(User.Identity.GetUserId());
-            ViewBag.ShowRemoveButton =  HasPassword() || (linkedAccounts.Count > 1);
-            return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
+            var linkedAccounts = ((UserManager<ApplicationUser>) _userManager).GetLogins(User.Identity.GetUserId());
+            ViewBag.ShowRemoveButton = HasPassword() || (linkedAccounts.Count > 1);
+            return PartialView("_RemoveAccountPartial", linkedAccounts);
         }
 
         /// <summary>
-        /// Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
+        ///     Создаем связанного с аккаунтом пользователя абитуриента и добавляем Id в claim
         /// </summary>
         /// <param name="user"></param>
         private async Task CreateUserEntrant(ApplicationUser user)
@@ -496,22 +482,20 @@ namespace OptimalEducation.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
         private IAuthenticationManager AuthenticationManager
         {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
+            get { return HttpContext.GetOwinContext().Authentication; }
         }
 
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await _userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+            AuthenticationManager.SignIn(new AuthenticationProperties {IsPersistent = isPersistent}, identity);
         }
 
         private void AddErrors(IdentityResult result)
@@ -524,7 +508,7 @@ namespace OptimalEducation.Controllers
 
         private bool HasPassword()
         {
-            var user = ((UserManager<ApplicationUser>)_userManager).FindById(User.Identity.GetUserId());
+            var user = ((UserManager<ApplicationUser>) _userManager).FindById(User.Identity.GetUserId());
             if (user != null)
             {
                 return user.PasswordHash != null;
@@ -551,10 +535,7 @@ namespace OptimalEducation.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            return RedirectToAction("Index", "Home");
         }
 
         private class ChallengeResult : HttpUnauthorizedResult
@@ -576,7 +557,7 @@ namespace OptimalEducation.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;
@@ -584,6 +565,7 @@ namespace OptimalEducation.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
+
         #endregion
     }
 }

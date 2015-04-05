@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
-using OptimalEducation.DAL.Queries;
 
-namespace OptimalEducation.DAL.Commands
+namespace OptimalEducation.DAL.Commands.ParticipationInOlympiad
 {
-    public class UpdateParticipationInOlympiadResultCommand : EFBaseCommand, ICommand<UpdateParticipationInOlympiadResultContext>
+    public class UpdateParticipationInOlympiadResultCommand : EfBaseCommand, ICommand<UpdateParticipationInOlympiadResultContext>
     {
         public UpdateParticipationInOlympiadResultCommand(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -14,9 +13,9 @@ namespace OptimalEducation.DAL.Commands
 
         public async Task ExecuteAsync(UpdateParticipationInOlympiadResultContext commandContext)
         {
-            var dbPartOlymp = await _dbContext.ParticipationInOlympiads.FindAsync(commandContext.ParticipationInOlympiadId);
+            var dbPartOlymp = await DbContext.ParticipationInOlympiads.FindAsync(commandContext.ParticipationInOlympiadId);
             dbPartOlymp.Result = commandContext.UpdateResult;
-            await _dbContext.SaveChangesAsync();
+            await DbContext.SaveChangesAsync();
         }
     }
 

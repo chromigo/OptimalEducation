@@ -1,14 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.DAL.Models;
-using System.Collections.Generic;
-using OptimalEducation.Implementation.Logic.Characterizers;
-using NSubstitute;
-using Interfaces.CQRS;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Interfaces.CQRS;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
+using OptimalEducation.Implementation.Logic.Characterizers;
 using OptimalEducation.Interfaces.Logic.Characterizers;
-
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
 {
@@ -19,8 +17,8 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
         public void GetCorrectIdealEducationLineSimpleResult_and_result_is_cached()
         {
             //Arrange
-            var educationLine = new EducationLine() { Id = 2 };
-            var idealResult = new Dictionary<string,double>();
+            var educationLine = new EducationLine {Id = 2};
+            var idealResult = new Dictionary<string, double>();
 
             var queryBuilder = Substitute.For<IQueryBuilder>();
             var educationLineSummator = Substitute.For<ISummator<EducationLine>>();
@@ -55,7 +53,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
         public void GetCorrectIdealEducationLineComplicatedResult_and_result_is_cached()
         {
             //Arrange
-            var educationLine = new EducationLine() { Id = 2 };
+            var educationLine = new EducationLine {Id = 2};
             var idealResult = new Dictionary<string, double>();
 
             var queryBuilder = Substitute.For<IQueryBuilder>();
@@ -86,6 +84,5 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             queryBuilder.Received(1).For<Task<EducationLine>>();
             educationLineSummator.Received(1).CalculateComplicatedSum(educationLine);
         }
-
     }
 }

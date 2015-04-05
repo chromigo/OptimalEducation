@@ -4,7 +4,7 @@
 {
     // Display Enum using same names (from [Display] attributes) as in editors
     string displayName = null;
-    foreach (SelectListItem item in EnumHelper.GetSelectList(ViewData.ModelMetadata, (Enum)Model))
+    foreach (var item in EnumHelper.GetSelectList(ViewData.ModelMetadata, Model))
     {
         if (item.Selected)
         {

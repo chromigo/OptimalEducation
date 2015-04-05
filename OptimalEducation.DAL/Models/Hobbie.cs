@@ -1,32 +1,19 @@
+using System.Collections.Generic;
+
 namespace OptimalEducation.DAL.Models
 {
-
-using System;
-    using System.Collections.Generic;
-    
-public partial class Hobbie
-{
-
-    public Hobbie()
+    public class Hobbie
     {
+        public Hobbie()
+        {
+            Entrants = new HashSet<Entrant>();
 
-        this.Entrants = new HashSet<Entrant>();
+            Weights = new HashSet<Weight>();
+        }
 
-        this.Weights = new HashSet<Weight>();
-
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public virtual ICollection<Entrant> Entrants { get; set; }
+        public virtual ICollection<Weight> Weights { get; set; }
     }
-
-
-    public int Id { get; set; }
-
-    public string Name { get; set; }
-
-
-
-    public virtual ICollection<Entrant> Entrants { get; set; }
-
-    public virtual ICollection<Weight> Weights { get; set; }
-
-}
-
 }

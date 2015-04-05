@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OptimalEducation.Implementation.Logic.Characterizers;
-using NSubstitute;
-using OptimalEducation.Interfaces.Logic.Characterizers;
-using OptimalEducation.DAL.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
+using OptimalEducation.DAL.Models;
+using OptimalEducation.Implementation.Logic.Characterizers;
+using OptimalEducation.Interfaces.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
 {
@@ -18,12 +17,13 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             //Arrange
             var namesHelper = Substitute.For<IEducationCharacteristicNamesHelper>();
             var educationLineSummator = Substitute.For<ISummator<EducationLine>>();
-            var idealResult = Substitute.For<IIdealResult<EducationLine>>();
+            var idealResult = Substitute.For<IIdealResult>();
 
-            var educationLineCharacterizer = new EducationLineCharacterizer(namesHelper, educationLineSummator, idealResult);
-            var educationLine = new EducationLine(){};
+            var educationLineCharacterizer = new EducationLineCharacterizer(namesHelper, educationLineSummator,
+                idealResult);
+            var educationLine = new EducationLine();
 
-            var characteristicNames=new List<string>()
+            var characteristicNames = new List<string>
             {
                 "Русский",
                 "Математика",
@@ -36,13 +36,13 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             complicatedSum.Add("Математика", 0.6);
             complicatedSum.Add("Информатика", 0.8);
             educationLineSummator.CalculateComplicatedSum(educationLine).Returns(complicatedSum);
-            
-            var complicatedIdealSum=new Dictionary<string,double>();
+
+            var complicatedIdealSum = new Dictionary<string, double>();
             complicatedIdealSum.Add("Русский", 0.4);
             complicatedIdealSum.Add("Математика", 0.6);
             complicatedIdealSum.Add("Информатика", 0.8);
             idealResult.GetComplicatedResult().Returns(Task.FromResult(complicatedIdealSum));
-            
+
             //Act
             var resultTask = educationLineCharacterizer.Calculate(educationLine);
             resultTask.Wait();
@@ -64,12 +64,13 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             //Arrange
             var namesHelper = Substitute.For<IEducationCharacteristicNamesHelper>();
             var educationLineSummator = Substitute.For<ISummator<EducationLine>>();
-            var idealResult = Substitute.For<IIdealResult<EducationLine>>();
+            var idealResult = Substitute.For<IIdealResult>();
 
-            var educationLineCharacterizer = new EducationLineCharacterizer(namesHelper, educationLineSummator, idealResult);
-            var educationLine = new EducationLine() { };
+            var educationLineCharacterizer = new EducationLineCharacterizer(namesHelper, educationLineSummator,
+                idealResult);
+            var educationLine = new EducationLine();
 
-            var characteristicNames = new List<string>()
+            var characteristicNames = new List<string>
             {
                 "Русский",
                 "Математика",
@@ -90,7 +91,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             idealResult.GetSimpleResult().Returns(Task.FromResult(complicatedIdealSum));
 
             //Act
-            var resultTask = educationLineCharacterizer.Calculate(educationLine,false);
+            var resultTask = educationLineCharacterizer.Calculate(educationLine, false);
             resultTask.Wait();
 
             //Assert

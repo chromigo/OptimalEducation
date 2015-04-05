@@ -1,9 +1,8 @@
+using System.Data.Entity.Migrations;
+
 namespace OptimalEducation.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class Init_Identity : DbMigration
+    public partial class InitIdentity : DbMigration
     {
         public override void Up()
         {

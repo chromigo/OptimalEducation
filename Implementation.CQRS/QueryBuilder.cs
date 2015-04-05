@@ -1,4 +1,5 @@
-﻿using Interfaces.CQRS;
+﻿using System.Web.Mvc;
+using Interfaces.CQRS;
 
 namespace Implementation.CQRS
 {
@@ -18,7 +19,7 @@ namespace Implementation.CQRS
                 return DependencyResolver.Current.GetService<IQuery<TCriterion, TResult>>().Ask(criterion);
             }
         }
-        
+
         #endregion
     }
 }

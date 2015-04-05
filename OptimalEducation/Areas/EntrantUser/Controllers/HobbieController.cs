@@ -1,30 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using OptimalEducation.DAL.Commands;
-using OptimalEducation.DAL.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Models;
 using Interfaces.CQRS;
-using OptimalEducation.DAL.ViewModels;
+using Microsoft.AspNet.Identity;
+using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Queries;
+using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.Helpers;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
-	[Authorize(Roles = Role.Entrant)]
-	public class HobbieController : Controller
-	{
-        private readonly IQueryBuilder _queryBuilder;
+    [Authorize(Roles = Role.Entrant)]
+    public class HobbieController : Controller
+    {
         private readonly ICommandBuilder _commandBuilder;
         private readonly IInfoExtractor _infoExtractor;
+        private readonly IQueryBuilder _queryBuilder;
 
         public HobbieController(IQueryBuilder queryBuilder, ICommandBuilder commandBuilder, IInfoExtractor infoExtractor)
         {
@@ -32,27 +24,28 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
             _commandBuilder = commandBuilder;
             _infoExtractor = infoExtractor;
         }
-		// GET: /EntrantUser/Hobbie/
-		public async Task<ActionResult> Index()
-		{
-            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
-			var assignedHobbies = await _queryBuilder
-				.For<Task<IEnumerable<AssignedHobbie>>>()
-                .With(new GetAssignedHobbiesCriterion() { EntrantId = entrantId });
-            return View(assignedHobbies);
-		}
 
-		//POST: /EntrantUser/UnitedStateExams/Index
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Index(string[] selectedHobbies)
-		{
+        // GET: /EntrantUser/Hobbie/
+        public async Task<ActionResult> Index()
+        {
+            var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
+            var assignedHobbies = await _queryBuilder
+                .For<Task<IEnumerable<AssignedHobbie>>>()
+                .With(new GetAssignedHobbiesCriterion {EntrantId = entrantId});
+            return View(assignedHobbies);
+        }
+
+        //POST: /EntrantUser/UnitedStateExams/Index
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Index(string[] selectedHobbies)
+        {
             var entrantId = await _infoExtractor.ExtractEntrantId(User.Identity.GetUserId());
 
             await _commandBuilder
-                .ExecuteAsync<UpdateEntrantHobbieContext>(new UpdateEntrantHobbieContext() { EntrantId = entrantId, SelectedHobbies = selectedHobbies });
+                .ExecuteAsync(new UpdateEntrantHobbieContext {EntrantId = entrantId, SelectedHobbies = selectedHobbies});
 
             return RedirectToAction("Index");
-		}
-	}
+        }
+    }
 }

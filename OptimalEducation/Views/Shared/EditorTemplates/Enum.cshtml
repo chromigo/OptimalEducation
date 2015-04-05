@@ -2,9 +2,9 @@
 
 @if (EnumHelper.IsValidForEnumHelper(ViewData.ModelMetadata))
 {
-    @Html.EnumDropDownListFor(model => model, htmlAttributes: new { @class = "form-control" })
+    @Html.EnumDropDownListFor(model => model, new {@class = "form-control"})
 }
 else
 {
-    @Html.TextBoxFor(model => model, htmlAttributes: new { @class = "form-control" })
+    @Html.TextBoxFor(model => model, new {@class = "form-control"})
 }

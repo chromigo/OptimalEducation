@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Implimentation.CQRS")]
+[assembly: AssemblyTitle("OptimalEducation.Logic.AHP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Implimentation.CQRS")]
+[assembly: AssemblyProduct("OptimalEducation.Logic.AHP")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f3a1a58e-34e3-4dd7-a75d-1555b456f112")]
+[assembly: Guid("2393f502-d7df-4d20-af85-b09fadab8921")]
 
 // Version information for an assembly consists of the following four values:
 //

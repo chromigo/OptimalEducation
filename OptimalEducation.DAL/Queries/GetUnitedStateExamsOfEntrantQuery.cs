@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Interfaces.CQRS;
 using OptimalEducation.DAL.Models;
+
 namespace OptimalEducation.DAL.Queries
 {
-
-    public class GetUnitedStateExamsOfEntrantQuery : EFBaseQuery, IQuery<GetUnitedStateExamsOfEntrantCriterion, Task<IEnumerable<UnitedStateExam>>>
+    public class GetUnitedStateExamsOfEntrantQuery : EfBaseQuery,
+        IQuery<GetUnitedStateExamsOfEntrantCriterion, Task<IEnumerable<UnitedStateExam>>>
     {
         public GetUnitedStateExamsOfEntrantQuery(IOptimalEducationDbContext dbContext)
             : base(dbContext)
@@ -16,7 +17,7 @@ namespace OptimalEducation.DAL.Queries
 
         public async Task<IEnumerable<UnitedStateExam>> Ask(GetUnitedStateExamsOfEntrantCriterion criterion)
         {
-            var unitedStateExams = await _dbContext.UnitedStateExams
+            var unitedStateExams = await DbContext.UnitedStateExams
                 .Include(u => u.Discipline)
                 .AsNoTracking()
                 .Where(p => p.EntrantId == criterion.EntrantId)
@@ -29,5 +30,4 @@ namespace OptimalEducation.DAL.Queries
     {
         public int EntrantId { get; set; }
     }
-
 }

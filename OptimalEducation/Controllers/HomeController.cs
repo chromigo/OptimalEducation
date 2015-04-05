@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using OptimalEducation.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using OptimalEducation.Models;
 
 namespace OptimalEducation.Controllers
 {
@@ -22,7 +18,7 @@ namespace OptimalEducation.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if(User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated)
             {
                 var userId = User.Identity.GetUserId();
 
@@ -30,11 +26,11 @@ namespace OptimalEducation.Controllers
                 {
                     var userRoles = await _userManager.GetRolesAsync(userId);
                     if (userRoles.Any(role => role == Role.Admin))
-                        return RedirectToAction("Index", "EducationLines", new { area = "Admin" }); 
+                        return RedirectToAction("Index", "EducationLines", new {area = "Admin"});
                     if (userRoles.Any(role => role == Role.Entrant))
-                        return RedirectToAction("Index", "Orientation", new { area = "EntrantUser" });
+                        return RedirectToAction("Index", "Orientation", new {area = "EntrantUser"});
                     if (userRoles.Any(role => role == Role.Faculty))
-                        return RedirectToAction("Index", "Info", new { area = "FacultyUser" });
+                        return RedirectToAction("Index", "Info", new {area = "FacultyUser"});
                 }
             }
             return View();
@@ -48,18 +44,6 @@ namespace OptimalEducation.Controllers
         public ActionResult Contact()
         {
             return View();
-        }
-
-        private ActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
         }
     }
 }
