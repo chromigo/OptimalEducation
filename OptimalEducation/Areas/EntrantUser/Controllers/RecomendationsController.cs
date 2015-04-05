@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using OptimalEducation.Implementation.Logic.AHP;
 
 namespace OptimalEducation.Areas.EntrantUser.Controllers
 {
@@ -54,7 +55,24 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 			//2. По методу многокритериального анализа
             ViewBag.MulticriterialRecomendations =await _multicriterialAnalysisRecomendator.Calculate(entrant, educationLines);
 
-			return View();
+            //3. По говнокоду AHP метод
+            //TODO: выпилить этот говнокод вместе с проектом после публикации статьи(или переписать)
+            await CalculateAHP(entrant, educationLines);
+
+		    return View();
 		}
+
+	    private async Task CalculateAHP(Entrant entrant, List<EducationLine> educationLines)
+	    {
+	        var AHPUserAnalyzer = new AhpUser(entrant, educationLines);
+	        var orderedList = await AHPUserAnalyzer.CalculateAll();
+	        var tempAHPDict = new Dictionary<EducationLine, double>();
+	        foreach (var item in orderedList)
+	        {
+	            var edLine = educationLines.Find(p => p.Id == item.DatabaseId);
+	            tempAHPDict.Add(edLine, item.AbsolutePriority);
+	        }
+	        ViewBag.AHPRecomendations = tempAHPDict;
+	    }
 	}
 }

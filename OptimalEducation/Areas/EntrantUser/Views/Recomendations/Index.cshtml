@@ -3,6 +3,7 @@
 }
 @using System.Globalization;
 @using OptimalEducation.DAL.Models;
+@using OptimalEducation.Implementation.Logic.AHP
 
 <h3>Метод классификации</h3>
 <table class="table table-bordered table-striped">
@@ -58,6 +59,28 @@
 
 </table>
 
-
-
-
+<h3>Метод анализа иерархий</h3>
+<table class="table table-bordered table-striped">
+    @{
+        var aphRecomendations = (ViewBag.AHPRecomendations as Dictionary<EducationLine, double>);
+        count = 0;
+    }
+    <tr>
+        <th>№</th>
+        <th>Название ВУЗ-а</th>
+        <th>Название факультета</th>
+        <th>Название направления</th>
+        <th>Код направления</th>
+    </tr>
+    @foreach (var recomendation in aphRecomendations)
+    {
+        count++;
+        <tr>
+            <td>@count</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.HigherEducationInstitution.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Faculty.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Name)</td>
+            <td>@Html.DisplayFor(model => recomendation.Key.Code)</td>
+        </tr>
+    }
+</table>

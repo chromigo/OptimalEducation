@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3C3B97E4-F5C3-43ED-881D-0BF8800B8FB0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OptimalEducation.Implementation.Logic.AHP</RootNamespace>
+    <AssemblyName>OptimalEducation.Implementation.Logic.AHP</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AHPEdLineSettings.cs" />
+    <Compile Include="AHPEducationLine.cs" />
+    <Compile Include="AHPUser.cs" />
+    <Compile Include="AHPUserSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CQRS\Interfaces.CQRS.csproj">
+      <Project>{941491BC-CEDC-4502-A7E4-3F8C9CF736A0}</Project>
+      <Name>Interfaces.CQRS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Implementation.CQRS\Implementation.CQRS.csproj">
+      <Project>{0c4d86c8-59ed-48c5-94f8-1eab0a884836}</Project>
+      <Name>Implementation.CQRS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
+      <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
+      <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers.Interfaces\OptimalEducation.Interfaces.Logic.Characterizers.csproj">
+      <Project>{70DC5EDB-C783-446A-ADDA-B4AAE15694F2}</Project>
+      <Name>OptimalEducation.Interfaces.Logic.Characterizers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Logic.Characterizers\OptimalEducation.Implementation.Logic.Characterizers.csproj">
+      <Project>{452552D7-9D40-48E2-8931-EA66279726BD}</Project>
+      <Name>OptimalEducation.Implementation.Logic.Characterizers</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

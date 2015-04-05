@@ -16,11 +16,11 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
         readonly IEducationCharacteristicNamesHelper _namesHelper;
         readonly IIdealResult<EducationLine> _idealResult;
 
-        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> entrantSummator, IIdealResult<EducationLine> idealResult)
+        public EducationLineCharacterizer(IEducationCharacteristicNamesHelper namesHelper, ISummator<EducationLine> educationLineSummator, IIdealResult<EducationLine> idealResult)
         {
             _namesHelper = namesHelper;
 
-            _educationLineSummator = entrantSummator;
+            _educationLineSummator = educationLineSummator;
             _idealResult = idealResult;
         }
 

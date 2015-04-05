@@ -1,5 +1,4 @@
-﻿using Implimentation.CQRS;
-using Interfaces.CQRS;
+﻿using Interfaces.CQRS;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL.Models;
@@ -19,6 +18,7 @@ using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Implementation.CQRS;
 
 
 namespace OptimalEducation

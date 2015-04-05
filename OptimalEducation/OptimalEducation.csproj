@@ -687,13 +687,17 @@
       <Project>{941491bc-cedc-4502-a7e4-3f8c9cf736a0}</Project>
       <Name>Interfaces.CQRS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Implimentation.CQRS\Implimentation.CQRS.csproj">
+    <ProjectReference Include="..\Implementation.CQRS\Implementation.CQRS.csproj">
       <Project>{0c4d86c8-59ed-48c5-94f8-1eab0a884836}</Project>
       <Name>Implimentation.CQRS</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>
       <Name>OptimalEducation.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OptimalEducation.Implementation.Logic.AHP\OptimalEducation.Implementation.Logic.AHP.csproj">
+      <Project>{3c3b97e4-f5c3-43ed-881d-0bf8800b8fb0}</Project>
+      <Name>OptimalEducation.Implementation.Logic.AHP</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.Implementation.Logic.DistanceRecomendator\OptimalEducation.Implementation.Logic.DistanceRecomendator.csproj">
       <Project>{37aa4d5a-c34e-4f4e-ad29-57e59bd80a96}</Project>
