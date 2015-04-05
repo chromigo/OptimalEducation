@@ -29,6 +29,9 @@ namespace OptimalEducation
                 "~/Content/zocial.css"));
                 //social buttons http://www.beabigrockstar.com/blog/pretty-social-login-buttons-for-asp-net-mvc-5/
 
+            bundles.Add(new ScriptBundle("~/bundles/project").Include(
+                "~/Scripts/project/googleAnalytics.universal"));
+
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
             BundleTable.EnableOptimizations = false;
