@@ -108,7 +108,6 @@ namespace OptimalEducation
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
-            //var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
             this.UserValidator = new UserValidator<ApplicationUser>(this)
             {
@@ -118,12 +117,9 @@ namespace OptimalEducation
             // Configure validation logic for passwords
             this.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                //RequireNonLetterOrDigit = true,
-                //RequireDigit = true,
-                //RequireLowercase = true,
-                //RequireUppercase = true,
+                RequiredLength = 6
             };
+
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug in here.
             //this.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>

@@ -35,7 +35,6 @@ DatabaseCredentials.config
        connectionString="YOUR_CONNECTION_STRING" />
 </connectionStrings>
 ```
-Не обязательно вводить корректные данные, для локальной работы используются другие.(можно скопировать эти как есть)
 
 * Выполнить построение базы данных
  Открыть Package Manager Console и ввести по очереди:
@@ -47,7 +46,4 @@ DatabaseCredentials.config
  update-database -ProjectName: OptimalEducation.DAL
 ```
  Должна создасться база данных с начальной информацией, необходимой для работы.
-
-
-
- Все, можно смотреть.
+ Если нужно проинициализировать бд на Azure(или любом другом удаленном хосте) - вбиваем настройки connectionString нужного сервера в DatabaseCredentials.config и запускаем комманды выше.
