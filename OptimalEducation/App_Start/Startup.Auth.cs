@@ -33,26 +33,26 @@ namespace OptimalEducation
 
             // Uncomment the following lines to enable logging in with third party login providers
             //Смотри http://azure.microsoft.com/en-us/documentation/articles/mobile-services-how-to-register-microsoft-authentication/
-            app.UseMicrosoftAccountAuthentication(
-                clientId: ConfigurationManager.AppSettings["Microsoft_ClientId"],
-                clientSecret: ConfigurationManager.AppSettings["Microsoft_ClientSecret"]);
+            //app.UseMicrosoftAccountAuthentication(
+            //    clientId: ConfigurationManager.AppSettings["Microsoft_ClientId"],
+            //    clientSecret: ConfigurationManager.AppSettings["Microsoft_ClientSecret"]);
 
             //https://dev.twitter.com/
-            app.UseTwitterAuthentication(
-               consumerKey: ConfigurationManager.AppSettings["Twitter_ClientId"],
-               consumerSecret: ConfigurationManager.AppSettings["Twitter_ClientSecret"]);
+            //app.UseTwitterAuthentication(
+            //   consumerKey: ConfigurationManager.AppSettings["Twitter_ClientId"],
+            //   consumerSecret: ConfigurationManager.AppSettings["Twitter_ClientSecret"]);
 
             //https://developers.facebook.com
-            app.UseFacebookAuthentication(
-               appId: ConfigurationManager.AppSettings["Facebook_ClientId"],
-               appSecret: ConfigurationManager.AppSettings["Facebook_ClientSecret"]);
+            //app.UseFacebookAuthentication(
+            //   appId: ConfigurationManager.AppSettings["Facebook_ClientId"],
+            //   appSecret: ConfigurationManager.AppSettings["Facebook_ClientSecret"]);
 
             //https://console.developers.google.com
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = ConfigurationManager.AppSettings["Google_ClientId"],
-                ClientSecret = ConfigurationManager.AppSettings["Google_ClientSecret"]
-            });
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = ConfigurationManager.AppSettings["Google_ClientId"],
+            //    ClientSecret = ConfigurationManager.AppSettings["Google_ClientSecret"]
+            //});
         }
     }
 }
