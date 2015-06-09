@@ -9,7 +9,6 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
     public class PreferenceRelationCalculator : IPreferenceRelationCalculator
     {
         private const double Diff = 0.05;
-        private const double WI = 0.1; //на данный момент задается просто константой
 
         /// <summary>
         ///     Получаем отношение предпочтения
@@ -29,9 +28,7 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
                 foreach (var unImpCharacteristic in unImportantCharacteristics)
                 {
                     //1. Через формулу относительной важности с небольшими модификациями
-                    var delta = impCharacteristic.Value - unImpCharacteristic.Value;
-                    var teta = TetaMethod(WI, delta);
-
+                    var teta = TetaMethod(impCharacteristic.Value, unImpCharacteristic.Value);
                     preferenceRelation.Tetas.Add(unImpCharacteristic.Key, teta);
                 }
                 preferenceRelations.Add(preferenceRelation);
@@ -64,13 +61,10 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
         /// <summary>
         ///     Вычисляем коэф. относительной важности
         /// </summary>
-        /// <param name="wI">сколько хотим получить(по значимому коэф-ту)</param>
-        /// <param name="wJ">сколько готовы пожертвовать(по незначимому коэф-ту)</param>
         /// <returns></returns>
-        private double TetaMethod(double wI, double wJ)
+        private double TetaMethod(double imp, double unImp)
         {
-            //На данный момент строятся одинаковые предпочтения для всех важных/неважных критериев
-            var teta = wJ/(wJ + wI); //Коэффициент относительной важности
+            var teta = imp / (imp + unImp); //Коэффициент относительной важности. Не соотвествует с оригинальным - поправили после обсуждения с Ногиным
             if (0 < teta && teta < 1)
                 return teta;
             throw new ArithmeticException("Значение коэффициента относительной важности не лежит в пределах 0<teta<1");
@@ -79,11 +73,10 @@ namespace OptimalEducation.Implementation.Logic.MulticriterialAnalysis
         private double GetMaxValue(Dictionary<string, double> userCharacteristics)
         {
             var maxValue = userCharacteristics.First().Value;
-            foreach (var item in userCharacteristics)
-            {
-                if (item.Value > maxValue) maxValue = item.Value;
-            }
-            return maxValue;
+            return userCharacteristics
+                .Select(item => item.Value)
+                .Concat(new[] {maxValue})
+                .Max();
         }
 
         #endregion
