@@ -18,9 +18,11 @@ using OptimalEducation.Interfaces.Logic.Characterizers;
 using OptimalEducation.Interfaces.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.MulticriterialAnalysis;
 using OptimalEducation.Models;
+using ServiceStack.MiniProfiler.EF6;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 using SimpleInjector.Integration.Web.Mvc;
+using StackExchange.Profiling;
 
 namespace OptimalEducation
 {
@@ -30,6 +32,8 @@ namespace OptimalEducation
 
         protected void Application_Start()
         {
+            MiniProfilerEF6.Initialize();
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -104,6 +108,19 @@ namespace OptimalEducation
             Container.RegisterSingle<IMulticriterialAnalysisRecomendator, MulticriterialAnalysisRecomendator>();
 
             Container.RegisterSingle<IEducationCharacteristicNamesHelper, EducationCharacteristicNamesHelper>();
+        }
+
+        protected void Application_BeginRequest()
+        {
+            if (Request.IsLocal)
+            {
+                MiniProfiler.Start();
+            }
+        }
+
+        protected void Application_EndRequest()
+        {
+            MiniProfiler.Stop();
         }
     }
 }
