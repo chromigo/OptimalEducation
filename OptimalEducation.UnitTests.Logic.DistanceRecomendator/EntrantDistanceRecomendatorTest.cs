@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 using OptimalEducation.Interfaces.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
 {
-    [TestClass]
+    [TestFixture]
     public class EntrantDistanceRecomendatorTest
     {
-        [TestMethod]
+        [Test]
         public void GetRecomedtationMethod_get_ordered_and_correct_recomedations()
         {
             //Arrange

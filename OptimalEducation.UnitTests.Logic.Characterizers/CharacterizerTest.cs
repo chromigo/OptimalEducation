@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using OptimalEducation.DAL.Models;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers
 {
-    [TestClass]
+    [TestFixture]
     public class CharacterizerTest
     {
         //MethodName_Scenario_ExpectedBehavior

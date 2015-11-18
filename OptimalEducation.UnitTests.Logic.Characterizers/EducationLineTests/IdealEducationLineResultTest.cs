@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Interfaces.CQRS;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Implementation.Logic.Characterizers;
@@ -10,10 +10,10 @@ using OptimalEducation.Interfaces.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
 {
-    [TestClass]
+    [TestFixture]
     public class IdealEducationLineResultTest
     {
-        [TestMethod]
+        [Test]
         public void GetCorrectIdealEducationLineSimpleResult_and_result_is_cached()
         {
             //Arrange
@@ -49,7 +49,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EducationLineTests
             educationLineSummator.Received(1).CalculateSimpleSum(educationLine);
         }
 
-        [TestMethod]
+        [Test]
         public void GetCorrectIdealEducationLineComplicatedResult_and_result_is_cached()
         {
             //Arrange

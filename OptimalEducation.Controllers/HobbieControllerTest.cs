@@ -6,17 +6,18 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Interfaces.CQRS;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.Areas.EntrantUser.Controllers;
 using OptimalEducation.DAL.Commands;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.Helpers;
 
+
 namespace OptimalEducation.UnitTest.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class HobbieControllerTest
     {
         private const int EntrantId = 123;
@@ -48,7 +49,7 @@ namespace OptimalEducation.UnitTest.Controllers
             return reqContext;
         }
 
-        [TestMethod]
+        [Test]
         public void Index_get_correct_assignedHobbie_list()
         {
             //Arrange            
@@ -74,7 +75,7 @@ namespace OptimalEducation.UnitTest.Controllers
             Assert.AreEqual(assignedHobbie, result.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void Index_post_assignedHobbieList_sucsess_and_redirect_to_index()
         {
             var selectedHobbies = new string[10];

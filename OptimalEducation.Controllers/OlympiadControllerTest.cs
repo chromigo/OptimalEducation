@@ -6,17 +6,18 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Interfaces.CQRS;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.Areas.EntrantUser.Controllers;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Queries.ParticipationInOlympiad;
 using OptimalEducation.Helpers;
 
+
 namespace OptimalEducation.UnitTest.Controllers
 {
-    [TestClass]
+    [TestFixture]
     public class OlympiadControllerTest
     {
         private const int EntrantId = 123;
@@ -48,7 +49,7 @@ namespace OptimalEducation.UnitTest.Controllers
             return reqContext;
         }
 
-        [TestMethod]
+        [Test]
         public void Index_get_correct_ParticipationInOlympiads_list()
         {
             //Arrange            
@@ -74,7 +75,7 @@ namespace OptimalEducation.UnitTest.Controllers
             Assert.AreEqual(participationInOlympiad, result.Model);
         }
 
-        [TestMethod]
+        [Test]
         public void Details_return_HttpStatusCodeBadRequest_if_id_is_null()
         {
             //Act
@@ -89,7 +90,7 @@ namespace OptimalEducation.UnitTest.Controllers
             Assert.IsTrue(result.StatusCode == (int) HttpStatusCode.BadRequest);
         }
 
-        [TestMethod]
+        [Test]
         public void Details_return_correct_ParticipationInOlympiads_if_id_is_correct()
         {
             const int partInOlympId = 22;
@@ -114,7 +115,7 @@ namespace OptimalEducation.UnitTest.Controllers
             Assert.IsTrue(result == partInOlympResult);
         }
 
-        [TestMethod]
+        [Test]
         public void Details_return_HttpNotFound_if_not_found_element_in_out_collections()
         {
             const int partInOlympId = 23;
@@ -137,7 +138,7 @@ namespace OptimalEducation.UnitTest.Controllers
             Assert.IsTrue(task.Result is HttpNotFoundResult);
         }
 
-        [TestMethod]
+        [Test]
         public void Create_get_method_return_all_olympiads()
         {
             IEnumerable<Olympiad> olympiads = new List<Olympiad>

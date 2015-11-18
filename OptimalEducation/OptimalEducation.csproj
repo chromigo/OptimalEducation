@@ -720,7 +720,7 @@
     </ProjectReference>
     <ProjectReference Include="..\Implementation.CQRS\Implementation.CQRS.csproj">
       <Project>{0c4d86c8-59ed-48c5-94f8-1eab0a884836}</Project>
-      <Name>Implimentation.CQRS</Name>
+      <Name>Implementation.CQRS</Name>
     </ProjectReference>
     <ProjectReference Include="..\OptimalEducation.DAL\OptimalEducation.DAL.csproj">
       <Project>{788b7129-4288-4005-b014-6f60ffa689a4}</Project>

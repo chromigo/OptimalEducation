@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Implementation.Logic.Characterizers;
 using OptimalEducation.Interfaces.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
 {
-    [TestClass]
+    [TestFixture]
     public class EntrantCharacterizerTest
     {
-        [TestMethod]
+        [Test]
         public void Calculate_DefaultComplicated_Norm_Result()
         {
             //Arrange
@@ -57,7 +57,7 @@ namespace OptimalEducation.UnitTests.Logic.Characterizers.EntrantTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Calculate_Simple_Norm_Result()
         {
             //Arrange

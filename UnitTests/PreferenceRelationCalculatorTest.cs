@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;
+
 
 namespace OptimalEducation.UnitTests.Logic.MulticriterialAnalysis
 {
-    [TestClass]
+    [TestFixture]
     public class PreferenceRelationCalculatorTest
     {
-        [TestMethod]
+        [Test]
         public void GetCorrectPreferenceRelation_For_first_characteristic_set()
         {
             //Arrange
@@ -33,7 +34,7 @@ namespace OptimalEducation.UnitTests.Logic.MulticriterialAnalysis
             Assert.IsTrue(t2 == 0.5);
         }
 
-        [TestMethod]
+        [Test]
         public void GetCorrectPreferenceRelation_For_second_characteristic_set()
         {
             //Arrange

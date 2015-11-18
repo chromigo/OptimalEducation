@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 
 namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
 {
-    [TestClass]
+    [TestFixture]
     public class CharacteristicDistanceTest
     {
-        [TestMethod]
+        [Test]
         public void GetDistance_with_CityDistance_return_correct_answer()
         {
             //Arrange
@@ -32,7 +32,7 @@ namespace OptimalEducation.UnitTests.Logic.DistanceRecomendator
             Assert.AreEqual(correctAnswer, result);
         }
 
-        [TestMethod]
+        [Test]
         public void GetDistance_return_nullResult_if_in_Entrant_and_EducationLine_not_equal_key_elements()
         {
             //Arrange

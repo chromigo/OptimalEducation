@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using Interfaces.CQRS;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using NUnit.Framework;
 using OptimalEducation.DAL.Queries;
 using OptimalEducation.Implementation.Logic.Characterizers;
 
 namespace OptimalEducation.UnitTests.Logic.Characterizers
 {
-    [TestClass]
+    [TestFixture]
     public class EducationCharacteristicNamesHelperTest
     {
-        [TestMethod]
+        [Test]
         public void GetCorrectListOfNames_and_result_is_cached()
         {
             //Arrange
