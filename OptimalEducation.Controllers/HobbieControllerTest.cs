@@ -14,7 +14,7 @@ using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.ViewModels;
 using OptimalEducation.Helpers;
 
-namespace OptimalEducation.Controllers
+namespace OptimalEducation.UnitTest.Controllers
 {
     [TestClass]
     public class HobbieControllerTest

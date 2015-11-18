@@ -14,7 +14,7 @@ using OptimalEducation.DAL.Queries;
 using OptimalEducation.DAL.Queries.ParticipationInOlympiad;
 using OptimalEducation.Helpers;
 
-namespace OptimalEducation.Controllers
+namespace OptimalEducation.UnitTest.Controllers
 {
     [TestClass]
     public class OlympiadControllerTest

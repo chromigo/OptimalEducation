@@ -6,8 +6,8 @@
     <ProjectGuid>{B96E7E4A-CB68-447F-9068-A004417247BA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OptimalEducation.Controllers</RootNamespace>
-    <AssemblyName>OptimalEducation.Controllers</AssemblyName>
+    <RootNamespace>OptimalEducation.UnitTest.Controllers</RootNamespace>
+    <AssemblyName>OptimalEducation.UnitTest.Controllers</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
