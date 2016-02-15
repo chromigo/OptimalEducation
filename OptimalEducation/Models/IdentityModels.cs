@@ -31,7 +31,7 @@ namespace OptimalEducation.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("OptimalEducationDB", throwIfV1Schema: false)
+            : base("OptimalEducation", throwIfV1Schema: false)
         {
         }
     }

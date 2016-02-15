@@ -41,7 +41,7 @@ namespace OptimalEducation.DAL
     public class OptimalEducationDbContext : DbContext, IOptimalEducationDbContext
     {
         public OptimalEducationDbContext()
-            : base("OptimalEducationDB")
+            : base("OptimalEducation")
         {
         }
 
