@@ -25,8 +25,6 @@ namespace OptimalEducation.Controllers
                 if (_userManager.Users.SingleOrDefault(p => p.Id == userId) != null)
                 {
                     var userRoles = await _userManager.GetRolesAsync(userId);
-                    if (userRoles.Any(role => role == Role.Admin))
-                        return RedirectToAction("Index", "EducationLines", new {area = "Admin"});
                     if (userRoles.Any(role => role == Role.Entrant))
                         return RedirectToAction("Index", "Orientation", new {area = "EntrantUser"});
                     if (userRoles.Any(role => role == Role.Faculty))
