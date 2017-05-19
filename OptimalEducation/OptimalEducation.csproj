@@ -215,8 +215,6 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\InfoController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\HobbieController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\OrientationController.cs" />
     <Compile Include="Areas\EntrantUser\Controllers\RecomendationsController.cs" />
@@ -274,9 +272,6 @@
     <Content Include="fonts\zocial-regular-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\EntrantUser\Views\web.config" />
     <Content Include="Areas\FacultyUser\Views\web.config" />
     <Content Include="Areas\EntrantUser\Views\_ViewStart.cshtml" />
@@ -666,7 +661,6 @@
     <Content Include="fonts\zocial-regular-webfont.woff" />
     <Content Include="Credentials.config" />
     <Content Include="DatabaseCredentials.config" />
-    <Content Include="Areas\Admin\Views\Info\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -728,7 +722,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\EntrantUser\Models\" />
     <Folder Include="Areas\FacultyUser\Models\" />
   </ItemGroup>
