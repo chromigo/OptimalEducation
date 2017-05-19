@@ -118,8 +118,9 @@ namespace OptimalEducation.Areas.EntrantUser.Controllers
 
             if (participationinOlympiads == null)
             {
+                return HttpNotFound();
             }
-            return HttpNotFound();
+
             return View(participationinOlympiads);
         }
 

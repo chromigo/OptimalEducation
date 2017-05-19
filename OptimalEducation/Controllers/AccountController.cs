@@ -263,7 +263,7 @@ namespace OptimalEducation.Controllers
 
         //
         // GET: /Account/Manage
-        public async Task<ActionResult> Manage(ManageMessageId? message)
+        public ActionResult Manage(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess
