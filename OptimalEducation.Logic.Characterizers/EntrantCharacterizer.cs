@@ -59,9 +59,9 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 
     public class EntrantSummator : ISummator<Entrant>
     {
-        private readonly EducationCharacteristicNamesHelper _namesHelper;
+        private readonly IEducationCharacteristicNamesHelper _namesHelper;
 
-        public EntrantSummator(EducationCharacteristicNamesHelper namesHelper)
+        public EntrantSummator(IEducationCharacteristicNamesHelper namesHelper)
         {
             _namesHelper = namesHelper;
         }

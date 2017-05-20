@@ -226,6 +226,7 @@
     </Compile>
     <Compile Include="Helpers\IInfoExtractor.cs" />
     <Compile Include="Helpers\InfoExtractor.cs" />
+    <Compile Include="App_Start\IoCContainerFactory.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.cs" />
     <Compile Include="Migrations\201403210957306_Init_Identity.Designer.cs">
       <DependentUpon>201403210957306_Init_Identity.cs</DependentUpon>

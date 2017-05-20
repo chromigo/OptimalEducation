@@ -54,9 +54,9 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
 
     public class EducationLineSummator : ISummator<EducationLine>
     {
-        private readonly EducationCharacteristicNamesHelper _namesHelper;
+        private readonly IEducationCharacteristicNamesHelper _namesHelper;
 
-        public EducationLineSummator(EducationCharacteristicNamesHelper namesHelper)
+        public EducationLineSummator(IEducationCharacteristicNamesHelper namesHelper)
         {
             _namesHelper = namesHelper;
         }
