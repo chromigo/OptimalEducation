@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using OptimalEducation.DAL.Builders;
+using OptimalEducation.Identity;
 using OptimalEducation.Models;
 
 namespace OptimalEducation.Controllers

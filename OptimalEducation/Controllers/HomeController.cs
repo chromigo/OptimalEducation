@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using OptimalEducation.Identity;
 using OptimalEducation.Models;
 
 namespace OptimalEducation.Controllers

@@ -15,14 +15,8 @@ namespace OptimalEducation.Implementation.Logic.Characterizers
             _queryBuilder = queryBuilder;
         }
 
-        public IEnumerable<string> Names
-        {
-            get
-            {
-                return _names ?? (_names = _queryBuilder
-                    .For<IEnumerable<string>>()
-                    .With(new GetEducationCharacterisitcNamesCriterion()));
-            }
-        }
+        public IEnumerable<string> Names => _names ?? (_names = _queryBuilder
+                                                .For<IEnumerable<string>>()
+                                                .With(new GetEducationCharacterisitcNamesCriterion()));
     }
 }

@@ -2,6 +2,7 @@ using System.Data.Entity.Migrations;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OptimalEducation.Identity;
 using OptimalEducation.Models;
 
 namespace OptimalEducation.Migrations

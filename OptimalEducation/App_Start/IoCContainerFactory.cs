@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using OptimalEducation.DAL;
 using OptimalEducation.DAL.Models;
 using OptimalEducation.Helpers;
+using OptimalEducation.Identity;
 using OptimalEducation.Implementation.Logic.Characterizers;
 using OptimalEducation.Implementation.Logic.DistanceRecomendator;
 using OptimalEducation.Implementation.Logic.MulticriterialAnalysis;

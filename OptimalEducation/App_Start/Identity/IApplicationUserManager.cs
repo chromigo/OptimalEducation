@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using OptimalEducation.Models;
-using SendGrid;
 
-namespace OptimalEducation
+namespace OptimalEducation.Identity
 {
-    // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-
     public interface IApplicationUserManager
     {
         IPasswordHasher PasswordHasher { get; set; }
@@ -98,78 +92,5 @@ namespace OptimalEducation
         Task<IdentityResult> AccessFailedAsync(string userId);
         Task<IdentityResult> ResetAccessFailedCountAsync(string userId);
         Task<int> GetAccessFailedCountAsync(string userId);
-    }
-
-    public class ApplicationUserManager : UserManager<ApplicationUser>, IApplicationUserManager
-    {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
-            : base(store)
-        {
-            // Configure validation logic for usernames
-            UserValidator = new UserValidator<ApplicationUser>(this)
-            {
-                AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
-            };
-            // Configure validation logic for passwords
-            PasswordValidator = new PasswordValidator
-            {
-                RequiredLength = 6
-            };
-
-            // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
-            // You can write your own provider and plug in here.
-            //this.RegisterTwoFactorProvider("PhoneCode", new PhoneNumberTokenProvider<ApplicationUser>
-            //{
-            //    MessageFormat = "Your security code is: {0}"
-            //});
-            //this.RegisterTwoFactorProvider("EmailCode", new EmailTokenProvider<ApplicationUser>
-            //{
-            //    Subject = "Security Code",
-            //    BodyFormat = "Your security code is: {0}"
-            //});
-            //this.EmailService = new EmailService();
-            //this.SmsService = new SmsService();
-            //var dataProtectionProvider = options.DataProtectionProvider;
-            //if (dataProtectionProvider != null)
-            //{
-            //    this.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
-            //}
-        }
-    }
-
-    public class EmailService : IIdentityMessageService
-    {
-        public async Task SendAsync(IdentityMessage message)
-        {
-            //create message
-            var myMessage = new SendGridMessage();
-            myMessage.AddTo(message.Destination);
-            myMessage.From = new MailAddress("optimaleducation@gmail.com");
-            myMessage.Subject = message.Subject;
-            //myMessage.Text = message.Body;
-            myMessage.Html = message.Body;
-
-            // Create credentials, specifying your user name and password.
-            var credentials = new NetworkCredential(
-                ConfigurationManager.AppSettings["SendGrid_Login"],
-                ConfigurationManager.AppSettings["SendGrid_Password"]);
-
-            // Create a Web transport for sending email.
-            var transportWeb = new Web(credentials);
-
-            // Send the email.
-            if (transportWeb != null)
-                await transportWeb.DeliverAsync(myMessage);
-        }
-    }
-
-    public class SmsService : IIdentityMessageService
-    {
-        public Task SendAsync(IdentityMessage message)
-        {
-            // Plug in your sms service here to send a text message.
-            return Task.FromResult(0);
-        }
     }
 }
