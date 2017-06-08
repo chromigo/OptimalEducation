@@ -6,6 +6,13 @@ const node_dir = path.resolve(__dirname, 'node_modules');
 const scripts_dir = path.resolve(__dirname, 'Scripts');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const rimraf = require('rimraf');
+const AssetsPlugin = require('assets-webpack-plugin');
+
+function addHash(template, hash){
+	return NODE_ENV == 'production' 
+		? template.replace(/\.[^.]+$/, `.[${hash}]$&`) 
+		:`${template}?hash=[${hash}]`;
+}
 
 module.exports = {
   context: path.resolve(__dirname, 'frontend/develop'),
@@ -17,7 +24,9 @@ module.exports = {
 
   output: {
     path:     path.resolve(__dirname,'frontend/bundles'),
-    filename: "[name].js"
+	publicPath: '/bundles/',
+    filename: addHash('[name].js', 'chunkhash'),
+	chunkFilename: addHash('[id].js', 'chunkhash')
   },
 
   watch: NODE_ENV == 'development',
@@ -45,7 +54,11 @@ module.exports = {
             jQuery: "jquery",
 			$: 'jquery'
         }),
-	new ExtractTextPlugin('[name].css', {allChunks: true})
+	new ExtractTextPlugin(addHash('[name].css', 'contenthash'), {allChunks: true}),
+	new AssetsPlugin({
+		filename: 'assets.json',
+		path: path.resolve(__dirname,'frontend/bundles')
+	})
   ],
 
   resolve: {
@@ -70,13 +83,13 @@ module.exports = {
 	  query: {
              presets: ['es2015']
          },
-	 include: path.resolve(__dirname,'frontend/develop')
+	 include: path.resolve(__dirname, 'frontend/develop')
     },{
 		test: /\.css$/,
 		loader: ExtractTextPlugin.extract('css')
     }, {
       test:   /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
-      loader: 'file?name=[path][name].[ext]'
+      loader: addHash('file?name=[path][name].[ext]', 'hash:6')
     }]
   }
 };
