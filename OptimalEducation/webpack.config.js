@@ -30,7 +30,7 @@ module.exports = {
 	chunkFilename: addHash('[id].js', 'chunkhash')
   },
 
-  watch: false,
+  watch: !isProduction,
 
   watchOptions: {
     aggregateTimeout: 100
@@ -41,7 +41,7 @@ module.exports = {
   plugins: [
 	{
       apply: (compiler) => {
-        rimraf.sync(compiler.options.output.path);
+        rimraf.sync(compiler.options.output.path + '/*');
       }
     },
     new webpack.NoErrorsPlugin(),
