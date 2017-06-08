@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const isProduction = NODE_ENV == 'production';
 const webpack = require('webpack');
 const node_dir = path.resolve(__dirname, 'node_modules');
 const scripts_dir = path.resolve(__dirname, 'Scripts');
@@ -29,13 +30,13 @@ module.exports = {
 	chunkFilename: addHash('[id].js', 'chunkhash')
   },
 
-  watch: NODE_ENV == 'development',
+  watch: false,
 
   watchOptions: {
     aggregateTimeout: 100
   },
 
-  devtool: NODE_ENV == 'development' ? "cheap-inline-module-source-map" : null,
+  devtool: isProduction ? null : "cheap-inline-module-source-map",
 
   plugins: [
 	{
@@ -95,7 +96,7 @@ module.exports = {
 };
 
 
-if (NODE_ENV == 'production') {
+if (isProduction) {
   module.exports.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         compress: {
