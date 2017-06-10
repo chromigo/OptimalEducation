@@ -1,3 +1,4 @@
+console.log('Hello!!');
 console.log(NODE_ENV);
 
 var $ = require('jquery');

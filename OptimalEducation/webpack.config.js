@@ -25,7 +25,7 @@ module.exports = {
 
   output: {
     path:     path.resolve(__dirname,'frontend/bundles'),
-	publicPath: '/bundles/',
+	publicPath:'/frontend/bundles/',
     filename: addHash('[name].js', 'chunkhash'),
 	chunkFilename: addHash('[id].js', 'chunkhash')
   },
