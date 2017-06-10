@@ -1,3 +1,3 @@
-require('jquery-validation/dist/jquery.validate');
-require('jquery-validation/dist/localization/messages_ru');
-require('./vendors/jquery.validate.unobtrusive');
+import 'jquery-validation/dist/jquery.validate';
+import 'jquery-validation/dist/localization/messages_ru';
+import './vendors/jquery.validate.unobtrusive';
