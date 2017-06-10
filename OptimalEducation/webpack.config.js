@@ -19,7 +19,7 @@ module.exports = {
   context: path.resolve(__dirname, 'frontend/develop'),
 
   entry: {
-	common: './common',
+	common: ['babel-polyfill', './common'],
 	validation: './validation',
   },
 
@@ -44,7 +44,7 @@ module.exports = {
         rimraf.sync(compiler.options.output.path + '/*');
       }
     },
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(NODE_ENV)
     }),
@@ -55,7 +55,10 @@ module.exports = {
             jQuery: "jquery",
 			$: 'jquery'
         }),
-	new ExtractTextPlugin(addHash('[name].css', 'contenthash'), {allChunks: true}),
+	new ExtractTextPlugin({
+		filename: addHash('[name].css', 'contenthash'),
+		allChunks: true
+	}),
 	new AssetsPlugin({
 		filename: 'assets.json',
 		path: path.resolve(__dirname,'frontend/bundles')
@@ -63,34 +66,39 @@ module.exports = {
   ],
 
   resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions:         ['', '.js'],
+    modules: ['node_modules'],
+    extensions: ['.js'],
 	alias: {
             jquery: path.resolve(node_dir, "jquery/src/jquery"), 
-        }
+			}
   },  
 
   resolveLoader: {
-    modulesDirectories: ['node_modules'],
-    moduleTemplates:    ['*-loader', '*'],
-    extensions:         ['', '.js']
+    modules: ['node_modules'],
+    extensions: ['.js']
   },
 
 
   module: {
-    loaders: [{
+    rules: [{
       test:   /\.js$/,
-      loader: 'babel',
-	  query: {
-             presets: ['es2015']
-         },
+      loader: 'babel-loader',
+	  options:{
+		  presets: [['es2015', { 'modules' : false}]],
+		  cacheDirectory: true
+	  },
 	 include: path.resolve(__dirname, 'frontend/develop')
-    },{
+    },
+	{
 		test: /\.css$/,
-		loader: ExtractTextPlugin.extract('css')
-    }, {
+		use: ExtractTextPlugin.extract("css-loader")
+    },
+	{
       test:   /\.(png|jpg|svg|ttf|eot|woff|woff2)$/,
-      loader: addHash('file?name=[path][name].[ext]', 'hash:6')
+      loader: 'file-loader',
+	  options: {
+		  name: addHash('[path][name].[ext]', 'hash:6')
+	  }
     }]
   }
 };
@@ -99,9 +107,8 @@ module.exports = {
 if (isProduction) {
   module.exports.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
+		sourceMap: true,
         compress: {
-          // don't show unreachable variables etc
-          warnings:     false,
           drop_console: true,
           unsafe:       true
         }
